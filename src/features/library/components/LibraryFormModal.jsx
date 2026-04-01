@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import Modal from "../../../components/ui/Modal.jsx";
 import {
-  defaultLibraryTags,
+  getLibraryTagOptions,
   normalizeTagValue,
 } from "../constants/libraryTags.js";
+import LibraryFormFields from "./LibraryFormFields.jsx";
+import LibraryTagPicker from "./LibraryTagPicker.jsx";
+import LibraryFormActions from "./LibraryFormActions.jsx";
 
 const emptyForm = {
   title: "",
@@ -23,12 +26,13 @@ function LibraryFormModal({
   const [formValues, setFormValues] = useState(emptyForm);
   const [selectedTagValue, setSelectedTagValue] = useState("");
 
-  const tagOptions = defaultLibraryTags;
+  const tagOptions = getLibraryTagOptions();
+  const isEditMode = mode === "edit";
 
   useEffect(() => {
     if (!isOpen) return;
 
-    if (mode === "edit" && item) {
+    if (isEditMode && item) {
       const normalizedTag = normalizeTagValue(item.tag);
 
       setFormValues({
@@ -43,7 +47,7 @@ function LibraryFormModal({
 
     setFormValues(emptyForm);
     setSelectedTagValue("");
-  }, [isOpen, mode, item]);
+  }, [isOpen, isEditMode, item]);
 
   function updateField(fieldName, value) {
     setFormValues((prev) => ({
@@ -65,8 +69,8 @@ function LibraryFormModal({
     updateField("tag", option.rawLabel);
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(event) {
+    event.preventDefault();
 
     const title = formValues.title.trim();
     const description = formValues.description.trim();
@@ -77,110 +81,30 @@ function LibraryFormModal({
     onSubmit({ title, description, tag });
   }
 
-  const isEditMode = mode === "edit";
-
   return (
     <Modal
       isOpen={isOpen}
-      title={isEditMode ? "🛠️ Edit Library Item" : "✨ Add Library Item"}
+      title={isEditMode ? "🛠️ Edit Library Card" : "✨ Add Library Card"}
       onClose={onClose}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* Title */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            🏷️ Title
-          </label>
-          <input
-            value={formValues.title}
-            onChange={(e) => updateField("title", e.target.value)}
-            className="input-base"
-          />
-        </div>
+        <LibraryFormFields
+          formValues={formValues}
+          onFieldChange={updateField}
+        />
 
-        {/* Description */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            📝 Description
-          </label>
-          <textarea
-            value={formValues.description}
-            onChange={(e) => updateField("description", e.target.value)}
-            rows={4}
-            className="input-base min-h-[112px] resize-none"
-          />
-        </div>
+        <LibraryTagPicker
+          isDarkMode={isDarkMode}
+          tagOptions={tagOptions}
+          selectedTagValue={selectedTagValue}
+          onTagClick={handleTagClick}
+        />
 
-        {/* Tags */}
-        <div className="space-y-3">
-          <label
-            className={`block text-sm font-medium ${
-              isDarkMode ? "text-slate-200" : "text-slate-700"
-            }`}
-          >
-            🔖 Tag
-          </label>
-
-          <div className="flex flex-wrap gap-2">
-            {tagOptions.map((option) => {
-              const isSelected = selectedTagValue === option.value;
-
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => handleTagClick(option)}
-                  className={`rounded-full px-3 py-2 text-sm font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
-                    isSelected
-                      ? isDarkMode
-                        ? "bg-pink-400/20 text-white border border-pink-400/30 shadow-[0_0_0_1px_rgba(244,114,182,0.2)]"
-                        : "bg-pink-200 text-slate-800 border border-pink-300 shadow-sm"
-                      : isDarkMode
-                        ? "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 hover:text-white"
-                        : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-800"
-                  }`}
-                >
-                  <span className="flex items-center gap-1">
-                    <span>{option.emoji}</span>
-                    <span>{option.rawLabel}</span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div
-          className={`pt-2 ${isEditMode ? "flex items-center justify-between gap-3" : "flex justify-end gap-3"}`}
-        >
-          {isEditMode ? (
-            <button
-              type="button"
-              onClick={onDelete}
-              className="interactive rounded-2xl bg-rose-100 px-4 py-3 text-sm font-medium text-rose-600 hover:scale-[1.01]"
-            >
-              Delete Card
-            </button>
-          ) : null}
-
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="modal-secondary-button rounded-2xl px-4 py-3 text-sm font-medium hover:scale-[1.01]"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 hover:scale-[1.01]"
-            >
-              {isEditMode ? "Save Changes" : "Add Item"}
-            </button>
-          </div>
-        </div>
+        <LibraryFormActions
+          isEditMode={isEditMode}
+          onClose={onClose}
+          onDelete={onDelete}
+        />
       </form>
     </Modal>
   );

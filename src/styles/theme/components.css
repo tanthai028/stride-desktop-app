@@ -1,0 +1,36 @@
+/* modal polish */
+body.theme-dark .modal-overlay {
+  background-color: rgba(2, 6, 23, 0.5);
+}
+
+body.theme-dark .modal-panel {
+  background-color: rgba(15, 23, 42, 0.9);
+  border-color: rgba(148, 163, 184, 0.14);
+  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.5);
+}
+
+body.theme-dark .modal-close {
+  background-color: rgba(30, 41, 59, 0.72);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+body.theme-dark .modal-close:hover {
+  background-color: rgba(51, 65, 85, 0.82);
+}
+
+body.theme-dark .modal-secondary-button {
+  background-color: rgba(30, 41, 59, 0.82);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+body.theme-dark .modal-secondary-button:hover {
+  background-color: rgba(51, 65, 85, 0.88);
+  filter: none;
+}
+
+body.theme-dark .window-controls-shell {
+  background-color: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}

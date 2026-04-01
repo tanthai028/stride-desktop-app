@@ -44,14 +44,18 @@ export function getTagMeta(tag = "") {
 
   if (matchedTag) {
     return {
+      value: matchedTag.value,
       emoji: matchedTag.emoji,
       label: matchedTag.rawLabel,
+      displayLabel: matchedTag.label,
     };
   }
 
   return {
+    value: normalizedTag,
     emoji: "🏷️",
     label: tag,
+    displayLabel: `🏷️ ${tag}`,
   };
 }
 

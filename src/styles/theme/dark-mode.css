@@ -1,0 +1,169 @@
+body.theme-dark {
+  color: #e2e8f0;
+  background: #020617;
+}
+
+body.theme-dark .app-shell {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(15, 23, 42, 0.95),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(49, 46, 129, 0.4),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(30, 41, 59, 0.75),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
+}
+
+body.theme-dark .summary-card {
+  border-color: rgba(148, 163, 184, 0.12);
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.38);
+}
+
+body.theme-dark .summary-card--pink {
+  background-color: rgba(91, 33, 61, 0.42);
+}
+
+body.theme-dark .summary-card--violet {
+  background-color: rgba(55, 48, 107, 0.42);
+}
+
+body.theme-dark .summary-card--sky {
+  background-color: rgba(12, 74, 110, 0.38);
+}
+
+body.theme-dark .bg-white\/45,
+body.theme-dark .bg-white\/50,
+body.theme-dark .bg-white\/55,
+body.theme-dark .bg-white\/60,
+body.theme-dark .bg-white\/70,
+body.theme-dark .bg-white\/80,
+body.theme-dark .bg-white\/90 {
+  background-color: rgba(15, 23, 42, 0.72) !important;
+}
+
+body.theme-dark .border-white\/40,
+body.theme-dark .border-white\/50,
+body.theme-dark .border-white\/60,
+body.theme-dark .border-white\/70 {
+  border-color: rgba(148, 163, 184, 0.12) !important;
+}
+
+body.theme-dark .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+body.theme-dark .text-slate-700 {
+  color: #e2e8f0 !important;
+}
+
+body.theme-dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+
+body.theme-dark .text-slate-500,
+body.theme-dark .text-slate-400 {
+  color: #94a3b8 !important;
+}
+
+body.theme-dark .input-base {
+  color: #e2e8f0;
+  background-color: rgba(30, 41, 59, 0.82);
+  border-color: rgba(100, 116, 139, 0.55);
+}
+
+body.theme-dark .input-base::placeholder {
+  color: #94a3b8;
+}
+
+body.theme-dark .input-base:focus {
+  border-color: rgba(244, 114, 182, 0.55);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.16);
+}
+
+body.theme-dark .interactive:hover {
+  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.3);
+  filter: brightness(1.04);
+}
+
+/* dark button/background tuning */
+body.theme-dark .bg-pink-200 {
+  background-color: rgba(244, 114, 182, 0.28) !important;
+}
+
+body.theme-dark .bg-pink-100 {
+  background-color: rgba(244, 114, 182, 0.16) !important;
+}
+
+body.theme-dark .bg-violet-200 {
+  background-color: rgba(167, 139, 250, 0.28) !important;
+}
+
+body.theme-dark .bg-sky-200 {
+  background-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+body.theme-dark .bg-slate-200 {
+  background-color: rgba(71, 85, 105, 0.75) !important;
+}
+
+body.theme-dark .bg-white {
+  background-color: rgba(241, 245, 249, 0.92) !important;
+}
+
+body.theme-dark .bg-rose-100 {
+  background-color: rgba(127, 29, 29, 0.22) !important;
+}
+
+body.theme-dark .text-pink-500 {
+  color: #f9a8d4 !important;
+}
+
+body.theme-dark .text-pink-400 {
+  color: #f9a8d4 !important;
+}
+
+body.theme-dark .text-violet-500 {
+  color: #a78bfa !important;
+}
+
+body.theme-dark .text-sky-500 {
+  color: #38bdf8 !important;
+}
+
+body.theme-dark .text-rose-600 {
+  color: #fda4af !important;
+}
+
+/* progress bars */
+body.theme-dark .bg-pink-300 {
+  background-color: #f9a8d4 !important;
+}
+
+body.theme-dark .bg-violet-300 {
+  background-color: #c4b5fd !important;
+}
+
+body.theme-dark .bg-sky-300 {
+  background-color: #7dd3fc !important;
+}
+
+body.theme-dark .bg-pink-100 {
+  background-color: rgba(157, 78, 128, 0.35) !important;
+}
+
+body.theme-dark .bg-violet-100 {
+  background-color: rgba(109, 92, 179, 0.34) !important;
+}
+
+body.theme-dark .bg-sky-100 {
+  background-color: rgba(53, 101, 130, 0.38) !important;
+}

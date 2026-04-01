@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
-import DashboardPage from "../features/dashboard/pages/DashboardPage.jsx";
-import LibraryPage from "../features/library/pages/LibraryPage.jsx";
-import SettingsPage from "../features/settings/pages/SettingsPage.jsx";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
+import { APP_PAGES, getPageComponent } from "./config/pageRegistry.js";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
-  const [activePage, setActivePage] = useState("dashboard");
+  const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
 
   useEffect(() => {
     document.body.classList.toggle("theme-dark", settings.darkMode);
@@ -17,32 +15,21 @@ function App() {
 
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
-      setActivePage("settings");
+      setActivePage(APP_PAGES.settings);
       return;
     }
 
     if (actionId === "view-stats") {
-      setActivePage("library");
+      setActivePage(APP_PAGES.library);
     }
   }
 
-  function renderActivePage() {
-    if (activePage === "settings") {
-      return (
-        <SettingsPage
-          settings={settings}
-          updateSetting={updateSetting}
-          resetSettings={resetSettings}
-        />
-      );
-    }
-
-    if (activePage === "library") {
-      return <LibraryPage settings={settings} />;
-    }
-
-    return <DashboardPage settings={settings} onAction={handleQuickAction} />;
-  }
+  const activePageContent = getPageComponent(activePage, {
+    settings,
+    updateSetting,
+    resetSettings,
+    onAction: handleQuickAction,
+  });
 
   return (
     <WindowFrame
@@ -51,7 +38,7 @@ function App() {
       }
     >
       <AppHeader />
-      {renderActivePage()}
+      {activePageContent}
     </WindowFrame>
   );
 }

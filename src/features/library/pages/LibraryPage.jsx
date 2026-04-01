@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
@@ -8,114 +8,49 @@ import LibraryCard from "../components/LibraryCard.jsx";
 import LibraryFormModal from "../components/LibraryFormModal.jsx";
 import LibraryEmptyState from "../components/LibraryEmptyState.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
-import { loadLibraryItems, saveLibraryItems } from "../utils/libraryStorage.js";
-import {
-  createItemId,
-  getFilteredAndSortedLibraryItems,
-} from "../utils/libraryItems.js";
+import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
+import useLibraryItems from "../hooks/useLibraryItems.js";
+import useLibraryPageState from "../hooks/useLibraryPageState.js";
 
 function LibraryPage({ settings }) {
-  const [items, setItems] = useState([]);
-  const [hasLoaded, setHasLoaded] = useState(false);
-  const [isPageReady, setIsPageReady] = useState(!settings.animationsEnabled);
-  const [searchValue, setSearchValue] = useState("");
-  const [sortValue, setSortValue] = useState("title-asc");
-  const [modalMode, setModalMode] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const { items, addItem, updateItem, deleteItem } = useLibraryItems();
 
-  useEffect(() => {
-    if (settings.animationsEnabled) {
-      setIsPageReady(false);
-      return;
-    }
-
-    setIsPageReady(true);
-  }, [settings.animationsEnabled]);
-
-  useEffect(() => {
-    setItems(loadLibraryItems());
-    setHasLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!hasLoaded) {
-      return;
-    }
-
-    saveLibraryItems(items);
-  }, [items, hasLoaded]);
+  const {
+    isPageReady,
+    setIsPageReady,
+    searchValue,
+    setSearchValue,
+    sortValue,
+    setSortValue,
+    modalMode,
+    selectedItem,
+    clearFilters,
+    openAddModal,
+    openEditModal,
+    closeModal,
+  } = useLibraryPageState(settings.animationsEnabled);
 
   const filteredItems = useMemo(() => {
     return getFilteredAndSortedLibraryItems(items, searchValue, sortValue);
   }, [items, searchValue, sortValue]);
 
-  function clearFilters() {
-    setSearchValue("");
-    setSortValue("title-asc");
-  }
-
-  function handleOpenAddModal() {
-    if (!isPageReady) {
-      return;
-    }
-
-    setSelectedItem(null);
-    setModalMode("add");
-  }
-
-  function handleOpenEditModal(item) {
-    if (!isPageReady) {
-      return;
-    }
-
-    setSelectedItem(item);
-    setModalMode("edit");
-  }
-
-  function handleCloseModal() {
-    setSelectedItem(null);
-    setModalMode(null);
-  }
-
   function handleAddItem(formValues) {
-    const newItem = {
-      id: createItemId(),
-      ...formValues,
-    };
-
-    setItems((currentItems) => [newItem, ...currentItems]);
-    handleCloseModal();
+    addItem(formValues);
+    closeModal();
   }
 
   function handleUpdateItem(formValues) {
-    if (!selectedItem) {
-      return;
-    }
+    if (!selectedItem) return;
 
-    setItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === selectedItem.id
-          ? {
-              ...item,
-              ...formValues,
-            }
-          : item,
-      ),
-    );
-
-    handleCloseModal();
+    updateItem(selectedItem.id, formValues);
+    closeModal();
   }
 
   function handleDeleteItem() {
-    if (!selectedItem) {
-      return;
-    }
+    if (!selectedItem) return;
 
-    setItems((currentItems) =>
-      currentItems.filter((item) => item.id !== selectedItem.id),
-    );
-
-    handleCloseModal();
+    deleteItem(selectedItem.id);
+    closeModal();
   }
 
   const motionProps = settings.animationsEnabled
@@ -142,10 +77,10 @@ function LibraryPage({ settings }) {
         actions={
           <button
             type="button"
-            onClick={handleOpenAddModal}
+            onClick={openAddModal}
             className="interactive rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
-            <span className="whitespace-nowrap">➕ Item</span>
+            <span className="whitespace-nowrap">➕ Card</span>
           </button>
         }
       >
@@ -165,14 +100,14 @@ function LibraryPage({ settings }) {
           {filteredItems.length > 0 ? (
             <ItemGrid
               items={filteredItems}
-              onItemClick={isPageReady ? handleOpenEditModal : undefined}
+              onItemClick={isPageReady ? openEditModal : undefined}
               renderItem={(item) => <LibraryCard item={item} />}
             />
           ) : (
             <LibraryEmptyState
               hasItems={items.length > 0}
               onClearFilters={clearFilters}
-              onAddItem={handleOpenAddModal}
+              onAddItem={openAddModal}
             />
           )}
         </PageSection>
@@ -182,9 +117,8 @@ function LibraryPage({ settings }) {
         isOpen={isModalOpen}
         mode={modalMode}
         item={selectedItem}
-        items={items}
         isDarkMode={settings.darkMode}
-        onClose={handleCloseModal}
+        onClose={closeModal}
         onSubmit={modalMode === "edit" ? handleUpdateItem : handleAddItem}
         onDelete={handleDeleteItem}
       />
