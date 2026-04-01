@@ -3,5 +3,6 @@ export const APP_TAGLINE = "My Template Desktop App";
 
 export const DEFAULT_SETTINGS = {
   animationsEnabled: true,
-  darkMode: false,
+  darkMode: true,
+  resetVersion: 0,
 };

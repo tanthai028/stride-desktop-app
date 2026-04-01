@@ -1,27 +1,24 @@
-import { libraryItems as defaultLibraryItems } from "../data/libraryData.js";
+import { libraryItems } from "../data/libraryData.js";
 
-export const LIBRARY_STORAGE_KEY = "library-items";
+const STORAGE_KEY = "library-items";
 
 export function loadLibraryItems() {
-  const savedItems = window.localStorage.getItem(LIBRARY_STORAGE_KEY);
+  const stored = localStorage.getItem(STORAGE_KEY);
 
-  if (!savedItems) {
-    return defaultLibraryItems;
-  }
+  if (!stored) return libraryItems;
 
   try {
-    const parsedItems = JSON.parse(savedItems);
-
-    if (Array.isArray(parsedItems)) {
-      return parsedItems;
-    }
-
-    return defaultLibraryItems;
+    return JSON.parse(stored);
   } catch {
-    return defaultLibraryItems;
+    return libraryItems;
   }
 }
 
 export function saveLibraryItems(items) {
-  window.localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(items));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+export function resetLibraryItems() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(libraryItems));
+  return libraryItems; // 👈 important
 }

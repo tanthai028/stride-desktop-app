@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { loadLibraryItems, saveLibraryItems } from "../utils/libraryStorage.js";
+import {
+  loadLibraryItems,
+  resetLibraryItems,
+  saveLibraryItems,
+} from "../utils/libraryStorage.js";
 import { createItemId } from "../utils/libraryItems.js";
 
 function useLibraryItems() {
@@ -44,11 +48,17 @@ function useLibraryItems() {
     );
   }
 
+  function resetItems() {
+    const defaultItems = resetLibraryItems();
+    setItems(defaultItems);
+  }
+
   return {
     items,
     addItem,
     updateItem,
     deleteItem,
+    resetItems,
   };
 }
 
