@@ -2,6 +2,7 @@ import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageCard from "../../../components/page/PageCard.jsx";
 import SettingsToggleRow from "../components/SettingsToggleRow.jsx";
+import { settingsSections } from "../config/settingsSections.js";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   return (
@@ -19,35 +20,31 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
         </button>
       }
     >
-      <PageSection
-        title="Display"
-        description="Basic UI preferences stored in local storage."
-      >
-        <PageCard>
-          <div className="space-y-3">
-            <SettingsToggleRow
-              title="Animations"
-              description="Turn entrance animations on or off."
-              checked={settings.animationsEnabled}
-              onToggle={() =>
-                updateSetting(
-                  "animationsEnabled",
-                  !settings.animationsEnabled,
-                )
-              }
-            />
-
-            <SettingsToggleRow
-              title="Compact mode"
-              description="Use slightly tighter spacing in the main content area."
-              checked={settings.compactMode}
-              onToggle={() =>
-                updateSetting("compactMode", !settings.compactMode)
-              }
-            />
-          </div>
-        </PageCard>
-      </PageSection>
+      <div className="space-y-6">
+        {settingsSections.map((section) => (
+          <PageSection
+            key={section.id}
+            title={section.title}
+            description={section.description}
+          >
+            <PageCard>
+              <div className="space-y-3">
+                {section.items.map((item) => (
+                  <SettingsToggleRow
+                    key={item.id}
+                    title={item.title}
+                    description={item.description}
+                    checked={settings[item.id]}
+                    onToggle={() =>
+                      updateSetting(item.id, !settings[item.id])
+                    }
+                  />
+                ))}
+              </div>
+            </PageCard>
+          </PageSection>
+        ))}
+      </div>
     </PageShell>
   );
 }
