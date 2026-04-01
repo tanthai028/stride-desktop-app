@@ -1,4 +1,4 @@
-import { navigationItems } from "../../constants/navigation.js";
+import { navigationItems } from "../../app/config/navigation.js";
 
 function AppSidebar({ activePage, onNavigate }) {
   return (

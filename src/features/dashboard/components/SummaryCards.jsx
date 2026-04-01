@@ -1,5 +1,5 @@
-import StatCard from "../ui/StatCard.jsx";
-import { summaryCards } from "../../data/summaryCards.js";
+import StatCard from "../../../components/ui/StatCard.jsx";
+import { summaryCards } from "../data/summaryCards.js";
 
 function SummaryCards() {
   return (

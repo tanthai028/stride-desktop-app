@@ -1,5 +1,5 @@
-import ActionButton from "../ui/ActionButton.jsx";
-import { quickActions } from "../../data/quickActions.js";
+import ActionButton from "../../../components/ui/ActionButton.jsx";
+import { quickActions } from "../data/quickActions.js";
 
 function QuickActionsPanel({ onAction }) {
   return (

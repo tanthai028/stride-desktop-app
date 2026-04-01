@@ -25,7 +25,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
           <button
             type="button"
             onClick={resetSettings}
-            className="interactive flex items-center gap-2 rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium bg-violet-200 transition hover:scale-[1.01]"
+            className="interactive flex items-center gap-2 rounded-2xl bg-violet-200 px-4 py-3 text-sm font-medium transition hover:scale-[1.01]"
           >
             <RotateCcw size={16} className="shrink-0" />
             <span>Reset to Default</span>

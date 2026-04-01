@@ -1,5 +1,5 @@
-import ProgressStat from "../ui/ProgressStat.jsx";
-import { dashboardStats } from "../../data/dashboardStats.js";
+import ProgressStat from "../../../components/ui/ProgressStat.jsx";
+import { dashboardStats } from "../data/dashboardStats.js";
 
 function DashboardPreview() {
   return (

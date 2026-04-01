@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import SummaryCards from "../../../components/sections/SummaryCards.jsx";
-import DashboardPreview from "../../../components/sections/DashboardPreview.jsx";
-import QuickActionsPanel from "../../../components/sections/QuickActionsPanel.jsx";
+import SummaryCards from "../components/SummaryCards.jsx";
+import DashboardPreview from "../components/DashboardPreview.jsx";
+import QuickActionsPanel from "../components/QuickActionsPanel.jsx";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 

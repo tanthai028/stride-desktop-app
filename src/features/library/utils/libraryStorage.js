@@ -1,4 +1,4 @@
-import { libraryItems as defaultLibraryItems } from "../../../data/libraryData.js";
+import { libraryItems as defaultLibraryItems } from "../data/libraryData.js";
 
 export const LIBRARY_STORAGE_KEY = "library-items";
 
