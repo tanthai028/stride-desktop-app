@@ -1,5 +1,5 @@
 const path = require('path')
-const { app, BrowserWindow, Menu } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -7,13 +7,13 @@ function createWindow() {
     height: 800,
     minWidth: 900,
     minHeight: 650,
-    title: 'PicklePulse',
-    icon: path.join(__dirname, 'assets', 'app.ico'),
-    backgroundColor: '#fdf2f8',
-    autoHideMenuBar: true,
+    frame: false,
+    transparent: true,
+    backgroundColor: '#00000000',
     webPreferences: {
-      nodeIntegration: false,
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
+      nodeIntegration: false,
     },
   })
 
@@ -24,8 +24,21 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow()
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  ipcMain.on('window:minimize', () => {
+    const win = BrowserWindow.getFocusedWindow()
+    if (win) win.minimize()
+  })
+
+  ipcMain.on('window:toggle-maximize', () => {
+    const win = BrowserWindow.getFocusedWindow()
+    if (!win) return
+    if (win.isMaximized()) win.unmaximize()
+    else win.maximize()
+  })
+
+  ipcMain.on('window:close', () => {
+    const win = BrowserWindow.getFocusedWindow()
+    if (win) win.close()
   })
 })
 

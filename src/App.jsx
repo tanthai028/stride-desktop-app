@@ -3,12 +3,45 @@ import { motion } from "framer-motion";
 
 function App() {
   return (
+    <div className="app-shell">
     <div className="min-h-screen px-5 pb-5 pt-3 text-slate-700">
+      <div className="drag-region flex h-12 items-center justify-end">
+        <div className="no-drag flex gap-2 rounded-full bg-white/40 px-3 py-2 backdrop-blur-md">
+          <motion.button
+            whileHover={{ scale: 1.12, y: -1 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            type="button"
+            aria-label="Minimize"
+            onClick={() => window.windowControls.minimize()}
+            className="h-4 w-4 cursor-pointer rounded-full bg-amber-300 shadow-sm hover:brightness-110 hover:shadow-md focus:outline-none"
+          />
+          <motion.button
+            whileHover={{ scale: 1.12, y: -1 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            type="button"
+            aria-label="Maximize"
+            onClick={() => window.windowControls.toggleMaximize()}
+            className="h-4 w-4 cursor-pointer rounded-full bg-emerald-300 shadow-sm hover:brightness-110 hover:shadow-md focus:outline-none"
+          />
+          <motion.button
+            whileHover={{ scale: 1.12, y: -1 }}
+            whileTap={{ scale: 0.92 }}
+            transition={{ type: "spring", stiffness: 500, damping: 20 }}
+            type="button"
+            aria-label="Close"
+            onClick={() => window.windowControls.close()}
+            className="h-4 w-4 cursor-pointer rounded-full bg-rose-300 shadow-sm hover:brightness-110 hover:shadow-md focus:outline-none"
+          />
+        </div>
+      </div>
+
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 rounded-[28px] bg-white/55 px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.05)]">
           <div>
             <p className="text-sm font-medium tracking-wide text-pink-400">
-              Cute Desktop App
+              My Desktop App
             </p>
             <h1 className="text-3xl font-semibold text-slate-800">
               Apple-like soft UI
@@ -28,7 +61,7 @@ function App() {
               className="rounded-[28px] border border-white/70 bg-pink-50/80 p-5 shadow-lg"
             >
               <p className="mb-2 text-sm font-medium text-pink-500">Mood</p>
-              <h2 className="text-xl font-semibold">Soft + Cute</h2>
+              <h2 className="text-xl font-semibold">Soft</h2>
               <p className="mt-2 text-sm text-slate-500">
                 Rounded corners, pastel gradients, smooth glassy cards.
               </p>
@@ -116,6 +149,7 @@ function App() {
           </div>
         </motion.div>
       </div>
+    </div>
     </div>
   );
 }
