@@ -21,3 +21,6 @@ export const libraryItems = [
     tag: "UI",
   },
 ];
+
+// To test the empty state later, temporarily change this file to:
+// export const libraryItems = [];

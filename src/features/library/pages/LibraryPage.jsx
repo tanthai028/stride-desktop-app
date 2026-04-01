@@ -1,22 +1,26 @@
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
-import PageCard from "../../../components/page/PageCard.jsx";
+import ItemGrid from "../../../components/page/ItemGrid.jsx";
+import EmptyState from "../../../components/page/EmptyState.jsx";
 import { libraryItems } from "../../../data/libraryItems.js";
 
 function LibraryPage() {
+  const hasItems = libraryItems.length > 0;
+
   return (
     <PageShell
       eyebrow="Library"
       title="Saved Building Blocks"
-      description="A simple third page to prove the template scales across more sections."
+      description="A reusable list-style page with support for both filled and empty states."
     >
       <PageSection
         title="Items"
         description="Example cards rendered from shared data."
       >
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {libraryItems.map((item) => (
-            <PageCard key={item.id}>
+        {hasItems ? (
+          <ItemGrid
+            items={libraryItems}
+            renderItem={(item) => (
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-lg font-semibold text-slate-800">
@@ -31,9 +35,22 @@ function LibraryPage() {
                   {item.tag}
                 </span>
               </div>
-            </PageCard>
-          ))}
-        </div>
+            )}
+          />
+        ) : (
+          <EmptyState
+            title="No library items yet"
+            description="This page is ready for future saved entries, notes, resources, or reusable app content."
+            action={
+              <button
+                type="button"
+                className="rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+              >
+                Add Sample Item
+              </button>
+            }
+          />
+        )}
       </PageSection>
     </PageShell>
   );
