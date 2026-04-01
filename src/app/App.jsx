@@ -3,7 +3,7 @@ import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
-import { APP_PAGES, getPageComponent } from "./config/pageRegistry.js";
+import { APP_PAGES, getPageComponent } from "./config/pageRegistry";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
