@@ -15,3 +15,4 @@ A small Electron + React desktop app template with a soft modern UI.
 ```bash
 npm install
 npm run dev
+```
