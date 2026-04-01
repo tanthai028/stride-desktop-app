@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  color: #1f2937;
+  background:
+    radial-gradient(circle at top left, #ffe4e6, transparent 30%),
+    radial-gradient(circle at top right, #ddd6fe, transparent 35%),
+    radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),
+    linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  user-select: none;
+  overflow: hidden;
+}
+
+h1, h2, p, span, button {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* draggable custom title bar */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+/* buttons inside draggable area must opt out */
+.no-drag {
+  -webkit-app-region: no-drag;
+}
