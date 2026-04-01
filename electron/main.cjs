@@ -6,12 +6,18 @@ const isDev = !app.isPackaged;
 function createWindow() {
   const win = new BrowserWindow({
     width: 1200,
-    height: 800,
+    height: 900,
     minWidth: 900,
-    minHeight: 650,
+    minHeight: 900,
+
     frame: false,
     transparent: false,
-    backgroundColor: "#00000000",
+    resizable: true,
+    thickFrame: true,
+    roundedCorners: true,
+    hasShadow: true,
+    backgroundColor: "#f6f1f8",
+
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -23,10 +29,9 @@ function createWindow() {
 
   if (isDev) {
     win.loadURL("http://localhost:5173");
-    return;
+  } else {
+    win.loadFile(path.join(__dirname, "../dist/index.html"));
   }
-
-  win.loadFile(path.join(__dirname, "../dist/index.html"));
 }
 
 function registerWindowEvents() {
@@ -41,10 +46,9 @@ function registerWindowEvents() {
 
     if (win.isMaximized()) {
       win.unmaximize();
-      return;
+    } else {
+      win.maximize();
     }
-
-    win.maximize();
   });
 
   ipcMain.on("window:close", () => {

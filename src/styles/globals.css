@@ -33,13 +33,13 @@ button {
 
 .app-shell {
   min-height: 100vh;
-  border-radius: 36px;
+
+  /* keep your gradients */
   background:
     radial-gradient(circle at top left, #ffe4e6, transparent 30%),
     radial-gradient(circle at top right, #ddd6fe, transparent 35%),
     radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),
     linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
-  -electron-corner-smoothing: 100%;
 }
 
 .drag-region {
