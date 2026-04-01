@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
@@ -21,7 +20,6 @@ function LibraryPage({ settings }) {
   const [isPageReady, setIsPageReady] = useState(!settings.animationsEnabled);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("title-asc");
-
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -145,10 +143,9 @@ function LibraryPage({ settings }) {
           <button
             type="button"
             onClick={handleOpenAddModal}
-            className="interactive flex items-center rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+            className="interactive rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
-            <Plus size={16} />
-            <span>Add Item</span>
+            <span className="whitespace-nowrap">➕ Item</span>
           </button>
         }
       >
@@ -185,6 +182,8 @@ function LibraryPage({ settings }) {
         isOpen={isModalOpen}
         mode={modalMode}
         item={selectedItem}
+        items={items}
+        isDarkMode={settings.darkMode}
         onClose={handleCloseModal}
         onSubmit={modalMode === "edit" ? handleUpdateItem : handleAddItem}
         onDelete={handleDeleteItem}

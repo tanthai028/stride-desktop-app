@@ -39,7 +39,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
               title={section.title}
               description={section.description}
             >
-              <PageCard>
+              <PageCard disableMotion>
                 <div className="space-y-3">
                   {section.items.map((item) => (
                     <SettingsToggleRow

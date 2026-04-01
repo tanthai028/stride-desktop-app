@@ -212,10 +212,9 @@ body.theme-dark .modal-close {
   color: #cbd5e1;
 }
 
-/* window controls */
 body.theme-dark .window-controls-shell {
-  background-color: rgba(148, 163, 184, 0.18);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background-color: rgba(139, 92, 246, 0.1); /* violet */
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .modal-close {

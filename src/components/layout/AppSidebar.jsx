@@ -3,9 +3,9 @@ import { navigationItems } from "../../app/config/navigation.js";
 function AppSidebar({ activePage, onNavigate }) {
   return (
     <aside className="rounded-[28px] border border-white/60 bg-white/55 p-3 shadow-lg backdrop-blur-xl">
-      <p className="text-center mb-3 px-2 text-sm font-medium text-slate-400">
+      {/* <p className="text-center mb-3 px-2 text-sm font-medium text-slate-400">
         Navigate
-      </p>
+      </p> */}
 
       <div className="space-y-2">
         {navigationItems.map((item) => {

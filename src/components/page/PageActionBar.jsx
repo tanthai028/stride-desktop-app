@@ -1,4 +1,5 @@
 import { Search } from "lucide-react";
+import SelectMenu from "../ui/SelectMenu.jsx";
 
 function PageActionBar({
   searchValue,
@@ -8,11 +9,12 @@ function PageActionBar({
   sortOptions = [],
   primaryAction,
   searchPlaceholder = "Search...",
+  settings,
 }) {
   return (
     <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
       <div className="flex flex-1 flex-col gap-3 md:flex-row">
-        <div className="w-full flex items-center gap-3">
+        <div className="flex w-full items-center gap-3">
           <Search size={16} className="shrink-0 text-slate-400" />
           <input
             type="text"
@@ -23,17 +25,14 @@ function PageActionBar({
             className="input-base"
           />
         </div>
-        <select
+
+        <SelectMenu
           value={sortValue}
-          onChange={(event) => onSortChange(event.target.value)}
-          className="rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm text-slate-700 outline-none"
-        >
-          {sortOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          onChange={onSortChange}
+          options={sortOptions}
+          className="md:w-auto"
+          isDarkMode={settings?.darkModeEnabled}
+        />
       </div>
 
       {primaryAction ? <div>{primaryAction}</div> : null}

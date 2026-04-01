@@ -1,8 +1,4 @@
-function EmptyState({
-  title,
-  description,
-  action,
-}) {
+function EmptyState({ title, description, action }) {
   return (
     <div className="rounded-[28px] border border-dashed border-white/70 bg-white/50 p-8 text-center shadow-lg">
       <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
