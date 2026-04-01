@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { motion } from "framer-motion";
-import { closeWindow, minimizeWindow, toggleMaximizeWindow } from "../../lib/windowControls.js";
+import {
+  closeWindow,
+  minimizeWindow,
+  toggleMaximizeWindow,
+} from "../../lib/windowControls.js";
 
 function WindowControls() {
   return (
-    <div className="no-drag flex gap-2 rounded-full bg-white/40 px-3 py-2 backdrop-blur-md">
+    <div className="window-controls-shell no-drag flex gap-2 rounded-full bg-white/40 px-3 py-2 backdrop-blur-md">
       <motion.button
         whileHover={{ scale: 1.12, y: -1 }}
         whileTap={{ scale: 0.92 }}

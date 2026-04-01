@@ -7,7 +7,7 @@ function Modal({ isOpen, title, children, onClose }) {
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
-        document.activeElement?.blur(); // 👈 add this
+        document.activeElement?.blur();
         onClose();
       }
     }
@@ -23,7 +23,7 @@ function Modal({ isOpen, title, children, onClose }) {
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/30 px-4 backdrop-blur-sm"
+          className="modal-overlay fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/30 px-4 backdrop-blur-sm"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -31,7 +31,7 @@ function Modal({ isOpen, title, children, onClose }) {
           transition={{ duration: 0.18 }}
         >
           <motion.div
-            className="w-full max-w-xl rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-2xl"
+            className="modal-panel w-full max-w-xl rounded-[28px] border border-white/70 bg-white/90 p-5 shadow-2xl"
             onClick={(event) => event.stopPropagation()}
             initial={{ opacity: 0, y: 18, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -44,7 +44,7 @@ function Modal({ isOpen, title, children, onClose }) {
               <button
                 type="button"
                 onClick={onClose}
-                className="interactive rounded-full bg-white/80 px-3 py-1.5 text-sm font-medium text-slate-600"
+                className="modal-close interactive rounded-full px-3 py-1.5 text-sm font-medium"
               >
                 Close
               </button>

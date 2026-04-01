@@ -129,7 +129,7 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
             <button
               type="button"
               onClick={onClose}
-              className="interactive rounded-2xl bg-white px-4 py-3 text-sm font-medium text-slate-600 transition hover:scale-[1.01]"
+              className="modal-secondary-button rounded-2xl px-4 py-3 text-sm font-medium transition hover:scale-[1.01]"
             >
               Cancel
             </button>

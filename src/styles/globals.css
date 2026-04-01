@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./theme.css";
 
 * {
   box-sizing: border-box;
@@ -31,17 +32,6 @@ button {
   user-select: none;
 }
 
-.app-shell {
-  min-height: 100vh;
-
-  /* keep your gradients */
-  background:
-    radial-gradient(circle at top left, #ffe4e6, transparent 30%),
-    radial-gradient(circle at top right, #ddd6fe, transparent 35%),
-    radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),
-    linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
-}
-
 .drag-region {
   -webkit-app-region: drag;
   user-select: none;
@@ -51,7 +41,6 @@ button {
   -webkit-app-region: no-drag;
 }
 
-/* Clickable elements only */
 .interactive {
   cursor: pointer;
   transition:
@@ -74,7 +63,6 @@ button {
   box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
 }
 
-/* Inputs feel responsive but NOT lifted */
 .interactive-input {
   transition:
     border-color 120ms ease,
@@ -92,7 +80,6 @@ button {
   box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.12);
 }
 
-/* Toggle only */
 .interactive-toggle {
   transition:
     transform 120ms ease,
@@ -106,7 +93,9 @@ button {
 }
 
 .interactive-thumb {
-  transition: left 140ms ease, transform 140ms ease;
+  transition:
+    left 140ms ease,
+    transform 140ms ease;
 }
 
 .interactive-toggle:active .interactive-thumb {
@@ -116,15 +105,15 @@ button {
 .input-base {
   @apply w-full rounded-2xl px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400;
 
-  border: 1px solid rgba(203, 213, 225, 0.8); /* slate-300-ish */
+  border: 1px solid rgba(203, 213, 225, 0.8);
   background-color: rgba(255, 255, 255, 0.7);
-
-  transition: border-color 120ms ease, box-shadow 120ms ease;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
   resize: none;
 }
 
 .input-base:focus {
-  border-color: rgba(244, 114, 182, 0.5); /* pink focus */
+  border-color: rgba(244, 114, 182, 0.5);
   box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15);
 }
-

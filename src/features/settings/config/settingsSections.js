@@ -10,9 +10,9 @@ export const settingsSections = [
         description: "Turn entrance animations on or off.",
       },
       {
-        id: "compactMode",
-        title: "📦 Compact mode",
-        description: "Use slightly tighter spacing in the main content area.",
+        id: "darkMode",
+        title: "🌙 Dark mode",
+        description: "Switch to a darker color theme for the app.",
       },
     ],
   },

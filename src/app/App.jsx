@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
@@ -10,6 +10,10 @@ import { useSettings } from "../features/settings/hooks/useSettings.js";
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
   const [activePage, setActivePage] = useState("dashboard");
+
+  useEffect(() => {
+    document.body.classList.toggle("theme-dark", settings.darkMode);
+  }, [settings.darkMode]);
 
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
@@ -34,7 +38,7 @@ function App() {
     }
 
     if (activePage === "library") {
-      return <LibraryPage settings={settings}/>;
+      return <LibraryPage settings={settings} />;
     }
 
     return <DashboardPage settings={settings} onAction={handleQuickAction} />;
