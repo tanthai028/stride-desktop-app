@@ -85,7 +85,7 @@ Introduced a real feature system with local persistence.
 
 - Added persistent settings:
   - `animationsEnabled`
-  - `compactMode`
+  - `darkMode`
 - Settings stored in `localStorage`
 - Automatic sync via React hook
 
