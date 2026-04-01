@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "zip": "tar -a -c -f ../my-app.zip --exclude=node_modules --exclude=dist --exclude=.git --exclude=.vscode --exclude=*.log --exclude=*.zip ."
   },
   "dependencies": {
     "framer-motion": "^12.0.0",
