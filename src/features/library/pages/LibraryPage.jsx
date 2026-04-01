@@ -14,16 +14,28 @@ const sortOptions = [
   { value: "tag-asc", label: "Tag A-Z" },
 ];
 
+function createItemId() {
+  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
 function LibraryPage() {
   const [items, setItems] = useState([]);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("title-asc");
+
+  const [isAddingItem, setIsAddingItem] = useState(false);
+  const [newItemTitle, setNewItemTitle] = useState("");
+  const [newItemDescription, setNewItemDescription] = useState("");
+  const [newItemTag, setNewItemTag] = useState("");
 
   useEffect(() => {
     const savedItems = window.localStorage.getItem(STORAGE_KEY);
 
     if (!savedItems) {
       setItems(defaultLibraryItems);
+      setHasLoaded(true);
       return;
     }
 
@@ -38,15 +50,17 @@ function LibraryPage() {
     } catch {
       setItems(defaultLibraryItems);
     }
+
+    setHasLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (items.length === 0) {
+    if (!hasLoaded) {
       return;
     }
 
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+  }, [items, hasLoaded]);
 
   const filteredItems = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase();
@@ -89,6 +103,44 @@ function LibraryPage() {
     setSortValue("title-asc");
   }
 
+  function resetAddForm() {
+    setNewItemTitle("");
+    setNewItemDescription("");
+    setNewItemTag("");
+  }
+
+  function handleOpenAddForm() {
+    setIsAddingItem(true);
+  }
+
+  function handleCancelAddItem() {
+    setIsAddingItem(false);
+    resetAddForm();
+  }
+
+  function handleAddItem(event) {
+    event.preventDefault();
+
+    const trimmedTitle = newItemTitle.trim();
+    const trimmedDescription = newItemDescription.trim();
+    const trimmedTag = newItemTag.trim();
+
+    if (!trimmedTitle || !trimmedDescription || !trimmedTag) {
+      return;
+    }
+
+    const newItem = {
+      id: createItemId(),
+      title: trimmedTitle,
+      description: trimmedDescription,
+      tag: trimmedTag,
+    };
+
+    setItems((currentItems) => [newItem, ...currentItems]);
+    setIsAddingItem(false);
+    resetAddForm();
+  }
+
   return (
     <PageShell
       eyebrow="Library"
@@ -97,6 +149,7 @@ function LibraryPage() {
       actions={
         <button
           type="button"
+          onClick={handleOpenAddForm}
           className="rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
         >
           Add Item
@@ -107,6 +160,69 @@ function LibraryPage() {
         title="Items"
         description="Example cards rendered from shared data."
       >
+        {isAddingItem ? (
+          <form
+            onSubmit={handleAddItem}
+            className="mb-5 space-y-3 rounded-3xl border border-white/70 bg-white/80 p-4 shadow-sm"
+          >
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Title
+              </label>
+              <input
+                type="text"
+                value={newItemTitle}
+                onChange={(event) => setNewItemTitle(event.target.value)}
+                placeholder="Enter item title"
+                className="w-full rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Description
+              </label>
+              <textarea
+                value={newItemDescription}
+                onChange={(event) => setNewItemDescription(event.target.value)}
+                placeholder="Enter item description"
+                rows={3}
+                className="w-full rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Tag
+              </label>
+              <input
+                type="text"
+                value={newItemTag}
+                onChange={(event) => setNewItemTag(event.target.value)}
+                placeholder="Enter item tag"
+                className="w-full rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="submit"
+                className="rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+              >
+                Save Item
+              </button>
+
+              <button
+                type="button"
+                onClick={handleCancelAddItem}
+                className="rounded-2xl border border-white/70 bg-white/70 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        ) : null}
+
         <PageActionBar
           searchValue={searchValue}
           onSearchChange={setSearchValue}
