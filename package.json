@@ -1,5 +1,5 @@
 {
-  "name": "cute-desktop-app",
+  "name": "my-desktop-app",
   "private": true,
   "version": "1.0.0",
   "main": "electron/main.cjs",
