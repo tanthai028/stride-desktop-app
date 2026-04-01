@@ -20,7 +20,11 @@ export const libraryItems = [
       "Summary cards, preview panels, and quick actions for landing screens.",
     tag: "UI",
   },
+  {
+    id: "page-actions",
+    title: "Page Action Bar",
+    description:
+      "Reusable search, sorting, and primary actions for list-based pages.",
+    tag: "Pattern",
+  },
 ];
-
-// To test the empty state later, temporarily change this file to:
-// export const libraryItems = [];
