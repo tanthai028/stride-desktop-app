@@ -1,4 +1,5 @@
 import ProgressStat from "../ui/ProgressStat.jsx";
+import { dashboardStats } from "../../data/dashboardStats.js";
 
 function DashboardPreview() {
   return (
@@ -8,26 +9,15 @@ function DashboardPreview() {
       </p>
 
       <div className="space-y-4">
-        <ProgressStat
-          label="Energy"
-          value={82}
-          trackClassName="bg-pink-100"
-          barClassName="bg-pink-300"
-        />
-
-        <ProgressStat
-          label="Focus"
-          value={65}
-          trackClassName="bg-violet-100"
-          barClassName="bg-violet-300"
-        />
-
-        <ProgressStat
-          label="Mood"
-          value={91}
-          trackClassName="bg-sky-100"
-          barClassName="bg-sky-300"
-        />
+        {dashboardStats.map((stat) => (
+          <ProgressStat
+            key={stat.label}
+            label={stat.label}
+            value={stat.value}
+            trackClassName={stat.trackClassName}
+            barClassName={stat.barClassName}
+          />
+        ))}
       </div>
     </div>
   );
