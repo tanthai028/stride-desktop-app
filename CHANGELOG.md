@@ -329,3 +329,100 @@ Extended the library page from a read-only demo into a small interactive feature
   - filter and sort
   - add new records
   - persist state locally
+
+---
+
+# Current Architecture Summary
+
+### Layout Layer
+
+- `WindowFrame`
+- `AppSidebar`
+- `AppHeader`
+
+### Page Layer
+
+- `PageShell`
+- `PageSection`
+- `PageCard`
+- `PageActionBar`
+- `EmptyState`
+- `ItemGrid`
+
+### Feature Layer
+
+- `dashboard`
+- `settings`
+- `library`
+
+### Data Layer
+
+- `data/`
+- `constants/`
+
+### State Layer
+
+- `useSettings` (persistent local state)
+- `LibraryPage` local state + `localStorage` persistence
+
+---
+
+# Next Real Feature Steps
+
+## Immediate Next Steps
+
+- Add edit item flow to the library page
+- Add delete item flow to the library page
+- Keep search/sort working against user-created data
+- Make empty-library state work correctly after deletes
+
+## After CRUD Works
+
+- Decide whether the add/edit form should stay inline or move into a reusable feature component
+- Only extract shared behavior if a second feature actually needs the same pattern
+- Build the next real page or workflow instead of polishing library architecture further
+
+## Later, If Needed
+
+- Extract shared collection hook only if another page needs the same search/sort behavior
+- Add lightweight app-level state only when local page state starts getting painful
+- Add file storage or backend only when `localStorage` becomes limiting
+- Add Electron packaging when the app is ready for distribution
+
+---
+
+# Refactor Guardrails
+
+To avoid tunneling into unnecessary cleanup next time, use this rule:
+
+A refactor should only happen when it does at least one of these:
+
+- removes real duplication in 2+ places
+- makes an active feature easier to change
+- prevents a real bug or state problem
+- speeds up the next real feature
+
+Do not refactor just to make one page feel “cleaner” in isolation.
+
+Preferred order:
+
+1. build real feature
+2. feel real pain
+3. extract only what solves that pain
+
+---
+
+# Notes
+
+This project should prioritize:
+
+- real user-facing functionality
+- persistence
+- scalable but practical structure
+- feature-driven iteration over premature abstraction
+
+The current direction is:
+
+- keep the foundation clean
+- stop over-optimizing one page
+- use the library feature to validate real CRUD patterns before introducing more abstractions
