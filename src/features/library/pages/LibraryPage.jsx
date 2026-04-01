@@ -4,56 +4,38 @@ import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
-import EmptyState from "../../../components/page/EmptyState.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
-import { libraryItems as defaultLibraryItems } from "../../../data/libraryItems.js";
-import Modal from "../../../components/ui/Modal.jsx";
-
-const STORAGE_KEY = "library-items";
-
-const sortOptions = [
-  { value: "title-asc", label: "Title A-Z" },
-  { value: "title-desc", label: "Title Z-A" },
-  { value: "tag-asc", label: "Tag A-Z" },
-];
-
-function createItemId() {
-  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
+import LibraryCard from "../components/LibraryCard.jsx";
+import LibraryFormModal from "../components/LibraryFormModal.jsx";
+import LibraryEmptyState from "../components/LibraryEmptyState.jsx";
+import { librarySortOptions } from "../constants/sortOptions.js";
+import { loadLibraryItems, saveLibraryItems } from "../utils/libraryStorage.js";
+import {
+  createItemId,
+  getFilteredAndSortedLibraryItems,
+} from "../utils/libraryItems.js";
 
 function LibraryPage({ settings }) {
   const [items, setItems] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
-
+  const [isPageReady, setIsPageReady] = useState(!settings.animationsEnabled);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("title-asc");
 
-  const [isAddingItem, setIsAddingItem] = useState(false);
-  const [newItemTitle, setNewItemTitle] = useState("");
-  const [newItemDescription, setNewItemDescription] = useState("");
-  const [newItemTag, setNewItemTag] = useState("");
+  const [modalMode, setModalMode] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
-    const savedItems = window.localStorage.getItem(STORAGE_KEY);
-
-    if (!savedItems) {
-      setItems(defaultLibraryItems);
-      setHasLoaded(true);
+    if (settings.animationsEnabled) {
+      setIsPageReady(false);
       return;
     }
 
-    try {
-      const parsedItems = JSON.parse(savedItems);
+    setIsPageReady(true);
+  }, [settings.animationsEnabled]);
 
-      if (Array.isArray(parsedItems)) {
-        setItems(parsedItems);
-      } else {
-        setItems(defaultLibraryItems);
-      }
-    } catch {
-      setItems(defaultLibraryItems);
-    }
-
+  useEffect(() => {
+    setItems(loadLibraryItems());
     setHasLoaded(true);
   }, []);
 
@@ -62,43 +44,11 @@ function LibraryPage({ settings }) {
       return;
     }
 
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    saveLibraryItems(items);
   }, [items, hasLoaded]);
 
   const filteredItems = useMemo(() => {
-    const normalizedSearch = searchValue.trim().toLowerCase();
-
-    let nextItems = items.filter((item) => {
-      if (!normalizedSearch) {
-        return true;
-      }
-
-      return (
-        item.title.toLowerCase().includes(normalizedSearch) ||
-        item.description.toLowerCase().includes(normalizedSearch) ||
-        item.tag.toLowerCase().includes(normalizedSearch)
-      );
-    });
-
-    if (sortValue === "title-asc") {
-      nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        leftItem.title.localeCompare(rightItem.title),
-      );
-    }
-
-    if (sortValue === "title-desc") {
-      nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        rightItem.title.localeCompare(leftItem.title),
-      );
-    }
-
-    if (sortValue === "tag-asc") {
-      nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        leftItem.tag.localeCompare(rightItem.tag),
-      );
-    }
-
-    return nextItems;
+    return getFilteredAndSortedLibraryItems(items, searchValue, sortValue);
   }, [items, searchValue, sortValue]);
 
   function clearFilters() {
@@ -106,42 +56,68 @@ function LibraryPage({ settings }) {
     setSortValue("title-asc");
   }
 
-  function resetAddForm() {
-    setNewItemTitle("");
-    setNewItemDescription("");
-    setNewItemTag("");
-  }
-
-  function handleOpenAddForm() {
-    setIsAddingItem(true);
-  }
-
-  function handleCancelAddItem() {
-    setIsAddingItem(false);
-    resetAddForm();
-  }
-
-  function handleAddItem(event) {
-    event.preventDefault();
-
-    const trimmedTitle = newItemTitle.trim();
-    const trimmedDescription = newItemDescription.trim();
-    const trimmedTag = newItemTag.trim();
-
-    if (!trimmedTitle || !trimmedDescription || !trimmedTag) {
+  function handleOpenAddModal() {
+    if (!isPageReady) {
       return;
     }
 
+    setSelectedItem(null);
+    setModalMode("add");
+  }
+
+  function handleOpenEditModal(item) {
+    if (!isPageReady) {
+      return;
+    }
+
+    setSelectedItem(item);
+    setModalMode("edit");
+  }
+
+  function handleCloseModal() {
+    setSelectedItem(null);
+    setModalMode(null);
+  }
+
+  function handleAddItem(formValues) {
     const newItem = {
       id: createItemId(),
-      title: trimmedTitle,
-      description: trimmedDescription,
-      tag: trimmedTag,
+      ...formValues,
     };
 
     setItems((currentItems) => [newItem, ...currentItems]);
-    setIsAddingItem(false);
-    resetAddForm();
+    handleCloseModal();
+  }
+
+  function handleUpdateItem(formValues) {
+    if (!selectedItem) {
+      return;
+    }
+
+    setItems((currentItems) =>
+      currentItems.map((item) =>
+        item.id === selectedItem.id
+          ? {
+              ...item,
+              ...formValues,
+            }
+          : item,
+      ),
+    );
+
+    handleCloseModal();
+  }
+
+  function handleDeleteItem() {
+    if (!selectedItem) {
+      return;
+    }
+
+    setItems((currentItems) =>
+      currentItems.filter((item) => item.id !== selectedItem.id),
+    );
+
+    handleCloseModal();
   }
 
   const motionProps = settings.animationsEnabled
@@ -152,16 +128,23 @@ function LibraryPage({ settings }) {
       }
     : {};
 
+  const isModalOpen = modalMode === "add" || modalMode === "edit";
+
   return (
-    <motion.div {...motionProps}>
+    <motion.div
+      {...motionProps}
+      onAnimationComplete={() => {
+        setIsPageReady(true);
+      }}
+    >
       <PageShell
         eyebrow="Library"
         title="Saved Building Blocks"
-        description="A reusable list-style page with search, sorting, and empty-state support."
+        description="A reusable list-style page with search, sorting, add/edit flows, and empty-state support."
         actions={
           <button
             type="button"
-            onClick={handleOpenAddForm}
+            onClick={handleOpenAddModal}
             className="interactive flex items-center rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
             <Plus size={16} />
@@ -171,118 +154,41 @@ function LibraryPage({ settings }) {
       >
         <PageSection
           title="Items"
-          description="Example cards rendered from shared data."
+          description="Manage reusable cards with search, sorting, editing, and deleting."
         >
           <PageActionBar
             searchValue={searchValue}
             onSearchChange={setSearchValue}
             sortValue={sortValue}
             onSortChange={setSortValue}
-            sortOptions={sortOptions}
+            sortOptions={librarySortOptions}
             searchPlaceholder="Search library items..."
           />
 
           {filteredItems.length > 0 ? (
             <ItemGrid
               items={filteredItems}
-              renderItem={(item) => (
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-lg font-semibold text-slate-800">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm text-slate-500">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-medium text-pink-500">
-                    {item.tag}
-                  </span>
-                </div>
-              )}
+              onItemClick={isPageReady ? handleOpenEditModal : undefined}
+              renderItem={(item) => <LibraryCard item={item} />}
             />
           ) : (
-            <EmptyState
-              title="No matching library items"
-              description="Try a different search or clear your filters to see available items."
-              action={
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
-                >
-                  Clear Filters
-                </button>
-              }
+            <LibraryEmptyState
+              hasItems={items.length > 0}
+              onClearFilters={clearFilters}
+              onAddItem={handleOpenAddModal}
             />
           )}
         </PageSection>
       </PageShell>
 
-      <Modal
-        isOpen={isAddingItem}
-        title="Add New Item"
-        onClose={handleCancelAddItem}
-      >
-        <form onSubmit={handleAddItem} className="space-y-3">
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Title
-            </label>
-            <input
-              type="text"
-              value={newItemTitle}
-              onChange={(event) => setNewItemTitle(event.target.value)}
-              placeholder="Enter item title"
-              className="input-base"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Description
-            </label>
-            <textarea
-              value={newItemDescription}
-              onChange={(event) => setNewItemDescription(event.target.value)}
-              placeholder="Enter item description"
-              rows={4}
-              className="input-base resize-none"
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
-              Tag
-            </label>
-            <input
-              type="text"
-              value={newItemTag}
-              onChange={(event) => setNewItemTag(event.target.value)}
-              placeholder="Enter item tag"
-              className="input-base"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-3 pt-2">
-            <button
-              type="submit"
-              className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700"
-            >
-              Save Item
-            </button>
-
-            <button
-              type="button"
-              onClick={handleCancelAddItem}
-              className="interactive rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700"
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </Modal>
+      <LibraryFormModal
+        isOpen={isModalOpen}
+        mode={modalMode}
+        item={selectedItem}
+        onClose={handleCloseModal}
+        onSubmit={modalMode === "edit" ? handleUpdateItem : handleAddItem}
+        onDelete={handleDeleteItem}
+      />
     </motion.div>
   );
 }
