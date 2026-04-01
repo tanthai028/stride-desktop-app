@@ -14,7 +14,7 @@ function AppSidebar({ activePage, onNavigate }) {
               key={item.id}
               type="button"
               onClick={() => onNavigate(item.id)}
-              className={`w-full rounded-2xl px-4 py-3 text-left text-sm font-medium transition ${
+              className={`interactive w-full rounded-2xl px-4 py-3 text-left text-sm font-medium transition ${
                 isActive
                   ? "bg-pink-200 text-slate-800 shadow-sm"
                   : "bg-white/50 text-slate-600 hover:bg-white/80"

@@ -50,3 +50,81 @@ button {
 .no-drag {
   -webkit-app-region: no-drag;
 }
+
+/* Clickable elements only */
+.interactive {
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    filter 120ms ease,
+    opacity 120ms ease;
+}
+
+.interactive:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+  filter: brightness(1.02);
+}
+
+.interactive:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
+}
+
+/* Inputs feel responsive but NOT lifted */
+.interactive-input {
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.interactive-input:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.interactive-input:focus {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(244, 114, 182, 0.35);
+  box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.12);
+}
+
+/* Toggle only */
+.interactive-toggle {
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease;
+}
+
+.interactive-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.interactive-thumb {
+  transition: left 140ms ease, transform 140ms ease;
+}
+
+.interactive-toggle:active .interactive-thumb {
+  transform: scale(0.95);
+}
+
+.input-base {
+  @apply w-full rounded-2xl px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400;
+
+  border: 1px solid rgba(203, 213, 225, 0.8); /* slate-300-ish */
+  background-color: rgba(255, 255, 255, 0.7);
+
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  resize: none;
+}
+
+.input-base:focus {
+  border-color: rgba(244, 114, 182, 0.5); /* pink focus */
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15);
+}
+

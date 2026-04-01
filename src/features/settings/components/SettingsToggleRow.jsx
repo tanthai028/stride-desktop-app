@@ -15,7 +15,7 @@ function SettingsToggleRow({
         type="button"
         onClick={onToggle}
         aria-pressed={checked}
-        className={`relative mt-1 h-7 w-12 rounded-full transition ${
+        className={`interactive relative mt-1 h-7 w-12 rounded-full transition ${
           checked ? "bg-pink-300" : "bg-slate-200"
         }`}
       >

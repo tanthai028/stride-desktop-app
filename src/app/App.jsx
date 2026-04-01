@@ -34,7 +34,7 @@ function App() {
     }
 
     if (activePage === "library") {
-      return <LibraryPage />;
+      return <LibraryPage settings={settings}/>;
     }
 
     return <DashboardPage settings={settings} onAction={handleQuickAction} />;
