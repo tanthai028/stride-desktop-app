@@ -13,7 +13,7 @@ function QuickActionsPanel({ onAction }) {
           <ActionButton
             key={action.id}
             className={action.className}
-            onClick={() => onAction?.(action.id)}
+            onClick={() => onAction(action.id)}
           >
             {action.label}
           </ActionButton>
