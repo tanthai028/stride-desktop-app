@@ -13,6 +13,7 @@ Converted a single-file prototype into a structured, reusable Electron + React d
 ### Key Changes
 
 #### Project Structure
+
 - Introduced a modular folder structure:
   - `app/` → top-level app composition
   - `components/` → layout, ui, sections
@@ -21,6 +22,7 @@ Converted a single-file prototype into a structured, reusable Electron + React d
 - Removed unused Vite starter CSS and cleaned up legacy files
 
 #### Electron Integration
+
 - Added preload bridge for safe IPC communication
 - Created `windowControls.js` abstraction to avoid direct `window` usage
 - Updated Electron main process to support:
@@ -28,6 +30,7 @@ Converted a single-file prototype into a structured, reusable Electron + React d
   - production build (future-ready)
 
 #### UI Decomposition
+
 - Broke large `App.jsx` into:
   - layout components (`WindowFrame`, `AppHeader`)
   - reusable UI components (`StatCard`, `ActionButton`, etc.)
@@ -44,6 +47,7 @@ Moved hardcoded UI content into structured data and constants.
 ### Key Changes
 
 #### Data Layer
+
 - Added:
   - `data/summaryCards.js`
   - `data/dashboardStats.js`
@@ -51,10 +55,12 @@ Moved hardcoded UI content into structured data and constants.
 - Refactored components to render from data instead of inline values
 
 #### Constants
+
 - Added `constants/app.js`
   - centralized app name, tagline, default settings
 
 #### Benefits
+
 - Easier content updates
 - Cleaner components
 - Better separation of concerns
@@ -70,11 +76,13 @@ Introduced a real feature system with local persistence.
 ### Key Changes
 
 #### Feature Structure
+
 - Added:
   - `features/settings/hooks/useSettings.js`
   - `features/settings/storage/settingsStorage.js`
 
 #### Functionality
+
 - Added persistent settings:
   - `animationsEnabled`
   - `compactMode`
@@ -82,6 +90,7 @@ Introduced a real feature system with local persistence.
 - Automatic sync via React hook
 
 #### Integration
+
 - Connected settings to:
   - animation behavior
   - layout spacing
@@ -97,15 +106,18 @@ Implemented UI for settings and established interaction patterns.
 ### Key Changes
 
 #### Initial Implementation
+
 - Built `SettingsPanel` modal
 - Connected Quick Actions → Settings
 
 #### Refactor
+
 - Converted settings into a full page:
   - `features/settings/pages/SettingsPage.jsx`
 - Removed reliance on modal-based UI
 
 #### Benefits
+
 - Scalable for future settings
 - Consistent page-based navigation
 
@@ -120,6 +132,7 @@ Introduced multi-page navigation with sidebar layout.
 ### Key Changes
 
 #### Navigation
+
 - Added:
   - `AppSidebar`
   - `constants/navigation.js`
@@ -128,13 +141,16 @@ Introduced multi-page navigation with sidebar layout.
   - `settings`
 
 #### Layout Update
+
 - Updated `WindowFrame` to support:
   - sidebar + content layout
 
 #### Routing Logic
+
 - Centralized page switching in `App.jsx`
 
 #### Benefits
+
 - App now supports multiple pages
 - Foundation for scaling features
 
@@ -153,11 +169,13 @@ Standardized page structure across the app.
 - `PageCard` → consistent card UI
 
 #### Refactor
+
 - Updated:
   - `DashboardPage`
   - `SettingsPage`
 
 #### Benefits
+
 - Consistent spacing and structure
 - Faster page creation
 - Easier global design updates
@@ -173,14 +191,17 @@ Improved settings scalability by removing duplication.
 ### Key Changes
 
 #### Reusable UI
+
 - Added `SettingsToggleRow`
 
 #### Config-Driven Settings
+
 - Added:
   - `features/settings/config/settingsSections.js`
 - Settings now rendered via config mapping
 
 #### Benefits
+
 - Adding new settings requires only config changes
 - Reduced duplication
 - Cleaner page logic
@@ -196,14 +217,17 @@ Added a third page to validate navigation and structure.
 ### Key Changes
 
 #### New Feature
+
 - Added:
   - `features/library/pages/LibraryPage.jsx`
   - `data/libraryItems.js`
 
 #### Navigation Update
+
 - Added `library` route
 
 #### Purpose
+
 - Test multi-page scalability
 - Validate feature folder pattern with a second non-settings page
 
@@ -221,11 +245,13 @@ Introduced reusable patterns for list-based pages.
 - `ItemGrid` → reusable card grid
 
 #### Library Improvements
+
 - Supports:
   - populated state
   - empty state fallback
 
 #### Benefits
+
 - Reusable for:
   - lists
   - history
@@ -245,139 +271,61 @@ Added a reusable action bar for real-world page interactions.
 - `PageActionBar`
 
 #### Features
+
 - Search input
 - Sort dropdown
 - Compact controls layout for list pages
 
 #### Library Upgrade
+
 - Implemented:
   - search filtering
   - sorting logic
   - empty state for no results
 
 #### Benefits
+
 - Makes the library page feel like a real app page instead of a static mock
 - Likely reusable across future searchable/sortable views
 
 ---
 
-## v1.1.0 — Library Persistence + Add Item Flow
+## v1.1.0 — Library Item Creation + Persistence Polish
 
 ### Overview
 
-Started turning the library page from static demo data into a real feature with persistent local state.
+Extended the library page from a read-only demo into a small interactive feature with saved user state.
 
 ### Key Changes
 
-#### Persistence
-- Added `localStorage` persistence for library items
-- On first load:
-  - uses seeded default items from `data/libraryItems.js`
-- On later loads:
-  - restores saved items from local storage
+#### Library State Persistence
 
-#### Add Item Flow
-- Added inline “Add Item” form to `LibraryPage`
-- Supports creating a new item with:
+- Added `localStorage` persistence for library items using `library-items`
+- Hydrates saved items on load
+- Falls back to default seed data when storage is empty or invalid
+
+#### Item Creation Flow
+
+- Added an `Add Item` action in the library page header
+- Added modal-based item creation with fields for:
   - title
   - description
   - tag
-- Added:
-  - save action
-  - cancel action
-  - simple required-field validation
+- Added lightweight validation that blocks empty submissions
+- New items are inserted at the top of the collection
 
-#### State Improvements
-- Introduced a proper loaded-state guard before saving
-- Prevents accidental overwrite during initial mount
-- Sets up the page correctly for future edit/delete behavior
+#### Modal UX
 
-#### Why This Matters
-- The library page is no longer just a UI scaffold
-- App now has a second area with real persistent user-driven state
-- This is a stronger milestone than further library-only abstractions
+- Reused shared `Modal` component for the add-item flow
+- Added Escape key handling to close the modal
+- Added overlay click close behavior
+- Added open/close motion transitions with Framer Motion
 
----
+#### Result
 
-# Current Architecture Summary
-
-### Layout Layer
-- `WindowFrame`
-- `AppSidebar`
-- `AppHeader`
-
-### Page Layer
-- `PageShell`
-- `PageSection`
-- `PageCard`
-- `PageActionBar`
-- `EmptyState`
-- `ItemGrid`
-
-### Feature Layer
-- `dashboard`
-- `settings`
-- `library`
-
-### Data Layer
-- `data/`
-- `constants/`
-
-### State Layer
-- `useSettings` (persistent local state)
-- `LibraryPage` local state + `localStorage` persistence
-
----
-
-# Next Real Feature Steps
-
-## Immediate Next Steps
-- Add edit item flow to the library page
-- Add delete item flow to the library page
-- Keep search/sort working against user-created data
-- Make empty-library state work correctly after deletes
-
-## After CRUD Works
-- Decide whether the add/edit form should stay inline or move into a reusable feature component
-- Only extract shared behavior if a second feature actually needs the same pattern
-- Build the next real page or workflow instead of polishing library architecture further
-
-## Later, If Needed
-- Extract shared collection hook only if another page needs the same search/sort behavior
-- Add lightweight app-level state only when local page state starts getting painful
-- Add file storage or backend only when `localStorage` becomes limiting
-- Add Electron packaging when the app is ready for distribution
-
----
-
-# Refactor Guardrails
-
-To avoid tunneling into unnecessary cleanup next time, use this rule:
-
-A refactor should only happen when it does at least one of these:
-- removes real duplication in 2+ places
-- makes an active feature easier to change
-- prevents a real bug or state problem
-- speeds up the next real feature
-
-Do not refactor just to make one page feel “cleaner” in isolation.
-
-Preferred order:
-1. build real feature
-2. feel real pain
-3. extract only what solves that pain
-
----
-
-# Notes
-
-This project should prioritize:
-- real user-facing functionality
-- persistence
-- scalable but practical structure
-- feature-driven iteration over premature abstraction
-
-The current direction is:
-- keep the foundation clean
-- stop over-optimizing one page
-- use the library feature to validate real CRUD patterns before introducing more abstractions
+- The library page now behaves more like a real feature instead of only a layout test
+- The project now demonstrates a complete mini CRUD-style interaction loop:
+  - load default data
+  - filter and sort
+  - add new records
+  - persist state locally
