@@ -16,6 +16,7 @@ function PageActionBar({
           <Search size={16} className="shrink-0 text-slate-400" />
           <input
             type="text"
+            spellCheck={false}
             value={searchValue}
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder={searchPlaceholder}
