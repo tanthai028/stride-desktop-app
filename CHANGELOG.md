@@ -196,15 +196,16 @@ Added a third page to validate navigation and structure.
 ### Key Changes
 
 #### New Feature
-- `features/library/pages/LibraryPage.jsx`
-- `data/libraryItems.js`
+- Added:
+  - `features/library/pages/LibraryPage.jsx`
+  - `data/libraryItems.js`
 
 #### Navigation Update
 - Added `library` route
 
 #### Purpose
 - Test multi-page scalability
-- Validate feature folder pattern
+- Validate feature folder pattern with a second non-settings page
 
 ---
 
@@ -246,7 +247,7 @@ Added a reusable action bar for real-world page interactions.
 #### Features
 - Search input
 - Sort dropdown
-- Primary action button
+- Compact controls layout for list pages
 
 #### Library Upgrade
 - Implemented:
@@ -255,8 +256,46 @@ Added a reusable action bar for real-world page interactions.
   - empty state for no results
 
 #### Benefits
-- Matches real app behavior
-- Reusable across future pages
+- Makes the library page feel like a real app page instead of a static mock
+- Likely reusable across future searchable/sortable views
+
+---
+
+## v1.1.0 — Library Persistence + Add Item Flow
+
+### Overview
+
+Started turning the library page from static demo data into a real feature with persistent local state.
+
+### Key Changes
+
+#### Persistence
+- Added `localStorage` persistence for library items
+- On first load:
+  - uses seeded default items from `data/libraryItems.js`
+- On later loads:
+  - restores saved items from local storage
+
+#### Add Item Flow
+- Added inline “Add Item” form to `LibraryPage`
+- Supports creating a new item with:
+  - title
+  - description
+  - tag
+- Added:
+  - save action
+  - cancel action
+  - simple required-field validation
+
+#### State Improvements
+- Introduced a proper loaded-state guard before saving
+- Prevents accidental overwrite during initial mount
+- Sets up the page correctly for future edit/delete behavior
+
+#### Why This Matters
+- The library page is no longer just a UI scaffold
+- App now has a second area with real persistent user-driven state
+- This is a stronger milestone than further library-only abstractions
 
 ---
 
@@ -286,25 +325,59 @@ Added a reusable action bar for real-world page interactions.
 
 ### State Layer
 - `useSettings` (persistent local state)
+- `LibraryPage` local state + `localStorage` persistence
 
 ---
 
-# Next Potential Improvements
+# Next Real Feature Steps
 
-- Extract reusable collection hook (search/sort/filter logic)
-- Add routing library (optional)
-- Add global state (if app grows)
-- Add real backend or file storage
-- Add Electron packaging (electron-builder)
+## Immediate Next Steps
+- Add edit item flow to the library page
+- Add delete item flow to the library page
+- Keep search/sort working against user-created data
+- Make empty-library state work correctly after deletes
+
+## After CRUD Works
+- Decide whether the add/edit form should stay inline or move into a reusable feature component
+- Only extract shared behavior if a second feature actually needs the same pattern
+- Build the next real page or workflow instead of polishing library architecture further
+
+## Later, If Needed
+- Extract shared collection hook only if another page needs the same search/sort behavior
+- Add lightweight app-level state only when local page state starts getting painful
+- Add file storage or backend only when `localStorage` becomes limiting
+- Add Electron packaging when the app is ready for distribution
+
+---
+
+# Refactor Guardrails
+
+To avoid tunneling into unnecessary cleanup next time, use this rule:
+
+A refactor should only happen when it does at least one of these:
+- removes real duplication in 2+ places
+- makes an active feature easier to change
+- prevents a real bug or state problem
+- speeds up the next real feature
+
+Do not refactor just to make one page feel “cleaner” in isolation.
+
+Preferred order:
+1. build real feature
+2. feel real pain
+3. extract only what solves that pain
 
 ---
 
 # Notes
 
-This template prioritizes:
-- clarity of structure
-- scalability
-- separation of concerns
-- fast iteration for new features
+This project should prioritize:
+- real user-facing functionality
+- persistence
+- scalable but practical structure
+- feature-driven iteration over premature abstraction
 
-It is designed to evolve into a production-ready desktop app.
+The current direction is:
+- keep the foundation clean
+- stop over-optimizing one page
+- use the library feature to validate real CRUD patterns before introducing more abstractions
