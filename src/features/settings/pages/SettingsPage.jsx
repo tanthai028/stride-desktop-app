@@ -1,6 +1,7 @@
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageCard from "../../../components/page/PageCard.jsx";
+import SettingsToggleRow from "../components/SettingsToggleRow.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   return (
@@ -24,64 +25,26 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
       >
         <PageCard>
           <div className="space-y-3">
-            <div className="flex items-start justify-between gap-4 rounded-2xl bg-white/60 px-4 py-3">
-              <div>
-                <p className="text-sm font-semibold text-slate-700">
-                  Animations
-                </p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Turn entrance animations on or off.
-                </p>
-              </div>
+            <SettingsToggleRow
+              title="Animations"
+              description="Turn entrance animations on or off."
+              checked={settings.animationsEnabled}
+              onToggle={() =>
+                updateSetting(
+                  "animationsEnabled",
+                  !settings.animationsEnabled,
+                )
+              }
+            />
 
-              <button
-                type="button"
-                onClick={() =>
-                  updateSetting(
-                    "animationsEnabled",
-                    !settings.animationsEnabled,
-                  )
-                }
-                aria-pressed={settings.animationsEnabled}
-                className={`relative mt-1 h-7 w-12 rounded-full transition ${
-                  settings.animationsEnabled ? "bg-pink-300" : "bg-slate-200"
-                }`}
-              >
-                <span
-                  className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition ${
-                    settings.animationsEnabled ? "left-6" : "left-1"
-                  }`}
-                />
-              </button>
-            </div>
-
-            <div className="flex items-start justify-between gap-4 rounded-2xl bg-white/60 px-4 py-3">
-              <div>
-                <p className="text-sm font-semibold text-slate-700">
-                  Compact mode
-                </p>
-                <p className="mt-1 text-xs text-slate-500">
-                  Use slightly tighter spacing in the main content area.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() =>
-                  updateSetting("compactMode", !settings.compactMode)
-                }
-                aria-pressed={settings.compactMode}
-                className={`relative mt-1 h-7 w-12 rounded-full transition ${
-                  settings.compactMode ? "bg-pink-300" : "bg-slate-200"
-                }`}
-              >
-                <span
-                  className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition ${
-                    settings.compactMode ? "left-6" : "left-1"
-                  }`}
-                />
-              </button>
-            </div>
+            <SettingsToggleRow
+              title="Compact mode"
+              description="Use slightly tighter spacing in the main content area."
+              checked={settings.compactMode}
+              onToggle={() =>
+                updateSetting("compactMode", !settings.compactMode)
+              }
+            />
           </div>
         </PageCard>
       </PageSection>

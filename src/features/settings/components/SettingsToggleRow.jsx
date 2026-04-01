@@ -1,19 +1,19 @@
 function SettingsToggleRow({
-  label,
+  title,
   description,
   checked,
-  onChange,
+  onToggle,
 }) {
   return (
     <div className="flex items-start justify-between gap-4 rounded-2xl bg-white/60 px-4 py-3">
       <div>
-        <p className="text-sm font-semibold text-slate-700">{label}</p>
+        <p className="text-sm font-semibold text-slate-700">{title}</p>
         <p className="mt-1 text-xs text-slate-500">{description}</p>
       </div>
 
       <button
         type="button"
-        onClick={onChange}
+        onClick={onToggle}
         aria-pressed={checked}
         className={`relative mt-1 h-7 w-12 rounded-full transition ${
           checked ? "bg-pink-300" : "bg-slate-200"
