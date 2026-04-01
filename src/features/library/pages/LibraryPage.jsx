@@ -1,25 +1,57 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
 import EmptyState from "../../../components/page/EmptyState.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
-import { libraryItems } from "../../../data/libraryItems.js";
+import { libraryItems as defaultLibraryItems } from "../../../data/libraryItems.js";
+
+const STORAGE_KEY = "library-items";
 
 const sortOptions = [
-  { value: "title-asc", label: "Title A–Z" },
-  { value: "title-desc", label: "Title Z–A" },
-  { value: "tag-asc", label: "Tag A–Z" },
+  { value: "title-asc", label: "Title A-Z" },
+  { value: "title-desc", label: "Title Z-A" },
+  { value: "tag-asc", label: "Tag A-Z" },
 ];
 
 function LibraryPage() {
+  const [items, setItems] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("title-asc");
+
+  useEffect(() => {
+    const savedItems = window.localStorage.getItem(STORAGE_KEY);
+
+    if (!savedItems) {
+      setItems(defaultLibraryItems);
+      return;
+    }
+
+    try {
+      const parsedItems = JSON.parse(savedItems);
+
+      if (Array.isArray(parsedItems)) {
+        setItems(parsedItems);
+      } else {
+        setItems(defaultLibraryItems);
+      }
+    } catch {
+      setItems(defaultLibraryItems);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      return;
+    }
+
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
 
   const filteredItems = useMemo(() => {
     const normalizedSearch = searchValue.trim().toLowerCase();
 
-    let nextItems = libraryItems.filter((item) => {
+    let nextItems = items.filter((item) => {
       if (!normalizedSearch) {
         return true;
       }
@@ -31,22 +63,31 @@ function LibraryPage() {
       );
     });
 
-    nextItems = [...nextItems].sort((leftItem, rightItem) => {
-      if (sortValue === "title-desc") {
-        return rightItem.title.localeCompare(leftItem.title);
-      }
+    if (sortValue === "title-asc") {
+      nextItems = [...nextItems].sort((leftItem, rightItem) =>
+        leftItem.title.localeCompare(rightItem.title)
+      );
+    }
 
-      if (sortValue === "tag-asc") {
-        return leftItem.tag.localeCompare(rightItem.tag);
-      }
+    if (sortValue === "title-desc") {
+      nextItems = [...nextItems].sort((leftItem, rightItem) =>
+        rightItem.title.localeCompare(leftItem.title)
+      );
+    }
 
-      return leftItem.title.localeCompare(rightItem.title);
-    });
+    if (sortValue === "tag-asc") {
+      nextItems = [...nextItems].sort((leftItem, rightItem) =>
+        leftItem.tag.localeCompare(rightItem.tag)
+      );
+    }
 
     return nextItems;
-  }, [searchValue, sortValue]);
+  }, [items, searchValue, sortValue]);
 
-  const hasItems = filteredItems.length > 0;
+  function clearFilters() {
+    setSearchValue("");
+    setSortValue("title-asc");
+  }
 
   return (
     <PageShell
@@ -75,7 +116,7 @@ function LibraryPage() {
           searchPlaceholder="Search library items..."
         />
 
-        {hasItems ? (
+        {filteredItems.length > 0 ? (
           <ItemGrid
             items={filteredItems}
             renderItem={(item) => (
@@ -102,10 +143,7 @@ function LibraryPage() {
             action={
               <button
                 type="button"
-                onClick={() => {
-                  setSearchValue("");
-                  setSortValue("title-asc");
-                }}
+                onClick={clearFilters}
                 className="rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
               >
                 Clear Filters
