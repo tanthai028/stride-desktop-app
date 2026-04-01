@@ -3,6 +3,7 @@ import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
 import DashboardPage from "../features/dashboard/pages/DashboardPage.jsx";
+import LibraryPage from "../features/library/pages/LibraryPage.jsx";
 import SettingsPage from "../features/settings/pages/SettingsPage.jsx";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
 
@@ -13,6 +14,11 @@ function App() {
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
       setActivePage("settings");
+      return;
+    }
+
+    if (actionId === "view-stats") {
+      setActivePage("library");
     }
   }
 
@@ -25,6 +31,10 @@ function App() {
           resetSettings={resetSettings}
         />
       );
+    }
+
+    if (activePage === "library") {
+      return <LibraryPage />;
     }
 
     return <DashboardPage settings={settings} onAction={handleQuickAction} />;

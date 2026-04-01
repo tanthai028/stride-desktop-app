@@ -4,6 +4,10 @@ export const navigationItems = [
     label: "Dashboard",
   },
   {
+    id: "library",
+    label: "Library",
+  },
+  {
     id: "settings",
     label: "Settings",
   },
