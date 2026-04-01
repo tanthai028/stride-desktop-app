@@ -1,3 +1,4 @@
+import { Plus } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
@@ -81,19 +82,19 @@ function LibraryPage({ settings }) {
 
     if (sortValue === "title-asc") {
       nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        leftItem.title.localeCompare(rightItem.title)
+        leftItem.title.localeCompare(rightItem.title),
       );
     }
 
     if (sortValue === "title-desc") {
       nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        rightItem.title.localeCompare(leftItem.title)
+        rightItem.title.localeCompare(leftItem.title),
       );
     }
 
     if (sortValue === "tag-asc") {
       nextItems = [...nextItems].sort((leftItem, rightItem) =>
-        leftItem.tag.localeCompare(rightItem.tag)
+        leftItem.tag.localeCompare(rightItem.tag),
       );
     }
 
@@ -161,9 +162,10 @@ function LibraryPage({ settings }) {
           <button
             type="button"
             onClick={handleOpenAddForm}
-            className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+            className="interactive flex items-center rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
-            Add Item
+            <Plus size={16} />
+            <span>Add Item</span>
           </button>
         }
       >
@@ -171,7 +173,6 @@ function LibraryPage({ settings }) {
           title="Items"
           description="Example cards rendered from shared data."
         >
-
           <PageActionBar
             searchValue={searchValue}
             onSearchChange={setSearchValue}

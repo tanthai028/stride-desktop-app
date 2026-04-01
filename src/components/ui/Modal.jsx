@@ -7,6 +7,7 @@ function Modal({ isOpen, title, children, onClose }) {
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
+        document.activeElement?.blur(); // 👈 add this
         onClose();
       }
     }

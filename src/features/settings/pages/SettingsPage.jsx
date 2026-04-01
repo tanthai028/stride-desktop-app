@@ -1,3 +1,4 @@
+import { RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
@@ -24,9 +25,10 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
           <button
             type="button"
             onClick={resetSettings}
-            className="interactive rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+            className="interactive flex items-center gap-2 rounded-2xl bg-slate-200 px-4 py-3 text-sm font-medium bg-violet-200 transition hover:scale-[1.01]"
           >
-            Reset to Default
+            <RotateCcw size={16} className="shrink-0" />
+            <span>Reset to Default</span>
           </button>
         }
       >

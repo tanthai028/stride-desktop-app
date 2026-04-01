@@ -1,9 +1,4 @@
-function SettingsToggleRow({
-  title,
-  description,
-  checked,
-  onToggle,
-}) {
+function SettingsToggleRow({ title, description, checked, onToggle }) {
   return (
     <div className="flex items-start justify-between gap-4 rounded-2xl bg-white/60 px-4 py-3">
       <div>
@@ -16,7 +11,7 @@ function SettingsToggleRow({
         onClick={onToggle}
         aria-pressed={checked}
         className={`interactive relative mt-1 h-7 w-12 rounded-full transition ${
-          checked ? "bg-pink-300" : "bg-slate-200"
+          checked ? "bg-violet-200" : "bg-slate-200"
         }`}
       >
         <span

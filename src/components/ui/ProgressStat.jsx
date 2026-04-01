@@ -6,9 +6,9 @@ function ProgressStat({ label, value, barClassName, trackClassName }) {
         <span className="text-sm text-slate-400">{value}%</span>
       </div>
 
-      <div className={`h-3 rounded-full ${trackClassName}`}>
+      <div className={`h-3.5 rounded-full ${trackClassName}`}>
         <div
-          className={`h-3 rounded-full ${barClassName}`}
+          className={`h-3.5 rounded-full ${barClassName}`}
           style={{ width: `${value}%` }}
         />
       </div>

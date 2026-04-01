@@ -1,7 +1,7 @@
 function PageSection({ title, description, children }) {
   return (
     <section>
-      {(title || description) ? (
+      {title || description ? (
         <div className="mb-3">
           {title ? (
             <h3 className="text-sm font-semibold text-slate-700">{title}</h3>
