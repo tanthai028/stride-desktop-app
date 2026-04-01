@@ -17,12 +17,12 @@ function DashboardPage({ settings, onAction }) {
   return (
     <motion.div {...motionProps}>
       <PageShell
-        eyebrow="Dashboard"
+        eyebrow="🏠 Dashboard"
         title="Overview"
         description="Preview the base template layout, cards, and quick actions."
       >
         <PageSection
-          title="Summary"
+          title="✨ Summary"
           description="Small reusable stat cards for top-level information."
         >
           <SummaryCards />
@@ -30,14 +30,14 @@ function DashboardPage({ settings, onAction }) {
 
         <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-[1.2fr_0.8fr]">
           <PageSection
-            title="Preview"
+            title="📊 Preview"
             description="Example progress rows inside a reusable content card."
           >
             <DashboardPreview />
           </PageSection>
 
           <PageSection
-            title="Actions"
+            title="⚡ Actions"
             description="Quick actions that can navigate or trigger future workflows."
           >
             <QuickActionsPanel onAction={onAction} />

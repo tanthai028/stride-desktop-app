@@ -18,7 +18,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
   return (
     <motion.div {...motionProps}>
       <PageShell
-        eyebrow="Settings"
+        eyebrow="⚙️ Settings"
         title="App Preferences"
         description="Manage template behavior and local preferences."
         actions={

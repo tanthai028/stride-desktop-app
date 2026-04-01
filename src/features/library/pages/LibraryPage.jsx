@@ -138,7 +138,7 @@ function LibraryPage({ settings }) {
       }}
     >
       <PageShell
-        eyebrow="Library"
+        eyebrow="📚 Library"
         title="Saved Building Blocks"
         description="A reusable list-style page with search, sorting, add/edit flows, and empty-state support."
         actions={
