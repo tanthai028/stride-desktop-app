@@ -85,7 +85,7 @@ function DashboardPage({ settings, onAction }) {
               showBottomFade ? "opacity-100" : "opacity-0"
             } ${
               settings.darkMode
-                ? "bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent backdrop-blur-[1px]"
+                ? "bg-gradient-to-t from-slate-950/100 via-slate-950/40 to-transparent"
                 : "bg-gradient-to-t from-white/80 via-white/40 to-transparent backdrop-blur-[5px]"
             }`}
           />
