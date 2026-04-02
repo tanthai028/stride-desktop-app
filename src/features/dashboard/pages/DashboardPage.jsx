@@ -15,33 +15,38 @@ function DashboardPage({ settings, onAction }) {
     : {};
 
   return (
-    <motion.div {...motionProps}>
+    <motion.div {...motionProps} className="flex min-h-0 flex-1 flex-col">
       <PageShell
         eyebrow="🏠 Dashboard"
         title="Overview"
         description="Preview the base template layout, cards, and quick actions."
       >
-        <PageSection
-          title="✨ Summary"
-          description="Small reusable stat cards for top-level information."
-        >
-          <SummaryCards />
-        </PageSection>
-
-        <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-[1.2fr_0.8fr]">
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pb-6 pr-1 scrollbar-hide">
           <PageSection
-            title="📊 Preview"
-            description="Example progress rows inside a reusable content card."
+            className="flex-none"
+            title="✨ Summary"
+            description="Small reusable stat cards for top-level information."
           >
-            <DashboardPreview />
+            <SummaryCards />
           </PageSection>
 
-          <PageSection
-            title="⚡ Actions"
-            description="Quick actions that can navigate or trigger future workflows."
-          >
-            <QuickActionsPanel onAction={onAction} />
-          </PageSection>
+          <div className="mt-5 grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1.2fr)_320px]">
+            <PageSection
+              className="flex-none"
+              title="📊 Preview"
+              description="Example progress rows inside a reusable content card."
+            >
+              <DashboardPreview />
+            </PageSection>
+
+            <PageSection
+              className="flex-none"
+              title="⚡ Actions"
+              description="Quick actions that can navigate or trigger future workflows."
+            >
+              <QuickActionsPanel onAction={onAction} />
+            </PageSection>
+          </div>
         </div>
       </PageShell>
     </motion.div>
