@@ -14,6 +14,11 @@ export const settingsSections = [
         title: "🌙 Dark mode",
         description: "Switch to a darker color theme for the app.",
       },
+      {
+        id: "glossyMode",
+        title: "🫧 Glossy mode",
+        description: "Use a more translucent glass-style look across the app.",
+      },
     ],
   },
 ];

@@ -4,5 +4,6 @@ export const APP_TAGLINE = "Goodmorning Tan!";
 export const DEFAULT_SETTINGS = {
   animationsEnabled: true,
   darkMode: true,
+  glossyMode: false,
   resetVersion: 0,
 };

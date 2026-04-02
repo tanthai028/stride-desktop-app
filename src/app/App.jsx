@@ -15,7 +15,8 @@ function App() {
 
   useEffect(() => {
     document.body.classList.toggle("theme-dark", settings.darkMode);
-  }, [settings.darkMode]);
+    document.body.classList.toggle("theme-glossy", settings.glossyMode);
+  }, [settings.darkMode, settings.glossyMode]);
 
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
