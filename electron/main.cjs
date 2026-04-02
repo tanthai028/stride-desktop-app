@@ -1,15 +1,24 @@
 const path = require("path");
-const { app, BrowserWindow, ipcMain, Menu } = require("electron");
+const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
 
 const isDev = !app.isPackaged;
 
 function createWindow() {
-  const win = new BrowserWindow({
-    width: 1200,
-    height: 900,
-    minWidth: 900,
-    minHeight: 925,
+  const winWidth = 1200;
+  const winHeight = 850;
 
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+  const x = Math.round((width - winWidth) / 2);
+  const y = Math.round((height - winHeight) / 2 - 50);
+
+  const win = new BrowserWindow({
+    width: winWidth,
+    height: winHeight,
+    minWidth: 990,
+    minHeight: 850,
+    x,
+    y,
     frame: false,
     transparent: false,
     resizable: true,
@@ -17,7 +26,7 @@ function createWindow() {
     roundedCorners: true,
     hasShadow: true,
     backgroundColor: "#f6f1f8",
-
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -32,6 +41,16 @@ function createWindow() {
   } else {
     win.loadFile(path.join(__dirname, "../dist/index.html"));
   }
+
+  win.webContents.once("did-finish-load", () => {
+    win.show();
+
+    setTimeout(() => {
+      if (!win.isDestroyed()) {
+        win.webContents.send("app-window-shown");
+      }
+    }, 120);
+  });
 }
 
 function registerWindowEvents() {
