@@ -3,7 +3,7 @@ import { quickActions } from "../data/quickActions.js";
 
 function QuickActionsPanel({ onAction }) {
   return (
-    <div className="rounded-[28px] border border-white/70 bg-white/70 p-6 shadow-lg">
+    <div className="rounded-[28px] border border-white/70 bg-white/70 p-5 shadow-lg">
       <p className="mb-3 text-sm font-medium text-slate-400">Quick Actions</p>
 
       <div className="space-y-3">

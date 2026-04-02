@@ -1,6 +1,6 @@
-function PageSection({ title, description, children }) {
+function PageSection({ title, description, children, className = "" }) {
   return (
-    <section className="flex min-h-0 flex-1 flex-col">
+    <section className={`flex min-h-0 flex-1 flex-col ${className}`}>
       {title || description ? (
         <div className="mb-3 shrink-0">
           {title ? (

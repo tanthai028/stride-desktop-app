@@ -5,7 +5,7 @@ const isDev = !app.isPackaged;
 
 function createWindow() {
   const winWidth = 1200;
-  const winHeight = 850;
+  const winHeight = 875;
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -16,7 +16,7 @@ function createWindow() {
     width: winWidth,
     height: winHeight,
     minWidth: 990,
-    minHeight: 850,
+    minHeight: 875,
     x,
     y,
     frame: false,

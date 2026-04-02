@@ -39,6 +39,10 @@ function App() {
     return <StartupSplash />;
   }
 
+  const appStartupClassName = `app-startup-enter h-full ${
+    isAppReady ? "is-visible" : ""
+  }`;
+
   return (
     <>
       {showSplash && (
@@ -47,11 +51,7 @@ function App() {
         </div>
       )}
 
-      <div
-        className={
-          isAppReady ? "app-startup-enter is-visible" : "app-startup-enter"
-        }
-      >
+      <div className={appStartupClassName}>
         <WindowFrame
           sidebar={
             <AppSidebar activePage={activePage} onNavigate={setActivePage} />

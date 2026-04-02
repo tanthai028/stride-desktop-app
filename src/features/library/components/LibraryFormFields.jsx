@@ -22,7 +22,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
           value={formValues.description}
           onChange={(e) => onFieldChange("description", e.target.value)}
           rows={4}
-          className="input-base min-h-[112px] resize-none"
+          className="input-base min-h-[112px] resize-none scrollbar-hide"
         />
       </div>
     </>

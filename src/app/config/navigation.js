@@ -8,7 +8,7 @@ export const navigationItems = [
   },
   {
     id: "library",
-    label: "Library",
+    label: "Applications",
     icon: BookOpen,
   },
   {

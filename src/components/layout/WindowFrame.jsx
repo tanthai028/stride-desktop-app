@@ -18,7 +18,7 @@ function FrameContent({ children }) {
 
 function FrameGrid({ children }) {
   return (
-    <div className="grid h-full grid-cols-[200px_1fr] gap-6">{children}</div>
+    <div className="grid h-full grid-cols-[160px_1fr] gap-6">{children}</div>
   );
 }
 
