@@ -66,14 +66,15 @@ function LibraryPage({ settings }) {
   return (
     <motion.div
       {...motionProps}
+      className="flex min-h-0 flex-1 flex-col"
       onAnimationComplete={() => {
         setIsPageReady(true);
       }}
     >
       <PageShell
-        eyebrow="📚 Library"
-        title="Saved Building Blocks"
-        description="A reusable list-style page with search, sorting, add/edit flows, and empty-state support."
+        eyebrow="📚 Application Tracker"
+        title="My Job Application Library"
+        description="last updated: September 2024"
         actions={
           <button
             type="button"
@@ -85,8 +86,8 @@ function LibraryPage({ settings }) {
         }
       >
         <PageSection
-          title="Items"
-          description="Manage reusable cards with search, sorting, editing, and deleting."
+          title="All Applications"
+          description="Total Jobs Applied: 10"
         >
           <PageActionBar
             searchValue={searchValue}
@@ -94,22 +95,24 @@ function LibraryPage({ settings }) {
             sortValue={sortValue}
             onSortChange={setSortValue}
             sortOptions={librarySortOptions}
-            searchPlaceholder="Search library items..."
+            searchPlaceholder="Search job applications..."
           />
 
-          {filteredItems.length > 0 ? (
-            <ItemGrid
-              items={filteredItems}
-              onItemClick={isPageReady ? openEditModal : undefined}
-              renderItem={(item) => <LibraryCard item={item} />}
-            />
-          ) : (
-            <LibraryEmptyState
-              hasItems={items.length > 0}
-              onClearFilters={clearFilters}
-              onAddItem={openAddModal}
-            />
-          )}
+          <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-2 pb-6 scrollbar-hide">
+            {filteredItems.length > 0 ? (
+              <ItemGrid
+                items={filteredItems}
+                onItemClick={isPageReady ? openEditModal : undefined}
+                renderItem={(item) => <LibraryCard item={item} />}
+              />
+            ) : (
+              <LibraryEmptyState
+                hasItems={items.length > 0}
+                onClearFilters={clearFilters}
+                onAddItem={openAddModal}
+              />
+            )}
+          </div>
         </PageSection>
       </PageShell>
 

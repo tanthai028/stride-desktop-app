@@ -84,7 +84,9 @@ function LibraryFormModal({
   return (
     <Modal
       isOpen={isOpen}
-      title={isEditMode ? "🛠️ Edit Library Card" : "✨ Add Library Card"}
+      title={
+        isEditMode ? "🛠️ Edit Application Card" : "✨ Add Application Card"
+      }
       onClose={onClose}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>

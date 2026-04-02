@@ -1,13 +1,7 @@
-function PageShell({
-  eyebrow,
-  title,
-  description,
-  actions,
-  children,
-}) {
+function PageShell({ eyebrow, title, description, actions, children }) {
   return (
-    <div className="rounded-[36px] border border-white/50 bg-white/45 p-5 shadow-[0_20px_80px_rgba(180,180,255,0.12)] backdrop-blur-3xl">
-      <div className="flex flex-col gap-4 border-b border-white/40 pb-5 md:flex-row md:items-start md:justify-between">
+    <div className="flex min-h-0 flex-1 flex-col rounded-[36px] border border-white/50 bg-white/45 p-5 shadow-[0_20px_80px_rgba(180,180,255,0.12)] backdrop-blur-3xl">
+      <div className="flex shrink-0 flex-col gap-4 border-b border-white/40 pb-5 md:flex-row md:items-start md:justify-between">
         <div>
           {eyebrow ? (
             <p className="text-sm font-medium text-pink-400">{eyebrow}</p>
@@ -23,7 +17,7 @@ function PageShell({
         {actions ? <div className="flex gap-3">{actions}</div> : null}
       </div>
 
-      <div className="mt-6">{children}</div>
+      <div className="mt-6 flex min-h-0 flex-1 flex-col">{children}</div>
     </div>
   );
 }

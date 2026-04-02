@@ -2,7 +2,7 @@ import PageCard from "./PageCard.jsx";
 
 function ItemGrid({ items, renderItem, onItemClick }) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
       {items.map((item) => (
         <PageCard
           key={item.id}

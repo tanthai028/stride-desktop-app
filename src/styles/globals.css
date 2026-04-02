@@ -115,6 +115,16 @@ button {
   border-color: rgba(244, 114, 182, 0.5);
   box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15);
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 .app-startup-enter {
   opacity: 0;
   transform: translateY(28px) scale(0.965);

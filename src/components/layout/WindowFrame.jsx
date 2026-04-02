@@ -1,21 +1,59 @@
 import WindowControls from "../ui/WindowControls.jsx";
 
-function WindowFrame({ sidebar, children }) {
+function FrameHeader({ children }) {
   return (
-    <div className="app-shell">
-      <div className="min-h-screen px-5 pb-5 pt-3 text-slate-700">
-        <div className="drag-region flex h-12 items-center justify-end">
-          <WindowControls />
-        </div>
+    <div className="drag-region flex h-12 items-center justify-end">
+      {children}
+    </div>
+  );
+}
 
-        <div className="mx-auto mt-4 max-w-6xl">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-[220px_1fr]">
-            <div>{sidebar}</div>
-            <div>{children}</div>
-          </div>
-        </div>
+function FrameContent({ children }) {
+  return (
+    <div className="mx-auto mt-4 h-[calc(100%-4.75rem)] max-w-[1400px]">
+      {children}
+    </div>
+  );
+}
+
+function FrameGrid({ children }) {
+  return (
+    <div className="grid h-full grid-cols-[200px_1fr] gap-6">{children}</div>
+  );
+}
+
+function FrameSidebar({ children }) {
+  return <div className="min-h-0 pl-2">{children}</div>;
+}
+
+function FrameMain({ children }) {
+  return <div className="flex min-h-0 flex-col gap-6 pr-2">{children}</div>;
+}
+
+function FrameShell({ children }) {
+  return (
+    <div className="app-shell h-full overflow-hidden">
+      <div className="h-full overflow-hidden px-6 pb-2 pt-3 text-slate-700">
+        {children}
       </div>
     </div>
+  );
+}
+
+function WindowFrame({ sidebar, children }) {
+  return (
+    <FrameShell>
+      <FrameHeader>
+        <WindowControls />
+      </FrameHeader>
+
+      <FrameContent>
+        <FrameGrid>
+          <FrameSidebar>{sidebar}</FrameSidebar>
+          <FrameMain>{children}</FrameMain>
+        </FrameGrid>
+      </FrameContent>
+    </FrameShell>
   );
 }
 
