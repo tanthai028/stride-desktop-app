@@ -3,7 +3,7 @@ import { navigationItems } from "../../app/config/navigation.js";
 function AppSidebar({ activePage, onNavigate }) {
   return (
     <div className="relative w-[72px]">
-      <aside className="group/sidebar absolute left-0 top-0 z-30 w-[72px] overflow-hidden rounded-[28px] border border-white/60 bg-white/55 p-3 shadow-lg backdrop-blur-xl transition-[width,background-color,border-color,box-shadow] duration-300 ease-out hover:w-[188px]">
+      <aside className="group/sidebar absolute left-0 top-0 z-30 w-[72px] overflow-hidden rounded-[28px] border border-white/60 bg-white/55 p-3 shadow-lg backdrop-blur-xl transition-[width,background-color,border-color,box-shadow] duration-300 ease-out hover:w-[180px]">
         <div className="flex flex-col gap-4">
           {navigationItems.map((item) => {
             const isActive = item.id === activePage;
