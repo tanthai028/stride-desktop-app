@@ -16,7 +16,7 @@ function WindowControls() {
         type="button"
         aria-label="Minimize"
         onClick={minimizeWindow}
-        className="h-4.5 w-4.5 cursor-pointer rounded-full bg-amber-400/80 shadow-sm hover:bg-amber-400/90 hover:shadow-md focus:outline-none"
+        className="h-4.5 w-4.5 cursor-pointer rounded-full bg-emerald-400/80 shadow-sm hover:bg-emerald-400/90 focus:outline-none"
       />
       <motion.button
         whileHover={{ scale: 1.08, y: -1 }}
@@ -25,7 +25,7 @@ function WindowControls() {
         type="button"
         aria-label="Maximize"
         onClick={toggleMaximizeWindow}
-        className="h-4.5 w-4.5 cursor-pointer rounded-full bg-emerald-400/80 shadow-sm hover:bg-emerald-400/90 hover:shadow-md focus:outline-none"
+        className="h-4.5 w-4.5 cursor-pointer rounded-full bg-amber-400/80 shadow-sm hover:bg-amber-400/90 hover:shadow-md focus:outline-none"
       />
       <motion.button
         whileHover={{ scale: 1.08, y: -1 }}

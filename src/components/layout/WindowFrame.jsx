@@ -2,9 +2,7 @@ import WindowControls from "../ui/WindowControls.jsx";
 
 function FrameHeader({ children }) {
   return (
-    <div className="drag-region flex h-12 items-center justify-end">
-      {children}
-    </div>
+    <div className="drag-region flex items-center justify-end">{children}</div>
   );
 }
 
@@ -28,14 +26,14 @@ function FrameSidebar({ children }) {
 
 function FrameMain({ children }) {
   return (
-    <div className="flex min-h-0 flex-col gap-6 pr-2 pl-3">{children}</div>
+    <div className="flex min-h-0 flex-col gap-6 pr-3 pl-3">{children}</div>
   );
 }
 
 function FrameShell({ children }) {
   return (
     <div className="app-shell h-full overflow-hidden">
-      <div className="h-full overflow-hidden px-6 pb-2 pt-3 text-slate-700">
+      <div className="h-full overflow-hidden p-6 text-slate-700">
         {children}
       </div>
     </div>
