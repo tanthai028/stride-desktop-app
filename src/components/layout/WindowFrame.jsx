@@ -18,16 +18,18 @@ function FrameContent({ children }) {
 
 function FrameGrid({ children }) {
   return (
-    <div className="grid h-full grid-cols-[160px_1fr] gap-6">{children}</div>
+    <div className="grid h-full grid-cols-[72px_1fr] gap-8">{children}</div>
   );
 }
 
 function FrameSidebar({ children }) {
-  return <div className="min-h-0 pl-2">{children}</div>;
+  return <div className="relative min-h-0 pl-2">{children}</div>;
 }
 
 function FrameMain({ children }) {
-  return <div className="flex min-h-0 flex-col gap-6 pr-2">{children}</div>;
+  return (
+    <div className="flex min-h-0 flex-col gap-6 pr-2 pl-3">{children}</div>
+  );
 }
 
 function FrameShell({ children }) {
