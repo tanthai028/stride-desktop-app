@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import SummaryCards from "../components/SummaryCards.jsx";
 import DashboardPreview from "../components/DashboardPreview.jsx";
 import QuickActionsPanel from "../components/QuickActionsPanel.jsx";
@@ -6,6 +7,9 @@ import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 
 function DashboardPage({ settings, onAction }) {
+  const [showBottomFade, setShowBottomFade] = useState(false);
+  const scrollRef = useRef(null);
+
   const motionProps = settings.animationsEnabled
     ? {
         initial: { opacity: 0, y: 14 },
@@ -14,6 +18,30 @@ function DashboardPage({ settings, onAction }) {
       }
     : {};
 
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+
+    const updateBottomFade = () => {
+      const hasOverflow = container.scrollHeight > container.clientHeight + 4;
+      const isNearBottom =
+        container.scrollTop + container.clientHeight >=
+        container.scrollHeight - 4;
+
+      setShowBottomFade(hasOverflow && !isNearBottom);
+    };
+
+    updateBottomFade();
+
+    container.addEventListener("scroll", updateBottomFade);
+    window.addEventListener("resize", updateBottomFade);
+
+    return () => {
+      container.removeEventListener("scroll", updateBottomFade);
+      window.removeEventListener("resize", updateBottomFade);
+    };
+  }, []);
+
   return (
     <motion.div {...motionProps} className="flex min-h-0 flex-1 flex-col">
       <PageShell
@@ -21,32 +49,46 @@ function DashboardPage({ settings, onAction }) {
         title="Overview"
         description="Preview the base template layout, cards, and quick actions."
       >
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto pb-6 pr-1 scrollbar-hide">
-          <PageSection
-            className="flex-none"
-            title="✨ Summary"
-            description="Small reusable stat cards for top-level information."
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          <div
+            ref={scrollRef}
+            className="flex min-h-0 flex-1 flex-col overflow-y-auto pb-6 pr-1 scrollbar-hide"
           >
-            <SummaryCards />
-          </PageSection>
-
-          <div className="mt-5 grid grid-cols-1 items-start gap-5 xl:grid-cols-[minmax(0,1.2fr)_320px]">
             <PageSection
-              className="flex-none"
-              title="📊 Preview"
-              description="Example progress rows inside a reusable content card."
+              className="shrink-0 flex-none"
+              title="✨ Summary"
+              description="Small reusable stat cards for top-level information."
             >
-              <DashboardPreview />
+              <SummaryCards />
             </PageSection>
 
-            <PageSection
-              className="flex-none"
-              title="⚡ Actions"
-              description="Quick actions that can navigate or trigger future workflows."
-            >
-              <QuickActionsPanel onAction={onAction} />
-            </PageSection>
+            <div className="mt-6 grid min-h-0 grid-cols-1 gap-5 md:grid-cols-[1.2fr_0.8fr]">
+              <PageSection
+                title="📊 Preview"
+                description="Example progress rows inside a reusable content card."
+              >
+                <DashboardPreview />
+              </PageSection>
+
+              <PageSection
+                title="⚡ Actions"
+                description="Quick actions that can navigate or trigger future workflows."
+              >
+                <QuickActionsPanel onAction={onAction} />
+              </PageSection>
+            </div>
           </div>
+
+          {/* {Blur} */}
+          <div
+            className={`pointer-events-none absolute left-0 right-1 rounded-bl-[6px] rounded-br-[6px] bottom-[-1px] h-25 transition-opacity duration-200 ${
+              showBottomFade ? "opacity-100" : "opacity-0"
+            } ${
+              settings.darkMode
+                ? "bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent backdrop-blur-[1px]"
+                : "bg-gradient-to-t from-white/80 via-white/40 to-transparent backdrop-blur-[5px]"
+            }`}
+          />
         </div>
       </PageShell>
     </motion.div>
