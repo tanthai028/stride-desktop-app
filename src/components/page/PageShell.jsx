@@ -4,7 +4,7 @@ function PageShell({ eyebrow, title, description, actions, children }) {
       <div className="flex shrink-0 flex-col gap-4 border-b border-white/40 pb-5 md:flex-row md:items-start md:justify-between">
         <div>
           {eyebrow ? (
-            <p className="text-sm font-medium text-pink-400">{eyebrow}</p>
+            <p className="text-sm font-medium text-violet-500">{eyebrow}</p>
           ) : null}
 
           <h2 className="text-2xl font-semibold text-slate-800">{title}</h2>

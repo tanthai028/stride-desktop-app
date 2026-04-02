@@ -15,7 +15,7 @@ function AppHeader({ settings }) {
         }}
       >
         <div className="relative z-10">
-          <p className="text-sm font-medium tracking-wide text-pink-400">
+          <p className="text-sm font-medium tracking-wide text-sky-500">
             {APP_NAME}
           </p>
 
