@@ -21,13 +21,11 @@ function FrameGrid({ children }) {
 }
 
 function FrameSidebar({ children }) {
-  return <div className="relative min-h-0 pl-2">{children}</div>;
+  return <div className="relative min-h-0">{children}</div>;
 }
 
 function FrameMain({ children }) {
-  return (
-    <div className="flex min-h-0 flex-col gap-6 pr-3 pl-3">{children}</div>
-  );
+  return <div className="flex min-h-0 flex-col gap-6">{children}</div>;
 }
 
 function FrameShell({ children }) {
