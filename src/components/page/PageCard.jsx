@@ -6,7 +6,7 @@ function PageCard({
   onClick,
   disableMotion = false,
 }) {
-  const baseClass = `rounded-[30px] border border-white/70 bg-white/70 p-6 shadow-lg ${
+  const baseClass = `surface-card rounded-[30px] border border-white/70 bg-white/70 p-6 ${
     onClick ? "cursor-pointer" : ""
   } ${className}`;
 
@@ -22,7 +22,7 @@ function PageCard({
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
       onClick={onClick}
-      className={baseClass}
+      className={baseClass + " interactive"}
     >
       {children}
     </motion.div>

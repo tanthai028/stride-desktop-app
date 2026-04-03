@@ -44,7 +44,7 @@ function AppHeader({ settings }) {
   return (
     <div className="flex w-full items-start justify-between gap-4">
       <div
-        className="relative flex-1 min-w-0 overflow-hidden rounded-[28px] border border-white/40 bg-white/45 px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl"
+        className="app-header-brand surface-card relative min-w-0 flex-1 overflow-hidden rounded-[28px] border border-white/40 bg-white/45 px-6 py-5 backdrop-blur-xl"
         style={{
           WebkitMaskImage:
             "linear-gradient(to right, black 30%, rgba(0,0,0,0.9) 60%, transparent 80%)",
@@ -68,7 +68,7 @@ function AppHeader({ settings }) {
       </div>
 
       <div
-        className={`shrink-0 rounded-[24px] px-5 py-4 text-right shadow-[0_8px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl ${
+        className={`surface-card shrink-0 rounded-[24px] px-5 py-4 text-right backdrop-blur-xl ${
           isDark
             ? "border-white/10 bg-white/5 text-white"
             : "border-white/40 bg-white/45 text-slate-800"

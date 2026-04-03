@@ -27,7 +27,7 @@ function LibraryTagPicker({
                 isSelected
                   ? isDarkMode
                     ? "bg-pink-400/20 text-white border border-pink-400/30 shadow-[0_0_0_1px_rgba(244,114,182,0.2)]"
-                    : "bg-pink-200 text-slate-800 border border-pink-300 shadow-sm"
+                    : "bg-pink-200 text-slate-800 border border-pink-300"
                   : isDarkMode
                     ? "bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 hover:text-white"
                     : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-800"

@@ -4,6 +4,7 @@ import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageCard from "../../../components/page/PageCard.jsx";
 import SettingsToggleRow from "../components/SettingsToggleRow.jsx";
+import SettingsChoiceRow from "../components/SettingsChoiceRow.jsx";
 import { settingsSections } from "../config/settingsSections.js";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
@@ -16,7 +17,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
     : {};
 
   return (
-    <motion.div {...motionProps}>
+    <motion.div className="flex min-h-0 flex-1 flex-col" {...motionProps}>
       <PageShell
         eyebrow="⚙️ Settings"
         title="App Preferences"
@@ -25,7 +26,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
           <button
             type="button"
             onClick={resetSettings}
-            className="interactive flex items-center gap-2 rounded-2xl bg-violet-200 px-4 py-3 text-sm font-medium transition hover:scale-[1.01]"
+            className="interactive surface-control flex items-center gap-2 rounded-2xl bg-violet-200 px-4 py-3 text-sm font-medium transition hover:scale-[1.01]"
           >
             <RotateCcw size={16} className="shrink-0" />
             <span>Reset to Default</span>
@@ -38,20 +39,36 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
               key={section.id}
               title={section.title}
               description={section.description}
+              className="flex-none"
             >
               <PageCard disableMotion>
                 <div className="space-y-3">
-                  {section.items.map((item) => (
-                    <SettingsToggleRow
-                      key={item.id}
-                      title={item.title}
-                      description={item.description}
-                      checked={settings[item.id]}
-                      onToggle={() =>
-                        updateSetting(item.id, !settings[item.id])
-                      }
-                    />
-                  ))}
+                  {section.items.map((item) => {
+                    if (item.type === "choice") {
+                      return (
+                        <SettingsChoiceRow
+                          key={item.id}
+                          title={item.title}
+                          description={item.description}
+                          value={settings[item.id]}
+                          options={item.options}
+                          onChange={(value) => updateSetting(item.id, value)}
+                        />
+                      );
+                    }
+
+                    return (
+                      <SettingsToggleRow
+                        key={item.id}
+                        title={item.title}
+                        description={item.description}
+                        checked={settings[item.id]}
+                        onToggle={() =>
+                          updateSetting(item.id, !settings[item.id])
+                        }
+                      />
+                    );
+                  })}
                 </div>
               </PageCard>
             </PageSection>

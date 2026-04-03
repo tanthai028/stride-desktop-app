@@ -6,12 +6,15 @@ import { useSettings } from "../features/settings/hooks/useSettings.js";
 import { APP_PAGES, getPageComponent } from "./config/pageRegistry";
 import StartupSplash from "./startup/StartupSplash.jsx";
 import useStartupSequence from "./startup/useStartupSequence.js";
+import useUiFeedback from "../hooks/useUiFeedback.js";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
   const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
 
   const { showSplash, mountRealApp, isAppReady } = useStartupSequence();
+
+  useUiFeedback(settings.hoverSoundProfile);
 
   useEffect(() => {
     document.body.classList.toggle("theme-dark", settings.darkMode);

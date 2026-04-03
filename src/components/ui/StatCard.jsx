@@ -10,7 +10,7 @@ function StatCard({
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
-      className={`rounded-[28px] p-5 ${className}`}
+      className={`surface-card rounded-[28px] p-5 ${className}`}
     >
       <p className={`mb-2 text-sm font-medium ${labelClassName}`}>{label}</p>
       <h2 className="text-xl font-semibold text-slate-800">{title}</h2>

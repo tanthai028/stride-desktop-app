@@ -9,7 +9,6 @@ function PageActionBar({
   sortOptions = [],
   primaryAction,
   searchPlaceholder = "Search...",
-  settings,
 }) {
   return (
     <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -31,7 +30,6 @@ function PageActionBar({
           onChange={onSortChange}
           options={sortOptions}
           className="md:w-auto"
-          isDarkMode={settings?.darkModeEnabled}
         />
       </div>
 

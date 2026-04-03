@@ -6,7 +6,7 @@ import ItemGrid from "../../../components/page/ItemGrid.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
 import LibraryCard from "../components/LibraryCard.jsx";
 import LibraryFormModal from "../components/LibraryFormModal.jsx";
-import LibraryEmptyState from "../components/LibraryEmptyState.jsx";
+import EmptyState from "../../../components/page/EmptyState.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
 import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
 import useLibraryItems from "../hooks/useLibraryItems.js";
@@ -80,7 +80,7 @@ function LibraryPage({ settings }) {
           <button
             type="button"
             onClick={openAddModal}
-            className="interactive rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+            className="interactive surface-control rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
             <span className="flex items-center gap-2">
               <Plus className="h-4 w-4" />
@@ -102,20 +102,48 @@ function LibraryPage({ settings }) {
             searchPlaceholder="Search job applications..."
           />
 
-          <div className="mt-4 min-h-0 flex-1 overflow-y-auto pr-2 pb-6 scrollbar-hide">
-            {filteredItems.length > 0 ? (
-              <ItemGrid
-                items={filteredItems}
-                onItemClick={isPageReady ? openEditModal : undefined}
-                renderItem={(item) => <LibraryCard item={item} />}
-              />
-            ) : (
-              <LibraryEmptyState
-                hasItems={items.length > 0}
-                onClearFilters={clearFilters}
-                onAddItem={openAddModal}
-              />
-            )}
+          <div className="mt-4 min-h-0 flex-1 overflow-y-auto scrollbar-hide">
+            <div className="min-h-full">
+              {filteredItems.length > 0 ? (
+                <ItemGrid
+                  items={filteredItems}
+                  onItemClick={isPageReady ? openEditModal : undefined}
+                  renderItem={(item) => <LibraryCard item={item} />}
+                />
+              ) : (
+                <EmptyState
+                  title={
+                    items.length > 0
+                      ? "🔎 No matching library items"
+                      : "📭 Your library is empty"
+                  }
+                  description={
+                    items.length > 0
+                      ? "Try a different search or clear your filters to see available items."
+                      : "Add your first item to start building your reusable collection."
+                  }
+                  action={
+                    items.length > 0 ? (
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+                      >
+                        Clear Filters
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={openAddModal}
+                        className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+                      >
+                        ✨ Add First Item
+                      </button>
+                    )
+                  }
+                />
+              )}
+            </div>
           </div>
         </PageSection>
       </PageShell>

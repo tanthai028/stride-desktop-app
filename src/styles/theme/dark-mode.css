@@ -25,7 +25,6 @@ body.theme-dark .app-shell {
 
 body.theme-dark .summary-card {
   border-color: rgba(148, 163, 184, 0.12);
-  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.38);
 }
 
 body.theme-dark .summary-card--pink {
@@ -90,7 +89,6 @@ body.theme-dark .input-base:focus {
 }
 
 body.theme-dark .interactive:hover {
-  box-shadow: 0 10px 24px rgba(2, 6, 23, 0.3);
   filter: brightness(1.04);
 }
 

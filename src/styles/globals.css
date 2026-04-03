@@ -4,6 +4,7 @@
 * {
   box-sizing: border-box;
 }
+
 html,
 body,
 #root {
@@ -39,28 +40,6 @@ button {
   -webkit-app-region: no-drag;
 }
 
-.interactive {
-  cursor: pointer;
-  transition:
-    transform 120ms ease,
-    box-shadow 120ms ease,
-    background-color 120ms ease,
-    border-color 120ms ease,
-    filter 120ms ease,
-    opacity 120ms ease;
-}
-
-.interactive:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-  filter: brightness(1.02);
-}
-
-.interactive:active {
-  transform: translateY(0) scale(0.97);
-  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.06);
-}
-
 .interactive-input {
   transition:
     border-color 120ms ease,
@@ -72,22 +51,21 @@ button {
   background-color: rgba(255, 255, 255, 0.9);
 }
 
-.interactive-input:focus {
+.interactive-input:focus,
+.interactive-input:focus-visible {
   background-color: rgba(255, 255, 255, 0.95);
-  border-color: rgba(244, 114, 182, 0.35);
-  box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
 }
 
 .interactive-toggle {
   transition:
     transform 120ms ease,
-    box-shadow 120ms ease,
     background-color 120ms ease;
 }
 
 .interactive-toggle:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
 }
 
 .interactive-thumb {
@@ -112,8 +90,8 @@ button {
 }
 
 .input-base:focus {
-  border-color: rgba(244, 114, 182, 0.5);
-  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.15);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: none;
 }
 
 .scrollbar-hide {
@@ -142,4 +120,23 @@ button {
   opacity: 1;
   transform: translateY(0) scale(1);
   filter: blur(0);
+}
+
+.interactive {
+  cursor: pointer;
+  transition:
+    transform 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    filter 120ms ease,
+    opacity 120ms ease;
+}
+
+.interactive:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+.interactive:active {
+  transform: translateY(0) scale(0.97);
 }

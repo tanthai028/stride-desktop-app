@@ -10,7 +10,6 @@
 /* summary cards */
 .summary-card {
   border: 1px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
 }
 
 .summary-card--pink {
@@ -42,9 +41,6 @@
 
 body.theme-glossy .summary-card {
   border-color: rgba(255, 255, 255, 0.55);
-  box-shadow:
-    0 12px 30px rgba(15, 23, 42, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(18px) saturate(135%);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
 }

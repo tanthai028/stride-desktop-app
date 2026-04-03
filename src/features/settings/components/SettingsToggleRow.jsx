@@ -10,12 +10,12 @@ function SettingsToggleRow({ title, description, checked, onToggle }) {
         type="button"
         onClick={onToggle}
         aria-pressed={checked}
-        className={`interactive relative mt-1 h-7 w-12 rounded-full transition ${
+        className={`interactive surface-control relative mt-1 h-7 w-12 rounded-full transition ${
           checked ? "bg-violet-200" : "bg-slate-200"
         }`}
       >
         <span
-          className={`absolute top-1 h-5 w-5 rounded-full bg-white shadow-sm transition ${
+          className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
             checked ? "left-6" : "left-1"
           }`}
         />

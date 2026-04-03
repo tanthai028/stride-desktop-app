@@ -54,7 +54,7 @@ function DashboardPage({ settings, onAction }) {
             ref={scrollRef}
             className="min-h-0 flex-1 overflow-y-auto scrollbar-hide"
           >
-            <div className="flex min-h-full flex-col px- pb-10 pt-1">
+            <div className="flex min-h-full flex-col pb-5">
               <PageSection
                 className="shrink-0 flex-none"
                 title="✨ Summary"
