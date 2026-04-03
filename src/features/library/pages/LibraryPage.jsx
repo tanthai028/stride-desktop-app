@@ -11,6 +11,7 @@ import { librarySortOptions } from "../constants/sortOptions.js";
 import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
 import useLibraryItems from "../hooks/useLibraryItems.js";
 import useLibraryPageState from "../hooks/useLibraryPageState.js";
+import { Plus } from "lucide-react";
 
 function LibraryPage({ settings }) {
   const { items, addItem, updateItem, deleteItem } = useLibraryItems();
@@ -81,7 +82,10 @@ function LibraryPage({ settings }) {
             onClick={openAddModal}
             className="interactive rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
           >
-            <span className="whitespace-nowrap">➕ Card</span>
+            <span className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Application
+            </span>
           </button>
         }
       >
