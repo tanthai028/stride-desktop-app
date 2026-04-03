@@ -4,8 +4,8 @@ const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
 const isDev = !app.isPackaged;
 
 function createWindow() {
-  const winWidth = 1200;
-  const winHeight = 875;
+  const winWidth = 1024;
+  const winHeight = 640;
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -13,10 +13,10 @@ function createWindow() {
   const y = Math.round((height - winHeight) / 2 - 50);
 
   const win = new BrowserWindow({
-    width: winWidth,
     height: winHeight,
-    minWidth: 990,
-    minHeight: 875,
+    width: winWidth,
+    minHeight: 800,
+    minWidth: 600,
     x,
     y,
     frame: false,
