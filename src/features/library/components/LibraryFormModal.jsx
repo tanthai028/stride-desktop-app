@@ -96,7 +96,6 @@ function LibraryFormModal({
         />
 
         <LibraryTagPicker
-          isDarkMode={isDarkMode}
           tagOptions={tagOptions}
           selectedTagValue={selectedTagValue}
           onTagClick={handleTagClick}

@@ -18,6 +18,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
           📝 Description
         </label>
         <textarea
+          spellCheck={false}
           placeholder="Add description"
           value={formValues.description}
           onChange={(e) => onFieldChange("description", e.target.value)}
