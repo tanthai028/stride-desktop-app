@@ -1,4 +1,11 @@
+import { triggerPreviewFeedback } from "../../../lib/uiFeedback.js";
+
 function SettingsChoiceRow({ title, description, value, options, onChange }) {
+  async function handleChoiceClick(nextValue) {
+    onChange(nextValue);
+    await triggerPreviewFeedback(nextValue);
+  }
+
   return (
     <div className="rounded-2xl bg-white/60 px-4 py-3">
       <div className="mb-3">
@@ -14,7 +21,7 @@ function SettingsChoiceRow({ title, description, value, options, onChange }) {
             <button
               key={option.value}
               type="button"
-              onClick={() => onChange(option.value)}
+              onClick={() => handleChoiceClick(option.value)}
               aria-pressed={isSelected}
               className={`interactive surface-control rounded-xl px-3 py-2 text-xs font-medium transition ${
                 isSelected

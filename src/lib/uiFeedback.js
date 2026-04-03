@@ -102,17 +102,7 @@ function playClick(context, t) {
   osc.stop(t + 0.016);
 }
 
-export function triggerHoverFeedback(profile = "click") {
-  const now = performance.now();
-
-  if (now - lastHoverAt < HOVER_COOLDOWN_MS) return;
-  lastHoverAt = now;
-
-  const context = getAudioContext();
-  if (!context || context.state !== "running") return;
-
-  const t = context.currentTime;
-
+function playFeedbackProfile(context, profile, t) {
   if (profile === "thock") {
     playThock(context, t);
     return;
@@ -124,4 +114,23 @@ export function triggerHoverFeedback(profile = "click") {
   }
 
   playClick(context, t);
+}
+
+export function triggerHoverFeedback(profile = "click") {
+  const now = performance.now();
+
+  if (now - lastHoverAt < HOVER_COOLDOWN_MS) return;
+  lastHoverAt = now;
+
+  const context = getAudioContext();
+  if (!context || context.state !== "running") return;
+
+  playFeedbackProfile(context, profile, context.currentTime);
+}
+
+export async function triggerPreviewFeedback(profile = "click") {
+  const context = await ensureAudioReady();
+  if (!context) return;
+
+  playFeedbackProfile(context, profile, context.currentTime);
 }
