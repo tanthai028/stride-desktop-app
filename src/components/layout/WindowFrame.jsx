@@ -1,4 +1,5 @@
 import WindowControls from "../ui/WindowControls.jsx";
+import { isElectron } from "../../lib/isElectron.js";
 
 function FrameHeader({ children }) {
   return (
@@ -16,7 +17,7 @@ function FrameContent({ children }) {
 
 function FrameGrid({ children }) {
   return (
-    <div className="grid h-full grid-cols-[72px_1fr] gap-8">{children}</div>
+    <div className="grid h-full grid-cols-[72px_1fr] gap-6">{children}</div>
   );
 }
 
@@ -41,9 +42,7 @@ function FrameShell({ children }) {
 function WindowFrame({ sidebar, children }) {
   return (
     <FrameShell>
-      <FrameHeader>
-        <WindowControls />
-      </FrameHeader>
+      <FrameHeader>{isElectron() && <WindowControls />}</FrameHeader>
 
       <FrameContent>
         <FrameGrid>
