@@ -8,7 +8,7 @@ import {
 
 function WindowControls() {
   return (
-    <div className="window-controls-shell no-drag flex gap-2 rounded-full bg-white/20 px-3 py-2 backdrop-blur-md">
+    <div className="window-controls-shell no-drag flex gap-2 rounded-full bg-white/20 px-3 py-2 backdrop-blur-md shadow-sm">
       <motion.button
         whileHover={{ scale: 1.08, y: -1 }}
         whileTap={{ scale: 0.94 }}
