@@ -6,7 +6,7 @@ function AppHeader({ settings }) {
   return (
     <div className="w-full">
       <div
-        className="relative max-w-[600px] overflow-hidden rounded-[28px] border border-white/40 bg-white/45 px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl"
+        className="relative max-w-3/4 overflow-hidden rounded-[28px] border border-white/40 bg-white/45 px-6 py-5 shadow-[0_8px_30px_rgba(0,0,0,0.05)] backdrop-blur-xl"
         style={{
           WebkitMaskImage:
             "linear-gradient(to right, black 30%, rgba(0,0,0,0.9) 60%, transparent 80%)",
