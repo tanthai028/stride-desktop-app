@@ -49,7 +49,7 @@ function SelectMenu({
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className={`select-menu-trigger surface-control interactive-input inline-flex h-[44px] min-w-[120px] w-full items-center justify-between gap-2 rounded-2xl border border-white/70 px-4 text-sm font-medium outline-none transition bg-white/70 text-slate-700`}
+        className="select-menu-trigger surface-control interactive-input"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
@@ -66,7 +66,7 @@ function SelectMenu({
       </button>
 
       {isOpen ? (
-        <div className="select-menu-panel surface-floating absolute right-0 z-30 mt-2 w-full rounded-2xl border border-white/70 bg-white/90 p-1.5">
+        <div className="select-menu-panel surface-floating absolute right-0 z-30 mt-2 w-full rounded-2xl">
           <div role="listbox" className="space-y-1">
             {options.map((option) => {
               const isSelected = option.value === value;

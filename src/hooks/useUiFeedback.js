@@ -32,6 +32,8 @@ export default function useUiFeedback(hoverSoundProfile = "click") {
   const hasPrimedAudioRef = useRef(false);
 
   useEffect(() => {
+    if (hoverSoundProfile === "off") return;
+
     function getTarget(target) {
       if (!(target instanceof Element)) return null;
 

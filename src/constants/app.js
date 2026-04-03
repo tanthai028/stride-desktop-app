@@ -3,8 +3,8 @@ export const APP_TAGLINE = "Goodmorning Tan!";
 
 export const DEFAULT_SETTINGS = {
   animationsEnabled: true,
-  darkMode: true,
-  glossyMode: false,
+  darkMode: false,
+  glossyMode: true,
   hoverSoundProfile: "click",
   resetVersion: 0,
 };

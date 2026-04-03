@@ -6,7 +6,7 @@ function QuickActionsPanel({ onAction }) {
     <div className="surface-card rounded-[28px] border border-white/70 bg-white/70 p-5">
       <p className="mb-3 text-sm font-medium text-slate-400">Quick Actions</p>
 
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3">
         {quickActions.map((action) => (
           <ActionButton
             key={action.id}

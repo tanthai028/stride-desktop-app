@@ -35,6 +35,7 @@ export const settingsSections = [
         title: "🖱️ Hover sound",
         description: "Pick the hover feedback style you want across the app.",
         options: [
+          { label: "Off", value: "off" },
           { label: "Thock", value: "thock" },
           { label: "Tactile", value: "tactile" },
           { label: "Click", value: "click" },

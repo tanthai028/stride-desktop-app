@@ -1,9 +1,24 @@
-function ActionButton({ children, className = "", onClick }) {
+function ActionButton({
+  children,
+  className = "",
+  onClick,
+  variant = "default",
+  withIcon = false,
+}) {
+  const variantClassName =
+    variant === "settings-reset"
+      ? "settings-reset-button"
+      : variant === "library-add"
+        ? "library-add-button"
+        : "";
+
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`interactive surface-control w-full rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01] ${className}`}
+      className={`interactive surface-control primary-action-button ${
+        withIcon ? "primary-action-button-with-icon" : ""
+      } ${variantClassName} ${className}`}
     >
       {children}
     </button>

@@ -1,17 +1,13 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { Plus } from "lucide-react";
 import PageShell from "../../../components/page/PageShell.jsx";
-import PageSection from "../../../components/page/PageSection.jsx";
-import ItemGrid from "../../../components/page/ItemGrid.jsx";
-import PageActionBar from "../../../components/page/PageActionBar.jsx";
-import LibraryCard from "../components/LibraryCard.jsx";
 import LibraryFormModal from "../components/LibraryFormModal.jsx";
-import EmptyState from "../../../components/page/EmptyState.jsx";
-import { librarySortOptions } from "../constants/sortOptions.js";
+import LibraryCollectionSection from "../components/LibraryCollectionSection.jsx";
 import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
 import useLibraryItems from "../hooks/useLibraryItems.js";
 import useLibraryPageState from "../hooks/useLibraryPageState.js";
-import { Plus } from "lucide-react";
+import ActionButton from "../../../components/ui/ActionButton.jsx";
 
 function LibraryPage({ settings }) {
   const { items, addItem, updateItem, deleteItem } = useLibraryItems();
@@ -75,77 +71,31 @@ function LibraryPage({ settings }) {
       <PageShell
         eyebrow="📚 Application Tracker"
         title="My Job Application Library"
-        description="last updated: September 2024"
+        description="Track saved applications, notes, and status details in one place."
         actions={
-          <button
-            type="button"
+          <ActionButton
             onClick={openAddModal}
-            className="interactive surface-control rounded-2xl bg-pink-200 pl-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
+            variant="library-add"
+            withIcon
+            className="pl-3"
           >
-            <span className="flex items-center gap-2">
-              <Plus className="h-4 w-4" />
-              Application
-            </span>
-          </button>
+            <Plus className="h-4 w-4" />
+            <span>Application</span>
+          </ActionButton>
         }
       >
-        <PageSection
-          title="All Applications"
-          description="Total Jobs Applied: 10"
-        >
-          <PageActionBar
-            searchValue={searchValue}
-            onSearchChange={setSearchValue}
-            sortValue={sortValue}
-            onSortChange={setSortValue}
-            sortOptions={librarySortOptions}
-            searchPlaceholder="Search job applications..."
-          />
-
-          <div className="mt-4 min-h-0 flex-1 overflow-y-auto scrollbar-hide">
-            <div className="min-h-full">
-              {filteredItems.length > 0 ? (
-                <ItemGrid
-                  items={filteredItems}
-                  onItemClick={isPageReady ? openEditModal : undefined}
-                  renderItem={(item) => <LibraryCard item={item} />}
-                />
-              ) : (
-                <EmptyState
-                  title={
-                    items.length > 0
-                      ? "🔎 No matching library items"
-                      : "📭 Your library is empty"
-                  }
-                  description={
-                    items.length > 0
-                      ? "Try a different search or clear your filters to see available items."
-                      : "Add your first item to start building your reusable collection."
-                  }
-                  action={
-                    items.length > 0 ? (
-                      <button
-                        type="button"
-                        onClick={clearFilters}
-                        className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
-                      >
-                        Clear Filters
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={openAddModal}
-                        className="interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]"
-                      >
-                        ✨ Add First Item
-                      </button>
-                    )
-                  }
-                />
-              )}
-            </div>
-          </div>
-        </PageSection>
+        <LibraryCollectionSection
+          items={items}
+          filteredItems={filteredItems}
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+          sortValue={sortValue}
+          onSortChange={setSortValue}
+          isPageReady={isPageReady}
+          onItemClick={openEditModal}
+          onClearFilters={clearFilters}
+          onAddItem={openAddModal}
+        />
       </PageShell>
 
       <LibraryFormModal

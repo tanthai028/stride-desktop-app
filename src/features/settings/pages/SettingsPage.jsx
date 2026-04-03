@@ -6,6 +6,7 @@ import PageCard from "../../../components/page/PageCard.jsx";
 import SettingsToggleRow from "../components/SettingsToggleRow.jsx";
 import SettingsChoiceRow from "../components/SettingsChoiceRow.jsx";
 import { settingsSections } from "../config/settingsSections.js";
+import ActionButton from "../../../components/ui/ActionButton.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = settings.animationsEnabled
@@ -23,14 +24,14 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
         title="App Preferences"
         description="Manage template behavior and local preferences."
         actions={
-          <button
-            type="button"
+          <ActionButton
             onClick={resetSettings}
-            className="interactive surface-control flex items-center gap-2 rounded-2xl bg-violet-200 px-4 py-3 text-sm font-medium transition hover:scale-[1.01]"
+            variant="settings-reset"
+            withIcon
           >
             <RotateCcw size={16} className="shrink-0" />
             <span>Reset to Default</span>
-          </button>
+          </ActionButton>
         }
       >
         <div className="space-y-6">

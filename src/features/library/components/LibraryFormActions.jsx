@@ -11,7 +11,7 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
         <button
           type="button"
           onClick={onDelete}
-          className="library-delete-button interactive rounded-2xl px-4 py-3 text-sm font-medium hover:scale-[1.01]"
+          className="library-delete-button form-action-button interactive"
         >
           Delete Card
         </button>
@@ -21,14 +21,14 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
         <button
           type="button"
           onClick={onClose}
-          className="modal-secondary-button rounded-2xl px-4 py-3 text-sm font-medium hover:scale-[1.01]"
+          className="modal-secondary-button form-action-button"
         >
           Cancel
         </button>
 
         <button
           type="submit"
-          className="library-submit-button interactive rounded-2xl px-4 py-3 text-sm font-medium hover:scale-[1.01]"
+          className="library-submit-button form-action-button interactive"
         >
           {isEditMode ? "Save Changes" : "Add Card"}
         </button>

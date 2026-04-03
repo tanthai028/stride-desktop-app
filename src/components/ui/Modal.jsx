@@ -23,7 +23,7 @@ function Modal({ isOpen, title, children, onClose }) {
     <AnimatePresence>
       {isOpen ? (
         <motion.div
-          className="modal-overlay fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/22 px-4 backdrop-blur-[6px]"
+          className="modal-overlay fixed inset-0 z-[100] flex items-center justify-center px-4"
           onClick={onClose}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -31,7 +31,7 @@ function Modal({ isOpen, title, children, onClose }) {
           transition={{ duration: 0.18 }}
         >
           <motion.div
-            className="modal-panel w-full max-w-xl rounded-[28px] border border-white/70 bg-white/90 p-5"
+            className="modal-panel w-full max-w-xl"
             onClick={(event) => event.stopPropagation()}
             initial={{ opacity: 0, y: 18, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
