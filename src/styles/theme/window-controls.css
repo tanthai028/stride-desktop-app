@@ -1,0 +1,63 @@
+.window-controls-shell {
+  padding: 0.5rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-sizing: border-box;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.window-control-dot {
+  height: 1.125rem;
+  width: 1.125rem;
+  cursor: pointer;
+  border-radius: 9999px;
+  outline: none;
+  flex: 0 0 1.125rem;
+  transform: translateZ(0);
+}
+
+.window-control-dot:focus {
+  outline: none;
+}
+
+.window-control-minimize {
+  background-color: rgba(52, 211, 153, 0.8);
+}
+
+.window-control-minimize:hover {
+  background-color: rgba(52, 211, 153, 0.9);
+}
+
+.window-control-maximize {
+  background-color: rgba(251, 191, 36, 0.8);
+}
+
+.window-control-maximize:hover {
+  background-color: rgba(251, 191, 36, 0.9);
+}
+
+.window-control-close {
+  background-color: rgba(251, 113, 133, 0.8);
+}
+
+.window-control-close:hover {
+  background-color: rgba(251, 113, 133, 0.9);
+}
+
+body:not(.theme-dark):not(.theme-glossy) .window-controls-shell {
+  border-color: transparent;
+}
+
+body.theme-dark .window-controls-shell {
+  border-color: rgba(148, 163, 184, 0.08);
+  background-color: rgba(15, 23, 42, 0.44);
+  box-shadow:
+    0 10px 24px rgba(2, 6, 23, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}

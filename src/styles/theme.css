@@ -1,3 +1,9 @@
 @import "./theme/base.css";
+@import "./theme/surfaces.css";
+@import "./theme/forms.css";
+@import "./theme/modals.css";
+@import "./theme/library.css";
+@import "./theme/window-controls.css";
+@import "./theme/effects.css";
 @import "./theme/dark-mode.css";
-@import "./theme/components.css";
+@import "./theme/glossy.css";

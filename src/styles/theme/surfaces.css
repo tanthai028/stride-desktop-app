@@ -1,0 +1,132 @@
+:root {
+  --shadow-panel: 0 20px 60px rgba(15, 23, 42, 0.08);
+  --shadow-card: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-card-soft: 0 8px 22px rgba(15, 23, 42, 0.06);
+  --shadow-floating: 0 18px 40px rgba(15, 23, 42, 0.12);
+  --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
+  --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
+  --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
+  --shadow-modal: 0 24px 80px rgba(15, 23, 42, 0.18);
+}
+
+.surface-card {
+  border-radius: 28px;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.surface-card-soft {
+  box-shadow: var(--shadow-card-soft);
+}
+
+.surface-card-light {
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.surface-card-light-soft {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.surface-panel {
+  border-radius: 36px;
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+}
+
+.surface-section-divider {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.surface-floating {
+  box-shadow: var(--shadow-floating);
+}
+
+.surface-floating-panel {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.surface-control {
+  box-shadow: var(--shadow-control);
+}
+
+.surface-control:hover {
+  box-shadow: var(--shadow-control-hover);
+}
+
+.surface-control:active {
+  box-shadow: var(--shadow-pressed);
+}
+
+.app-header-brand {
+  overflow: hidden;
+  padding: 1.25rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.empty-state-card {
+  border-style: dashed;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.7);
+  padding: 2rem;
+}
+
+.sidebar-shell {
+  width: 72px;
+  overflow: hidden;
+  padding: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  transition: width 220ms ease-out;
+}
+
+.sidebar-shell:hover {
+  width: 180px;
+}
+
+.primary-action-button {
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: transform 150ms ease;
+}
+
+.primary-action-button:hover {
+  transform: scale(1.01);
+}
+
+.primary-action-button-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.library-add-button {
+  background-color: rgb(251 207 232);
+  color: rgb(51 65 85);
+}
+
+.settings-reset-button {
+  background-color: rgb(221 214 254);
+  color: rgb(51 65 85);
+}
+
+.form-action-button {
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: transform 150ms ease;
+}
+
+.form-action-button:hover {
+  transform: scale(1.01);
+}
