@@ -59,16 +59,6 @@ body.theme-dark.theme-glossy .interactive-input:focus-visible {
   transform: translateY(-1px);
 }
 
-.interactive-thumb {
-  transition:
-    left 140ms ease,
-    transform 140ms ease;
-}
-
-.interactive-toggle:active .interactive-thumb {
-  transform: scale(0.95);
-}
-
 .input-base {
   @apply w-full rounded-2xl px-4 py-3 text-sm text-slate-700 outline-none placeholder:text-slate-400;
 

@@ -22,16 +22,6 @@ body.theme-dark .modal-panel {
   box-shadow: 0 24px 80px rgba(2, 6, 23, 0.5);
 }
 
-body.theme-dark .modal-close {
-  background-color: rgba(30, 41, 59, 0.72);
-  color: #cbd5e1;
-  border: 1px solid rgba(148, 163, 184, 0.12);
-}
-
-body.theme-dark .modal-close:hover {
-  background-color: rgba(51, 65, 85, 0.82);
-}
-
 body.theme-dark .modal-secondary-button {
   color: #cbd5e1;
   background-color: rgba(51, 65, 85, 0.72);

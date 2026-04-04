@@ -20,16 +20,6 @@
   box-shadow: var(--shadow-card-soft);
 }
 
-.surface-card-light {
-  background-color: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-.surface-card-light-soft {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.7);
-}
-
 .surface-panel {
   border-radius: 36px;
   background-color: rgba(255, 255, 255, 0.45);
@@ -45,11 +35,6 @@
 
 .surface-floating {
   box-shadow: var(--shadow-floating);
-}
-
-.surface-floating-panel {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.7);
 }
 
 .surface-control {
@@ -107,16 +92,6 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.library-add-button {
-  background-color: rgb(251 207 232);
-  color: rgb(51 65 85);
-}
-
-.settings-reset-button {
-  background-color: rgb(221 214 254);
-  color: rgb(51 65 85);
 }
 
 .form-action-button {

@@ -31,6 +31,11 @@
   box-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
 }
 
+.library-add-button {
+  background-color: rgb(251 207 232);
+  color: rgb(51 65 85);
+}
+
 body:not(.theme-dark) .library-delete-button {
   background-color: rgba(255, 228, 230, 0.9);
   color: #e11d48;
