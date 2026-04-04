@@ -48,6 +48,12 @@ body.theme-dark {
   --theme-select-panel-backdrop: none;
   --theme-select-panel-backdrop-webkit: none;
 
+  --theme-select-option-text: #cbd5e1;
+  --theme-select-option-hover-bg: rgba(51, 65, 85, 0.72);
+  --theme-select-option-hover-text: #f8fafc;
+  --theme-select-option-selected-bg: rgba(244, 114, 182, 0.22);
+  --theme-select-option-selected-text: #f8fafc;
+
   --theme-section-divider: rgba(148, 163, 184, 0.12);
 
   --theme-window-controls-bg: rgba(15, 23, 42, 0.44);
@@ -198,10 +204,6 @@ body.theme-dark .input-base:focus {
   box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.16);
 }
 
-body.theme-dark .interactive:hover {
-  filter: brightness(var(--theme-interactive-dark-hover-brightness));
-}
-
 body.theme-dark .bg-pink-200 {
   background-color: rgba(244, 114, 182, 0.28) !important;
 }
@@ -256,29 +258,4 @@ body.theme-dark .bg-violet-100 {
 
 body.theme-dark .bg-sky-100 {
   background-color: rgba(53, 101, 130, 0.38) !important;
-}
-
-body.theme-dark .select-menu-trigger {
-  background-color: var(--theme-select-trigger-bg) !important;
-  border-color: var(--theme-select-trigger-border) !important;
-  color: var(--theme-select-trigger-text);
-}
-
-body.theme-dark .select-menu-panel {
-  background-color: var(--theme-select-panel-bg) !important;
-  border-color: var(--theme-select-panel-border) !important;
-}
-
-body.theme-dark .select-menu-option {
-  color: #cbd5e1;
-}
-
-body.theme-dark .select-menu-option:hover {
-  background-color: rgba(51, 65, 85, 0.72);
-  color: #f8fafc;
-}
-
-body.theme-dark .select-menu-option.is-selected {
-  background-color: rgba(244, 114, 182, 0.22);
-  color: #f8fafc;
 }

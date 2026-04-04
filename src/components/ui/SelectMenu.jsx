@@ -76,10 +76,8 @@ function SelectMenu({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option.value)}
-                  className={`select-menu-option interactive flex w-full items-center rounded-xl px-3 py-2.5 text-left text-sm transition ${
-                    isSelected
-                      ? "is-selected bg-pink-200 text-slate-800"
-                      : "text-slate-600 hover:bg-white/70 hover:text-slate-800"
+                  className={`select-menu-option interactive flex w-full items-center rounded-xl px-3 py-2.5 text-left text-sm ${
+                    isSelected ? "is-selected" : ""
                   }`}
                   role="option"
                   aria-selected={isSelected}

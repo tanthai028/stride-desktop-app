@@ -7,7 +7,6 @@ import {
 const INTERACTIVE_SELECTOR = [
   ".interactive",
   ".interactive-input",
-  ".interactive-toggle",
   "[role='button']",
   "[role='option']",
   "button",
