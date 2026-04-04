@@ -7,6 +7,118 @@
   --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
   --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
   --shadow-modal: 0 24px 80px rgba(15, 23, 42, 0.18);
+
+  --theme-white-45: rgba(255, 255, 255, 0.45);
+  --theme-white-50: rgba(255, 255, 255, 0.5);
+  --theme-white-55: rgba(255, 255, 255, 0.55);
+  --theme-white-60: rgba(255, 255, 255, 0.6);
+  --theme-white-70: rgba(255, 255, 255, 0.7);
+  --theme-white-80: rgba(255, 255, 255, 0.8);
+  --theme-white-90: rgba(255, 255, 255, 0.9);
+
+  --theme-border-soft: rgba(255, 255, 255, 0.4);
+  --theme-border-mid: rgba(255, 255, 255, 0.5);
+  --theme-border-strong: rgba(255, 255, 255, 0.6);
+  --theme-border-heavy: rgba(255, 255, 255, 0.7);
+
+  --theme-utility-surface-blur: none;
+  --theme-utility-surface-saturate: none;
+  --theme-utility-surface-shadow: none;
+
+  --theme-panel-bg: rgba(255, 255, 255, 0.45);
+  --theme-panel-border: rgba(255, 255, 255, 0.5);
+  --theme-panel-shadow: var(--shadow-panel);
+  --theme-panel-backdrop: blur(32px);
+  --theme-panel-backdrop-webkit: blur(32px);
+
+  --theme-sidebar-bg: rgba(255, 255, 255, 0.55);
+  --theme-sidebar-border: rgba(255, 255, 255, 0.6);
+  --theme-sidebar-backdrop: none;
+  --theme-sidebar-backdrop-webkit: none;
+  --theme-sidebar-shadow: none;
+
+  --theme-header-bg: rgba(255, 255, 255, 0.45);
+  --theme-header-border: rgba(255, 255, 255, 0.4);
+  --theme-header-shadow: none;
+
+  --theme-empty-bg: rgba(255, 255, 255, 0.5);
+  --theme-empty-border: rgba(255, 255, 255, 0.7);
+  --theme-empty-backdrop: none;
+  --theme-empty-backdrop-webkit: none;
+
+  --theme-select-trigger-bg: rgba(255, 255, 255, 0.7);
+  --theme-select-trigger-border: rgba(255, 255, 255, 0.7);
+  --theme-select-trigger-text: #334155;
+  --theme-select-trigger-backdrop: none;
+  --theme-select-trigger-backdrop-webkit: none;
+
+  --theme-select-panel-bg: rgba(255, 255, 255, 0.9);
+  --theme-select-panel-border: rgba(255, 255, 255, 0.7);
+  --theme-select-panel-shadow: none;
+  --theme-select-panel-backdrop: none;
+  --theme-select-panel-backdrop-webkit: none;
+
+  --theme-section-divider: rgba(255, 255, 255, 0.4);
+
+  --theme-window-controls-bg: rgba(255, 255, 255, 0.2);
+  --theme-window-controls-border: transparent;
+  --theme-window-controls-shadow: none;
+
+  --theme-modal-overlay: rgba(15, 23, 42, 0.22);
+  --theme-modal-overlay-backdrop: blur(6px);
+  --theme-modal-overlay-backdrop-webkit: blur(6px);
+  --theme-modal-bg: rgba(255, 255, 255, 0.9);
+  --theme-modal-border: rgba(255, 255, 255, 0.7);
+  --theme-modal-shadow: var(--shadow-modal);
+
+  --theme-library-tag-label: #475569;
+  --theme-library-tag-bg: rgba(255, 255, 255, 0.78);
+  --theme-library-tag-border: rgba(226, 232, 240, 0.9);
+  --theme-library-tag-text: #475569;
+  --theme-library-tag-hover-bg: rgba(248, 250, 252, 0.96);
+  --theme-library-tag-hover-text: #334155;
+  --theme-library-tag-selected-bg: rgba(251, 207, 232, 0.78);
+  --theme-library-tag-selected-border: rgba(244, 114, 182, 0.3);
+  --theme-library-tag-selected-text: #334155;
+  --theme-library-tag-selected-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
+
+  --theme-library-add-bg: rgb(251 207 232);
+  --theme-library-add-text: rgb(51 65 85);
+
+  --theme-library-delete-bg: rgba(255, 228, 230, 0.9);
+  --theme-library-delete-text: #e11d48;
+  --theme-library-delete-border: transparent;
+  --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.98);
+
+  --theme-library-submit-bg: rgba(251, 207, 232, 0.95);
+  --theme-library-submit-text: #475569;
+  --theme-library-submit-border: transparent;
+  --theme-library-submit-hover-bg: rgba(252, 231, 243, 0.98);
+
+  --theme-window-controls-backdrop: blur(12px);
+  --theme-window-controls-backdrop-webkit: blur(12px);
+
+  --theme-window-control-minimize-bg: rgba(52, 211, 153, 0.8);
+  --theme-window-control-minimize-hover-bg: rgba(52, 211, 153, 0.9);
+
+  --theme-window-control-maximize-bg: rgba(251, 191, 36, 0.8);
+  --theme-window-control-maximize-hover-bg: rgba(251, 191, 36, 0.9);
+
+  --theme-window-control-close-bg: rgba(251, 113, 133, 0.8);
+  --theme-window-control-close-hover-bg: rgba(251, 113, 133, 0.9);
+
+  --theme-interactive-hover-brightness: 1.02;
+  --theme-interactive-dark-hover-brightness: 1.04;
+
+  --theme-library-tag-backdrop: none;
+  --theme-library-tag-backdrop-webkit: none;
+
+  --theme-modal-panel-backdrop: none;
+  --theme-modal-panel-backdrop-webkit: none;
+
+  --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.9);
+  --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.95);
+  --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.7);
 }
 
 .surface-card {
@@ -22,15 +134,15 @@
 
 .surface-panel {
   border-radius: 36px;
-  background-color: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: var(--shadow-panel);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
+  background-color: var(--theme-panel-bg);
+  border: 1px solid var(--theme-panel-border);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop-webkit);
 }
 
 .surface-section-divider {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  border-bottom: 1px solid var(--theme-section-divider);
 }
 
 .surface-floating {
@@ -52,23 +164,29 @@
 .app-header-brand {
   overflow: hidden;
   padding: 1.25rem 1.5rem;
-  background-color: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background-color: var(--theme-header-bg);
+  border: 1px solid var(--theme-header-border);
+  box-shadow: var(--theme-header-shadow);
 }
 
 .empty-state-card {
   border-style: dashed;
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 1px dashed rgba(255, 255, 255, 0.7);
+  background-color: var(--theme-empty-bg);
+  border: 1px dashed var(--theme-empty-border);
   padding: 2rem;
+  backdrop-filter: var(--theme-empty-backdrop);
+  -webkit-backdrop-filter: var(--theme-empty-backdrop-webkit);
 }
 
 .sidebar-shell {
   width: 72px;
   overflow: hidden;
   padding: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.55);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: var(--theme-sidebar-bg);
+  border: 1px solid var(--theme-sidebar-border);
+  backdrop-filter: var(--theme-sidebar-backdrop);
+  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+  box-shadow: var(--theme-sidebar-shadow);
   transition: width 220ms ease-out;
 }
 

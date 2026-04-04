@@ -1,5 +1,5 @@
 .library-tag-label {
-  color: #475569;
+  color: var(--theme-library-tag-label);
 }
 
 .library-tag-chip {
@@ -7,9 +7,11 @@
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #475569;
-  background-color: rgba(255, 255, 255, 0.78);
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: var(--theme-library-tag-text);
+  background-color: var(--theme-library-tag-bg);
+  border: 1px solid var(--theme-library-tag-border);
+  backdrop-filter: var(--theme-library-tag-backdrop);
+  -webkit-backdrop-filter: var(--theme-library-tag-backdrop-webkit);
   transition:
     transform 120ms ease,
     background-color 120ms ease,
@@ -20,78 +22,38 @@
 
 .library-tag-chip:hover {
   transform: translateY(-1px);
-  color: #334155;
-  background-color: rgba(248, 250, 252, 0.96);
+  color: var(--theme-library-tag-hover-text);
+  background-color: var(--theme-library-tag-hover-bg);
 }
 
 .library-tag-chip.is-selected {
-  color: #334155;
-  background-color: rgba(251, 207, 232, 0.78);
-  border-color: rgba(244, 114, 182, 0.3);
-  box-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
+  color: var(--theme-library-tag-selected-text);
+  background-color: var(--theme-library-tag-selected-bg);
+  border-color: var(--theme-library-tag-selected-border);
+  box-shadow: var(--theme-library-tag-selected-shadow);
 }
 
 .library-add-button {
-  background-color: rgb(251 207 232);
-  color: rgb(51 65 85);
+  background-color: var(--theme-library-add-bg);
+  color: var(--theme-library-add-text);
 }
 
-body:not(.theme-dark) .library-delete-button {
-  background-color: rgba(255, 228, 230, 0.9);
-  color: #e11d48;
+.library-delete-button {
+  background-color: var(--theme-library-delete-bg);
+  color: var(--theme-library-delete-text);
+  border: 1px solid var(--theme-library-delete-border);
 }
 
-body:not(.theme-dark) .library-delete-button:hover {
-  background-color: rgba(255, 241, 242, 0.98);
+.library-delete-button:hover {
+  background-color: var(--theme-library-delete-hover-bg);
 }
 
-body:not(.theme-dark) .library-submit-button {
-  background-color: rgba(251, 207, 232, 0.95);
-  color: #475569;
+.library-submit-button {
+  background-color: var(--theme-library-submit-bg);
+  color: var(--theme-library-submit-text);
+  border: 1px solid var(--theme-library-submit-border);
 }
 
-body:not(.theme-dark) .library-submit-button:hover {
-  background-color: rgba(252, 231, 243, 0.98);
-}
-
-body.theme-dark .library-tag-label {
-  color: #e2e8f0;
-}
-
-body.theme-dark .library-tag-chip {
-  color: #cbd5e1;
-  background-color: rgba(30, 41, 59, 0.82);
-  border-color: rgba(100, 116, 139, 0.4);
-}
-
-body.theme-dark .library-tag-chip:hover {
-  color: #f8fafc;
-  background-color: rgba(51, 65, 85, 0.88);
-}
-
-body.theme-dark .library-tag-chip.is-selected {
-  color: #f8fafc;
-  background-color: rgba(244, 114, 182, 0.18);
-  border-color: rgba(244, 114, 182, 0.26);
-  box-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
-}
-
-body.theme-dark .library-delete-button {
-  background-color: rgba(127, 29, 29, 0.34);
-  color: #fecdd3;
-  border: 1px solid rgba(251, 113, 133, 0.18);
-}
-
-body.theme-dark .library-delete-button:hover {
-  background-color: rgba(153, 27, 27, 0.42);
-}
-
-body.theme-dark .library-submit-button {
-  background-color: rgba(190, 24, 93, 0.28);
-  color: #fce7f3;
-  border: 1px solid rgba(244, 114, 182, 0.18);
-}
-
-body.theme-dark .library-submit-button:hover {
-  background-color: rgba(190, 24, 93, 0.36);
+.library-submit-button:hover {
+  background-color: var(--theme-library-submit-hover-bg);
 }

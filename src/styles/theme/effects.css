@@ -38,7 +38,7 @@
 
 .interactive:hover {
   transform: translateY(-1px);
-  filter: brightness(1.02);
+  filter: brightness(var(--theme-interactive-hover-brightness));
 }
 
 .interactive:active {

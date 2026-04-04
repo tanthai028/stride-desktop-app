@@ -5,47 +5,14 @@
     box-shadow 120ms ease;
 }
 
-body:not(.theme-dark):not(.theme-glossy) .interactive-input:hover {
-  background-color: rgba(255, 255, 255, 0.9);
+.interactive-input:hover {
+  background-color: var(--theme-interactive-input-hover-bg);
 }
 
-body:not(.theme-dark):not(.theme-glossy) .interactive-input:focus,
-body:not(.theme-dark):not(.theme-glossy) .interactive-input:focus-visible {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: none;
-}
-
-body.theme-glossy .interactive-input:hover {
-  background-color: rgba(255, 255, 255, 0.28);
-}
-
-body.theme-glossy .interactive-input:focus,
-body.theme-glossy .interactive-input:focus-visible {
-  background-color: rgba(255, 255, 255, 0.34);
-  border-color: rgba(255, 255, 255, 0.42);
-  box-shadow: none;
-}
-
-body.theme-dark .interactive-input:hover {
-  background-color: rgba(30, 41, 59, 0.88);
-}
-
-body.theme-dark .interactive-input:focus,
-body.theme-dark .interactive-input:focus-visible {
-  background-color: rgba(30, 41, 59, 0.92);
-  border-color: rgba(100, 116, 139, 0.55);
-  box-shadow: none;
-}
-
-body.theme-dark.theme-glossy .interactive-input:hover {
-  background-color: rgba(30, 41, 59, 0.58);
-}
-
-body.theme-dark.theme-glossy .interactive-input:focus,
-body.theme-dark.theme-glossy .interactive-input:focus-visible {
-  background-color: rgba(30, 41, 59, 0.62);
-  border-color: rgba(148, 163, 184, 0.22);
+.interactive-input:focus,
+.interactive-input:focus-visible {
+  background-color: var(--theme-interactive-input-focus-bg);
+  border-color: var(--theme-interactive-input-focus-border);
   box-shadow: none;
 }
 
@@ -66,7 +33,9 @@ body.theme-dark.theme-glossy .interactive-input:focus-visible {
   background-color: rgba(255, 255, 255, 0.7);
   transition:
     border-color 120ms ease,
-    box-shadow 120ms ease;
+    background-color 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
   resize: none;
 }
 
@@ -90,12 +59,14 @@ body.theme-dark.theme-glossy .interactive-input:focus-visible {
   border-radius: 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #334155;
+  color: var(--theme-select-trigger-text);
 
   outline: none;
 
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background-color: var(--theme-select-trigger-bg);
+  border: 1px solid var(--theme-select-trigger-border);
+  backdrop-filter: var(--theme-select-trigger-backdrop);
+  -webkit-backdrop-filter: var(--theme-select-trigger-backdrop-webkit);
 
   transition:
     transform 150ms ease,
@@ -105,7 +76,10 @@ body.theme-dark.theme-glossy .interactive-input:focus-visible {
 }
 
 .select-menu-panel {
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background-color: var(--theme-select-panel-bg);
+  border: 1px solid var(--theme-select-panel-border);
+  box-shadow: var(--theme-select-panel-shadow);
+  backdrop-filter: var(--theme-select-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-select-panel-backdrop-webkit);
   padding: 0.375rem;
 }

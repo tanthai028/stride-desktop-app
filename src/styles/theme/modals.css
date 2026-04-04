@@ -1,25 +1,17 @@
 .modal-overlay {
-  background-color: rgba(15, 23, 42, 0.22);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background-color: var(--theme-modal-overlay);
+  backdrop-filter: var(--theme-modal-overlay-backdrop);
+  -webkit-backdrop-filter: var(--theme-modal-overlay-backdrop-webkit);
 }
 
 .modal-panel {
   border-radius: 28px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--theme-modal-bg);
+  border: 1px solid var(--theme-modal-border);
   padding: 1.25rem;
-  box-shadow: var(--shadow-modal);
-}
-
-body.theme-dark .modal-overlay {
-  background-color: rgba(2, 6, 23, 0.5);
-}
-
-body.theme-dark .modal-panel {
-  background-color: rgba(15, 23, 42, 0.9);
-  border-color: rgba(148, 163, 184, 0.14);
-  box-shadow: 0 24px 80px rgba(2, 6, 23, 0.5);
+  box-shadow: var(--theme-modal-shadow);
+  backdrop-filter: var(--theme-modal-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-modal-panel-backdrop-webkit);
 }
 
 body.theme-dark .modal-secondary-button {
