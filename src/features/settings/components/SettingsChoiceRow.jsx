@@ -7,7 +7,7 @@ function SettingsChoiceRow({ title, description, value, options, onChange }) {
   }
 
   return (
-    <div className="rounded-2xl border border-white/40 bg-white/35 px-4 py-3 backdrop-blur-xl">
+    <div className="rounded-2xl border border-white/50 bg-white/50 px-4 py-3 shadow-[0_10px_30px_rgba(15,23,42,0.08),inset_0_1px_0_rgba(255,255,255,0.45)] backdrop-blur-xl transition hover:shadow-[0_14px_36px_rgba(15,23,42,0.1),inset_0_1px_0_rgba(255,255,255,0.5)]">
       <div className="mb-3">
         <p className="text-sm font-semibold text-slate-700">{title}</p>
         <p className="mt-1 text-xs text-slate-500">{description}</p>
