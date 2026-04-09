@@ -1,20 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-function useLibraryPageState(animationsEnabled) {
-  const [isPageReady, setIsPageReady] = useState(!animationsEnabled);
+function useLibraryPageState() {
+  const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("title-asc");
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
-
-  useEffect(() => {
-    if (animationsEnabled) {
-      setIsPageReady(false);
-      return;
-    }
-
-    setIsPageReady(true);
-  }, [animationsEnabled]);
 
   function clearFilters() {
     setSearchValue("");

@@ -29,6 +29,7 @@
   --theme-white-80: rgba(255, 255, 255, 0.8);
   --theme-white-90: rgba(255, 255, 255, 0.9);
 
+  --theme-border-light: rgba(255, 255, 255, 0.3);
   --theme-border-soft: rgba(255, 255, 255, 0.4);
   --theme-border-mid: rgba(255, 255, 255, 0.5);
   --theme-border-strong: rgba(255, 255, 255, 0.6);

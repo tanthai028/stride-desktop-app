@@ -25,7 +25,7 @@ function LibraryPage({ settings }) {
     openAddModal,
     openEditModal,
     closeModal,
-  } = useLibraryPageState(settings.animationsEnabled);
+  } = useLibraryPageState();
 
   const filteredItems = useMemo(() => {
     return getFilteredAndSortedLibraryItems(items, searchValue, sortValue);
@@ -50,13 +50,11 @@ function LibraryPage({ settings }) {
     closeModal();
   }
 
-  const motionProps = settings.animationsEnabled
-    ? {
-        initial: { opacity: 0, y: 14 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.45 },
-      }
-    : {};
+  const motionProps = {
+    initial: { opacity: 0, y: 14 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.45 },
+  };
 
   const isModalOpen = modalMode === "add" || modalMode === "edit";
 

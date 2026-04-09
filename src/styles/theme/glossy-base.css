@@ -151,6 +151,32 @@ body.theme-glossy .bg-white\/90 {
   -webkit-backdrop-filter: var(--theme-utility-surface-saturate);
   box-shadow: var(--theme-utility-surface-shadow);
 }
+body.theme-glossy .bg-white\/25,
+body.theme-glossy .bg-white\/30,
+body.theme-glossy .bg-white\/35,
+body.theme-glossy .bg-white\/45,
+body.theme-glossy .bg-white\/50,
+body.theme-glossy .bg-white\/55,
+body.theme-glossy .bg-white\/60,
+body.theme-glossy .bg-white\/70,
+body.theme-glossy .bg-white\/80,
+body.theme-glossy .bg-white\/90 {
+  backdrop-filter: var(--theme-utility-surface-blur);
+  -webkit-backdrop-filter: var(--theme-utility-surface-saturate);
+  box-shadow: var(--theme-utility-surface-shadow);
+}
+
+body.theme-glossy .bg-white\/25 {
+  background-color: var(--theme-white-25) !important;
+}
+
+body.theme-glossy .bg-white\/30 {
+  background-color: var(--theme-white-30) !important;
+}
+
+body.theme-glossy .bg-white\/35 {
+  background-color: var(--theme-white-35) !important;
+}
 
 body.theme-glossy .bg-white\/45 {
   background-color: var(--theme-white-45) !important;
@@ -178,6 +204,10 @@ body.theme-glossy .bg-white\/80 {
 
 body.theme-glossy .bg-white\/90 {
   background-color: var(--theme-white-90) !important;
+}
+
+body.theme-glossy .border-white\/30 {
+  border-color: var(--theme-border-light) !important;
 }
 
 body.theme-glossy .border-white\/40 {

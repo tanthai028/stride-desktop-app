@@ -18,8 +18,8 @@ function App() {
 
   useEffect(() => {
     document.body.classList.toggle("theme-dark", settings.darkMode);
-    document.body.classList.toggle("theme-glossy", settings.glossyMode);
-  }, [settings.darkMode, settings.glossyMode]);
+    document.body.classList.add("theme-glossy");
+  }, [settings.darkMode]);
 
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
