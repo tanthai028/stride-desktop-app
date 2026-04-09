@@ -4,13 +4,11 @@ const formActionsLayoutClassName = {
 };
 
 const formActionsButtonBaseClassName =
-  "rounded-2xl px-4 py-3 text-sm font-medium transition-transform duration-150 hover:scale-[1.01]";
+  "interactive rounded-2xl px-4 py-3 text-sm font-medium transition-transform duration-150 hover:scale-[1.01]";
 
-const deleteButtonClassName =
-  "interactive border border-transparent bg-rose-50 text-rose-600 hover:bg-rose-50/95";
+const deleteButtonClassName = "library-action-delete";
 
-const submitButtonClassName =
-  "interactive border border-transparent bg-pink-200 text-slate-600 hover:bg-pink-100";
+const submitButtonClassName = "library-action-submit";
 
 function LibraryFormActions({ isEditMode, onClose, onDelete }) {
   const layoutClassName = isEditMode

@@ -73,6 +73,16 @@
   --theme-library-tag-selected-text: #334155;
   --theme-library-tag-selected-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
 
+  --theme-library-delete-bg: rgba(255, 241, 242, 0.96);
+  --theme-library-delete-text: #e11d48;
+  --theme-library-delete-border: rgba(251, 113, 133, 0.18);
+  --theme-library-delete-hover-bg: rgba(255, 228, 230, 0.98);
+
+  --theme-library-submit-bg: rgba(251, 207, 232, 0.92);
+  --theme-library-submit-text: #475569;
+  --theme-library-submit-border: rgba(244, 114, 182, 0.18);
+  --theme-library-submit-hover-bg: rgba(252, 231, 243, 0.98);
+
   --theme-window-controls-backdrop: blur(12px);
   --theme-window-controls-backdrop-webkit: blur(12px);
 

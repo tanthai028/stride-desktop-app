@@ -125,6 +125,14 @@ body.theme-dark .summary-card {
   border-color: rgba(148, 163, 184, 0.12);
 }
 
+body.theme-dark .summary-card > h2 {
+  color: #f8fafc;
+}
+
+body.theme-dark .summary-card > p:last-child {
+  color: #cbd5e1;
+}
+
 body.theme-dark .summary-card--pink {
   background-color: rgba(91, 33, 61, 0.42);
 }
@@ -238,28 +246,4 @@ body.theme-dark .text-violet-500 {
 
 body.theme-dark .text-sky-500 {
   color: #38bdf8 !important;
-}
-
-body.theme-dark .bg-pink-300 {
-  background-color: #f9a8d4 !important;
-}
-
-body.theme-dark .bg-violet-300 {
-  background-color: #c4b5fd !important;
-}
-
-body.theme-dark .bg-sky-300 {
-  background-color: #7dd3fc !important;
-}
-
-body.theme-dark .bg-pink-100 {
-  background-color: rgba(157, 78, 128, 0.35) !important;
-}
-
-body.theme-dark .bg-violet-100 {
-  background-color: rgba(109, 92, 179, 0.34) !important;
-}
-
-body.theme-dark .bg-sky-100 {
-  background-color: rgba(53, 101, 130, 0.38) !important;
 }
