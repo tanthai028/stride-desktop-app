@@ -5,6 +5,6 @@ export const DEFAULT_SETTINGS = {
   animationsEnabled: true,
   darkMode: false,
   glossyMode: true,
-  hoverSoundProfile: "click",
+  hoverSoundProfile: "off",
   resetVersion: 0,
 };
