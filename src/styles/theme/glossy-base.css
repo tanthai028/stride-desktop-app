@@ -12,11 +12,21 @@ body.theme-glossy {
 
   --theme-sidebar-bg: rgba(255, 255, 255, 0.32);
   --theme-sidebar-border: rgba(255, 255, 255, 0.18);
-  --theme-sidebar-shadow:
-    0 12px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.45);
   --theme-sidebar-backdrop: blur(18px) saturate(145%);
   --theme-sidebar-backdrop-webkit: blur(18px) saturate(145%);
-  --theme-sidebar-shadow: none;
+  --theme-sidebar-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  --theme-sidebar-item-bg: rgba(255, 255, 255, 0.2);
+  --theme-sidebar-item-border: rgba(255, 255, 255, 0.14);
+  --theme-sidebar-item-hover-bg: rgba(14, 165, 233, 0.12);
+  --theme-sidebar-item-hover-border: rgba(255, 255, 255, 0.16);
+
+  --theme-sidebar-item-active-bg: rgba(14, 165, 233, 0.28);
+  --theme-sidebar-item-active-border: transparent;
+  --theme-sidebar-item-active-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 10px rgba(14, 165, 233, 0.18), 0 8px 18px rgba(14, 165, 233, 0.12);
 
   --theme-header-bg: rgba(255, 255, 255, 0.45);
   --theme-header-border: rgba(255, 255, 255, 0.56);
@@ -97,11 +107,9 @@ body.theme-glossy {
   --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.42);
 }
 
-/* .sidebar-item,
 .sidebar-item-active {
-  outline: none !important;
-  box-shadow: none !important;
-} */
+  backdrop-filter: blur(16px) saturate(140%);
+}
 
 body.theme-glossy .summary-card {
   border-color: rgba(255, 255, 255, 0.55);

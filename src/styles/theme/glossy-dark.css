@@ -38,7 +38,7 @@ body.theme-dark.theme-glossy {
   --theme-sidebar-item-hover-border: rgba(255, 255, 255, 0.1);
 
   --theme-sidebar-item-active-bg: rgba(56, 189, 248, 0.18);
-  --theme-sidebar-item-active-border: rgba(255, 255, 255, 0.12);
+  --theme-sidebar-item-active-border: transparent;
   --theme-sidebar-item-active-shadow:
     0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
