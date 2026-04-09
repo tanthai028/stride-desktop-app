@@ -6,4 +6,5 @@
 @import "./theme/window-controls.css";
 @import "./theme/effects.css";
 @import "./theme/dark-mode.css";
-@import "./theme/glossy.css";
+@import "./theme/glossy-base.css";
+@import "./theme/glossy-dark.css";
