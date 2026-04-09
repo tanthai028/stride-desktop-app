@@ -71,10 +71,10 @@ body.theme-glossy {
   --theme-library-tag-selected-border: rgba(244, 114, 182, 0.24);
   --theme-library-tag-selected-text: #334155;
 
-  --theme-library-delete-bg: rgba(255, 244, 246, 0.78);
+  --theme-library-delete-bg: rgba(255, 244, 246, 0.82);
   --theme-library-delete-text: #e11d48;
   --theme-library-delete-border: rgba(255, 255, 255, 0.34);
-  --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.88);
+  --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.92);
 
   --theme-library-submit-bg: rgba(190, 24, 93, 0.2);
   --theme-library-submit-text: #475569;
@@ -366,6 +366,16 @@ body.theme-dark.theme-glossy {
   --theme-interactive-input-hover-bg: rgba(30, 41, 59, 0.6);
   --theme-interactive-input-focus-bg: rgba(30, 41, 59, 0.68);
   --theme-interactive-input-focus-border: rgba(148, 163, 184, 0.22);
+
+  --theme-library-delete-bg: rgba(127, 29, 29, 0.34);
+  --theme-library-delete-text: #fecdd3;
+  --theme-library-delete-border: rgba(251, 113, 133, 0.18);
+  --theme-library-delete-hover-bg: rgba(153, 27, 27, 0.42);
+
+  --theme-library-submit-bg: rgba(190, 24, 93, 0.32);
+  --theme-library-submit-text: #fff1f2;
+  --theme-library-submit-border: rgba(244, 114, 182, 0.2);
+  --theme-library-submit-hover-bg: rgba(190, 24, 93, 0.42);
 }
 
 body.theme-dark.theme-glossy .summary-card {

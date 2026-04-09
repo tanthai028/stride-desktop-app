@@ -216,6 +216,10 @@ body.theme-dark .input-base::placeholder {
   color: #94a3b8;
 }
 
+body.theme-dark .bg-pink-100 {
+  background-color: rgba(244, 114, 182, 0.16) !important;
+}
+
 body.theme-dark .bg-pink-200 {
   background-color: rgba(244, 114, 182, 0.28) !important;
 }
