@@ -64,14 +64,17 @@ body.theme-glossy {
   --theme-window-controls-shadow:
     0 10px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 
+  --theme-modal-overlay: rgba(15, 23, 42, 0.2);
+  --theme-modal-overlay-backdrop: blur(14px) saturate(135%);
+  --theme-modal-overlay-backdrop-webkit: blur(14px) saturate(135%);
   --theme-modal-bg: linear-gradient(
     180deg,
-    rgba(255, 248, 252, 0.58) 0%,
-    rgba(255, 243, 248, 0.48) 100%
+    rgba(255, 250, 252, 0.76) 0%,
+    rgba(255, 244, 248, 0.66) 100%
   );
-  --theme-modal-border: rgba(255, 255, 255, 0.34);
+  --theme-modal-border: rgba(255, 255, 255, 0.46);
   --theme-modal-shadow:
-    0 24px 60px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.42);
+    0 24px 60px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.48);
 
   --theme-library-tag-label: #475569;
   --theme-library-tag-bg: rgba(255, 248, 252, 0.34);
@@ -258,4 +261,28 @@ body.theme-glossy .window-controls-shell {
   border-color: var(--theme-window-controls-border);
   background-color: var(--theme-window-controls-bg);
   box-shadow: var(--theme-window-controls-shadow);
+}
+
+body.theme-glossy:not(.theme-dark) .modal-secondary-button {
+  color: #475569;
+  background-color: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+body.theme-glossy:not(.theme-dark) .modal-secondary-button:hover {
+  background-color: rgba(255, 255, 255, 0.72);
+}
+
+body.theme-glossy:not(.theme-dark) .input-base {
+  color: #475569;
+  background-color: rgba(255, 252, 254, 0.5);
+  border-color: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+body.theme-glossy:not(.theme-dark) .input-base::placeholder {
+  color: #94a3b8;
 }
