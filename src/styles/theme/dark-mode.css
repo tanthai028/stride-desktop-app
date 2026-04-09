@@ -114,6 +114,10 @@ body.theme-dark {
   --theme-window-control-close-hover-bg: rgba(251, 113, 133, 0.88);
 }
 
+body.theme-dark.theme-glossy {
+  --theme-library-tag-label: rgba(226, 232, 240, 0.92);
+}
+
 body.theme-dark .app-shell {
   background:
     radial-gradient(
