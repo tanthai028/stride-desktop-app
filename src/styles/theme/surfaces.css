@@ -25,36 +25,27 @@
   --theme-utility-surface-saturate: none;
   --theme-utility-surface-shadow: none;
 
-  --theme-panel-bg: rgba(255, 255, 255, 0.45);
-  --theme-panel-border: rgba(255, 255, 255, 0.5);
+  --theme-panel-bg: #ffffff;
+  --theme-panel-border: rgba(226, 232, 240, 1);
   --theme-panel-shadow: var(--shadow-panel);
-  --theme-panel-backdrop: blur(32px);
-  --theme-panel-backdrop-webkit: blur(32px);
+  --theme-panel-backdrop: none;
+  --theme-panel-backdrop-webkit: none;
 
-  --theme-sidebar-bg: rgba(255, 255, 255, 0.55);
-  --theme-sidebar-border: rgba(255, 255, 255, 0.6);
-  --theme-sidebar-backdrop: none;
-  --theme-sidebar-backdrop-webkit: none;
-  --theme-sidebar-shadow: none;
+  --theme-header-bg: #ffffff;
+  --theme-header-border: rgba(226, 232, 240, 1);
+  --theme-header-shadow: var(--shadow-card-soft);
 
-  --theme-header-bg: rgba(255, 255, 255, 0.45);
-  --theme-header-border: rgba(255, 255, 255, 0.4);
-  --theme-header-shadow: none;
-
-  --theme-empty-bg: rgba(255, 255, 255, 0.5);
-  --theme-empty-border: rgba(255, 255, 255, 0.7);
+  --theme-empty-bg: #ffffff;
+  --theme-empty-border: rgba(226, 232, 240, 1);
   --theme-empty-backdrop: none;
   --theme-empty-backdrop-webkit: none;
 
-  --theme-select-trigger-bg: rgba(255, 255, 255, 0.7);
-  --theme-select-trigger-border: rgba(255, 255, 255, 0.7);
-  --theme-select-trigger-text: #334155;
-  --theme-select-trigger-backdrop: none;
-  --theme-select-trigger-backdrop-webkit: none;
+  --theme-select-trigger-bg: #ffffff;
+  --theme-select-trigger-border: rgba(226, 232, 240, 1);
 
-  --theme-select-panel-bg: rgba(255, 255, 255, 0.9);
-  --theme-select-panel-border: rgba(255, 255, 255, 0.7);
-  --theme-select-panel-shadow: none;
+  --theme-select-panel-bg: #ffffff;
+  --theme-select-panel-border: rgba(226, 232, 240, 1);
+  --theme-select-panel-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
   --theme-select-panel-backdrop: none;
   --theme-select-panel-backdrop-webkit: none;
 
@@ -82,19 +73,6 @@
   --theme-library-tag-selected-text: #334155;
   --theme-library-tag-selected-shadow: 0 0 0 1px rgba(244, 114, 182, 0.14);
 
-  --theme-library-add-bg: rgb(251 207 232);
-  --theme-library-add-text: rgb(51 65 85);
-
-  --theme-library-delete-bg: rgba(255, 228, 230, 0.9);
-  --theme-library-delete-text: #e11d48;
-  --theme-library-delete-border: transparent;
-  --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.98);
-
-  --theme-library-submit-bg: rgba(251, 207, 232, 0.95);
-  --theme-library-submit-text: #475569;
-  --theme-library-submit-border: transparent;
-  --theme-library-submit-hover-bg: rgba(252, 231, 243, 0.98);
-
   --theme-window-controls-backdrop: blur(12px);
   --theme-window-controls-backdrop-webkit: blur(12px);
 
@@ -118,13 +96,28 @@
   --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.9);
   --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.95);
   --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.7);
+
+  --theme-sidebar-bg: #ffffff;
+  --theme-sidebar-border: rgba(226, 232, 240, 1);
+  --theme-sidebar-backdrop: none;
+  --theme-sidebar-backdrop-webkit: none;
+  --theme-sidebar-shadow: var(--shadow-card-soft);
+
+  --theme-sidebar-item-bg: #ffffff;
+  --theme-sidebar-item-border: rgba(226, 232, 240, 1);
+  --theme-sidebar-item-hover-bg: rgb(248, 250, 252);
+  --theme-sidebar-item-hover-border: rgba(226, 232, 240, 1);
+
+  --theme-sidebar-item-active-bg: rgb(224, 242, 254);
+  --theme-sidebar-item-active-border: rgba(125, 211, 252, 1);
+  --theme-sidebar-item-active-shadow: var(--shadow-control);
 }
 
 .surface-card {
   border-radius: 28px;
   box-shadow: var(--shadow-card);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .surface-card-soft {
@@ -180,7 +173,7 @@
 .sidebar-shell {
   width: 72px;
   overflow: hidden;
-  padding: 0.75rem;
+  border-radius: 28px;
   background-color: var(--theme-sidebar-bg);
   border: 1px solid var(--theme-sidebar-border);
   backdrop-filter: var(--theme-sidebar-backdrop);
@@ -193,32 +186,18 @@
   width: 180px;
 }
 
-.primary-action-button {
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: transform 150ms ease;
+.sidebar-item {
+  border-color: var(--theme-sidebar-item-border);
+  background-color: var(--theme-sidebar-item-bg);
 }
 
-.primary-action-button:hover {
-  transform: scale(1.01);
+.sidebar-item:hover {
+  background-color: var(--theme-sidebar-item-hover-bg);
+  border-color: var(--theme-sidebar-item-hover-border);
 }
 
-.primary-action-button-with-icon {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.form-action-button {
-  border-radius: 1rem;
-  padding: 0.75rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: transform 150ms ease;
-}
-
-.form-action-button:hover {
-  transform: scale(1.01);
+.sidebar-item-active {
+  border-color: var(--theme-sidebar-item-active-border);
+  background-color: var(--theme-sidebar-item-active-bg);
+  box-shadow: var(--theme-sidebar-item-active-shadow);
 }

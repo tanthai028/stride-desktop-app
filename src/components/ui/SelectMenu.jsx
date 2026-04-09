@@ -49,7 +49,7 @@ function SelectMenu({
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="select-menu-trigger surface-control interactive-input"
+        className="select-menu-trigger interactive"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >

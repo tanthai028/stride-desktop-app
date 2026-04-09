@@ -32,28 +32,3 @@
   border-color: var(--theme-library-tag-selected-border);
   box-shadow: var(--theme-library-tag-selected-shadow);
 }
-
-.library-add-button {
-  background-color: var(--theme-library-add-bg);
-  color: var(--theme-library-add-text);
-}
-
-.library-delete-button {
-  background-color: var(--theme-library-delete-bg);
-  color: var(--theme-library-delete-text);
-  border: 1px solid var(--theme-library-delete-border);
-}
-
-.library-delete-button:hover {
-  background-color: var(--theme-library-delete-hover-bg);
-}
-
-.library-submit-button {
-  background-color: var(--theme-library-submit-bg);
-  color: var(--theme-library-submit-text);
-  border: 1px solid var(--theme-library-submit-border);
-}
-
-.library-submit-button:hover {
-  background-color: var(--theme-library-submit-hover-bg);
-}

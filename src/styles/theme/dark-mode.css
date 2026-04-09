@@ -15,36 +15,45 @@ body.theme-dark {
   --theme-border-strong: rgba(148, 163, 184, 0.12);
   --theme-border-heavy: rgba(148, 163, 184, 0.12);
 
-  --theme-panel-bg: rgba(15, 23, 42, 0.78);
-  --theme-panel-border: rgba(148, 163, 184, 0.14);
+  --theme-panel-bg: rgba(15, 23, 42, 0.98);
+  --theme-panel-border: rgba(51, 65, 85, 0.88);
   --theme-panel-shadow: 0 20px 60px rgba(2, 6, 23, 0.32);
-  --theme-panel-backdrop: blur(32px);
-  --theme-panel-backdrop-webkit: blur(32px);
+  --theme-panel-backdrop: none;
+  --theme-panel-backdrop-webkit: none;
 
-  --theme-sidebar-bg: rgba(15, 23, 42, 0.76);
-  --theme-sidebar-border: rgba(148, 163, 184, 0.14);
+  --theme-sidebar-bg: rgb(15, 23, 42);
+  --theme-sidebar-border: rgba(51, 65, 85, 1);
   --theme-sidebar-backdrop: none;
   --theme-sidebar-backdrop-webkit: none;
-  --theme-sidebar-shadow: none;
+  --theme-sidebar-shadow: 0 8px 22px rgba(2, 6, 23, 0.24);
 
-  --theme-header-bg: rgba(15, 23, 42, 0.72);
-  --theme-header-border: rgba(148, 163, 184, 0.14);
-  --theme-header-shadow: none;
+  --theme-sidebar-item-bg: rgb(15, 23, 42);
+  --theme-sidebar-item-border: rgba(51, 65, 85, 1);
+  --theme-sidebar-item-hover-bg: rgb(30, 41, 59);
+  --theme-sidebar-item-hover-border: rgba(71, 85, 105, 1);
 
-  --theme-empty-bg: rgba(15, 23, 42, 0.62);
-  --theme-empty-border: rgba(148, 163, 184, 0.18);
+  --theme-sidebar-item-active-bg: rgba(56, 189, 248, 0.16);
+  --theme-sidebar-item-active-border: rgba(56, 189, 248, 0.34);
+  --theme-sidebar-item-active-shadow: var(--shadow-control);
+
+  --theme-header-bg: rgba(15, 23, 42, 0.98);
+  --theme-header-border: rgba(51, 65, 85, 0.86);
+  --theme-header-shadow: 0 8px 22px rgba(2, 6, 23, 0.24);
+
+  --theme-empty-bg: rgba(15, 23, 42, 0.98);
+  --theme-empty-border: rgba(51, 65, 85, 0.86);
   --theme-empty-backdrop: none;
   --theme-empty-backdrop-webkit: none;
 
-  --theme-select-trigger-bg: rgba(30, 41, 59, 0.82);
-  --theme-select-trigger-border: rgba(100, 116, 139, 0.5);
+  --theme-select-trigger-bg: rgba(30, 41, 59, 0.98);
+  --theme-select-trigger-border: rgba(71, 85, 105, 0.82);
   --theme-select-trigger-text: #e2e8f0;
   --theme-select-trigger-backdrop: none;
   --theme-select-trigger-backdrop-webkit: none;
 
-  --theme-select-panel-bg: rgba(15, 23, 42, 0.96);
-  --theme-select-panel-border: rgba(148, 163, 184, 0.14);
-  --theme-select-panel-shadow: none;
+  --theme-select-panel-bg: rgba(15, 23, 42, 0.98);
+  --theme-select-panel-border: rgba(51, 65, 85, 0.88);
+  --theme-select-panel-shadow: 0 16px 40px rgba(2, 6, 23, 0.4);
   --theme-select-panel-backdrop: none;
   --theme-select-panel-backdrop-webkit: none;
 
@@ -197,11 +206,6 @@ body.theme-dark .input-base {
 
 body.theme-dark .input-base::placeholder {
   color: #94a3b8;
-}
-
-body.theme-dark .input-base:focus {
-  border-color: rgba(244, 114, 182, 0.55);
-  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.16);
 }
 
 body.theme-dark .bg-pink-200 {

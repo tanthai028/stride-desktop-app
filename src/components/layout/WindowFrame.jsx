@@ -17,7 +17,7 @@ function FrameContent({ children }) {
 
 function FrameGrid({ children }) {
   return (
-    <div className="grid h-full grid-cols-[72px_1fr] gap-6">{children}</div>
+    <div className="grid h-full grid-cols-[72px_1fr] gap-4">{children}</div>
   );
 }
 
@@ -32,7 +32,7 @@ function FrameMain({ children }) {
 function FrameShell({ children }) {
   return (
     <div className="app-shell h-full overflow-hidden">
-      <div className="h-full overflow-hidden p-6 text-slate-700">
+      <div className="h-full overflow-hidden p-4 text-slate-700">
         {children}
       </div>
     </div>

@@ -1,12 +1,30 @@
 import { navigationItems } from "../../app/config/navigation.js";
 
+const sidebarItemBase =
+  "group/sidebar interactive flex min-h-11 w-full items-center overflow-hidden rounded-2xl px-3 py-3 text-sm font-medium transition-all duration-200 outline-none focus:outline-none focus-visible:outline-none focus:ring-0 border";
+
+const sidebarItemActive =
+  "sidebar-item sidebar-item-active surface-control text-slate-800";
+const sidebarItemIdle = "sidebar-item sidebar-item-idle text-slate-600";
+
+const sidebarItemInner =
+  "flex w-full items-center gap-0 transition-all duration-200 group-hover/sidebar:gap-3";
+
+const sidebarIconWrap = "flex h-5 w-5 shrink-0 items-center justify-center";
+
+const sidebarLabel =
+  "max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-200 ease-out group-hover/sidebar:opacity-100 group-hover/sidebar:max-w-[200px]";
+
 function AppSidebar({ activePage, onNavigate }) {
   return (
-    <aside className="sidebar-shell surface-card group/sidebar relative z-30">
-      <div className="flex flex-col gap-4">
+    <aside className="sidebar-shell group/sidebar relative z-30 p-3">
+      <div className="flex flex-col gap-3">
         {navigationItems.map((item) => {
           const isActive = item.id === activePage;
           const Icon = item.icon;
+          const buttonStateClass = isActive
+            ? sidebarItemActive
+            : sidebarItemIdle;
 
           return (
             <button
@@ -16,19 +34,15 @@ function AppSidebar({ activePage, onNavigate }) {
                 event.currentTarget.blur();
                 onNavigate(item.id);
               }}
-              className={`interactive flex w-full items-center gap-3 overflow-hidden rounded-2xl px-3 py-3 text-sm font-medium transition outline-none focus:outline-none focus-visible:outline-none focus:ring-0 ${
-                isActive
-                  ? "surface-control bg-sky-200 text-slate-800"
-                  : "bg-white/50 text-slate-600 hover:bg-white/80"
-              }`}
+              className={`${sidebarItemBase} ${buttonStateClass}`}
             >
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center">
-                <Icon size={18} />
-              </div>
+              <div className={sidebarItemInner}>
+                <div className={sidebarIconWrap}>
+                  <Icon size={18} />
+                </div>
 
-              <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-[max-width,opacity] duration-200 ease-out group-hover/sidebar:max-w-[120px] group-hover/sidebar:opacity-100">
-                {item.label}
-              </span>
+                <span className={sidebarLabel}>{item.label}</span>
+              </div>
             </button>
           );
         })}
