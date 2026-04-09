@@ -76,7 +76,7 @@ body.theme-glossy {
   --theme-modal-shadow:
     0 24px 60px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.48);
 
-  --theme-library-tag-label: rgba(226, 232, 240, 0.92);
+  --theme-library-tag-label: #475569;
   --theme-library-tag-bg: rgba(255, 248, 252, 0.34);
   --theme-library-tag-border: rgba(255, 255, 255, 0.26);
   --theme-library-tag-text: #475569;

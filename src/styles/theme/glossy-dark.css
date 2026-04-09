@@ -134,6 +134,8 @@ body.theme-dark.theme-glossy {
   --theme-library-submit-text: #fff1f2;
   --theme-library-submit-border: rgba(244, 114, 182, 0.2);
   --theme-library-submit-hover-bg: rgba(190, 24, 93, 0.42);
+
+  --theme-library-tag-label: rgba(226, 232, 240, 0.92);
 }
 
 body.theme-dark.theme-glossy .summary-card {
