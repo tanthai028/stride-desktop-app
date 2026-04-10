@@ -2,11 +2,9 @@ import PageSection from "../../../components/page/PageSection.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
 import EmptyState from "../../../components/page/EmptyState.jsx";
+import ActionButton from "../../../components/ui/ActionButton.jsx";
 import LibraryCard from "./LibraryCard.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
-
-const actionButtonClassName =
-  "interactive rounded-2xl bg-pink-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:scale-[1.01]";
 
 function LibraryCollectionSection({
   items,
@@ -59,21 +57,17 @@ function LibraryCollectionSection({
               }
               action={
                 hasItems ? (
-                  <button
-                    type="button"
-                    onClick={onClearFilters}
-                    className={actionButtonClassName}
-                  >
+                  <ActionButton onClick={onClearFilters}>
                     Clear Filters
-                  </button>
+                  </ActionButton>
                 ) : (
-                  <button
-                    type="button"
+                  <ActionButton
+                    variant="library-add"
+                    withIcon
                     onClick={onAddItem}
-                    className={actionButtonClassName}
                   >
                     ✨ Add First Item
-                  </button>
+                  </ActionButton>
                 )
               }
             />

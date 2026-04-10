@@ -53,6 +53,14 @@
   --theme-header-bg: #ffffff;
   --theme-header-border: #e2e8f0;
   --theme-header-shadow: var(--shadow-card-soft);
+  --theme-header-kicker: #0ea5e9;
+  --theme-header-title: #1e293b;
+
+  --theme-header-clock-bg: rgba(255, 255, 255, 0.45);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.4);
+  --theme-header-clock-text: #1e293b;
+  --theme-header-clock-subtext: #475569;
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.7);
 
   --theme-empty-bg: #ffffff;
   --theme-empty-border: #e2e8f0;
@@ -76,10 +84,6 @@
   --theme-select-option-selected-bg: #f1f5f9;
   --theme-select-option-selected-text: #0f172a;
 
-  --theme-window-controls-bg: #ffffff;
-  --theme-window-controls-border: transparent;
-  --theme-window-controls-shadow: none;
-
   --theme-sidebar-bg: #ffffff;
   --theme-sidebar-border: #e2e8f0;
   --theme-sidebar-backdrop: none;
@@ -88,11 +92,14 @@
 
   --theme-sidebar-item-bg: #ffffff;
   --theme-sidebar-item-border: #e2e8f0;
+  --theme-sidebar-item-text: #475569;
   --theme-sidebar-item-hover-bg: #e0f2fe;
   --theme-sidebar-item-hover-border: #e2e8f0;
+  --theme-sidebar-item-hover-text: #334155;
 
   --theme-sidebar-item-active-bg: #bae6fd;
   --theme-sidebar-item-active-border: transparent;
+  --theme-sidebar-item-active-text: #0f172a;
   --theme-sidebar-item-active-shadow:
     inset 0 0 0 1px rgba(14, 165, 233, 0.12), 0 4px 10px rgba(15, 23, 42, 0.05);
 
@@ -128,6 +135,11 @@
   --theme-library-submit-border: #ec4899;
   --theme-library-submit-hover-bg: #db2777;
 
+  --theme-library-card-title: #1e293b;
+  --theme-library-card-description: #64748b;
+  --theme-library-chip-bg: #fce7f3;
+  --theme-library-chip-text: #ec4899;
+
   --theme-action-button-default-bg: rgba(255, 255, 255, 0.72);
   --theme-action-button-default-border: rgba(255, 255, 255, 0.4);
   --theme-action-button-default-text: #334155;
@@ -136,16 +148,115 @@
   --theme-action-button-settings-reset-border: rgba(196, 181, 253, 0.4);
   --theme-action-button-settings-reset-text: #7c3aed;
   --theme-action-button-settings-reset-shadow:
-    inset 0 0 0 1px rgba(139, 92, 246, 0.12), 0 6px 18px rgba(139, 92, 246, 0.1);
+    inset 0 0 0 1px rgba(139, 92, 246, 0.12),
+    0 6px 18px rgba(139, 92, 246, 0.1);
 
   --theme-action-button-library-add-bg: rgba(236, 72, 153, 0.15);
   --theme-action-button-library-add-border: rgba(249, 168, 212, 0.4);
   --theme-action-button-library-add-text: #db2777;
   --theme-action-button-library-add-shadow:
-    inset 0 0 0 1px rgba(236, 72, 153, 0.12), 0 6px 18px rgba(236, 72, 153, 0.1);
+    inset 0 0 0 1px rgba(236, 72, 153, 0.12),
+    0 6px 18px rgba(236, 72, 153, 0.1);
 
   --theme-stat-title: #1e293b;
   --theme-stat-description: #64748b;
+  --theme-progress-stat-value: #94a3b8;
+  --theme-search-icon: #94a3b8;
+
+  --theme-startup-panel-bg: rgba(255, 255, 255, 0.7);
+  --theme-startup-title: #334155;
+  --theme-startup-description: #64748b;
+
+  --theme-frame-text: #334155;
+}
+
+body.theme-dark {
+  --theme-header-kicker: #38bdf8;
+  --theme-header-title: #f8fafc;
+
+  --theme-header-clock-bg: rgba(255, 255, 255, 0.05);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.1);
+  --theme-header-clock-text: rgba(255, 255, 255, 0.95);
+  --theme-header-clock-subtext: rgba(255, 255, 255, 0.6);
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.1);
+
+  --theme-sidebar-item-text: #94a3b8;
+  --theme-sidebar-item-hover-text: #e2e8f0;
+  --theme-sidebar-item-active-text: #f8fafc;
+
+  --theme-library-card-title: #f8fafc;
+  --theme-library-card-description: #94a3b8;
+  --theme-library-chip-bg: rgba(244, 114, 182, 0.14);
+  --theme-library-chip-text: #f9a8d4;
+
+  --theme-stat-title: #f8fafc;
+  --theme-stat-description: #94a3b8;
+  --theme-progress-stat-value: #94a3b8;
+  --theme-search-icon: #94a3b8;
+
+  --theme-startup-panel-bg: rgba(15, 23, 42, 0.96);
+  --theme-startup-title: #e2e8f0;
+  --theme-startup-description: #94a3b8;
+
+  --theme-frame-text: #e2e8f0;
+}
+
+body.theme-glossy {
+  --theme-header-kicker: #0ea5e9;
+  --theme-header-title: #334155;
+
+  --theme-header-clock-bg: rgba(255, 255, 255, 0.22);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.32);
+  --theme-header-clock-text: #334155;
+  --theme-header-clock-subtext: rgba(71, 85, 105, 0.82);
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.42);
+
+  --theme-sidebar-item-text: #475569;
+  --theme-sidebar-item-hover-text: #334155;
+  --theme-sidebar-item-active-text: #334155;
+
+  --theme-library-card-title: #334155;
+  --theme-library-card-description: rgba(71, 85, 105, 0.82);
+  --theme-library-chip-bg: rgba(251, 207, 232, 0.34);
+  --theme-library-chip-text: #be185d;
+
+  --theme-progress-stat-value: rgba(71, 85, 105, 0.7);
+  --theme-search-icon: rgba(71, 85, 105, 0.7);
+
+  --theme-startup-panel-bg: rgba(255, 255, 255, 0.24);
+  --theme-startup-title: #475569;
+  --theme-startup-description: rgba(71, 85, 105, 0.78);
+
+  --theme-frame-text: #475569;
+}
+
+body.theme-dark.theme-glossy {
+  --theme-header-kicker: #38bdf8;
+  --theme-header-title: #f8fafc;
+
+  --theme-header-clock-bg: rgba(15, 23, 42, 0.42);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.08);
+  --theme-header-clock-text: #f8fafc;
+  --theme-header-clock-subtext: #cbd5e1;
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.08);
+
+  --theme-sidebar-item-text: #cbd5e1;
+  --theme-sidebar-item-hover-text: #f8fafc;
+  --theme-sidebar-item-active-text: #f8fafc;
+
+  --theme-library-card-title: #f8fafc;
+  --theme-library-card-description: #cbd5e1;
+  --theme-library-chip-bg: rgba(244, 114, 182, 0.18);
+  --theme-library-chip-text: #fbcfe8;
+
+  --theme-progress-stat-value: #cbd5e1;
+  --theme-search-icon: #cbd5e1;
+
+  --theme-startup-panel-bg: rgba(15, 23, 42, 0.42);
+  --theme-startup-title: #f8fafc;
+  --theme-startup-description: #cbd5e1;
+
+  --theme-frame-text: #e2e8f0;
 }
 
 .surface-card {
@@ -198,6 +309,32 @@
   box-shadow: var(--theme-header-shadow);
 }
 
+.app-header-kicker {
+  color: var(--theme-header-kicker);
+}
+
+.app-header-title {
+  color: var(--theme-header-title);
+}
+
+.header-clock-card {
+  border: 1px solid var(--theme-header-clock-border);
+  background-color: var(--theme-header-clock-bg);
+  color: var(--theme-header-clock-text);
+}
+
+.header-clock-icon-wrap {
+  background-color: var(--theme-header-clock-icon-wrap-bg);
+}
+
+.header-clock-time {
+  color: var(--theme-header-clock-text);
+}
+
+.header-clock-date {
+  color: var(--theme-header-clock-subtext);
+}
+
 .empty-state-card {
   border-style: dashed;
   background-color: var(--theme-empty-bg);
@@ -224,16 +361,19 @@
 }
 
 .sidebar-item {
+  color: var(--theme-sidebar-item-text);
   border-color: var(--theme-sidebar-item-border);
   background-color: var(--theme-sidebar-item-bg);
 }
 
 .sidebar-item:hover {
+  color: var(--theme-sidebar-item-hover-text);
   background-color: var(--theme-sidebar-item-hover-bg);
   border-color: var(--theme-sidebar-item-hover-border);
 }
 
 .sidebar-item-active {
+  color: var(--theme-sidebar-item-active-text);
   border-color: var(--theme-sidebar-item-active-border);
   background-color: var(--theme-sidebar-item-active-bg);
   box-shadow: var(--theme-sidebar-item-active-shadow);
@@ -269,4 +409,41 @@
 
 .stat-card-description {
   color: var(--theme-stat-description);
+}
+
+.progress-stat-value {
+  color: var(--theme-progress-stat-value);
+}
+
+.search-icon {
+  color: var(--theme-search-icon);
+}
+
+.library-card-title {
+  color: var(--theme-library-card-title);
+}
+
+.library-card-description {
+  color: var(--theme-library-card-description);
+}
+
+.library-card-chip {
+  background-color: var(--theme-library-chip-bg);
+  color: var(--theme-library-chip-text);
+}
+
+.startup-panel {
+  background-color: var(--theme-startup-panel-bg);
+}
+
+.startup-title {
+  color: var(--theme-startup-title);
+}
+
+.startup-description {
+  color: var(--theme-startup-description);
+}
+
+.frame-shell-text {
+  color: var(--theme-frame-text);
 }

@@ -61,7 +61,7 @@ function App() {
             <AppSidebar activePage={activePage} onNavigate={setActivePage} />
           }
         >
-          <AppHeader settings={settings} />
+          <AppHeader />
           {activePageContent}
         </WindowFrame>
       </div>

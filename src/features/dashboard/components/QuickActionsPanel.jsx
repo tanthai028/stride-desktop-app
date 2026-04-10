@@ -3,8 +3,10 @@ import { quickActions } from "../data/quickActions.js";
 
 function QuickActionsPanel({ onAction }) {
   return (
-    <div className="surface-card rounded-[28px] border border-white/70 bg-white/70 p-5">
-      <p className="mb-3 text-sm font-medium text-slate-400">Quick Actions</p>
+    <div className="surface-card rounded-[28px] p-5">
+      <p className="stat-card-description mb-3 text-sm font-medium">
+        Quick Actions
+      </p>
 
       <div className="flex flex-col gap-3">
         {quickActions.map((action) => (

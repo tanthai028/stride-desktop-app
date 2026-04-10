@@ -3,8 +3,8 @@ import { dashboardStats } from "../data/dashboardStats.js";
 
 function DashboardPreview() {
   return (
-    <div className="surface-card rounded-[28px] border border-white/70 bg-white/70 p-5">
-      <p className="mb-3 text-sm font-medium text-slate-400">
+    <div className="surface-card rounded-[28px] p-5">
+      <p className="stat-card-description mb-3 text-sm font-medium">
         Dashboard Preview
       </p>
 

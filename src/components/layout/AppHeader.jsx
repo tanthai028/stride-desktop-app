@@ -1,9 +1,7 @@
 import { APP_NAME, APP_TAGLINE } from "../../constants/app.js";
 import HeaderClock from "./HeaderClock.jsx";
 
-function AppHeader({ settings }) {
-  const isDark = settings?.darkMode;
-
+function AppHeader() {
   return (
     <div className="flex w-full items-start justify-between gap-4">
       <div
@@ -16,21 +14,17 @@ function AppHeader({ settings }) {
         }}
       >
         <div className="relative z-10">
-          <p className="text-sm font-medium tracking-wide text-sky-500">
+          <p className="app-header-kicker text-sm font-medium tracking-wide">
             {APP_NAME}
           </p>
 
-          <h1
-            className={`text-3xl font-semibold ${
-              isDark ? "text-white" : "text-slate-800"
-            }`}
-          >
+          <h1 className="app-header-title text-3xl font-semibold">
             {APP_TAGLINE}
           </h1>
         </div>
       </div>
 
-      <HeaderClock isDark={isDark} />
+      <HeaderClock />
     </div>
   );
 }

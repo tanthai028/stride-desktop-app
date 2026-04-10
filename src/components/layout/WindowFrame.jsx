@@ -32,7 +32,7 @@ function FrameMain({ children }) {
 function FrameShell({ children }) {
   return (
     <div className="app-shell h-full overflow-hidden">
-      <div className="h-full overflow-hidden p-4 text-slate-700">
+      <div className="frame-shell-text h-full overflow-hidden p-4">
         {children}
       </div>
     </div>
