@@ -1,6 +1,7 @@
 @import "./theme/base.css";
 @import "./theme/surfaces.css";
 @import "./theme/forms.css";
+@import "./theme/settings.css";
 @import "./theme/modals.css";
 @import "./theme/library.css";
 @import "./theme/window-controls.css";
