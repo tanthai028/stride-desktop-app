@@ -1,7 +1,13 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
+const { readAppSettings, writeAppSettings } = require("./settingsStore.cjs");
 
 const isDev = !app.isPackaged;
+
+function getWindowBackgroundColor() {
+  const settings = readAppSettings();
+  return settings.darkMode ? "#020617" : "#f6f1f8";
+}
 
 function createWindow() {
   const winWidth = 1024;
@@ -25,7 +31,7 @@ function createWindow() {
     thickFrame: true,
     roundedCorners: true,
     hasShadow: true,
-    backgroundColor: "#f6f1f8",
+    backgroundColor: getWindowBackgroundColor(),
     show: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
@@ -73,6 +79,23 @@ function registerWindowEvents() {
   ipcMain.on("window:close", () => {
     const win = BrowserWindow.getFocusedWindow();
     if (win) win.close();
+  });
+
+  ipcMain.on("settings:get", (event) => {
+    event.returnValue = readAppSettings();
+  });
+
+  ipcMain.on("settings:set", (_event, settings) => {
+    writeAppSettings(settings);
+  });
+
+  ipcMain.on("theme:update-background", (_event, darkMode) => {
+    const win =
+      BrowserWindow.getFocusedWindow() || BrowserWindow.getAllWindows()[0];
+
+    if (!win) return;
+
+    win.setBackgroundColor(darkMode ? "#020617" : "#f6f1f8");
   });
 }
 

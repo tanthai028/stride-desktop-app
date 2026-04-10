@@ -21,3 +21,10 @@ contextBridge.exposeInMainWorld("appStartup", {
     };
   },
 });
+
+contextBridge.exposeInMainWorld("appSettings", {
+  get: () => ipcRenderer.sendSync("settings:get"),
+  set: (settings) => ipcRenderer.send("settings:set", settings),
+  updateThemeBackground: (darkMode) =>
+    ipcRenderer.send("theme:update-background", darkMode),
+});

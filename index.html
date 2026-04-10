@@ -5,6 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>my-desktop-app</title>
+
+    <script>
+      try {
+        const settings =
+          window.appSettings?.get?.() ??
+          JSON.parse(localStorage.getItem("desktop-app:settings") || "null");
+
+        if (settings?.darkMode) {
+          document.documentElement.classList.add("theme-dark");
+        }
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

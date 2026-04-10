@@ -17,7 +17,10 @@ function App() {
   useUiFeedback(settings.hoverSoundProfile);
 
   useEffect(() => {
+    document.documentElement.classList.toggle("theme-dark", settings.darkMode);
     document.body.classList.toggle("theme-dark", settings.darkMode);
+
+    window.appSettings?.updateThemeBackground?.(settings.darkMode);
   }, [settings.darkMode]);
 
   function handleQuickAction(actionId) {

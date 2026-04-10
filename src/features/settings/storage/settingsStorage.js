@@ -2,8 +2,21 @@ import { DEFAULT_SETTINGS } from "../../../constants/app.js";
 
 const SETTINGS_KEY = "desktop-app:settings";
 
+function isElectronSettingsAvailable() {
+  return typeof window !== "undefined" && window.appSettings?.get;
+}
+
 export function getStoredSettings() {
   try {
+    if (isElectronSettingsAvailable()) {
+      const storedSettings = window.appSettings.get();
+
+      return {
+        ...DEFAULT_SETTINGS,
+        ...storedSettings,
+      };
+    }
+
     const rawValue = localStorage.getItem(SETTINGS_KEY);
 
     if (!rawValue) {
@@ -22,5 +35,10 @@ export function getStoredSettings() {
 }
 
 export function saveStoredSettings(settings) {
+  if (isElectronSettingsAvailable()) {
+    window.appSettings.set(settings);
+    return;
+  }
+
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }

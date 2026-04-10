@@ -166,6 +166,45 @@ body.theme-dark {
   --theme-stat-card-pink-bg: rgba(91, 33, 61, 0.32);
   --theme-stat-card-violet-bg: rgba(55, 48, 107, 0.3);
   --theme-stat-card-sky-bg: rgba(12, 74, 110, 0.28);
+
+  --theme-progress-track-pink: rgba(251, 207, 232, 0.18);
+  --theme-progress-track-violet: rgba(196, 181, 253, 0.18);
+  --theme-progress-track-sky: rgba(125, 211, 252, 0.18);
+
+  --theme-progress-bar-pink: #f9a8d4;
+  --theme-progress-bar-violet: #c4b5fd;
+  --theme-progress-bar-sky: #7dd3fc;
+
+  --theme-card-bg: rgba(15, 23, 42, 0.58);
+  --theme-card-border: rgba(255, 255, 255, 0.16);
+  --theme-card-backdrop: blur(18px) saturate(135%);
+  --theme-card-backdrop-webkit: blur(18px) saturate(135%);
+
+  --theme-stat-title: #f8fafc;
+  --theme-stat-description: rgba(226, 232, 240, 0.78);
+
+  --theme-form-input-bg: rgba(15, 23, 42, 0.56);
+  --theme-form-input-border: rgba(255, 255, 255, 0.12);
+  --theme-form-input-text: #e2e8f0;
+  --theme-form-input-placeholder: rgba(203, 213, 225, 0.58);
+
+  --theme-startup-screen-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(15, 23, 42, 0.95),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(49, 46, 129, 0.34),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(30, 41, 59, 0.62),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
 }
 
 body.theme-dark .app-shell {

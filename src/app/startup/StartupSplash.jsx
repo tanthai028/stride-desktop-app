@@ -1,6 +1,6 @@
 function StartupSplash() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="startup-screen flex min-h-screen items-center justify-center">
       <div className="startup-panel surface-panel rounded-[28px] px-8 py-6 backdrop-blur-xl">
         <div className="flex items-center gap-3">
           <div className="text-2xl">✨</div>
