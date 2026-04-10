@@ -1,3 +1,10 @@
+:root {
+  --theme-library-card-title: #1e293b;
+  --theme-library-card-description: #64748b;
+  --theme-library-chip-bg: #fce7f3;
+  --theme-library-chip-text: #ec4899;
+}
+
 .library-tag-label {
   color: var(--theme-library-tag-label);
 }
@@ -26,13 +33,6 @@
   background-color: var(--theme-library-tag-hover-bg);
 }
 
-.library-tag-chip.is-selected {
-  color: var(--theme-library-tag-selected-text);
-  background-color: var(--theme-library-tag-selected-bg);
-  border-color: var(--theme-library-tag-selected-border);
-  box-shadow: var(--theme-library-tag-selected-shadow);
-}
-
 .library-action-delete {
   color: var(--theme-library-delete-text);
   background-color: var(--theme-library-delete-bg);
@@ -51,4 +51,17 @@
 
 .library-action-submit:hover {
   background-color: var(--theme-library-submit-hover-bg);
+}
+
+.library-card-title {
+  color: var(--theme-library-card-title);
+}
+
+.library-card-description {
+  color: var(--theme-library-card-description);
+}
+
+.library-card-chip {
+  background-color: var(--theme-library-chip-bg);
+  color: var(--theme-library-chip-text);
 }

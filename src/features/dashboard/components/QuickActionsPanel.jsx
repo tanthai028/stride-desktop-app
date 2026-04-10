@@ -12,7 +12,7 @@ function QuickActionsPanel({ onAction }) {
         {quickActions.map((action) => (
           <ActionButton
             key={action.id}
-            className={action.className}
+            variant={action.variant}
             onClick={() => onAction(action.id)}
           >
             {action.label}

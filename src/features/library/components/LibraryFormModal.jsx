@@ -14,15 +14,7 @@ const emptyForm = {
   tag: "",
 };
 
-function LibraryFormModal({
-  isOpen,
-  mode,
-  item,
-  onClose,
-  onSubmit,
-  onDelete,
-  isDarkMode = false,
-}) {
+function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
   const [formValues, setFormValues] = useState(emptyForm);
   const [selectedTagValue, setSelectedTagValue] = useState("");
 

@@ -1,0 +1,17 @@
+:root {
+  --theme-startup-panel-bg: rgba(255, 255, 255, 0.7);
+  --theme-startup-title: #334155;
+  --theme-startup-description: #64748b;
+}
+
+.startup-panel {
+  background-color: var(--theme-startup-panel-bg);
+}
+
+.startup-title {
+  color: var(--theme-startup-title);
+}
+
+.startup-description {
+  color: var(--theme-startup-description);
+}

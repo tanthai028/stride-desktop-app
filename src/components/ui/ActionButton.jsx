@@ -7,6 +7,9 @@ const actionButtonVariantClassNames = {
   default: "action-button-default",
   "settings-reset": "action-button-settings-reset",
   "library-add": "action-button-library-add",
+  "quick-pink": "action-button-quick-pink",
+  "quick-violet": "action-button-quick-violet",
+  "quick-sky": "action-button-quick-sky",
 };
 
 function ActionButton({

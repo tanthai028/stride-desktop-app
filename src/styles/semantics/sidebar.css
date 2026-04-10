@@ -1,0 +1,104 @@
+.sidebar-shell {
+  position: relative;
+  z-index: 30;
+  display: inline-block;
+  min-width: 72px;
+  padding: 12px;
+  overflow: visible;
+  border-radius: 28px;
+  border: 1px solid var(--theme-sidebar-border);
+  background: var(--theme-sidebar-bg);
+  box-shadow: var(--theme-sidebar-shadow);
+  backdrop-filter: var(--theme-sidebar-backdrop);
+  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+}
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: max-content;
+  min-width: 100%;
+}
+
+.sidebar-item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 44px;
+  width: max-content;
+  min-width: 100%;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--theme-sidebar-item-border);
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--theme-sidebar-item-text);
+  background: var(--theme-sidebar-item-bg);
+  outline: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-item:hover {
+  z-index: 40;
+  background: var(--theme-sidebar-item-hover-bg);
+  border-color: var(--theme-sidebar-item-hover-border);
+  color: var(--theme-sidebar-item-hover-text);
+}
+
+.sidebar-item.is-active {
+  background: var(--theme-sidebar-item-active-bg);
+  border-color: var(--theme-sidebar-item-active-border);
+  color: var(--theme-sidebar-item-active-text);
+  box-shadow: var(--theme-sidebar-item-active-shadow);
+}
+
+.sidebar-item-inner {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  align-items: center;
+  gap: 0;
+  transition: gap 0.2s ease;
+}
+
+.sidebar-shell:hover .sidebar-item-inner {
+  gap: 12px;
+}
+
+.sidebar-icon {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-label {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition:
+    max-width 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.sidebar-shell:hover .sidebar-label {
+  max-width: 200px;
+  opacity: 1;
+}
+
+.sidebar-item:focus,
+.sidebar-item:focus-visible {
+  outline: none;
+  box-shadow: none;
+}

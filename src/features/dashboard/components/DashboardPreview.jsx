@@ -14,8 +14,7 @@ function DashboardPreview() {
             key={stat.label}
             label={stat.label}
             value={stat.value}
-            trackClassName={stat.trackClassName}
-            barClassName={stat.barClassName}
+            tone={stat.tone}
           />
         ))}
       </div>

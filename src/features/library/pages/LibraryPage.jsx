@@ -100,7 +100,6 @@ function LibraryPage({ settings }) {
         isOpen={isModalOpen}
         mode={modalMode}
         item={selectedItem}
-        isDarkMode={settings.darkMode}
         onClose={closeModal}
         onSubmit={modalMode === "edit" ? handleUpdateItem : handleAddItem}
         onDelete={handleDeleteItem}

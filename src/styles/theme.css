@@ -1,11 +1,17 @@
-@import "./theme/base.css";
-@import "./theme/surfaces.css";
-@import "./theme/forms.css";
-@import "./theme/settings.css";
-@import "./theme/modals.css";
-@import "./theme/library.css";
-@import "./theme/window-controls.css";
-@import "./theme/effects.css";
-@import "./theme/dark-mode.css";
-@import "./theme/glossy-base.css";
-@import "./theme/glossy-dark.css";
+@import "./base.css";
+
+@import "./semantics/surfaces.css";
+@import "./semantics/forms.css";
+@import "./semantics/settings.css";
+@import "./semantics/header.css";
+@import "./semantics/sidebar.css";
+@import "./semantics/dashboard.css";
+@import "./semantics/startup.css";
+@import "./semantics/shell.css";
+@import "./semantics/modals.css";
+@import "./semantics/library.css";
+@import "./semantics/window-controls.css";
+@import "./semantics/effects.css";
+
+@import "./modes/light.css";
+@import "./modes/dark.css";

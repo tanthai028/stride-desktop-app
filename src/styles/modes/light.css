@@ -1,0 +1,170 @@
+:root {
+  --theme-utility-surface-blur: blur(12px) saturate(160%);
+  --theme-utility-surface-saturate: blur(12px) saturate(140%);
+  --theme-utility-surface-shadow: none;
+
+  --theme-panel-bg: rgba(255, 255, 255, 0.18);
+  --theme-panel-border: rgba(255, 255, 255, 0.34);
+  --theme-panel-shadow:
+    0 18px 48px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  --theme-panel-backdrop: blur(22px) saturate(150%);
+  --theme-panel-backdrop-webkit: blur(22px) saturate(150%);
+
+  --theme-sidebar-bg: rgba(255, 255, 255, 0.32);
+  --theme-sidebar-border: rgba(255, 255, 255, 0.18);
+  --theme-sidebar-backdrop: blur(18px) saturate(145%);
+  --theme-sidebar-backdrop-webkit: blur(18px) saturate(145%);
+  --theme-sidebar-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  --theme-sidebar-item-bg: rgba(255, 255, 255, 0.2);
+  --theme-sidebar-item-border: rgba(255, 255, 255, 0.14);
+  --theme-sidebar-item-hover-bg: rgba(14, 165, 233, 0.12);
+  --theme-sidebar-item-hover-border: rgba(255, 255, 255, 0.16);
+
+  --theme-sidebar-item-active-bg: rgba(14, 165, 233, 0.28);
+  --theme-sidebar-item-active-border: transparent;
+  --theme-sidebar-item-active-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 10px rgba(14, 165, 233, 0.18), 0 8px 18px rgba(14, 165, 233, 0.12);
+
+  --theme-header-bg: rgba(255, 255, 255, 0.45);
+  --theme-header-border: rgba(255, 255, 255, 0.56);
+  --theme-header-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42), var(--shadow-card);
+
+  --theme-empty-bg: rgba(255, 255, 255, 0.18);
+  --theme-empty-border: rgba(255, 255, 255, 0.34);
+  --theme-empty-backdrop: blur(18px) saturate(145%);
+  --theme-empty-backdrop-webkit: blur(18px) saturate(145%);
+
+  --theme-select-trigger-bg: rgba(255, 255, 255, 0.5);
+  --theme-select-trigger-border: rgba(255, 255, 255, 0.5);
+  --theme-select-trigger-text: #475569;
+  --theme-select-trigger-backdrop: blur(14px) saturate(135%);
+  --theme-select-trigger-backdrop-webkit: blur(14px) saturate(135%);
+
+  --theme-select-panel-bg: rgba(255, 248, 252, 0.94);
+  --theme-select-panel-border: rgba(255, 255, 255, 0.7);
+  --theme-select-panel-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --theme-select-panel-backdrop: blur(20px) saturate(145%);
+  --theme-select-panel-backdrop-webkit: blur(20px) saturate(145%);
+
+  --theme-select-option-text: #475569;
+  --theme-select-option-hover-bg: rgba(255, 255, 255, 0.72);
+  --theme-select-option-hover-text: #334155;
+  --theme-select-option-selected-bg: rgba(244, 114, 182, 0.22);
+  --theme-select-option-selected-text: #334155;
+
+  --theme-section-divider: rgba(255, 255, 255, 0.3);
+
+  --theme-window-controls-bg: rgba(255, 255, 255, 0.14);
+  --theme-window-controls-border: rgba(255, 255, 255, 0.22);
+  --theme-window-controls-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+  --theme-modal-overlay: rgba(15, 23, 42, 0.2);
+  --theme-modal-overlay-backdrop: blur(14px) saturate(135%);
+  --theme-modal-overlay-backdrop-webkit: blur(14px) saturate(135%);
+  --theme-modal-bg: linear-gradient(
+    180deg,
+    rgba(255, 250, 252, 0.76) 0%,
+    rgba(255, 244, 248, 0.66) 100%
+  );
+  --theme-modal-border: rgba(255, 255, 255, 0.46);
+  --theme-modal-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+
+  --theme-library-tag-label: #475569;
+  --theme-library-tag-bg: rgba(255, 248, 252, 0.34);
+  --theme-library-tag-border: rgba(255, 255, 255, 0.26);
+  --theme-library-tag-text: #475569;
+  --theme-library-tag-hover-bg: rgba(255, 248, 252, 0.42);
+  --theme-library-tag-hover-text: #334155;
+  --theme-library-tag-selected-bg: rgba(251, 207, 232, 0.4);
+  --theme-library-tag-selected-border: rgba(244, 114, 182, 0.24);
+  --theme-library-tag-selected-text: #334155;
+
+  --theme-library-delete-bg: rgba(255, 244, 246, 0.82);
+  --theme-library-delete-text: #e11d48;
+  --theme-library-delete-border: rgba(255, 255, 255, 0.34);
+  --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.92);
+
+  --theme-library-submit-bg: rgba(190, 24, 93, 0.2);
+  --theme-library-submit-text: #475569;
+  --theme-library-submit-border: rgba(255, 255, 255, 0.24);
+  --theme-library-submit-hover-bg: rgba(190, 24, 93, 0.28);
+
+  --theme-window-controls-backdrop: blur(12px) saturate(145%);
+  --theme-window-controls-backdrop-webkit: blur(12px) saturate(145%);
+
+  --theme-library-tag-backdrop: blur(14px) saturate(135%);
+  --theme-library-tag-backdrop-webkit: blur(14px) saturate(135%);
+
+  --theme-modal-panel-backdrop: blur(22px) saturate(150%);
+  --theme-modal-panel-backdrop-webkit: blur(22px) saturate(150%);
+
+  --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.28);
+  --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.34);
+  --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.42);
+
+  --theme-header-kicker: #0ea5e9;
+  --theme-header-title: #334155;
+
+  --theme-header-clock-bg: rgba(255, 255, 255, 0.22);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.32);
+  --theme-header-clock-text: #334155;
+  --theme-header-clock-subtext: rgba(71, 85, 105, 0.82);
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.42);
+
+  --theme-sidebar-item-text: #475569;
+  --theme-sidebar-item-hover-text: #334155;
+  --theme-sidebar-item-active-text: #334155;
+
+  --theme-library-card-title: #334155;
+  --theme-library-card-description: rgba(71, 85, 105, 0.82);
+  --theme-library-chip-bg: rgba(251, 207, 232, 0.34);
+  --theme-library-chip-text: #be185d;
+
+  --theme-progress-stat-value: rgba(71, 85, 105, 0.7);
+  --theme-search-icon: rgba(71, 85, 105, 0.7);
+
+  --theme-startup-panel-bg: rgba(255, 255, 255, 0.24);
+  --theme-startup-title: #475569;
+  --theme-startup-description: rgba(71, 85, 105, 0.78);
+
+  --theme-frame-text: #475569;
+
+  --theme-stat-card-pink-bg: rgba(253, 242, 248, 0.5);
+  --theme-stat-card-violet-bg: rgba(245, 243, 255, 0.48);
+  --theme-stat-card-sky-bg: rgba(240, 249, 255, 0.5);
+}
+
+.app-shell {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 228, 230, 0.8),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(221, 214, 254, 0.75),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(191, 219, 254, 0.75),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
+}
+
+.window-controls-shell,
+.surface-panel,
+.app-header-brand,
+.select-menu-trigger,
+.select-menu-panel {
+  transition: none;
+}

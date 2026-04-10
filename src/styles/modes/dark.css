@@ -1,5 +1,4 @@
-/* dark glossy mode */
-body.theme-dark.theme-glossy {
+body.theme-dark {
   --theme-white-45: rgba(15, 23, 42, 0.34);
   --theme-white-50: rgba(15, 23, 42, 0.38);
   --theme-white-55: rgba(15, 23, 42, 0.42);
@@ -136,48 +135,55 @@ body.theme-dark.theme-glossy {
   --theme-library-submit-hover-bg: rgba(190, 24, 93, 0.42);
 
   --theme-library-tag-label: rgba(226, 232, 240, 0.92);
+
+  --theme-header-kicker: #38bdf8;
+  --theme-header-title: #f8fafc;
+
+  --theme-header-clock-bg: rgba(15, 23, 42, 0.42);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.08);
+  --theme-header-clock-text: #f8fafc;
+  --theme-header-clock-subtext: #cbd5e1;
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.08);
+
+  --theme-sidebar-item-text: #cbd5e1;
+  --theme-sidebar-item-hover-text: #f8fafc;
+  --theme-sidebar-item-active-text: #f8fafc;
+
+  --theme-library-card-title: #f8fafc;
+  --theme-library-card-description: #cbd5e1;
+  --theme-library-chip-bg: rgba(244, 114, 182, 0.18);
+  --theme-library-chip-text: #fbcfe8;
+
+  --theme-progress-stat-value: #cbd5e1;
+  --theme-search-icon: #cbd5e1;
+
+  --theme-startup-panel-bg: rgba(15, 23, 42, 0.42);
+  --theme-startup-title: #f8fafc;
+  --theme-startup-description: #cbd5e1;
+
+  --theme-frame-text: #e2e8f0;
+
+  --theme-stat-card-pink-bg: rgba(91, 33, 61, 0.32);
+  --theme-stat-card-violet-bg: rgba(55, 48, 107, 0.3);
+  --theme-stat-card-sky-bg: rgba(12, 74, 110, 0.28);
 }
 
-body.theme-dark.theme-glossy .summary-card {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-body.theme-dark.theme-glossy .summary-card--pink {
-  background-color: rgba(91, 33, 61, 0.32);
-}
-
-body.theme-dark.theme-glossy .summary-card--violet {
-  background-color: rgba(55, 48, 107, 0.3);
-}
-
-body.theme-dark.theme-glossy .summary-card--sky {
-  background-color: rgba(12, 74, 110, 0.28);
-}
-
-body.theme-dark.theme-glossy .summary-card > h2 {
-  color: #f8fafc;
-}
-
-body.theme-dark.theme-glossy .summary-card > p:last-child {
-  color: #cbd5e1;
-}
-
-body.theme-dark.theme-glossy .input-base {
-  color: #e2e8f0;
-  background-color: rgba(15, 23, 42, 0.52);
-  border-color: rgba(148, 163, 184, 0.18);
-}
-
-body.theme-dark.theme-glossy .input-base::placeholder {
-  color: rgba(148, 163, 184, 0.82);
-}
-
-body.theme-dark.theme-glossy .modal-secondary-button {
-  color: #cbd5e1;
-  background-color: rgba(51, 65, 85, 0.58);
-  border: 1px solid rgba(148, 163, 184, 0.14);
-}
-
-body.theme-dark.theme-glossy .modal-secondary-button:hover {
-  background-color: rgba(71, 85, 105, 0.7);
+body.theme-dark .app-shell {
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(15, 23, 42, 0.95),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(49, 46, 129, 0.34),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(30, 41, 59, 0.62),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
 }

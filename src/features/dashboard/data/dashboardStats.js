@@ -2,19 +2,16 @@ export const dashboardStats = [
   {
     label: "Energy",
     value: 82,
-    trackClassName: "bg-pink-100",
-    barClassName: "bg-pink-300",
+    tone: "pink",
   },
   {
     label: "Focus",
     value: 65,
-    trackClassName: "bg-violet-100",
-    barClassName: "bg-violet-300",
+    tone: "violet",
   },
   {
     label: "Mood",
     value: 91,
-    trackClassName: "bg-sky-100",
-    barClassName: "bg-sky-300",
+    tone: "sky",
   },
 ];

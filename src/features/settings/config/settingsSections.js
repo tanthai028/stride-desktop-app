@@ -8,7 +8,7 @@ export const settingsSections = [
         id: "darkMode",
         type: "toggle",
         title: "🌙 Dark mode",
-        description: "Switch between light glossy and dark glossy mode.",
+        description: "Switch between light mode and dark mode.",
       },
     ],
   },

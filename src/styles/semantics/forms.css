@@ -1,36 +1,4 @@
 :root {
-  --theme-form-label: #334155;
-  --theme-form-input-text: #334155;
-  --theme-form-input-placeholder: #94a3b8;
-
-  --theme-page-eyebrow: #8b5cf6;
-  --theme-page-title: #1e293b;
-  --theme-page-description: #64748b;
-
-  --theme-section-title: #334155;
-  --theme-section-description: #64748b;
-
-  --theme-empty-state-title: #1e293b;
-  --theme-empty-state-description: #64748b;
-}
-
-body.theme-dark {
-  --theme-form-label: #e2e8f0;
-  --theme-form-input-text: #e2e8f0;
-  --theme-form-input-placeholder: #94a3b8;
-
-  --theme-page-eyebrow: #c4b5fd;
-  --theme-page-title: #f8fafc;
-  --theme-page-description: #94a3b8;
-
-  --theme-section-title: #e2e8f0;
-  --theme-section-description: #94a3b8;
-
-  --theme-empty-state-title: #f8fafc;
-  --theme-empty-state-description: #94a3b8;
-}
-
-body.theme-glossy {
   --theme-form-label: #475569;
   --theme-form-input-text: #475569;
   --theme-form-input-placeholder: rgba(71, 85, 105, 0.7);
@@ -46,7 +14,7 @@ body.theme-glossy {
   --theme-empty-state-description: rgba(71, 85, 105, 0.82);
 }
 
-body.theme-dark.theme-glossy {
+body.theme-dark {
   --theme-form-label: #e2e8f0;
   --theme-form-input-text: #e2e8f0;
   --theme-form-input-placeholder: rgba(203, 213, 225, 0.7);

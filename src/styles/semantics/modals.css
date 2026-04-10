@@ -1,22 +1,4 @@
 :root {
-  --theme-modal-title: #1e293b;
-
-  --theme-modal-secondary-bg: rgba(255, 255, 255, 0.78);
-  --theme-modal-secondary-border: rgba(226, 232, 240, 0.95);
-  --theme-modal-secondary-text: #475569;
-  --theme-modal-secondary-hover-bg: rgba(255, 255, 255, 0.92);
-}
-
-body.theme-dark {
-  --theme-modal-title: #f8fafc;
-
-  --theme-modal-secondary-bg: rgba(51, 65, 85, 0.72);
-  --theme-modal-secondary-border: rgba(148, 163, 184, 0.14);
-  --theme-modal-secondary-text: #cbd5e1;
-  --theme-modal-secondary-hover-bg: rgba(71, 85, 105, 0.82);
-}
-
-body.theme-glossy {
   --theme-modal-title: #334155;
 
   --theme-modal-secondary-bg: rgba(255, 255, 255, 0.28);
@@ -25,7 +7,7 @@ body.theme-glossy {
   --theme-modal-secondary-hover-bg: rgba(255, 255, 255, 0.38);
 }
 
-body.theme-dark.theme-glossy {
+body.theme-dark {
   --theme-modal-title: #f8fafc;
 
   --theme-modal-secondary-bg: rgba(15, 23, 42, 0.38);

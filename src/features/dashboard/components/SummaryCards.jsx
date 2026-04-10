@@ -10,8 +10,7 @@ function SummaryCards() {
           label={card.label}
           title={card.title}
           description={card.description}
-          className={card.className}
-          labelClassName={card.labelClassName}
+          tone={card.tone}
         />
       ))}
     </div>

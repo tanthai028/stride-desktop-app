@@ -22,7 +22,7 @@ function FrameGrid({ children }) {
 }
 
 function FrameSidebar({ children }) {
-  return <div className="relative min-h-0">{children}</div>;
+  return <div className="relative min-h-0 overflow-visible">{children}</div>;
 }
 
 function FrameMain({ children }) {
