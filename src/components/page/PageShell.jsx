@@ -16,13 +16,13 @@ function PageShell({ eyebrow, title, description, actions, children }) {
       <div className="surface-section-divider flex shrink-0 flex-col gap-4 pb-5 md:flex-row md:items-start md:justify-between">
         <div>
           {eyebrow ? (
-            <p className="text-sm font-medium text-violet-500">{eyebrow}</p>
+            <p className="page-eyebrow text-sm font-medium">{eyebrow}</p>
           ) : null}
 
-          <h2 className="text-2xl font-semibold text-slate-800">{title}</h2>
+          <h2 className="page-title text-2xl font-semibold">{title}</h2>
 
           {description ? (
-            <p className="mt-1 text-sm text-slate-500">{description}</p>
+            <p className="page-description mt-1 text-sm">{description}</p>
           ) : null}
         </div>
 

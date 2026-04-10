@@ -2,7 +2,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
   return (
     <>
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="form-label mb-2 block text-sm font-medium">
           🏷️ Title
         </label>
         <input
@@ -14,7 +14,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
       </div>
 
       <div>
-        <label className="mb-2 block text-sm font-medium text-slate-700">
+        <label className="form-label mb-2 block text-sm font-medium">
           📝 Description
         </label>
         <textarea

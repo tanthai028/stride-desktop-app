@@ -4,11 +4,11 @@ function PageSection({ title, description, children, className = "" }) {
       {title || description ? (
         <div className="mb-3 shrink-0">
           {title ? (
-            <h3 className="text-sm font-semibold text-slate-700">{title}</h3>
+            <h3 className="section-title text-sm font-semibold">{title}</h3>
           ) : null}
 
           {description ? (
-            <p className="mt-1 text-xs text-slate-500">{description}</p>
+            <p className="section-description mt-1 text-xs">{description}</p>
           ) : null}
         </div>
       ) : null}
