@@ -62,7 +62,8 @@
   --theme-window-controls-bg: rgba(255, 255, 255, 0.14);
   --theme-window-controls-border: rgba(255, 255, 255, 0.22);
   --theme-window-controls-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 0 10px rgba(255, 255, 255, 0.08), 0 8px 18px rgba(15, 23, 42, 0.1);
 
   --theme-modal-overlay: rgba(15, 23, 42, 0.2);
   --theme-modal-overlay-backdrop: blur(14px) saturate(135%);
@@ -139,6 +140,29 @@
   --theme-stat-card-pink-bg: rgba(253, 242, 248, 0.5);
   --theme-stat-card-violet-bg: rgba(245, 243, 255, 0.48);
   --theme-stat-card-sky-bg: rgba(240, 249, 255, 0.5);
+
+  /* SKY (blue) */
+  --theme-accent-sky-bg: rgba(14, 165, 233, 0.28);
+  --theme-accent-sky-border: transparent;
+  --theme-accent-sky-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 10px rgba(14, 165, 233, 0.18), 0 8px 18px rgba(14, 165, 233, 0.12);
+
+  --theme-accent-violet-bg: rgba(139, 92, 246, 0.28);
+  --theme-accent-violet-border: transparent;
+  --theme-accent-violet-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 10px rgba(139, 92, 246, 0.18), 0 8px 18px rgba(139, 92, 246, 0.12);
+
+  --theme-accent-pink-bg: rgba(244, 114, 182, 0.28);
+  --theme-accent-pink-border: transparent;
+  --theme-accent-pink-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 10px rgba(244, 114, 182, 0.18),
+    0 8px 18px rgba(244, 114, 182, 0.12);
+
+  --theme-text-primary: #334155;
+  --theme-button-border: transparent;
 }
 
 .app-shell {

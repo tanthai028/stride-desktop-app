@@ -105,13 +105,9 @@ body.theme-dark {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
 
   width: 100%;
-  min-width: 120px;
   height: 44px;
-
-  padding: 0 1rem;
 
   border-radius: 1rem;
   font-size: 0.875rem;

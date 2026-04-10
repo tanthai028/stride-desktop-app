@@ -21,7 +21,7 @@ function createWindow() {
   const win = new BrowserWindow({
     height: winHeight,
     width: winWidth,
-    minHeight: 800,
+    minHeight: 900,
     minWidth: 600,
     x,
     y,

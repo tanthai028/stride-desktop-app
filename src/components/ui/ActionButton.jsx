@@ -4,12 +4,12 @@ const actionButtonBaseClassName =
 const actionButtonIconClassName = "inline-flex items-center gap-2";
 
 const actionButtonVariantClassNames = {
-  default: "action-button-default",
+  default: "button-default",
   "settings-reset": "action-button-settings-reset",
   "library-add": "action-button-library-add",
-  "quick-pink": "action-button-quick-pink",
-  "quick-violet": "action-button-quick-violet",
-  "quick-sky": "action-button-quick-sky",
+  pink: "button-pink",
+  violet: "button-violet",
+  sky: "button-sky",
 };
 
 function ActionButton({
@@ -18,18 +18,24 @@ function ActionButton({
   onClick,
   variant = "default",
   withIcon = false,
+  type = "button",
 }) {
   const variantClassName =
-    actionButtonVariantClassNames[variant] ??
+    actionButtonVariantClassNames[variant] ||
     actionButtonVariantClassNames.default;
 
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
-      className={`${actionButtonBaseClassName} ${
-        withIcon ? actionButtonIconClassName : ""
-      } ${variantClassName} ${className}`}
+      className={[
+        actionButtonBaseClassName,
+        withIcon ? actionButtonIconClassName : "",
+        variantClassName,
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       {children}
     </button>

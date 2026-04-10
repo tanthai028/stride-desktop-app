@@ -70,6 +70,7 @@ function LibraryPage({ settings }) {
         eyebrow="📚 Application Tracker"
         title="My Job Application Library"
         description="Track saved applications, notes, and status details in one place."
+        scrollable={false}
         actions={
           <ActionButton
             onClick={openAddModal}

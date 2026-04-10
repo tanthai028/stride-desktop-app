@@ -21,6 +21,12 @@
   outline: none;
   flex: 0 0 1.125rem;
   transform: translateZ(0);
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--theme-window-controls-shadow);
+}
+
+.window-control-dot:hover {
+  transform: scale(1.06);
 }
 
 .window-control-dot:focus {

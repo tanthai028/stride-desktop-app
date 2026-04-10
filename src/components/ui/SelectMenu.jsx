@@ -49,11 +49,11 @@ function SelectMenu({
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="select-menu-trigger interactive"
+        className="select-menu-trigger w-full pl-4 pr-4 gap-2 interactive"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="flex-1 text-center">
+        <span className="block truncate text-center">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
 

@@ -26,7 +26,7 @@ function FrameSidebar({ children }) {
 }
 
 function FrameMain({ children }) {
-  return <div className="flex min-h-0 flex-col gap-6">{children}</div>;
+  return <div className="flex min-h-0 flex-col gap-4">{children}</div>;
 }
 
 function FrameShell({ children }) {

@@ -205,6 +205,27 @@ body.theme-dark {
       transparent 30%
     ),
     linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
+
+  /* SKY */
+  --theme-accent-sky-bg: rgba(56, 189, 248, 0.18);
+  --theme-accent-sky-border: rgba(56, 189, 248, 0.16);
+  --theme-accent-sky-text: #bae6fd;
+  --theme-accent-sky-shadow:
+    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* VIOLET */
+  --theme-accent-violet-bg: rgba(139, 92, 246, 0.18);
+  --theme-accent-violet-border: rgba(139, 92, 246, 0.16);
+  --theme-accent-violet-text: #ddd6fe;
+  --theme-accent-violet-shadow:
+    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* PINK */
+  --theme-accent-pink-bg: rgba(244, 114, 182, 0.18);
+  --theme-accent-pink-border: rgba(244, 114, 182, 0.16);
+  --theme-accent-pink-text: #fbcfe8;
+  --theme-accent-pink-shadow:
+    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 body.theme-dark .app-shell {
