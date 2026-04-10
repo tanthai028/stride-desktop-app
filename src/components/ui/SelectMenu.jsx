@@ -59,7 +59,7 @@ function SelectMenu({
 
         <ChevronDown
           size={16}
-          className={`shrink-0 text-slate-400 transition-transform ${
+          className={`select-menu-icon shrink-0 transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />

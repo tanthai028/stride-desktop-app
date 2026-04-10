@@ -39,7 +39,7 @@ function Modal({ isOpen, title, children, onClose }) {
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
             <div className="mb-4 flex items-center justify-between gap-3">
-              <h2 className="text-lg font-semibold text-slate-800">{title}</h2>
+              <h2 className="modal-title text-lg font-semibold">{title}</h2>
             </div>
 
             {children}
