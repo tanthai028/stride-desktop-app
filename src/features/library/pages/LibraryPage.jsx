@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 import { useMemo } from "react";
-import { Plus } from "lucide-react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import LibraryFormModal from "../components/LibraryFormModal.jsx";
 import LibraryCollectionSection from "../components/LibraryCollectionSection.jsx";
 import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
 import useLibraryItems from "../hooks/useLibraryItems.js";
 import useLibraryPageState from "../hooks/useLibraryPageState.js";
-import ActionButton from "../../../components/ui/ActionButton.jsx";
 
 function LibraryPage({ settings }) {
   const { items, addItem, updateItem, deleteItem } = useLibraryItems();
@@ -71,17 +69,6 @@ function LibraryPage({ settings }) {
         title="My Job Application Library"
         description="Track saved applications, notes, and status details in one place."
         scrollable={false}
-        actions={
-          <ActionButton
-            onClick={openAddModal}
-            variant="library-add"
-            withIcon
-            className="pl-3"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Application</span>
-          </ActionButton>
-        }
       >
         <LibraryCollectionSection
           items={items}

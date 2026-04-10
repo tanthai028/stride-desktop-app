@@ -11,9 +11,9 @@ function PageActionBar({
   searchPlaceholder = "Search...",
 }) {
   return (
-    <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-      <div className="flex flex-1 flex-col gap-3 md:flex-row">
-        <div className="flex w-full items-center gap-3">
+    <div className="mb-5 flex flex-col gap-3">
+      <div className="flex flex-col gap-3 min-[520px]:flex-row min-[520px]:items-center">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
           <Search size={16} className="search-icon shrink-0" />
           <input
             type="text"
@@ -21,7 +21,7 @@ function PageActionBar({
             value={searchValue}
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder={searchPlaceholder}
-            className="input-base"
+            className="input-base min-w-0 flex-1"
           />
         </div>
 
@@ -29,7 +29,7 @@ function PageActionBar({
           value={sortValue}
           onChange={onSortChange}
           options={sortOptions}
-          className="md:w-auto"
+          className="w-full shrink-0 min-[520px]:w-[120px]"
         />
       </div>
 

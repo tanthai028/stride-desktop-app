@@ -7,6 +7,7 @@ import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import LibraryCard from "./LibraryCard.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
+import { Plus } from "lucide-react";
 
 function LibraryCollectionSection({
   items,
@@ -36,6 +37,17 @@ function LibraryCollectionSection({
     <PageSection
       title="All Applications"
       description={`Total Jobs Applied: ${items.length}`}
+      headerAction={
+        <ActionButton
+          onClick={onAddItem}
+          variant="library-add"
+          withIcon
+          className="pl-3"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Application</span>
+        </ActionButton>
+      }
     >
       <PageActionBar
         searchValue={searchValue}
