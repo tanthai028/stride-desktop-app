@@ -69,5 +69,4 @@
 .library-grid-card:hover {
   background: var(--theme-library-card-hover-bg);
   border-color: var(--theme-library-card-hover-border);
-  box-shadow: var(--theme-library-card-hover-shadow);
 }
