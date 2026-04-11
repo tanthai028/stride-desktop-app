@@ -9,8 +9,9 @@ function StatCard({
 }) {
   return (
     <motion.div
-      whileHover={{ y: -4, scale: 1.01 }}
-      className={`surface-card stat-card stat-card--${tone} rounded-[28px] p-5 ${className}`}
+      whileHover={{ y: -4 }}
+      data-tone={tone}
+      className={`surface-card stat-card rounded-[28px] p-5 ${className}`}
     >
       <p
         className={`stat-card-label stat-card-label--${tone} mb-2 text-sm font-medium`}

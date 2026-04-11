@@ -1,7 +1,10 @@
 :root {
-  --theme-window-controls-bg: #ffffff;
-  --theme-window-controls-border: transparent;
-  --theme-window-controls-shadow: none;
+  --shadow-card: none;
+  --shadow-card-soft: 0 8px 22px rgba(15, 23, 42, 0.06);
+  --shadow-floating: 0 18px 40px rgba(15, 23, 42, 0.12);
+  --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
+  --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
+  --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
 
   --theme-window-control-minimize-bg: #34d399;
   --theme-window-control-minimize-hover-bg: #10b981;
@@ -11,91 +14,6 @@
 
   --theme-window-control-close-bg: #fb7185;
   --theme-window-control-close-hover-bg: #f43f5e;
-
-  --shadow-panel: 0 20px 60px rgba(15, 23, 42, 0.08);
-  --shadow-card: 0 12px 32px rgba(15, 23, 42, 0.08);
-  --shadow-card-soft: 0 8px 22px rgba(15, 23, 42, 0.06);
-  --shadow-floating: 0 18px 40px rgba(15, 23, 42, 0.12);
-  --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
-  --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
-  --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
-  --shadow-modal: 0 24px 80px rgba(15, 23, 42, 0.18);
-
-  --theme-white-45: rgba(255, 255, 255, 0.45);
-  --theme-white-50: rgba(255, 255, 255, 0.5);
-  --theme-white-55: rgba(255, 255, 255, 0.55);
-  --theme-white-60: rgba(255, 255, 255, 0.6);
-  --theme-white-70: rgba(255, 255, 255, 0.7);
-  --theme-white-80: rgba(255, 255, 255, 0.8);
-  --theme-white-90: rgba(255, 255, 255, 0.9);
-
-  --theme-border-light: rgba(255, 255, 255, 0.3);
-  --theme-border-soft: rgba(255, 255, 255, 0.4);
-  --theme-border-mid: rgba(255, 255, 255, 0.5);
-  --theme-border-strong: rgba(255, 255, 255, 0.6);
-  --theme-border-heavy: rgba(255, 255, 255, 0.7);
-
-  --theme-utility-surface-blur: none;
-  --theme-utility-surface-saturate: none;
-  --theme-utility-surface-shadow: none;
-
-  --theme-panel-bg: #ffffff;
-  --theme-panel-border: #e2e8f0;
-  --theme-panel-shadow: var(--shadow-panel);
-  --theme-panel-backdrop: none;
-  --theme-panel-backdrop-webkit: none;
-
-  --theme-card-bg: rgba(255, 255, 255, 0.7);
-  --theme-card-border: rgba(255, 255, 255, 0.7);
-  --theme-card-backdrop: none;
-  --theme-card-backdrop-webkit: none;
-
-  --theme-empty-bg: #ffffff;
-  --theme-empty-border: #e2e8f0;
-  --theme-empty-backdrop: none;
-  --theme-empty-backdrop-webkit: none;
-
-  --theme-select-trigger-bg: #ffffff;
-  --theme-select-trigger-border: #e2e8f0;
-  --theme-select-trigger-text: #475569;
-  --theme-select-icon: #94a3b8;
-
-  --theme-select-panel-bg: #ffffff;
-  --theme-select-panel-border: #e2e8f0;
-  --theme-select-panel-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-  --theme-select-panel-backdrop: none;
-  --theme-select-panel-backdrop-webkit: none;
-
-  --theme-select-option-text: #475569;
-  --theme-select-option-hover-bg: #f8fafc;
-  --theme-select-option-hover-text: #334155;
-  --theme-select-option-selected-bg: #f1f5f9;
-  --theme-select-option-selected-text: #0f172a;
-
-  --theme-modal-overlay: rgba(15, 23, 42, 0.16);
-  --theme-modal-overlay-backdrop: blur(8px);
-  --theme-modal-overlay-backdrop-webkit: blur(8px);
-  --theme-modal-bg: rgba(255, 255, 255, 0.96);
-  --theme-modal-border: rgba(226, 232, 240, 0.95);
-  --theme-modal-shadow: var(--shadow-modal);
-  --theme-modal-panel-backdrop: none;
-  --theme-modal-panel-backdrop-webkit: none;
-
-  --theme-action-button-default-bg: rgba(255, 255, 255, 0.72);
-  --theme-action-button-default-border: rgba(255, 255, 255, 0.4);
-  --theme-action-button-default-text: #334155;
-
-  --theme-action-button-settings-reset-bg: rgba(139, 92, 246, 0.15);
-  --theme-action-button-settings-reset-border: rgba(196, 181, 253, 0.4);
-  --theme-action-button-settings-reset-text: #7c3aed;
-  --theme-action-button-settings-reset-shadow:
-    inset 0 0 0 1px rgba(139, 92, 246, 0.12), 0 6px 18px rgba(139, 92, 246, 0.1);
-
-  --theme-action-button-library-add-bg: rgba(236, 72, 153, 0.15);
-  --theme-action-button-library-add-border: rgba(249, 168, 212, 0.4);
-  --theme-action-button-library-add-text: #db2777;
-  --theme-action-button-library-add-shadow:
-    inset 0 0 0 1px rgba(236, 72, 153, 0.12), 0 6px 18px rgba(236, 72, 153, 0.1);
 }
 
 .surface-card {

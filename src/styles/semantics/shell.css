@@ -1,7 +1,3 @@
-:root {
-  --theme-frame-text: #334155;
-}
-
 .frame-shell-text {
   color: var(--theme-frame-text);
 }

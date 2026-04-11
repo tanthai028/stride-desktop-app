@@ -1,17 +1,3 @@
-:root {
-  --theme-header-bg: #ffffff;
-  --theme-header-border: #e2e8f0;
-  --theme-header-shadow: var(--shadow-card-soft);
-  --theme-header-kicker: #0ea5e9;
-  --theme-header-title: #1e293b;
-
-  --theme-header-clock-bg: rgba(255, 255, 255, 0.45);
-  --theme-header-clock-border: rgba(255, 255, 255, 0.4);
-  --theme-header-clock-text: #1e293b;
-  --theme-header-clock-subtext: #475569;
-  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.7);
-}
-
 .app-header-brand {
   overflow: hidden;
   padding: 1.25rem 1.5rem;
@@ -44,4 +30,34 @@
 
 .header-clock-date {
   color: var(--theme-header-clock-subtext);
+}
+
+.app-header-brand-mask {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    black 30%,
+    rgba(0, 0, 0, 0.9) 60%,
+    transparent 80%
+  );
+  mask-image: linear-gradient(
+    to right,
+    black 30%,
+    rgba(0, 0, 0, 0.9) 60%,
+    transparent 80%
+  );
+}
+
+@media (max-width: 725px) {
+  .app-header-brand-responsive {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 55%;
+  }
+
+  .app-header-brand-mask {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
 }

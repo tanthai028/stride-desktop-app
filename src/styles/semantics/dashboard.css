@@ -1,38 +1,3 @@
-:root {
-  --theme-stat-title: #1e293b;
-  --theme-stat-description: #64748b;
-  --theme-progress-stat-value: #94a3b8;
-  --theme-search-icon: #94a3b8;
-
-  --theme-stat-card-pink-bg: rgba(253, 242, 248, 0.82);
-  --theme-stat-card-violet-bg: rgba(245, 243, 255, 0.82);
-  --theme-stat-card-sky-bg: rgba(240, 249, 255, 0.82);
-
-  --theme-stat-card-pink-label: #ec4899;
-  --theme-stat-card-violet-label: #8b5cf6;
-  --theme-stat-card-sky-label: #0ea5e9;
-
-  --theme-progress-track-pink: #fce7f3;
-  --theme-progress-track-violet: #ede9fe;
-  --theme-progress-track-sky: #e0f2fe;
-
-  --theme-progress-bar-pink: #f9a8d4;
-  --theme-progress-bar-violet: #c4b5fd;
-  --theme-progress-bar-sky: #7dd3fc;
-
-  --theme-action-button-quick-pink-bg: #fbcfe8;
-  --theme-action-button-quick-pink-border: #f9a8d4;
-  --theme-action-button-quick-pink-text: #9d174d;
-
-  --theme-action-button-quick-violet-bg: #ddd6fe;
-  --theme-action-button-quick-violet-border: #c4b5fd;
-  --theme-action-button-quick-violet-text: #5b21b6;
-
-  --theme-action-button-quick-sky-bg: #bae6fd;
-  --theme-action-button-quick-sky-border: #7dd3fc;
-  --theme-action-button-quick-sky-text: #0c4a6e;
-}
-
 .stat-card-title {
   color: var(--theme-stat-title);
 }
@@ -50,150 +15,28 @@
 }
 
 .stat-card {
-  border-color: var(--theme-card-border);
+  background: var(--stat-card-bg, var(--theme-card-bg));
+  border: 1px solid var(--stat-card-border, var(--theme-card-border));
+  box-shadow: var(--stat-card-shadow, none);
+  color: var(--theme-text-primary);
 }
 
-.stat-card--pink {
-  background-color: var(--theme-stat-card-pink-bg);
+.stat-card[data-tone="pink"] {
+  --stat-card-bg: var(--theme-accent-pink-bg);
+  --stat-card-border: var(--theme-accent-pink-border);
+  --stat-card-shadow: var(--theme-accent-pink-shadow);
 }
 
-.stat-card--violet {
-  background-color: var(--theme-stat-card-violet-bg);
+.stat-card[data-tone="violet"] {
+  --stat-card-bg: var(--theme-accent-violet-bg);
+  --stat-card-border: var(--theme-accent-violet-border);
+  --stat-card-shadow: var(--theme-accent-violet-shadow);
 }
 
-.stat-card--sky {
-  background-color: var(--theme-stat-card-sky-bg);
-}
-
-.stat-card-label--pink {
-  color: var(--theme-stat-card-pink-label);
-}
-
-.stat-card-label--violet {
-  color: var(--theme-stat-card-violet-label);
-}
-
-.stat-card-label--sky {
-  color: var(--theme-stat-card-sky-label);
-}
-
-.progress-stat-track--pink {
-  background-color: var(--theme-progress-track-pink);
-}
-
-.progress-stat-track--violet {
-  background-color: var(--theme-progress-track-violet);
-}
-
-.progress-stat-track--sky {
-  background-color: var(--theme-progress-track-sky);
-}
-
-.progress-stat-bar--pink {
-  background-color: var(--theme-progress-bar-pink);
-}
-
-.progress-stat-bar--violet {
-  background-color: var(--theme-progress-bar-violet);
-}
-
-.progress-stat-bar--sky {
-  background-color: var(--theme-progress-bar-sky);
-}
-
-:root {
-  --theme-stat-title: #1e293b;
-  --theme-stat-description: #64748b;
-  --theme-progress-stat-value: #94a3b8;
-  --theme-search-icon: #94a3b8;
-
-  --theme-stat-card-pink-bg: rgba(253, 242, 248, 0.82);
-  --theme-stat-card-violet-bg: rgba(245, 243, 255, 0.82);
-  --theme-stat-card-sky-bg: rgba(240, 249, 255, 0.82);
-
-  --theme-stat-card-pink-label: #ec4899;
-  --theme-stat-card-violet-label: #8b5cf6;
-  --theme-stat-card-sky-label: #0ea5e9;
-
-  --theme-progress-track-pink: #fce7f3;
-  --theme-progress-track-violet: #ede9fe;
-  --theme-progress-track-sky: #e0f2fe;
-
-  --theme-progress-bar-pink: #f9a8d4;
-  --theme-progress-bar-violet: #c4b5fd;
-  --theme-progress-bar-sky: #7dd3fc;
-
-  /* Quick action buttons now match sidebar tone/style more closely */
-  --theme-action-button-quick-pink-bg: rgba(244, 114, 182, 0.14);
-  --theme-action-button-quick-pink-border: rgba(244, 114, 182, 0.18);
-  --theme-action-button-quick-pink-text: #be185d;
-  --theme-action-button-quick-pink-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 8px 18px rgba(244, 114, 182, 0.08);
-
-  --theme-action-button-quick-violet-bg: rgba(139, 92, 246, 0.14);
-  --theme-action-button-quick-violet-border: rgba(139, 92, 246, 0.18);
-  --theme-action-button-quick-violet-text: #6d28d9;
-  --theme-action-button-quick-violet-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 18px rgba(139, 92, 246, 0.08);
-
-  --theme-action-button-quick-sky-bg: rgba(14, 165, 233, 0.16);
-  --theme-action-button-quick-sky-border: rgba(14, 165, 233, 0.18);
-  --theme-action-button-quick-sky-text: #0369a1;
-  --theme-action-button-quick-sky-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 18px rgba(14, 165, 233, 0.08);
-}
-
-body.theme-dark {
-  --theme-action-button-quick-pink-bg: rgba(244, 114, 182, 0.14);
-  --theme-action-button-quick-pink-border: rgba(244, 114, 182, 0.14);
-  --theme-action-button-quick-pink-text: #fbcfe8;
-  --theme-action-button-quick-pink-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-  --theme-action-button-quick-violet-bg: rgba(139, 92, 246, 0.14);
-  --theme-action-button-quick-violet-border: rgba(139, 92, 246, 0.14);
-  --theme-action-button-quick-violet-text: #ddd6fe;
-  --theme-action-button-quick-violet-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
-  --theme-action-button-quick-sky-bg: rgba(56, 189, 248, 0.18);
-  --theme-action-button-quick-sky-border: rgba(56, 189, 248, 0.14);
-  --theme-action-button-quick-sky-text: #bae6fd;
-  --theme-action-button-quick-sky-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-.stat-card-title {
-  color: var(--theme-stat-title);
-}
-
-.stat-card-description {
-  color: var(--theme-stat-description);
-}
-
-.progress-stat-value {
-  color: var(--theme-progress-stat-value);
-}
-
-.search-icon {
-  color: var(--theme-search-icon);
-}
-
-.stat-card {
-  border-color: var(--theme-card-border);
-}
-
-.stat-card--pink {
-  background-color: var(--theme-stat-card-pink-bg);
-}
-
-.stat-card--violet {
-  background-color: var(--theme-stat-card-violet-bg);
-}
-
-.stat-card--sky {
-  background-color: var(--theme-stat-card-sky-bg);
+.stat-card[data-tone="sky"] {
+  --stat-card-bg: var(--theme-accent-sky-bg);
+  --stat-card-border: var(--theme-accent-sky-border);
+  --stat-card-shadow: var(--theme-accent-sky-shadow);
 }
 
 .stat-card-label--pink {

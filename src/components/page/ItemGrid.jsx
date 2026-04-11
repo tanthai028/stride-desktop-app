@@ -6,7 +6,7 @@ function ItemGrid({ items, renderItem, onItemClick }) {
       {items.map((item) => (
         <PageCard
           key={item.id}
-          className={onItemClick ? "cursor-pointer" : ""}
+          className={`library-grid-card ${onItemClick ? "cursor-pointer" : ""}`}
           onClick={onItemClick ? () => onItemClick(item) : undefined}
         >
           {renderItem(item)}

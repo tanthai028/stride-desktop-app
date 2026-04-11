@@ -38,15 +38,17 @@ function LibraryCollectionSection({
       title="All Applications"
       description={`Total Jobs Applied: ${items.length}`}
       headerAction={
-        <ActionButton
-          onClick={onAddItem}
-          variant="library-add"
-          withIcon
-          className="pl-3"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Application</span>
-        </ActionButton>
+        <div className="mr-2 mt-1">
+          <ActionButton
+            onClick={onAddItem}
+            variant="library-add"
+            withIcon
+            className="pl-3"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Application</span>
+          </ActionButton>
+        </div>
       }
     >
       <PageActionBar
@@ -58,19 +60,20 @@ function LibraryCollectionSection({
         searchPlaceholder="Search job applications..."
       />
 
-      <div className="relative min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1 overflow-visible">
         <div
           ref={scrollRef}
           onScroll={handleScroll}
           onPointerEnter={handlePointerEnter}
           onPointerLeave={handlePointerLeave}
-          className="h-full min-h-0 overflow-y-auto scrollbar-hide pr-1"
+          className="h-full min-h-0 overflow-y-auto overflow-x-visible scrollbar-hide"
         >
-          <div className="min-h-full px-1 py-2">
+          <div className="min-h-full p-1 pt-1.5">
             {hasFilteredItems ? (
               <ItemGrid
                 items={filteredItems}
                 onItemClick={isPageReady ? onItemClick : undefined}
+                cardClassName="library-grid-card"
                 renderItem={(item) => <LibraryCard item={item} />}
               />
             ) : (

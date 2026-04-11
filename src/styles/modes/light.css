@@ -1,70 +1,91 @@
 :root {
+  /* Mode helpers */
+  --theme-interactive-hover-brightness: 1.02;
+
+  /* Shared glass utilities */
   --theme-utility-surface-blur: blur(12px) saturate(160%);
   --theme-utility-surface-saturate: blur(12px) saturate(140%);
   --theme-utility-surface-shadow: none;
 
+  /* Core surfaces */
   --theme-panel-bg: rgba(255, 255, 255, 0.18);
   --theme-panel-border: rgba(255, 255, 255, 0.34);
   --theme-panel-shadow:
     0 18px 48px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.34);
   --theme-panel-backdrop: blur(22px) saturate(150%);
   --theme-panel-backdrop-webkit: blur(22px) saturate(150%);
+  --theme-card-bg: rgba(255, 255, 255, 0.55);
+  --theme-card-border: rgba(255, 255, 255, 1);
+  --theme-card-backdrop: blur(18px) saturate(135%);
+  --theme-card-backdrop-webkit: blur(18px) saturate(135%);
+  --theme-empty-bg: rgba(255, 255, 255, 0.18);
+  --theme-empty-border: rgba(255, 255, 255, 0.34);
+  --theme-empty-backdrop: blur(18px) saturate(145%);
+  --theme-empty-backdrop-webkit: blur(18px) saturate(145%);
+  --theme-section-divider: rgba(255, 255, 255, 0.3);
 
+  /* Sidebar */
   --theme-sidebar-bg: rgba(255, 255, 255, 0.32);
   --theme-sidebar-border: rgba(255, 255, 255, 0.18);
   --theme-sidebar-backdrop: blur(18px) saturate(145%);
   --theme-sidebar-backdrop-webkit: blur(18px) saturate(145%);
   --theme-sidebar-shadow:
     0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-
   --theme-sidebar-item-bg: rgba(255, 255, 255, 0.2);
   --theme-sidebar-item-border: rgba(255, 255, 255, 0.14);
+  --theme-sidebar-item-text: #475569;
   --theme-sidebar-item-hover-bg: rgba(14, 165, 233, 0.12);
   --theme-sidebar-item-hover-border: rgba(255, 255, 255, 0.16);
-
+  --theme-sidebar-item-hover-text: #334155;
   --theme-sidebar-item-active-bg: rgba(14, 165, 233, 0.28);
   --theme-sidebar-item-active-border: transparent;
+  --theme-sidebar-item-active-text: #334155;
   --theme-sidebar-item-active-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 0 10px rgba(14, 165, 233, 0.18), 0 8px 18px rgba(14, 165, 233, 0.12);
 
+  /* Header */
   --theme-header-bg: rgba(255, 255, 255, 0.45);
   --theme-header-border: rgba(255, 255, 255, 0.56);
   --theme-header-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.42), var(--shadow-card);
+  --theme-header-kicker: #0ea5e9;
+  --theme-header-title: #334155;
+  --theme-header-clock-bg: rgba(255, 255, 255, 0.22);
+  --theme-header-clock-border: rgba(255, 255, 255, 0.32);
+  --theme-header-clock-text: #334155;
+  --theme-header-clock-subtext: rgba(71, 85, 105, 0.82);
+  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.42);
 
-  --theme-empty-bg: rgba(255, 255, 255, 0.18);
-  --theme-empty-border: rgba(255, 255, 255, 0.34);
-  --theme-empty-backdrop: blur(18px) saturate(145%);
-  --theme-empty-backdrop-webkit: blur(18px) saturate(145%);
-
+  /* Select menu */
   --theme-select-trigger-bg: rgba(255, 255, 255, 0.5);
   --theme-select-trigger-border: rgba(255, 255, 255, 0.5);
   --theme-select-trigger-text: #475569;
   --theme-select-trigger-backdrop: blur(14px) saturate(135%);
   --theme-select-trigger-backdrop-webkit: blur(14px) saturate(135%);
-
   --theme-select-panel-bg: rgba(255, 248, 252, 0.94);
   --theme-select-panel-border: rgba(255, 255, 255, 0.7);
   --theme-select-panel-shadow:
     0 18px 40px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
   --theme-select-panel-backdrop: blur(20px) saturate(145%);
   --theme-select-panel-backdrop-webkit: blur(20px) saturate(145%);
-
   --theme-select-option-text: #475569;
   --theme-select-option-hover-bg: rgba(255, 255, 255, 0.72);
   --theme-select-option-hover-text: #334155;
   --theme-select-option-selected-bg: rgba(244, 114, 182, 0.22);
   --theme-select-option-selected-text: #334155;
+  --theme-select-icon: #94a3b8;
 
-  --theme-section-divider: rgba(255, 255, 255, 0.3);
-
+  /* Window controls */
   --theme-window-controls-bg: rgba(255, 255, 255, 0.14);
   --theme-window-controls-border: rgba(255, 255, 255, 0.22);
   --theme-window-controls-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.28),
     inset 0 0 10px rgba(255, 255, 255, 0.08), 0 8px 18px rgba(15, 23, 42, 0.1);
+  --theme-window-controls-backdrop: blur(12px) saturate(145%);
+  --theme-window-controls-backdrop-webkit: blur(12px) saturate(145%);
 
+  /* Modal */
   --theme-modal-overlay: rgba(15, 23, 42, 0.2);
   --theme-modal-overlay-backdrop: blur(14px) saturate(135%);
   --theme-modal-overlay-backdrop-webkit: blur(14px) saturate(135%);
@@ -76,7 +97,15 @@
   --theme-modal-border: rgba(255, 255, 255, 0.46);
   --theme-modal-shadow:
     0 24px 60px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.48);
+  --theme-modal-panel-backdrop: blur(22px) saturate(150%);
+  --theme-modal-panel-backdrop-webkit: blur(22px) saturate(150%);
+  --theme-modal-title: #334155;
+  --theme-modal-secondary-bg: rgba(255, 255, 255, 0.28);
+  --theme-modal-secondary-border: rgba(255, 255, 255, 0.3);
+  --theme-modal-secondary-text: #475569;
+  --theme-modal-secondary-hover-bg: rgba(255, 255, 255, 0.38);
 
+  /* Library */
   --theme-library-tag-label: #475569;
   --theme-library-tag-bg: rgba(255, 248, 252, 0.34);
   --theme-library-tag-border: rgba(255, 255, 255, 0.26);
@@ -86,84 +115,142 @@
   --theme-library-tag-selected-bg: rgba(251, 207, 232, 0.4);
   --theme-library-tag-selected-border: rgba(244, 114, 182, 0.24);
   --theme-library-tag-selected-text: #334155;
-
+  --theme-library-tag-backdrop: blur(14px) saturate(135%);
+  --theme-library-tag-backdrop-webkit: blur(14px) saturate(135%);
   --theme-library-delete-bg: rgba(255, 244, 246, 0.82);
   --theme-library-delete-text: #e11d48;
   --theme-library-delete-border: rgba(255, 255, 255, 0.34);
   --theme-library-delete-hover-bg: rgba(255, 241, 242, 0.92);
-
   --theme-library-submit-bg: rgba(190, 24, 93, 0.2);
   --theme-library-submit-text: #475569;
   --theme-library-submit-border: rgba(255, 255, 255, 0.24);
   --theme-library-submit-hover-bg: rgba(190, 24, 93, 0.28);
-
-  --theme-window-controls-backdrop: blur(12px) saturate(145%);
-  --theme-window-controls-backdrop-webkit: blur(12px) saturate(145%);
-
-  --theme-library-tag-backdrop: blur(14px) saturate(135%);
-  --theme-library-tag-backdrop-webkit: blur(14px) saturate(135%);
-
-  --theme-modal-panel-backdrop: blur(22px) saturate(150%);
-  --theme-modal-panel-backdrop-webkit: blur(22px) saturate(150%);
-
-  --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.28);
-  --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.34);
-  --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.42);
-
-  --theme-header-kicker: #0ea5e9;
-  --theme-header-title: #334155;
-
-  --theme-header-clock-bg: rgba(255, 255, 255, 0.22);
-  --theme-header-clock-border: rgba(255, 255, 255, 0.32);
-  --theme-header-clock-text: #334155;
-  --theme-header-clock-subtext: rgba(71, 85, 105, 0.82);
-  --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.42);
-
-  --theme-sidebar-item-text: #475569;
-  --theme-sidebar-item-hover-text: #334155;
-  --theme-sidebar-item-active-text: #334155;
-
   --theme-library-card-title: #334155;
   --theme-library-card-description: rgba(71, 85, 105, 0.82);
   --theme-library-chip-bg: rgba(251, 207, 232, 0.34);
   --theme-library-chip-text: #be185d;
+  --theme-library-card-gloss-border: rgba(255, 255, 255, 0.24);
+  --theme-library-card-gloss-highlight: rgba(255, 255, 255, 0.12);
+  --theme-library-card-gloss-glow: rgba(255, 255, 255, 0.04);
+  --theme-library-card-hover-bg: var(--theme-accent-sky-bg);
+  --theme-library-card-hover-border: var(--theme-accent-sky-border);
+  --theme-library-card-hover-shadow: var(--theme-accent-sky-shadow);
 
-  --theme-progress-stat-value: rgba(71, 85, 105, 0.7);
-  --theme-search-icon: rgba(71, 85, 105, 0.7);
-
+  /* Startup */
+  --theme-startup-screen-bg:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 228, 230, 0.8),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(221, 214, 254, 0.75),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(191, 219, 254, 0.75),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #fff7ed, #f8fafc 42%, #f5f3ff 75%, #eff6ff);
   --theme-startup-panel-bg: rgba(255, 255, 255, 0.24);
   --theme-startup-title: #475569;
   --theme-startup-description: rgba(71, 85, 105, 0.78);
 
-  --theme-frame-text: #475569;
+  /* Settings */
+  --theme-settings-card-bg: rgba(255, 255, 255, 0.22);
+  --theme-settings-card-border: rgba(255, 255, 255, 0.32);
+  --theme-settings-card-shadow:
+    0 12px 30px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+  --theme-settings-card-hover-shadow:
+    0 16px 36px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  --theme-settings-card-backdrop: blur(18px) saturate(145%);
+  --theme-settings-card-backdrop-webkit: blur(18px) saturate(145%);
+  --theme-settings-title: #475569;
+  --theme-settings-description: rgba(71, 85, 105, 0.85);
+  --theme-settings-choice-bg: rgba(255, 255, 255, 0.22);
+  --theme-settings-choice-border: rgba(255, 255, 255, 0.24);
+  --theme-settings-choice-text: #475569;
+  --theme-settings-choice-hover-bg: rgba(255, 255, 255, 0.34);
+  --theme-settings-choice-selected-bg: rgba(251, 207, 232, 0.32);
+  --theme-settings-choice-selected-border: rgba(244, 114, 182, 0.22);
+  --theme-settings-choice-selected-text: #334155;
+  --theme-settings-choice-selected-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 8px 20px rgba(244, 114, 182, 0.08);
+  --theme-settings-toggle-off-bg: rgba(255, 255, 255, 0.28);
+  --theme-settings-toggle-off-border: rgba(255, 255, 255, 0.34);
+  --theme-settings-toggle-off-shadow:
+    0 6px 16px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --theme-settings-toggle-on-bg: rgba(56, 189, 248, 0.72);
+  --theme-settings-toggle-on-border: rgba(255, 255, 255, 0.28);
+  --theme-settings-toggle-on-shadow:
+    0 8px 18px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --theme-settings-toggle-thumb-bg: rgba(255, 255, 255, 0.96);
+  --theme-settings-toggle-thumb-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+  --theme-settings-toggle-thumb-checked-bg: #ffffff;
+  --theme-settings-toggle-thumb-checked-shadow: 0 2px 12px
+    rgba(15, 23, 42, 0.16);
 
-  --theme-stat-card-pink-bg: rgba(253, 242, 248, 0.5);
-  --theme-stat-card-violet-bg: rgba(245, 243, 255, 0.48);
-  --theme-stat-card-sky-bg: rgba(240, 249, 255, 0.5);
+  /* Dashboard and stats */
+  --theme-progress-stat-value: rgba(71, 85, 105, 0.7);
+  --theme-search-icon: rgba(71, 85, 105, 0.7);
+  --theme-stat-title: #1e293b;
+  --theme-stat-description: #64748b;
+  --theme-stat-card-pink-label: #ec4899;
+  --theme-stat-card-violet-label: #8b5cf6;
+  --theme-stat-card-sky-label: #0ea5e9;
+  --theme-progress-track-pink: #fce7f3;
+  --theme-progress-track-violet: #ede9fe;
+  --theme-progress-track-sky: #e0f2fe;
+  --theme-progress-bar-pink: #f9a8d4;
+  --theme-progress-bar-violet: #c4b5fd;
+  --theme-progress-bar-sky: #7dd3fc;
 
+  /* Action buttons and accents */
   --theme-accent-sky-bg: rgba(14, 165, 233, 0.28);
   --theme-accent-sky-border: transparent;
   --theme-accent-sky-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 0 10px rgba(14, 165, 233, 0.18), 0 8px 18px rgba(14, 165, 233, 0.12);
-
   --theme-accent-violet-bg: rgba(139, 92, 246, 0.28);
   --theme-accent-violet-border: transparent;
   --theme-accent-violet-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 0 10px rgba(139, 92, 246, 0.18), 0 8px 18px rgba(139, 92, 246, 0.12);
-
   --theme-accent-pink-bg: rgba(244, 114, 182, 0.28);
   --theme-accent-pink-border: transparent;
   --theme-accent-pink-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 0 10px rgba(244, 114, 182, 0.18),
     0 8px 18px rgba(244, 114, 182, 0.12);
-
-  --theme-text-primary: #334155;
   --theme-button-border: transparent;
+  --theme-action-button-default-bg: rgba(255, 255, 255, 0.72);
+  --theme-action-button-default-border: rgba(255, 255, 255, 0.4);
+  --theme-action-button-default-text: #334155;
+
+  /* Forms and text */
+  --theme-text-primary: #334155;
+  --theme-form-label: #475569;
+  --theme-form-input-bg: rgba(255, 255, 255, 0.7);
+  --theme-form-input-border: var(--theme-select-panel-border);
+  --theme-form-input-text: #475569;
+  --theme-form-input-placeholder: rgba(71, 85, 105, 0.7);
+  --theme-page-eyebrow: #a855f7;
+  --theme-page-title: #334155;
+  --theme-page-description: rgba(71, 85, 105, 0.85);
+  --theme-section-title: #475569;
+  --theme-section-description: rgba(71, 85, 105, 0.78);
+  --theme-empty-state-title: #334155;
+  --theme-empty-state-description: rgba(71, 85, 105, 0.82);
+  --theme-frame-text: #475569;
+  --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.28);
+  --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.34);
+  --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.42);
 }
 
+/* App background */
 .app-shell {
   background:
     radial-gradient(
@@ -182,12 +269,4 @@
       transparent 30%
     ),
     linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
-}
-
-.window-controls-shell,
-.surface-panel,
-.app-header-brand,
-.select-menu-trigger,
-.select-menu-panel {
-  transition: none;
 }
