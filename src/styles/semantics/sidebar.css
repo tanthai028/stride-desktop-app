@@ -1,33 +1,46 @@
-.sidebar-shell {
+.sidebar-rail {
   position: relative;
-  z-index: 30;
-  display: inline-block;
+  width: 72px;
   min-width: 72px;
-  padding: 12px;
   overflow: visible;
+}
+
+.sidebar-shell {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: 72px;
+  overflow: hidden;
+  padding: 12px;
   border-radius: 28px;
   border: 1px solid var(--theme-sidebar-border);
   background: var(--theme-sidebar-bg);
   box-shadow: var(--theme-sidebar-shadow);
   backdrop-filter: var(--theme-sidebar-backdrop);
   -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+  transition:
+    width 0.3s ease-out,
+    background-color 0.3s ease-out,
+    border-color 0.3s ease-out,
+    box-shadow 0.3s ease-out;
+}
+
+.sidebar-shell:hover {
+  width: 180px;
 }
 
 .sidebar-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  width: max-content;
-  min-width: 100%;
+  gap: 16px;
 }
 
 .sidebar-item {
   position: relative;
   z-index: 1;
   display: flex;
-  min-height: 44px;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
   align-items: center;
   overflow: hidden;
   border-radius: 16px;
@@ -62,14 +75,8 @@
 
 .sidebar-item-inner {
   display: flex;
-  width: max-content;
-  min-width: 100%;
+  width: 100%;
   align-items: center;
-  gap: 0;
-  transition: gap 0.2s ease;
-}
-
-.sidebar-shell:hover .sidebar-item-inner {
   gap: 12px;
 }
 
@@ -88,12 +95,12 @@
   white-space: nowrap;
   opacity: 0;
   transition:
-    max-width 0.2s ease,
-    opacity 0.2s ease;
+    max-width 0.2s ease-out,
+    opacity 0.2s ease-out;
 }
 
 .sidebar-shell:hover .sidebar-label {
-  max-width: 200px;
+  max-width: 120px;
   opacity: 1;
 }
 
