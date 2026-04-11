@@ -77,12 +77,13 @@ body.theme-dark {
   --theme-select-icon: var(--theme-text-primary);
 
   /* Window controls */
-  --theme-window-controls-bg: rgba(15, 23, 42, 0.42);
-  --theme-window-controls-border: rgba(255, 255, 255, 0.08);
+  --theme-window-controls-bg: rgba(30, 41, 59, 0.46);
+  --theme-window-controls-border: rgba(255, 255, 255, 0.14);
   --theme-window-controls-shadow:
-    0 10px 30px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  --theme-window-controls-backdrop: blur(12px) saturate(130%);
-  --theme-window-controls-backdrop-webkit: blur(12px) saturate(130%);
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 10px rgba(255, 255, 255, 0.05), 0 8px 18px rgba(2, 6, 23, 0.28);
+  --theme-window-controls-backdrop: blur(12px) saturate(145%);
+  --theme-window-controls-backdrop-webkit: blur(12px) saturate(145%);
 
   /* Modal */
   --theme-modal-overlay: rgba(2, 6, 23, 0.54);
