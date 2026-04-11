@@ -22,7 +22,7 @@ function PageCard({
     <motion.div
       whileHover={{ y: -4, scale: 1.01 }}
       onClick={onClick}
-      className={`${baseClass} interactive`}
+      className={`${baseClass}`}
     >
       {children}
     </motion.div>

@@ -206,26 +206,34 @@ body.theme-dark {
     ),
     linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
 
+  /* STAT CARDS (darker, subtle tint) */
+  --theme-stat-card-pink-bg: rgba(244, 114, 182, 0.12);
+  --theme-stat-card-violet-bg: rgba(139, 92, 246, 0.12);
+  --theme-stat-card-sky-bg: rgba(14, 165, 233, 0.12);
+
   /* SKY */
-  --theme-accent-sky-bg: rgba(56, 189, 248, 0.18);
-  --theme-accent-sky-border: rgba(56, 189, 248, 0.16);
-  --theme-accent-sky-text: #bae6fd;
+  --theme-accent-sky-bg: rgba(14, 165, 233, 0.18);
+  --theme-accent-sky-border: transparent;
   --theme-accent-sky-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 12px rgba(14, 165, 233, 0.25), 0 8px 20px rgba(2, 6, 23, 0.6);
 
   /* VIOLET */
   --theme-accent-violet-bg: rgba(139, 92, 246, 0.18);
-  --theme-accent-violet-border: rgba(139, 92, 246, 0.16);
-  --theme-accent-violet-text: #ddd6fe;
+  --theme-accent-violet-border: transparent;
   --theme-accent-violet-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 12px rgba(139, 92, 246, 0.25), 0 8px 20px rgba(2, 6, 23, 0.6);
 
   /* PINK */
   --theme-accent-pink-bg: rgba(244, 114, 182, 0.18);
-  --theme-accent-pink-border: rgba(244, 114, 182, 0.16);
-  --theme-accent-pink-text: #fbcfe8;
+  --theme-accent-pink-border: transparent;
   --theme-accent-pink-shadow:
-    0 10px 24px rgba(2, 6, 23, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 0 12px rgba(244, 114, 182, 0.25), 0 8px 20px rgba(2, 6, 23, 0.6);
+
+  /* TEXT */
+  --theme-text-primary: #e2e8f0;
 }
 
 body.theme-dark .app-shell {

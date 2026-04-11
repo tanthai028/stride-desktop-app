@@ -232,21 +232,21 @@ body.theme-dark {
   background-color: var(--theme-progress-bar-sky);
 }
 
-.button-sky {
+.action-button-sky {
   background: var(--theme-accent-sky-bg);
   border-color: var(--theme-button-border);
   color: var(--theme-text-primary);
   box-shadow: var(--theme-accent-sky-shadow);
 }
 
-.button-violet {
+.action-button-violet {
   background: var(--theme-accent-violet-bg);
   border-color: var(--theme-button-border);
   color: var(--theme-text-primary);
   box-shadow: var(--theme-accent-violet-shadow);
 }
 
-.button-pink {
+.action-button-pink {
   background: var(--theme-accent-pink-bg);
   border-color: var(--theme-button-border);
   color: var(--theme-text-primary);

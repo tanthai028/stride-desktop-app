@@ -150,23 +150,23 @@
 }
 
 .action-button-default {
-  border-color: var(--theme-action-button-default-border);
   background-color: var(--theme-action-button-default-bg);
+  border-color: var(--theme-action-button-default-border);
   color: var(--theme-action-button-default-text);
 }
 
 .action-button-settings-reset {
-  border-color: var(--theme-action-button-settings-reset-border);
-  background-color: var(--theme-action-button-settings-reset-bg);
-  color: var(--theme-action-button-settings-reset-text);
-  box-shadow: var(--theme-action-button-settings-reset-shadow);
+  border-color: var(--theme-accent-violet-border);
+  background-color: var(--theme-accent-violet-bg);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-violet-shadow);
 }
 
 .action-button-library-add {
-  border-color: var(--theme-action-button-library-add-border);
-  background-color: var(--theme-action-button-library-add-bg);
-  color: var(--theme-action-button-library-add-text);
-  box-shadow: var(--theme-action-button-library-add-shadow);
+  border-color: var(--theme-accent-pink-border);
+  background-color: var(--theme-accent-pink-bg);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .select-menu-icon {
