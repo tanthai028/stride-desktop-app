@@ -38,17 +38,15 @@ function LibraryCollectionSection({
       title="All Applications"
       description={`Total Jobs Applied: ${items.length}`}
       headerAction={
-        <div className="mr-2 mt-1">
-          <ActionButton
-            onClick={onAddItem}
-            variant="library-add"
-            withIcon
-            className="pl-3"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Application</span>
-          </ActionButton>
-        </div>
+        <ActionButton
+          onClick={onAddItem}
+          variant="library-add"
+          withIcon
+          className="pl-3"
+        >
+          <Plus className="h-4 w-4" />
+          <span>Application</span>
+        </ActionButton>
       }
     >
       <PageActionBar

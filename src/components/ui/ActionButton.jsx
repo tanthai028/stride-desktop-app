@@ -1,10 +1,5 @@
-const actionButtonBaseClassName =
-  "interactive surface-control rounded-2xl border px-4 py-3 text-sm font-medium transition-transform duration-150 hover:scale-[1.01]";
-
-const actionButtonIconClassName = "inline-flex items-center gap-2";
-
 const actionButtonVariantClassNames = {
-  default: "button-default",
+  default: "action-button-default",
   "settings-reset": "action-button-settings-reset",
   "library-add": "action-button-library-add",
   pink: "action-button-pink",
@@ -29,8 +24,8 @@ function ActionButton({
       type={type}
       onClick={onClick}
       className={[
-        actionButtonBaseClassName,
-        withIcon ? actionButtonIconClassName : "",
+        "action-button",
+        withIcon ? "action-button--with-icon" : "",
         variantClassName,
         className,
       ]

@@ -138,22 +138,19 @@ body.theme-dark {
 
   /* Startup */
   --theme-startup-screen-bg:
-    radial-gradient(
-      circle at top left,
-      rgba(15, 23, 42, 0.95),
-      transparent 30%
-    ),
+    radial-gradient(circle at top left, rgba(30, 41, 59, 0.8), transparent 28%),
     radial-gradient(
       circle at top right,
-      rgba(49, 46, 129, 0.34),
-      transparent 35%
+      rgba(99, 102, 241, 0.24),
+      transparent 34%
     ),
     radial-gradient(
       circle at bottom left,
-      rgba(30, 41, 59, 0.62),
-      transparent 30%
+      rgba(14, 116, 144, 0.2),
+      transparent 28%
     ),
-    linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
+    linear-gradient(135deg, #020617, #08101f 40%, #0f172a 74%, #172554);
+
   --theme-startup-panel-bg: rgba(15, 23, 42, 0.42);
   --theme-startup-title: var(--theme-text-secondary);
   --theme-startup-description: var(--theme-text-descriptions);
@@ -253,20 +250,16 @@ body.theme-dark {
 /* App background */
 body.theme-dark .app-shell {
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(15, 23, 42, 0.95),
-      transparent 30%
-    ),
+    radial-gradient(circle at top left, rgba(30, 41, 59, 0.8), transparent 28%),
     radial-gradient(
       circle at top right,
-      rgba(49, 46, 129, 0.34),
-      transparent 35%
+      rgba(99, 102, 241, 0.24),
+      transparent 34%
     ),
     radial-gradient(
       circle at bottom left,
-      rgba(30, 41, 59, 0.62),
-      transparent 30%
+      rgba(14, 116, 144, 0.2),
+      transparent 28%
     ),
-    linear-gradient(135deg, #020617, #0b1120 40%, #111827 75%, #172554);
+    linear-gradient(135deg, #020617, #08101f 40%, #0f172a 74%, #172554);
 }

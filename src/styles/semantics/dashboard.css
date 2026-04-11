@@ -24,19 +24,16 @@
 .stat-card[data-tone="pink"] {
   --stat-card-bg: var(--theme-accent-pink-bg);
   --stat-card-border: var(--theme-accent-pink-border);
-  --stat-card-shadow: var(--theme-accent-pink-shadow);
 }
 
 .stat-card[data-tone="violet"] {
   --stat-card-bg: var(--theme-accent-violet-bg);
   --stat-card-border: var(--theme-accent-violet-border);
-  --stat-card-shadow: var(--theme-accent-violet-shadow);
 }
 
 .stat-card[data-tone="sky"] {
   --stat-card-bg: var(--theme-accent-sky-bg);
   --stat-card-border: var(--theme-accent-sky-border);
-  --stat-card-shadow: var(--theme-accent-sky-shadow);
 }
 
 .stat-card-label--pink {
@@ -73,25 +70,4 @@
 
 .progress-stat-bar--sky {
   background-color: var(--theme-progress-bar-sky);
-}
-
-.action-button-sky {
-  background: var(--theme-accent-sky-bg);
-  border-color: var(--theme-button-border);
-  color: var(--theme-text-primary);
-  box-shadow: var(--theme-accent-sky-shadow);
-}
-
-.action-button-violet {
-  background: var(--theme-accent-violet-bg);
-  border-color: var(--theme-button-border);
-  color: var(--theme-text-primary);
-  box-shadow: var(--theme-accent-violet-shadow);
-}
-
-.action-button-pink {
-  background: var(--theme-accent-pink-bg);
-  border-color: var(--theme-button-border);
-  color: var(--theme-text-primary);
-  box-shadow: var(--theme-accent-pink-shadow);
 }

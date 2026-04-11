@@ -15,3 +15,5 @@
 
 @import "./modes/light.css";
 @import "./modes/dark.css";
+
+@import "./semantics/buttons.css";

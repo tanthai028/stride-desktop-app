@@ -17,19 +17,29 @@
   height: 1.125rem;
   width: 1.125rem;
   cursor: pointer;
+  border: none;
   border-radius: 9999px;
   outline: none;
   flex: 0 0 1.125rem;
   transform: translateZ(0);
   background: rgba(255, 255, 255, 0.2);
   box-shadow: var(--theme-window-controls-shadow);
+  transition:
+    transform 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
 }
 
 .window-control-dot:hover {
-  transform: scale(1.06);
+  transform: translateY(-2px);
 }
 
-.window-control-dot:focus {
+.window-control-dot:active {
+  transform: scale(0.96);
+}
+
+.window-control-dot:focus,
+.window-control-dot:focus-visible {
   outline: none;
 }
 

@@ -32,7 +32,7 @@
   --theme-sidebar-shadow:
     0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   --theme-sidebar-item-bg: rgba(255, 255, 255, 0.2);
-  --theme-sidebar-item-border: rgba(255, 255, 255, 0.14);
+  --theme-sidebar-item-border: rgba(255, 255, 255, 0.55);
   --theme-sidebar-item-text: var(--theme-text-secondary);
   --theme-sidebar-item-hover-bg: rgba(14, 165, 233, 0.12);
   --theme-sidebar-item-hover-border: rgba(255, 255, 255, 0.16);
@@ -138,22 +138,11 @@
 
   /* Startup */
   --theme-startup-screen-bg:
-    radial-gradient(
-      circle at top left,
-      rgba(255, 228, 230, 0.8),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(221, 214, 254, 0.75),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(191, 219, 254, 0.75),
-      transparent 30%
-    ),
-    linear-gradient(135deg, #fff7ed, #f8fafc 42%, #f5f3ff 75%, #eff6ff);
+    radial-gradient(circle at top left, #ffe4e6, transparent 30%),
+    radial-gradient(circle at top right, #ddd6fe, transparent 35%),
+    radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),
+    linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
+
   --theme-startup-panel-bg: rgba(255, 255, 255, 0.24);
   --theme-startup-title: var(--theme-text-secondary);
   --theme-startup-description: var(--theme-text-descriptions);
@@ -256,20 +245,8 @@
 /* App background */
 .app-shell {
   background:
-    radial-gradient(
-      circle at top left,
-      rgba(255, 228, 230, 0.8),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at top right,
-      rgba(221, 214, 254, 0.75),
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(191, 219, 254, 0.75),
-      transparent 30%
-    ),
+    radial-gradient(circle at top left, #ffe4e6, transparent 30%),
+    radial-gradient(circle at top right, #ddd6fe, transparent 35%),
+    radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),
     linear-gradient(135deg, #fff7ed, #fdf2f8 40%, #f5f3ff 75%, #eff6ff);
 }

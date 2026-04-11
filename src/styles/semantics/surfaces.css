@@ -67,26 +67,6 @@
   -webkit-backdrop-filter: var(--theme-empty-backdrop-webkit);
 }
 
-.action-button-default {
-  background-color: var(--theme-action-button-default-bg);
-  border-color: var(--theme-action-button-default-border);
-  color: var(--theme-action-button-default-text);
-}
-
-.action-button-settings-reset {
-  border-color: var(--theme-accent-violet-border);
-  background-color: var(--theme-accent-violet-bg);
-  color: var(--theme-text-primary);
-  box-shadow: var(--theme-accent-violet-shadow);
-}
-
-.action-button-library-add {
-  border-color: var(--theme-accent-pink-border);
-  background-color: var(--theme-accent-pink-bg);
-  color: var(--theme-text-primary);
-  box-shadow: var(--theme-accent-pink-shadow);
-}
-
 .select-menu-icon {
   color: var(--theme-select-icon);
 }
