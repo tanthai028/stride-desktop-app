@@ -1,5 +1,7 @@
 import { libraryItems as defaultLibraryItems } from "../data/libraryData.js";
 
+const DEFAULT_STATUS = "Applied";
+
 function hasElectronLibraryApi() {
   return typeof window !== "undefined" && !!window.libraryApi;
 }
@@ -19,11 +21,13 @@ function normalizeLibraryItem(item = {}) {
   const nowIso = new Date().toISOString();
   const company = (item.company ?? "").trim();
   const role = (item.role ?? "").trim();
-  const status = (item.status ?? item.tag ?? "").trim();
+  const status =
+    (item.status ?? item.tag ?? DEFAULT_STATUS).trim() || DEFAULT_STATUS;
   const jobUrl = (item.jobUrl ?? "").trim();
   const location = (item.location ?? "").trim();
   const notes = (item.notes ?? item.description ?? "").trim();
-  const appliedAt = toIsoDateTime(item.appliedAt ?? item.createdAt ?? "");
+  const appliedAt =
+    toIsoDateTime(item.appliedAt ?? item.createdAt ?? "") || nowIso;
   const createdAt = toIsoDateTime(item.createdAt) || appliedAt || nowIso;
   const updatedAt = toIsoDateTime(item.updatedAt) || nowIso;
 
@@ -140,6 +144,8 @@ export async function addLibraryItem(formValues) {
 
   const newItem = normalizeLibraryItem({
     id: createItemId(),
+    status: DEFAULT_STATUS,
+    appliedAt: timestamp,
     ...formValues,
     createdAt: timestamp,
     updatedAt: timestamp,

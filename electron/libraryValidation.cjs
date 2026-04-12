@@ -9,6 +9,8 @@ const ALLOWED_STATUSES = new Set([
   "rejected",
 ]);
 
+const DEFAULT_STATUS = "applied";
+
 function normalizeStatusValue(status = "") {
   return String(status).trim().toLowerCase();
 }
@@ -33,10 +35,26 @@ function assertMaxLength(fieldName, value, maxLength) {
   }
 }
 
+function getNormalizedAppliedAt(value) {
+  if (!value) {
+    return new Date().toISOString();
+  }
+
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    throw new LibraryValidationError("Applied date is invalid.", {
+      field: "appliedAt",
+    });
+  }
+
+  return parsedDate.toISOString();
+}
+
 function validateLibraryFormValues(formValues = {}) {
   const company = String(formValues.company ?? "").trim();
   const role = String(formValues.role ?? "").trim();
-  const status = normalizeStatusValue(formValues.status);
+  const status = normalizeStatusValue(formValues.status) || DEFAULT_STATUS;
   const jobUrl = String(formValues.jobUrl ?? "").trim();
   const location = String(formValues.location ?? "").trim();
   const notes = String(formValues.notes ?? "").trim();
@@ -53,22 +71,10 @@ function validateLibraryFormValues(formValues = {}) {
     });
   }
 
-  if (!status) {
-    throw new LibraryValidationError("Status is required.", {
-      field: "status",
-    });
-  }
-
   if (!ALLOWED_STATUSES.has(status)) {
     throw new LibraryValidationError("Status is invalid.", {
       field: "status",
       allowedValues: Array.from(ALLOWED_STATUSES),
-    });
-  }
-
-  if (!notes) {
-    throw new LibraryValidationError("Notes are required.", {
-      field: "notes",
     });
   }
 
@@ -91,13 +97,14 @@ function validateLibraryFormValues(formValues = {}) {
     status,
     jobUrl,
     location,
-    appliedAt: formValues.appliedAt ?? "",
+    appliedAt: getNormalizedAppliedAt(formValues.appliedAt),
     notes,
   };
 }
 
 module.exports = {
   ALLOWED_STATUSES,
+  DEFAULT_STATUS,
   normalizeStatusValue,
   validateLibraryFormValues,
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Modal from "../../../components/ui/Modal.jsx";
 import {
   getLibraryStatusOptions,
@@ -8,15 +8,23 @@ import LibraryFormFields from "./LibraryFormFields.jsx";
 import LibraryStatusPicker from "./LibraryStatusPicker.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
 
-const emptyForm = {
-  company: "",
-  role: "",
-  status: "",
-  jobUrl: "",
-  location: "",
-  appliedAt: "",
-  notes: "",
-};
+const DEFAULT_STATUS = "Applied";
+
+function getTodayDateInputValue() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function createEmptyForm() {
+  return {
+    company: "",
+    role: "",
+    status: DEFAULT_STATUS,
+    jobUrl: "",
+    location: "",
+    appliedAt: getTodayDateInputValue(),
+    notes: "",
+  };
+}
 
 function formatDateInputValue(value = "") {
   if (!value) return "";
@@ -40,11 +48,12 @@ function LibraryFormModal({
   onSubmit,
   onDelete,
 }) {
-  const [formValues, setFormValues] = useState(emptyForm);
-  const [selectedStatusValue, setSelectedStatusValue] = useState("");
+  const [formValues, setFormValues] = useState(createEmptyForm);
+  const [selectedStatusValue, setSelectedStatusValue] = useState("applied");
 
   const statusOptions = getLibraryStatusOptions();
   const isEditMode = mode === "edit";
+  const addModeDefaultValues = useMemo(() => createEmptyForm(), [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -55,20 +64,20 @@ function LibraryFormModal({
       setFormValues({
         company: item.company ?? "",
         role: item.role ?? "",
-        status: item.status ?? "",
+        status: item.status ?? DEFAULT_STATUS,
         jobUrl: item.jobUrl ?? "",
         location: item.location ?? "",
         appliedAt: formatDateInputValue(item.appliedAt),
         notes: item.notes ?? "",
       });
 
-      setSelectedStatusValue(normalizedStatus);
+      setSelectedStatusValue(normalizedStatus || "applied");
       return;
     }
 
-    setFormValues(emptyForm);
-    setSelectedStatusValue("");
-  }, [isOpen, isEditMode, item]);
+    setFormValues(addModeDefaultValues);
+    setSelectedStatusValue("applied");
+  }, [addModeDefaultValues, isOpen, isEditMode, item]);
 
   function updateField(fieldName, value) {
     onClearError?.();
@@ -82,14 +91,6 @@ function LibraryFormModal({
   function handleStatusClick(option) {
     onClearError?.();
 
-    const isSelected = selectedStatusValue === option.value;
-
-    if (isSelected) {
-      setSelectedStatusValue("");
-      updateField("status", "");
-      return;
-    }
-
     setSelectedStatusValue(option.value);
     updateField("status", option.rawLabel);
   }
@@ -99,12 +100,12 @@ function LibraryFormModal({
 
     const company = formValues.company.trim();
     const role = formValues.role.trim();
-    const status = formValues.status.trim();
+    const status = (formValues.status || DEFAULT_STATUS).trim();
     const jobUrl = formValues.jobUrl.trim();
     const location = formValues.location.trim();
     const appliedAt = formValues.appliedAt
       ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
-      : "";
+      : new Date().toISOString();
     const notes = formValues.notes.trim();
 
     onSubmit({
@@ -128,6 +129,7 @@ function LibraryFormModal({
         <LibraryFormFields
           formValues={formValues}
           onFieldChange={updateField}
+          isEditMode={isEditMode}
         />
 
         <LibraryStatusPicker

@@ -1,4 +1,4 @@
-function LibraryFormFields({ formValues, onFieldChange }) {
+function LibraryFormFields({ formValues, onFieldChange, isEditMode = false }) {
   return (
     <div className="grid grid-cols-1 gap-4 min-[720px]:grid-cols-2">
       <div>
@@ -27,7 +27,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
 
       <div>
         <label className="form-label mb-2 block text-sm font-medium">
-          🔗 Job URL
+          🔗 Job URL <span className="opacity-70">(optional)</span>
         </label>
         <input
           placeholder="Paste job posting link"
@@ -39,7 +39,7 @@ function LibraryFormFields({ formValues, onFieldChange }) {
 
       <div>
         <label className="form-label mb-2 block text-sm font-medium">
-          📍 Location
+          📍 Location <span className="opacity-70">(optional)</span>
         </label>
         <input
           placeholder="Add location"
@@ -51,7 +51,8 @@ function LibraryFormFields({ formValues, onFieldChange }) {
 
       <div className="min-[720px]:col-span-2">
         <label className="form-label mb-2 block text-sm font-medium">
-          📅 Applied Date
+          📅 Applied Date{" "}
+          <span className="opacity-70">(defaults to today)</span>
         </label>
         <input
           type="date"
@@ -63,11 +64,11 @@ function LibraryFormFields({ formValues, onFieldChange }) {
 
       <div className="min-[720px]:col-span-2">
         <label className="form-label mb-2 block text-sm font-medium">
-          📝 Notes
+          📝 Notes <span className="opacity-70">(optional)</span>
         </label>
         <textarea
           spellCheck={false}
-          placeholder="Add notes"
+          placeholder={isEditMode ? "Add notes" : "Skip this for quick add"}
           value={formValues.notes}
           onChange={(event) => onFieldChange("notes", event.target.value)}
           rows={4}
