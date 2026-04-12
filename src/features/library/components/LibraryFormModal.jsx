@@ -30,7 +30,16 @@ function formatDateInputValue(value = "") {
   return parsedDate.toISOString().slice(0, 10);
 }
 
-function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
+function LibraryFormModal({
+  isOpen,
+  mode,
+  item,
+  errorMessage,
+  onClearError,
+  onClose,
+  onSubmit,
+  onDelete,
+}) {
   const [formValues, setFormValues] = useState(emptyForm);
   const [selectedStatusValue, setSelectedStatusValue] = useState("");
 
@@ -62,6 +71,8 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
   }, [isOpen, isEditMode, item]);
 
   function updateField(fieldName, value) {
+    onClearError?.();
+
     setFormValues((prev) => ({
       ...prev,
       [fieldName]: value,
@@ -69,6 +80,8 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
   }
 
   function handleStatusClick(option) {
+    onClearError?.();
+
     const isSelected = selectedStatusValue === option.value;
 
     if (isSelected) {
@@ -93,8 +106,6 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
       ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
       : "";
     const notes = formValues.notes.trim();
-
-    if (!company || !role || !status || !notes) return;
 
     onSubmit({
       company,
@@ -124,6 +135,12 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
           selectedStatusValue={selectedStatusValue}
           onStatusClick={handleStatusClick}
         />
+
+        {errorMessage ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {errorMessage}
+          </div>
+        ) : null}
 
         <LibraryFormActions
           isEditMode={isEditMode}

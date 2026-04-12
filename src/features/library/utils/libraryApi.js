@@ -60,10 +60,54 @@ function normalizeLibraryItems(items) {
     : defaultLibraryItems.map((item) => normalizeLibraryItem(item));
 }
 
+function getLibraryErrorMessage(errorPayload) {
+  switch (errorPayload?.code) {
+    case "VALIDATION_ERROR":
+      return errorPayload.message || "Please fix the form and try again.";
+    case "NOT_FOUND":
+      return "That application no longer exists.";
+    case "STORAGE_ERROR":
+      return "Library data could not be saved or loaded.";
+    default:
+      return "Something went wrong. Please try again.";
+  }
+}
+
+function normalizeLibraryClientError(error) {
+  try {
+    const parsedError = JSON.parse(error?.message ?? "");
+
+    if (parsedError?.code) {
+      return {
+        name: parsedError.name || "LibraryError",
+        code: parsedError.code,
+        message: getLibraryErrorMessage(parsedError),
+        details: parsedError.details ?? null,
+      };
+    }
+  } catch {
+    // Fall through to generic error below.
+  }
+
+  return {
+    name: "LibraryError",
+    code: "UNKNOWN_ERROR",
+    message: "Something went wrong. Please try again.",
+    details: null,
+  };
+}
+
+async function invokeElectronLibraryApi(methodName, ...args) {
+  try {
+    return await window.libraryApi[methodName](...args);
+  } catch (error) {
+    throw normalizeLibraryClientError(error);
+  }
+}
+
 export async function getLibraryItems() {
   if (hasElectronLibraryApi()) {
-    const items = await window.libraryApi.getItems();
-    return normalizeLibraryItems(items);
+    return invokeElectronLibraryApi("getItems");
   }
 
   const stored = localStorage.getItem("library-items");
@@ -88,8 +132,7 @@ export async function getLibraryItems() {
 
 export async function addLibraryItem(formValues) {
   if (hasElectronLibraryApi()) {
-    const newItem = await window.libraryApi.addItem(formValues);
-    return normalizeLibraryItem(newItem);
+    return invokeElectronLibraryApi("addItem", formValues);
   }
 
   const currentItems = await getLibraryItems();
@@ -110,8 +153,7 @@ export async function addLibraryItem(formValues) {
 
 export async function updateLibraryItem(itemId, formValues) {
   if (hasElectronLibraryApi()) {
-    const updatedItem = await window.libraryApi.updateItem(itemId, formValues);
-    return updatedItem ? normalizeLibraryItem(updatedItem) : null;
+    return invokeElectronLibraryApi("updateItem", itemId, formValues);
   }
 
   const currentItems = await getLibraryItems();
@@ -133,7 +175,7 @@ export async function updateLibraryItem(itemId, formValues) {
 
 export async function deleteLibraryItem(itemId) {
   if (hasElectronLibraryApi()) {
-    return window.libraryApi.deleteItem(itemId);
+    return invokeElectronLibraryApi("deleteItem", itemId);
   }
 
   const currentItems = await getLibraryItems();
@@ -146,8 +188,7 @@ export async function deleteLibraryItem(itemId) {
 
 export async function resetLibraryItems() {
   if (hasElectronLibraryApi()) {
-    const items = await window.libraryApi.resetItems();
-    return normalizeLibraryItems(items);
+    return invokeElectronLibraryApi("resetItems");
   }
 
   const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);

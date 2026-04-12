@@ -1,7 +1,7 @@
 const { DEFAULT_ITEMS } = require("./libraryDefaults.cjs");
 const {
-  readLibraryFile,
-  writeLibraryFile,
+  readLibraryRows,
+  replaceLibraryRows,
 } = require("./libraryRepository.cjs");
 const {
   validateLibraryFormValues,
@@ -69,17 +69,11 @@ function normalizeLibraryItems(items) {
 
 function readLibraryItems() {
   try {
-    const parsedValue = readLibraryFile(normalizeLibraryItems(DEFAULT_ITEMS));
-    const normalizedItems = normalizeLibraryItems(parsedValue);
-
-    writeLibraryFile(normalizedItems);
-
-    return normalizedItems;
+    const rows = readLibraryRows(normalizeLibraryItems(DEFAULT_ITEMS));
+    return normalizeLibraryItems(rows);
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
-      const fallbackItems = normalizeLibraryItems(DEFAULT_ITEMS);
-      writeLibraryFile(fallbackItems);
-      return fallbackItems;
+      throw error;
     }
 
     throw new LibraryStorageError("Failed to load library items.", {
@@ -89,9 +83,19 @@ function readLibraryItems() {
 }
 
 function writeLibraryItems(items) {
-  const normalizedItems = normalizeLibraryItems(items);
-  writeLibraryFile(normalizedItems);
-  return normalizedItems;
+  try {
+    const normalizedItems = normalizeLibraryItems(items);
+    replaceLibraryRows(normalizedItems);
+    return normalizedItems;
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to save library items.", {
+      cause: error.message,
+    });
+  }
 }
 
 function createLibraryItem(formValues) {

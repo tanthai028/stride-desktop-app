@@ -9,19 +9,30 @@ import {
 function useLibraryItems(resetVersion = 0) {
   const [items, setItems] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
     let isMounted = true;
 
     async function loadItems() {
       setHasLoaded(false);
+      setLoadError("");
 
-      const storedItems = await getLibraryItems();
+      try {
+        const storedItems = await getLibraryItems();
 
-      if (!isMounted) return;
+        if (!isMounted) return;
 
-      setItems(Array.isArray(storedItems) ? storedItems : []);
-      setHasLoaded(true);
+        setItems(Array.isArray(storedItems) ? storedItems : []);
+      } catch (error) {
+        if (!isMounted) return;
+
+        setItems([]);
+        setLoadError(error?.message || "Failed to load library items.");
+      } finally {
+        if (!isMounted) return;
+        setHasLoaded(true);
+      }
     }
 
     loadItems();
@@ -57,6 +68,7 @@ function useLibraryItems(resetVersion = 0) {
   return {
     items,
     hasLoaded,
+    loadError,
     addItem,
     updateItem,
     deleteItem,

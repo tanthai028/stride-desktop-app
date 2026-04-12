@@ -27,8 +27,6 @@
 .header-clock-icon {
   flex-shrink: 0;
   stroke-width: 1.9;
-  fill: currentColor;
-  stroke: none;
 }
 
 .header-clock-icon--day {
@@ -37,6 +35,8 @@
 
 .header-clock-icon--night {
   color: var(--theme-header-clock-night-icon);
+  fill: currentColor;
+  stroke: none;
 }
 
 .header-clock-time {
