@@ -70,8 +70,8 @@ function LibraryFormFields({ formValues, onFieldChange }) {
           placeholder="Add notes"
           value={formValues.notes}
           onChange={(event) => onFieldChange("notes", event.target.value)}
-          rows={5}
-          className="input-base min-h-[132px] resize-none scrollbar-hide"
+          rows={4}
+          className="input-base min-h-[96px] resize-none scrollbar-hide"
         />
       </div>
     </div>
