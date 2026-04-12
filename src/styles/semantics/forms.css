@@ -161,3 +161,15 @@
   color: var(--theme-select-option-selected-text);
   box-shadow: var(--theme-select-option-selected-shadow);
 }
+
+.select-menu-icon {
+  color: var(--theme-select-icon);
+  flex-shrink: 0;
+  stroke-width: 1.9;
+}
+
+.search-icon {
+  color: var(--theme-search-icon);
+  flex-shrink: 0;
+  stroke-width: 1.9;
+}

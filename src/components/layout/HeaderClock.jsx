@@ -9,9 +9,9 @@ function HeaderClock() {
       <div className="flex items-center gap-4">
         <div className="header-clock-icon-wrap flex h-12 w-12 items-center justify-center rounded-full">
           {isDay ? (
-            <Sun className="h-7 w-7 text-amber-400" />
+            <Sun className="header-clock-icon header-clock-icon--day h-7 w-7" />
           ) : (
-            <Moon className="h-7 w-7 text-indigo-300" />
+            <Moon className="header-clock-icon header-clock-icon--night h-7 w-7" />
           )}
         </div>
 

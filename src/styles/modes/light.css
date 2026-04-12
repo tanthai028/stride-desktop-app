@@ -1,7 +1,4 @@
 :root {
-  /* Mode helpers */
-  --theme-interactive-hover-brightness: 1.02;
-
   /* Shared glass utilities */
   --theme-utility-surface-blur: blur(12px) saturate(160%);
   --theme-utility-surface-saturate: blur(12px) saturate(140%);
@@ -56,6 +53,9 @@
   --theme-header-clock-text: var(--theme-text-primary);
   --theme-header-clock-subtext: var(--theme-text-descriptions);
   --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.42);
+
+  --theme-header-clock-day-icon: #f59e0b;
+  --theme-header-clock-night-icon: #818cf8;
 
   /* Select menu */
   --theme-select-trigger-bg: rgba(255, 255, 255, 0.5);

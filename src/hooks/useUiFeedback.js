@@ -5,7 +5,6 @@ import {
 } from "../lib/uiFeedback.js";
 
 const INTERACTIVE_SELECTOR = [
-  ".interactive",
   ".interactive-input",
   "[role='button']",
   "[role='option']",

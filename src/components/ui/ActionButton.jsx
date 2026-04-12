@@ -1,7 +1,5 @@
-const actionButtonVariantClassNames = {
+const actionButtonToneClassNames = {
   default: "action-button-default",
-  "settings-reset": "action-button-settings-reset",
-  "library-add": "action-button-library-add",
   pink: "action-button-pink",
   violet: "action-button-violet",
   sky: "action-button-sky",
@@ -11,13 +9,12 @@ function ActionButton({
   children,
   className = "",
   onClick,
-  variant = "default",
+  tone = "default",
   withIcon = false,
   type = "button",
 }) {
-  const variantClassName =
-    actionButtonVariantClassNames[variant] ||
-    actionButtonVariantClassNames.default;
+  const toneClassName =
+    actionButtonToneClassNames[tone] || actionButtonToneClassNames.default;
 
   return (
     <button
@@ -26,7 +23,7 @@ function ActionButton({
       className={[
         "action-button",
         withIcon ? "action-button--with-icon" : "",
-        variantClassName,
+        toneClassName,
         className,
       ]
         .filter(Boolean)

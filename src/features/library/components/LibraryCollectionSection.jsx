@@ -38,12 +38,7 @@ function LibraryCollectionSection({
       title="All Applications"
       description={`Total Jobs Applied: ${items.length}`}
       headerAction={
-        <ActionButton
-          onClick={onAddItem}
-          variant="library-add"
-          withIcon
-          className="pl-3"
-        >
+        <ActionButton onClick={onAddItem} tone="pink" withIcon className="pl-3">
           <Plus className="h-4 w-4" />
           <span>Application</span>
         </ActionButton>
@@ -92,11 +87,7 @@ function LibraryCollectionSection({
                       Clear Filters
                     </ActionButton>
                   ) : (
-                    <ActionButton
-                      variant="library-add"
-                      withIcon
-                      onClick={onAddItem}
-                    >
+                    <ActionButton tone="pink" withIcon onClick={onAddItem}>
                       ✨ Add First Item
                     </ActionButton>
                   )

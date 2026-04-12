@@ -10,10 +10,6 @@
   color: var(--theme-progress-stat-value);
 }
 
-.search-icon {
-  color: var(--theme-search-icon);
-}
-
 .stat-card {
   background: var(--stat-card-bg, var(--theme-card-bg));
   border: 1px solid var(--stat-card-border, var(--theme-card-border));

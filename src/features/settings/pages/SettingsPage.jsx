@@ -16,7 +16,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
 
   const resetButton = (
     <div className="mt-1 mr-1">
-      <ActionButton onClick={resetSettings} variant="settings-reset" withIcon>
+      <ActionButton onClick={resetSettings} tone="violet" withIcon>
         <RotateCcw size={16} className="shrink-0" />
         <span>Reset to Default</span>
       </ActionButton>

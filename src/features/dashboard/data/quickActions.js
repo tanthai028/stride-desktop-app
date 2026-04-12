@@ -2,16 +2,16 @@ export const quickActions = [
   {
     id: "new-entry",
     label: "New Entry",
-    variant: "pink",
+    tone: "pink",
   },
   {
     id: "view-stats",
     label: "View Stats",
-    variant: "violet",
+    tone: "violet",
   },
   {
     id: "settings",
     label: "Settings",
-    variant: "sky",
+    tone: "sky",
   },
 ];

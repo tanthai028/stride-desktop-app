@@ -33,11 +33,11 @@
 }
 
 .window-control-dot:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .window-control-dot:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 .window-control-dot:focus,

@@ -24,9 +24,19 @@
   background-color: var(--theme-header-clock-icon-wrap-bg);
 }
 
-.header-clock-icon-wrap svg {
+.header-clock-icon {
+  flex-shrink: 0;
+  stroke-width: 1.9;
   fill: currentColor;
   stroke: none;
+}
+
+.header-clock-icon--day {
+  color: var(--theme-header-clock-day-icon);
+}
+
+.header-clock-icon--night {
+  color: var(--theme-header-clock-night-icon);
 }
 
 .header-clock-time {

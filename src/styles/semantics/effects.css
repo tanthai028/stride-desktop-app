@@ -25,22 +25,3 @@
   transform: translateY(0) scale(1);
   filter: blur(0);
 }
-
-.interactive {
-  cursor: pointer;
-  transition:
-    transform 120ms ease,
-    background-color 120ms ease,
-    border-color 120ms ease,
-    filter 120ms ease,
-    opacity 120ms ease;
-}
-
-.interactive:hover {
-  transform: translateY(-1px);
-  filter: brightness(var(--theme-interactive-hover-brightness));
-}
-
-.interactive:active {
-  transform: translateY(0) scale(0.97);
-}

@@ -1,7 +1,4 @@
 body.theme-dark {
-  /* Mode helpers */
-  --theme-interactive-hover-brightness: 1.03;
-
   /* Shared glass utilities */
   --theme-utility-surface-blur: blur(20px) saturate(135%);
   --theme-utility-surface-saturate: blur(20px) saturate(135%);
@@ -56,6 +53,9 @@ body.theme-dark {
   --theme-header-clock-text: var(--theme-text-secondary);
   --theme-header-clock-subtext: var(--theme-text-descriptions);
   --theme-header-clock-icon-wrap-bg: rgba(255, 255, 255, 0.08);
+
+  --theme-header-clock-day-icon: #fbbf24;
+  --theme-header-clock-night-icon: #a5b4fc;
 
   /* Select menu */
   --theme-select-trigger-bg: rgba(30, 41, 59, 0.52);
