@@ -18,7 +18,8 @@
     background-color 120ms ease,
     border-color 120ms ease,
     color 120ms ease,
-    box-shadow 120ms ease;
+    box-shadow 120ms ease,
+    opacity 120ms ease;
 }
 
 .library-tag-chip:hover {
@@ -28,13 +29,18 @@
 }
 
 .library-tag-chip.is-selected {
-  color: var(--theme-library-tag-hover-text);
-  background-color: var(--theme-library-tag-hover-bg);
-  border-color: var(
-    --theme-library-tag-hover-border,
-    var(--theme-library-tag-border)
-  );
-  box-shadow: var(--shadow-control);
+  color: var(--theme-library-tag-selected-text);
+  background-color: var(--theme-library-tag-selected-bg);
+  border-color: var(--theme-library-tag-selected-border);
+  box-shadow:
+    0 0 0 1px var(--theme-library-tag-selected-border),
+    var(--shadow-control);
+}
+
+.library-tag-chip.is-selected:hover {
+  color: var(--theme-library-tag-selected-text);
+  background-color: var(--theme-library-tag-selected-bg);
+  border-color: var(--theme-library-tag-selected-border);
 }
 
 .library-card-title {
