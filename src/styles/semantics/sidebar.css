@@ -20,14 +20,14 @@
   backdrop-filter: var(--theme-sidebar-backdrop);
   -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
   transition:
-    width 0.3s ease-out,
-    background-color 0.3s ease-out,
-    border-color 0.3s ease-out,
-    box-shadow 0.3s ease-out;
+    width 0.2s ease-out,
+    background-color 0.2s ease-out,
+    border-color 0.2s ease-out,
+    box-shadow 0.2s ease-out;
 }
 
 .sidebar-shell:hover {
-  width: 180px;
+  width: 170px;
 }
 
 .sidebar-list {
