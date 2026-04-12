@@ -1,5 +1,12 @@
 const path = require("path");
-const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  screen,
+  shell,
+} = require("electron");
 const { readAppSettings, writeAppSettings } = require("./settingsStore.cjs");
 const {
   readLibraryItems,
@@ -123,6 +130,15 @@ function registerWindowEvents() {
 
   ipcMain.handle("library:reset-items", async () => {
     return resetLibraryItems();
+  });
+
+  ipcMain.handle("library:open-external-url", async (_event, url) => {
+    if (!url || typeof url !== "string") {
+      return { success: false };
+    }
+
+    await shell.openExternal(url);
+    return { success: true };
   });
 }
 

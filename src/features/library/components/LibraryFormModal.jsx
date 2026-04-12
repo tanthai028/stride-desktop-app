@@ -1,44 +1,64 @@
 import { useEffect, useState } from "react";
 import Modal from "../../../components/ui/Modal.jsx";
 import {
-  getLibraryTagOptions,
-  normalizeTagValue,
-} from "../constants/libraryTags.js";
+  getLibraryStatusOptions,
+  normalizeStatusValue,
+} from "../constants/libraryStatuses.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
-import LibraryTagPicker from "./LibraryTagPicker.jsx";
+import LibraryStatusPicker from "./LibraryStatusPicker.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
 
 const emptyForm = {
-  title: "",
-  description: "",
-  tag: "",
+  company: "",
+  role: "",
+  status: "",
+  jobUrl: "",
+  location: "",
+  appliedAt: "",
+  notes: "",
 };
+
+function formatDateInputValue(value = "") {
+  if (!value) return "";
+
+  const parsedDate = new Date(value);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "";
+  }
+
+  return parsedDate.toISOString().slice(0, 10);
+}
 
 function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
   const [formValues, setFormValues] = useState(emptyForm);
-  const [selectedTagValue, setSelectedTagValue] = useState("");
+  const [selectedStatusValue, setSelectedStatusValue] = useState("");
 
-  const tagOptions = getLibraryTagOptions();
+  const statusOptions = getLibraryStatusOptions();
   const isEditMode = mode === "edit";
 
   useEffect(() => {
     if (!isOpen) return;
 
     if (isEditMode && item) {
-      const normalizedTag = normalizeTagValue(item.tag);
+      const normalizedStatus = normalizeStatusValue(item.status);
 
       setFormValues({
-        title: item.title,
-        description: item.description,
-        tag: item.tag,
+        company: item.company ?? "",
+        role: item.role ?? "",
+        status: item.status ?? "",
+        jobUrl: item.jobUrl ?? "",
+        location: item.location ?? "",
+        appliedAt: formatDateInputValue(item.appliedAt),
+        notes: item.notes ?? "",
       });
 
-      setSelectedTagValue(normalizedTag);
+      setSelectedStatusValue(normalizedStatus);
       return;
     }
 
     setFormValues(emptyForm);
-    setSelectedTagValue("");
+    setSelectedStatusValue("");
   }, [isOpen, isEditMode, item]);
 
   function updateField(fieldName, value) {
@@ -48,37 +68,49 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
     }));
   }
 
-  function handleTagClick(option) {
-    const isSelected = selectedTagValue === option.value;
+  function handleStatusClick(option) {
+    const isSelected = selectedStatusValue === option.value;
 
     if (isSelected) {
-      setSelectedTagValue("");
-      updateField("tag", "");
+      setSelectedStatusValue("");
+      updateField("status", "");
       return;
     }
 
-    setSelectedTagValue(option.value);
-    updateField("tag", option.rawLabel);
+    setSelectedStatusValue(option.value);
+    updateField("status", option.rawLabel);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    const title = formValues.title.trim();
-    const description = formValues.description.trim();
-    const tag = formValues.tag.trim();
+    const company = formValues.company.trim();
+    const role = formValues.role.trim();
+    const status = formValues.status.trim();
+    const jobUrl = formValues.jobUrl.trim();
+    const location = formValues.location.trim();
+    const appliedAt = formValues.appliedAt
+      ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
+      : "";
+    const notes = formValues.notes.trim();
 
-    if (!title || !description || !tag) return;
+    if (!company || !role || !status || !notes) return;
 
-    onSubmit({ title, description, tag });
+    onSubmit({
+      company,
+      role,
+      status,
+      jobUrl,
+      location,
+      appliedAt,
+      notes,
+    });
   }
 
   return (
     <Modal
       isOpen={isOpen}
-      title={
-        isEditMode ? "🛠️ Edit Application Card" : "✨ Add Application Card"
-      }
+      title={isEditMode ? "🛠️ Edit Application" : "✨ Add Application"}
       onClose={onClose}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
@@ -87,10 +119,10 @@ function LibraryFormModal({ isOpen, mode, item, onClose, onSubmit, onDelete }) {
           onFieldChange={updateField}
         />
 
-        <LibraryTagPicker
-          tagOptions={tagOptions}
-          selectedTagValue={selectedTagValue}
-          onTagClick={handleTagClick}
+        <LibraryStatusPicker
+          statusOptions={statusOptions}
+          selectedStatusValue={selectedStatusValue}
+          onStatusClick={handleStatusClick}
         />
 
         <LibraryFormActions

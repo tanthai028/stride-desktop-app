@@ -1,41 +1,71 @@
-export function createItemId() {
-  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+function getNormalizedValue(value = "") {
+  return String(value).trim().toLowerCase();
+}
+
+function getAppliedTimestamp(item) {
+  const parsedDate = item.appliedAt ? new Date(item.appliedAt).getTime() : NaN;
+  return Number.isNaN(parsedDate) ? 0 : parsedDate;
 }
 
 export function getFilteredAndSortedLibraryItems(
   items,
   searchValue,
   sortValue,
+  statusFilterValue = "all",
 ) {
-  const normalizedSearch = searchValue.trim().toLowerCase();
+  const normalizedSearch = getNormalizedValue(searchValue);
+  const normalizedStatusFilter = getNormalizedValue(statusFilterValue);
 
   let nextItems = items.filter((item) => {
+    const matchesStatus =
+      normalizedStatusFilter === "all" ||
+      getNormalizedValue(item.status) === normalizedStatusFilter;
+
+    if (!matchesStatus) {
+      return false;
+    }
+
     if (!normalizedSearch) {
       return true;
     }
 
-    return (
-      item.title.toLowerCase().includes(normalizedSearch) ||
-      item.description.toLowerCase().includes(normalizedSearch) ||
-      item.tag.toLowerCase().includes(normalizedSearch)
-    );
+    return [
+      item.company,
+      item.role,
+      item.status,
+      item.location,
+      item.notes,
+      item.jobUrl,
+    ].some((value) => getNormalizedValue(value).includes(normalizedSearch));
   });
 
-  if (sortValue === "title-asc") {
-    nextItems = [...nextItems].sort((leftItem, rightItem) =>
-      leftItem.title.localeCompare(rightItem.title),
+  if (sortValue === "appliedAt-desc") {
+    nextItems = [...nextItems].sort(
+      (leftItem, rightItem) =>
+        getAppliedTimestamp(rightItem) - getAppliedTimestamp(leftItem),
     );
   }
 
-  if (sortValue === "title-desc") {
-    nextItems = [...nextItems].sort((leftItem, rightItem) =>
-      rightItem.title.localeCompare(leftItem.title),
+  if (sortValue === "appliedAt-asc") {
+    nextItems = [...nextItems].sort(
+      (leftItem, rightItem) =>
+        getAppliedTimestamp(leftItem) - getAppliedTimestamp(rightItem),
     );
   }
 
-  if (sortValue === "tag-asc") {
+  if (sortValue === "company-asc") {
     nextItems = [...nextItems].sort((leftItem, rightItem) =>
-      leftItem.tag.localeCompare(rightItem.tag),
+      getNormalizedValue(leftItem.company).localeCompare(
+        getNormalizedValue(rightItem.company),
+      ),
+    );
+  }
+
+  if (sortValue === "status-asc") {
+    nextItems = [...nextItems].sort((leftItem, rightItem) =>
+      getNormalizedValue(leftItem.status).localeCompare(
+        getNormalizedValue(rightItem.status),
+      ),
     );
   }
 

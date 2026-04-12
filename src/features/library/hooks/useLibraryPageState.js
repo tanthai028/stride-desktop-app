@@ -3,13 +3,15 @@ import { useState } from "react";
 function useLibraryPageState() {
   const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [sortValue, setSortValue] = useState("title-asc");
+  const [sortValue, setSortValue] = useState("appliedAt-desc");
+  const [statusFilterValue, setStatusFilterValue] = useState("all");
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
   function clearFilters() {
     setSearchValue("");
-    setSortValue("title-asc");
+    setSortValue("appliedAt-desc");
+    setStatusFilterValue("all");
   }
 
   function openAddModal() {
@@ -38,6 +40,8 @@ function useLibraryPageState() {
     setSearchValue,
     sortValue,
     setSortValue,
+    statusFilterValue,
+    setStatusFilterValue,
     modalMode,
     selectedItem,
     clearFilters,

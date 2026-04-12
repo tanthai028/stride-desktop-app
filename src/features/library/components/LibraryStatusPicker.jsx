@@ -1,19 +1,23 @@
-function LibraryTagPicker({ tagOptions, selectedTagValue, onTagClick }) {
+function LibraryStatusPicker({
+  statusOptions,
+  selectedStatusValue,
+  onStatusClick,
+}) {
   return (
     <div className="space-y-3">
       <label className="library-tag-label block text-sm font-medium">
-        🔖 Tag
+        📌 Status
       </label>
 
       <div className="flex flex-wrap gap-2">
-        {tagOptions.map((option) => {
-          const isSelected = selectedTagValue === option.value;
+        {statusOptions.map((option) => {
+          const isSelected = selectedStatusValue === option.value;
 
           return (
             <button
               key={option.value}
               type="button"
-              onClick={() => onTagClick(option)}
+              onClick={() => onStatusClick(option)}
               className={`library-tag-chip ${isSelected ? "is-selected" : ""}`}
             >
               <span className="flex items-center gap-1">
@@ -28,4 +32,4 @@ function LibraryTagPicker({ tagOptions, selectedTagValue, onTagClick }) {
   );
 }
 
-export default LibraryTagPicker;
+export default LibraryStatusPicker;

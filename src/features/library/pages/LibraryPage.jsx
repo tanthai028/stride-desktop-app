@@ -19,6 +19,8 @@ function LibraryPage({ settings }) {
     setSearchValue,
     sortValue,
     setSortValue,
+    statusFilterValue,
+    setStatusFilterValue,
     modalMode,
     selectedItem,
     clearFilters,
@@ -28,8 +30,13 @@ function LibraryPage({ settings }) {
   } = useLibraryPageState();
 
   const filteredItems = useMemo(() => {
-    return getFilteredAndSortedLibraryItems(items, searchValue, sortValue);
-  }, [items, searchValue, sortValue]);
+    return getFilteredAndSortedLibraryItems(
+      items,
+      searchValue,
+      sortValue,
+      statusFilterValue,
+    );
+  }, [items, searchValue, sortValue, statusFilterValue]);
 
   async function handleAddItem(formValues) {
     await addItem(formValues);
@@ -69,7 +76,7 @@ function LibraryPage({ settings }) {
       <PageShell
         eyebrow="📚 Application Tracker"
         title="My Job Application Library"
-        description="Track saved applications, notes, and status details in one place."
+        description="Track companies, roles, statuses, links, and notes in one place."
         scrollable={false}
       >
         <LibraryCollectionSection
@@ -79,6 +86,8 @@ function LibraryPage({ settings }) {
           onSearchChange={setSearchValue}
           sortValue={sortValue}
           onSortChange={setSortValue}
+          statusFilterValue={statusFilterValue}
+          onStatusFilterChange={setStatusFilterValue}
           isPageReady={isPageReady && hasLoaded}
           onItemClick={openEditModal}
           onClearFilters={clearFilters}

@@ -2,47 +2,126 @@ const fs = require("fs");
 const path = require("path");
 const { app } = require("electron");
 
+const now = new Date();
+
+function getDateOffset(daysAgo = 0) {
+  const date = new Date(now);
+  date.setDate(date.getDate() - daysAgo);
+  return date.toISOString();
+}
+
 const DEFAULT_ITEMS = [
   {
     id: "1",
-    title: "Raymond James - Software Developer Track",
-    description:
-      "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates and follow-up timing.",
-    tag: "Applied",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "Raymond James",
+    role: "Software Developer Track",
+    status: "Applied",
+    jobUrl: "https://www.raymondjames.com/careers",
+    location: "St. Petersburg, FL",
+    appliedAt: getDateOffset(3),
+    notes:
+      "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates, follow-up timing, and resume version used.",
+    createdAt: getDateOffset(3),
+    updatedAt: getDateOffset(3),
   },
   {
     id: "2",
-    title: "GE Aerospace - Early Career SWE",
-    description:
-      "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools or platform roles.",
-    tag: "Wishlist",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "GE Aerospace",
+    role: "Early Career Software Engineer",
+    status: "Wishlist",
+    jobUrl: "https://jobs.gecareers.com/",
+    location: "Remote",
+    appliedAt: "",
+    notes:
+      "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools and platform roles before applying.",
+    createdAt: getDateOffset(8),
+    updatedAt: getDateOffset(8),
   },
   {
     id: "3",
-    title: "Palantir - Deployment Strategist / SWE",
-    description:
+    company: "Palantir",
+    role: "Deployment Strategist / SWE",
+    status: "Interview",
+    jobUrl: "https://www.palantir.com/careers/",
+    location: "New York, NY",
+    appliedAt: getDateOffset(14),
+    notes:
       "High-interest company. Keep notes on role fit, technical expectations, and whether the workflow matches long-term goals.",
-    tag: "Interview",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: getDateOffset(14),
+    updatedAt: getDateOffset(10),
   },
   {
     id: "4",
-    title: "JPMorgan Chase - Software Engineer Program",
-    description:
-      "Past internship connection makes this useful as a reference application. Keep notes on timeline and resume version used.",
-    tag: "OA",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "JPMorgan Chase",
+    role: "Software Engineer Program",
+    status: "OA",
+    jobUrl: "https://careers.jpmorgan.com/",
+    location: "Tampa, FL",
+    appliedAt: getDateOffset(21),
+    notes:
+      "Past internship connection makes this useful as a reference application. Keep notes on timeline, OA progress, and follow-up decisions.",
+    createdAt: getDateOffset(21),
+    updatedAt: getDateOffset(5),
   },
 ];
 
 function getLibraryFilePath() {
   return path.join(app.getPath("userData"), "library-items.json");
+}
+
+function createItemId() {
+  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function toIsoDateTime(value) {
+  if (!value) return "";
+
+  const parsedDate = new Date(value);
+  return Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toISOString();
+}
+
+function normalizeLibraryItem(item = {}) {
+  const nowIso = new Date().toISOString();
+  const company = String(item.company ?? "").trim();
+  const role = String(item.role ?? "").trim();
+  const status = String(item.status ?? item.tag ?? "").trim();
+  const jobUrl = String(item.jobUrl ?? "").trim();
+  const location = String(item.location ?? "").trim();
+  const notes = String(item.notes ?? item.description ?? "").trim();
+  const appliedAt = toIsoDateTime(item.appliedAt ?? item.createdAt ?? "");
+  const createdAt = toIsoDateTime(item.createdAt) || appliedAt || nowIso;
+  const updatedAt = toIsoDateTime(item.updatedAt) || nowIso;
+
+  let nextCompany = company;
+  let nextRole = role;
+
+  if (!nextCompany && item.title) {
+    const titleParts = String(item.title)
+      .split(" - ")
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    nextCompany = titleParts[0] || "";
+    nextRole = nextRole || titleParts.slice(1).join(" - ");
+  }
+
+  return {
+    id: item.id || createItemId(),
+    company: nextCompany,
+    role: nextRole,
+    status,
+    jobUrl,
+    location,
+    appliedAt,
+    notes,
+    createdAt,
+    updatedAt,
+  };
+}
+
+function normalizeLibraryItems(items) {
+  const sourceItems = Array.isArray(items) ? items : DEFAULT_ITEMS;
+  return sourceItems.map((item) => normalizeLibraryItem(item));
 }
 
 function ensureLibraryFile() {
@@ -52,7 +131,11 @@ function ensureLibraryFile() {
   fs.mkdirSync(directory, { recursive: true });
 
   if (!fs.existsSync(filePath)) {
-    fs.writeFileSync(filePath, JSON.stringify(DEFAULT_ITEMS, null, 2), "utf8");
+    fs.writeFileSync(
+      filePath,
+      JSON.stringify(normalizeLibraryItems(DEFAULT_ITEMS), null, 2),
+      "utf8",
+    );
   }
 
   return filePath;
@@ -63,31 +146,44 @@ function readLibraryItems() {
     const filePath = ensureLibraryFile();
     const rawValue = fs.readFileSync(filePath, "utf8");
     const parsedValue = JSON.parse(rawValue);
+    const normalizedItems = normalizeLibraryItems(parsedValue);
 
-    return Array.isArray(parsedValue) ? parsedValue : DEFAULT_ITEMS;
+    fs.writeFileSync(
+      filePath,
+      JSON.stringify(normalizedItems, null, 2),
+      "utf8",
+    );
+
+    return normalizedItems;
   } catch {
-    return DEFAULT_ITEMS;
+    return normalizeLibraryItems(DEFAULT_ITEMS);
   }
 }
 
 function writeLibraryItems(items) {
   const filePath = ensureLibraryFile();
-  fs.writeFileSync(filePath, JSON.stringify(items, null, 2), "utf8");
-  return items;
+  const normalizedItems = normalizeLibraryItems(items);
+
+  fs.writeFileSync(filePath, JSON.stringify(normalizedItems, null, 2), "utf8");
+  return normalizedItems;
 }
 
 function createLibraryItem(formValues) {
   const currentItems = readLibraryItems();
   const timestamp = new Date().toISOString();
 
-  const newItem = {
-    id: `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    title: formValues.title,
-    description: formValues.description,
-    tag: formValues.tag,
+  const newItem = normalizeLibraryItem({
+    id: createItemId(),
+    company: formValues.company,
+    role: formValues.role,
+    status: formValues.status,
+    jobUrl: formValues.jobUrl,
+    location: formValues.location,
+    appliedAt: formValues.appliedAt,
+    notes: formValues.notes,
     createdAt: timestamp,
     updatedAt: timestamp,
-  };
+  });
 
   const nextItems = [newItem, ...currentItems];
   writeLibraryItems(nextItems);
@@ -100,11 +196,11 @@ function updateLibraryItem(itemId, formValues) {
 
   const nextItems = currentItems.map((item) =>
     item.id === itemId
-      ? {
+      ? normalizeLibraryItem({
           ...item,
           ...formValues,
           updatedAt: new Date().toISOString(),
-        }
+        })
       : item,
   );
 
@@ -123,8 +219,9 @@ function deleteLibraryItem(itemId) {
 }
 
 function resetLibraryItems() {
-  writeLibraryItems(DEFAULT_ITEMS);
-  return DEFAULT_ITEMS;
+  const resetItems = normalizeLibraryItems(DEFAULT_ITEMS);
+  writeLibraryItems(resetItems);
+  return resetItems;
 }
 
 module.exports = {

@@ -20,7 +20,7 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
           onClick={onDelete}
           className={deleteButtonClassName}
         >
-          Delete Card
+          Delete Application
         </button>
       ) : null}
 
@@ -34,7 +34,7 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
         </button>
 
         <button type="submit" className={submitButtonClassName}>
-          {isEditMode ? "Save Changes" : "Add Card"}
+          {isEditMode ? "Save Changes" : "Add Application"}
         </button>
       </div>
     </div>

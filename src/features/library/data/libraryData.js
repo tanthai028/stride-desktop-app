@@ -1,38 +1,62 @@
+const now = new Date();
+
+function getDateOffset(daysAgo = 0) {
+  const date = new Date(now);
+  date.setDate(date.getDate() - daysAgo);
+  return date.toISOString();
+}
+
 export const libraryItems = [
   {
     id: "1",
-    title: "Raymond James - Software Developer Track",
-    description:
-      "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates and follow-up timing.",
-    tag: "Applied",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "Raymond James",
+    role: "Software Developer Track",
+    status: "Applied",
+    jobUrl: "https://www.raymondjames.com/careers",
+    location: "St. Petersburg, FL",
+    appliedAt: getDateOffset(3),
+    notes:
+      "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates, follow-up timing, and resume version used.",
+    createdAt: getDateOffset(3),
+    updatedAt: getDateOffset(3),
   },
   {
     id: "2",
-    title: "GE Aerospace - Early Career SWE",
-    description:
-      "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools or platform roles.",
-    tag: "Wishlist",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "GE Aerospace",
+    role: "Early Career Software Engineer",
+    status: "Wishlist",
+    jobUrl: "https://jobs.gecareers.com/",
+    location: "Remote",
+    appliedAt: "",
+    notes:
+      "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools and platform roles before applying.",
+    createdAt: getDateOffset(8),
+    updatedAt: getDateOffset(8),
   },
   {
     id: "3",
-    title: "Palantir - Deployment Strategist / SWE",
-    description:
+    company: "Palantir",
+    role: "Deployment Strategist / SWE",
+    status: "Interview",
+    jobUrl: "https://www.palantir.com/careers/",
+    location: "New York, NY",
+    appliedAt: getDateOffset(14),
+    notes:
       "High-interest company. Keep notes on role fit, technical expectations, and whether the workflow matches long-term goals.",
-    tag: "Interview",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    createdAt: getDateOffset(14),
+    updatedAt: getDateOffset(10),
   },
   {
     id: "4",
-    title: "JPMorgan Chase - Software Engineer Program",
-    description:
-      "Past internship connection makes this useful as a reference application. Keep notes on timeline and resume version used.",
-    tag: "OA",
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    company: "JPMorgan Chase",
+    role: "Software Engineer Program",
+    status: "OA",
+    jobUrl: "https://careers.jpmorgan.com/",
+    location: "Tampa, FL",
+    appliedAt: getDateOffset(21),
+    notes:
+      "Past internship connection makes this useful as a reference application. Keep notes on timeline, OA progress, and follow-up decisions.",
+    createdAt: getDateOffset(21),
+    updatedAt: getDateOffset(5),
   },
 ];

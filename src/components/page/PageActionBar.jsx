@@ -7,12 +7,15 @@ function PageActionBar({
   sortValue,
   onSortChange,
   sortOptions = [],
+  filterValue,
+  onFilterChange,
+  filterOptions = [],
   primaryAction,
   searchPlaceholder = "Search...",
 }) {
   return (
-    <div className="mb-5 flex flex-col gap-3">
-      <div className="flex flex-col gap-3 min-[520px]:flex-row min-[520px]:items-center">
+    <div className="mb-4 flex flex-col gap-3">
+      <div className="flex min-w-0 items-center gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
           <Search size={16} className="search-icon shrink-0" />
           <input
@@ -25,11 +28,20 @@ function PageActionBar({
           />
         </div>
 
+        {onFilterChange ? (
+          <SelectMenu
+            value={filterValue}
+            onChange={onFilterChange}
+            options={filterOptions}
+            className="w-[132px] shrink-0"
+          />
+        ) : null}
+
         <SelectMenu
           value={sortValue}
           onChange={onSortChange}
           options={sortOptions}
-          className="w-full shrink-0 min-[520px]:w-[120px]"
+          className="w-[110px] shrink-0"
         />
       </div>
 
