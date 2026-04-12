@@ -26,26 +26,6 @@
   background-color: var(--theme-library-tag-hover-bg);
 }
 
-.library-action-delete {
-  color: var(--theme-library-delete-text);
-  background-color: var(--theme-library-delete-bg);
-  border: 1px solid var(--theme-library-delete-border);
-}
-
-.library-action-delete:hover {
-  background-color: var(--theme-library-delete-hover-bg);
-}
-
-.library-action-submit {
-  color: var(--theme-library-submit-text);
-  background-color: var(--theme-library-submit-bg);
-  border: 1px solid var(--theme-library-submit-border);
-}
-
-.library-action-submit:hover {
-  background-color: var(--theme-library-submit-hover-bg);
-}
-
 .library-card-title {
   color: var(--theme-library-card-title);
 }

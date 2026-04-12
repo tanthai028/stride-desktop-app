@@ -23,7 +23,7 @@ function SettingsChoiceRow({ title, description, value, options, onChange }) {
               type="button"
               onClick={() => handleChoiceClick(option.value)}
               aria-pressed={isSelected}
-              className={`settings-choice-button interactive surface-control rounded-xl px-3 py-2 text-xs font-medium ${
+              className={`settings-choice-button rounded-xl px-3 py-2 text-xs font-medium ${
                 isSelected ? "is-selected" : ""
               }`}
             >

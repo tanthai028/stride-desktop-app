@@ -3,11 +3,8 @@ const formActionsLayoutClassName = {
   create: "flex justify-end gap-3",
 };
 
-const formActionsButtonBaseClassName =
-  "interactive rounded-2xl px-4 py-3 text-sm font-medium transition-transform duration-150 hover:scale-[1.01]";
-
 const deleteButtonClassName = "library-action-delete";
-
+const cancelButtonClassName = "modal-secondary-button";
 const submitButtonClassName = "library-action-submit";
 
 function LibraryFormActions({ isEditMode, onClose, onDelete }) {
@@ -21,7 +18,7 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
         <button
           type="button"
           onClick={onDelete}
-          className={`${formActionsButtonBaseClassName} ${deleteButtonClassName}`}
+          className={deleteButtonClassName}
         >
           Delete Card
         </button>
@@ -31,15 +28,12 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
         <button
           type="button"
           onClick={onClose}
-          className={`modal-secondary-button ${formActionsButtonBaseClassName}`}
+          className={cancelButtonClassName}
         >
           Cancel
         </button>
 
-        <button
-          type="submit"
-          className={`${formActionsButtonBaseClassName} ${submitButtonClassName}`}
-        >
+        <button type="submit" className={submitButtonClassName}>
           {isEditMode ? "Save Changes" : "Add Card"}
         </button>
       </div>

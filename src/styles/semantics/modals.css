@@ -17,14 +17,3 @@
 .modal-title {
   color: var(--theme-modal-title);
 }
-
-.modal-secondary-button {
-  color: var(--theme-modal-secondary-text);
-  background-color: var(--theme-modal-secondary-bg);
-  border: 1px solid var(--theme-modal-secondary-border);
-}
-
-.modal-secondary-button:hover {
-  background-color: var(--theme-modal-secondary-hover-bg);
-  filter: none;
-}

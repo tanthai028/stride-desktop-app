@@ -80,9 +80,11 @@
   color: var(--theme-select-trigger-text);
 
   outline: none;
+  transform: translateZ(0);
 
   background-color: var(--theme-select-trigger-bg);
   border: 1px solid var(--theme-select-trigger-border);
+  box-shadow: var(--theme-select-trigger-shadow);
   backdrop-filter: var(--theme-select-trigger-backdrop);
   -webkit-backdrop-filter: var(--theme-select-trigger-backdrop-webkit);
 
@@ -90,7 +92,28 @@
     transform 150ms ease,
     box-shadow 150ms ease,
     background-color 150ms ease,
-    border-color 150ms ease;
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.select-menu-trigger:hover {
+  transform: translateY(-1px);
+  background-color: var(--theme-select-trigger-hover-bg);
+  border-color: var(--theme-select-trigger-hover-border);
+  box-shadow: var(--theme-select-trigger-hover-shadow);
+}
+
+.select-menu-trigger:active {
+  transform: scale(0.98);
+  box-shadow: var(--theme-select-trigger-pressed-shadow);
+}
+
+.select-menu-trigger:focus,
+.select-menu-trigger:focus-visible {
+  outline: none;
+  background-color: var(--theme-select-trigger-focus-bg);
+  border-color: var(--theme-select-trigger-focus-border);
+  box-shadow: var(--theme-select-trigger-focus-shadow);
 }
 
 .select-menu-panel {
@@ -105,18 +128,36 @@
 .select-menu-option {
   color: var(--theme-select-option-text);
   background-color: transparent;
+  outline: none;
+  transform: translateZ(0);
+
   transition:
+    transform 120ms ease,
     background-color 120ms ease,
     color 120ms ease,
-    border-color 120ms ease;
+    box-shadow 120ms ease;
 }
 
 .select-menu-option:hover {
+  transform: translateY(-1px);
   background-color: var(--theme-select-option-hover-bg);
   color: var(--theme-select-option-hover-text);
+}
+
+.select-menu-option:active {
+  transform: scale(0.98);
+}
+
+.select-menu-option:focus,
+.select-menu-option:focus-visible {
+  outline: none;
+  background-color: var(--theme-select-option-focus-bg);
+  color: var(--theme-select-option-focus-text);
+  box-shadow: none;
 }
 
 .select-menu-option.is-selected {
   background-color: var(--theme-select-option-selected-bg);
   color: var(--theme-select-option-selected-text);
+  box-shadow: var(--theme-select-option-selected-shadow);
 }

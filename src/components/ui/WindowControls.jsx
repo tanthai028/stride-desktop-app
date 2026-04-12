@@ -6,7 +6,7 @@ import {
 
 function WindowControls() {
   return (
-    <div className="window-controls-shell surface-card-soft no-drag flex gap-2 rounded-full">
+    <div className="window-controls-shell no-drag flex gap-2 rounded-full">
       <button
         type="button"
         aria-label="Minimize"

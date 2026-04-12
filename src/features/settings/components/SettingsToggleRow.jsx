@@ -13,7 +13,7 @@ function SettingsToggleRow({ title, description, checked, onToggle }) {
           type="button"
           onClick={onToggle}
           aria-pressed={checked}
-          className={`settings-toggle interactive relative mt-1 h-7 w-12 rounded-full ${
+          className={`settings-toggle relative mt-1 h-7 w-12 rounded-full ${
             checked ? "is-checked" : ""
           }`}
         >

@@ -1,4 +1,7 @@
-.action-button {
+.action-button,
+.modal-secondary-button,
+.library-action-delete,
+.library-action-submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6,10 +9,7 @@
 
   padding: 0.75rem 1rem;
   border-radius: 1rem;
-  border: 1px solid var(--theme-action-button-default-border);
-  background: var(--theme-action-button-default-bg);
-  color: var(--theme-action-button-default-text);
-  box-shadow: var(--shadow-control);
+  border: 1px solid transparent;
 
   font-size: 0.875rem;
   font-weight: 500;
@@ -25,27 +25,53 @@
     border-color 150ms ease,
     box-shadow 150ms ease,
     color 150ms ease,
-    filter 150ms ease;
+    filter 150ms ease,
+    opacity 150ms ease;
 }
 
-.action-button:hover {
+.action-button:hover,
+.modal-secondary-button:hover,
+.library-action-delete:hover,
+.library-action-submit:hover {
   transform: scale(1.05);
-  box-shadow: var(--shadow-control-hover);
 }
 
-.action-button:active {
+.action-button:active,
+.modal-secondary-button:active,
+.library-action-delete:active,
+.library-action-submit:active {
   transform: scale(0.97);
-  box-shadow: var(--shadow-pressed);
 }
 
 .action-button:focus,
-.action-button:focus-visible {
+.action-button:focus-visible,
+.modal-secondary-button:focus,
+.modal-secondary-button:focus-visible,
+.library-action-delete:focus,
+.library-action-delete:focus-visible,
+.library-action-submit:focus,
+.library-action-submit:focus-visible {
   outline: none;
   box-shadow: none;
 }
 
 .action-button--with-icon {
   gap: 0.5rem;
+}
+
+.action-button {
+  border-color: var(--theme-action-button-default-border);
+  background: var(--theme-action-button-default-bg);
+  color: var(--theme-action-button-default-text);
+  box-shadow: var(--theme-action-button-default-shadow);
+}
+
+.action-button:hover {
+  box-shadow: var(--theme-action-button-default-hover-shadow);
+}
+
+.action-button:active {
+  box-shadow: var(--theme-action-button-default-pressed-shadow);
 }
 
 .action-button-default {
@@ -58,28 +84,82 @@
   border-color: var(--theme-accent-violet-border);
   background-color: var(--theme-accent-violet-bg);
   color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-violet-shadow);
 }
 
 .action-button-library-add {
   border-color: var(--theme-accent-pink-border);
   background-color: var(--theme-accent-pink-bg);
   color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .action-button-pink {
   border-color: var(--theme-accent-pink-border);
   background-color: var(--theme-accent-pink-bg);
   color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .action-button-violet {
   border-color: var(--theme-accent-violet-border);
   background-color: var(--theme-accent-violet-bg);
   color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-violet-shadow);
 }
 
 .action-button-sky {
   border-color: var(--theme-accent-sky-border);
   background-color: var(--theme-accent-sky-bg);
   color: var(--theme-text-primary);
+  box-shadow: var(--theme-accent-sky-shadow);
+}
+
+.modal-secondary-button {
+  color: var(--theme-modal-secondary-text);
+  background-color: var(--theme-modal-secondary-bg);
+  border: 1px solid var(--theme-modal-secondary-border);
+  box-shadow: var(--theme-modal-secondary-shadow);
+}
+
+.modal-secondary-button:hover {
+  background-color: var(--theme-modal-secondary-hover-bg);
+  box-shadow: var(--theme-modal-secondary-hover-shadow);
+  filter: none;
+}
+
+.modal-secondary-button:active {
+  box-shadow: var(--theme-modal-secondary-pressed-shadow);
+}
+
+.library-action-delete {
+  color: var(--theme-library-delete-text);
+  background-color: var(--theme-library-delete-bg);
+  border: 1px solid var(--theme-library-delete-border);
+  box-shadow: var(--theme-library-delete-shadow);
+}
+
+.library-action-delete:hover {
+  background-color: var(--theme-library-delete-hover-bg);
+  box-shadow: var(--theme-library-delete-hover-shadow);
+}
+
+.library-action-delete:active {
+  box-shadow: var(--theme-library-delete-pressed-shadow);
+}
+
+.library-action-submit {
+  color: var(--theme-library-submit-text);
+  background-color: var(--theme-library-submit-bg);
+  border: 1px solid var(--theme-library-submit-border);
+  box-shadow: var(--theme-library-submit-shadow);
+}
+
+.library-action-submit:hover {
+  background-color: var(--theme-library-submit-hover-bg);
+  box-shadow: var(--theme-library-submit-hover-shadow);
+}
+
+.library-action-submit:active {
+  box-shadow: var(--theme-library-submit-pressed-shadow);
 }

@@ -6,7 +6,9 @@
   backdrop-filter: var(--theme-window-controls-backdrop);
   -webkit-backdrop-filter: var(--theme-window-controls-backdrop-webkit);
   box-sizing: border-box;
-  box-shadow: var(--theme-window-controls-shadow);
+  box-shadow:
+    var(--theme-window-controls-shell-shadow),
+    var(--theme-window-controls-shadow);
   transition:
     background-color 160ms ease,
     border-color 160ms ease,

@@ -26,6 +26,10 @@
   border: 1px solid var(--theme-settings-choice-border);
   background-color: var(--theme-settings-choice-bg);
   color: var(--theme-settings-choice-text);
+  box-shadow: var(--theme-settings-choice-shadow);
+  outline: none;
+  transform: translateZ(0);
+
   transition:
     background-color 120ms ease,
     border-color 120ms ease,
@@ -35,7 +39,22 @@
 }
 
 .settings-choice-button:hover {
+  transform: translateY(-1px);
   background-color: var(--theme-settings-choice-hover-bg);
+  border-color: var(--theme-settings-choice-hover-border);
+  box-shadow: var(--theme-settings-choice-hover-shadow);
+}
+
+.settings-choice-button:active {
+  transform: scale(0.98);
+  box-shadow: var(--theme-settings-choice-pressed-shadow);
+}
+
+.settings-choice-button:focus,
+.settings-choice-button:focus-visible {
+  outline: none;
+  border-color: var(--theme-settings-choice-focus-border);
+  box-shadow: var(--theme-settings-choice-focus-shadow);
 }
 
 .settings-choice-button.is-selected {
@@ -49,16 +68,43 @@
   border: 1px solid var(--theme-settings-toggle-off-border);
   background-color: var(--theme-settings-toggle-off-bg);
   box-shadow: var(--theme-settings-toggle-off-shadow);
+  outline: none;
+  transform: translateZ(0);
+
   transition:
+    transform 120ms ease,
     background-color 120ms ease,
     border-color 120ms ease,
     box-shadow 120ms ease;
+}
+
+.settings-toggle:hover {
+  transform: translateY(-1px);
+  border-color: var(--theme-settings-toggle-off-hover-border);
+  background-color: var(--theme-settings-toggle-off-hover-bg);
+  box-shadow: var(--theme-settings-toggle-off-hover-shadow);
+}
+
+.settings-toggle:active {
+  transform: scale(0.97);
+}
+
+.settings-toggle:focus,
+.settings-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--theme-settings-toggle-focus-shadow);
 }
 
 .settings-toggle.is-checked {
   border-color: var(--theme-settings-toggle-on-border);
   background-color: var(--theme-settings-toggle-on-bg);
   box-shadow: var(--theme-settings-toggle-on-shadow);
+}
+
+.settings-toggle.is-checked:hover {
+  border-color: var(--theme-settings-toggle-on-hover-border);
+  background-color: var(--theme-settings-toggle-on-hover-bg);
+  box-shadow: var(--theme-settings-toggle-on-hover-shadow);
 }
 
 .settings-toggle-thumb {

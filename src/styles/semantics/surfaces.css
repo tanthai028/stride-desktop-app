@@ -5,15 +5,6 @@
   --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
   --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
   --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
-
-  --theme-window-control-minimize-bg: #34d399;
-  --theme-window-control-minimize-hover-bg: #10b981;
-
-  --theme-window-control-maximize-bg: #fbbf24;
-  --theme-window-control-maximize-hover-bg: #f59e0b;
-
-  --theme-window-control-close-bg: #fb7185;
-  --theme-window-control-close-hover-bg: #f43f5e;
 }
 
 .surface-card {
@@ -44,18 +35,6 @@
 
 .surface-floating {
   box-shadow: var(--shadow-floating);
-}
-
-.surface-control {
-  box-shadow: var(--shadow-control);
-}
-
-.surface-control:hover {
-  box-shadow: var(--shadow-control-hover);
-}
-
-.surface-control:active {
-  box-shadow: var(--shadow-pressed);
 }
 
 .empty-state-card {
