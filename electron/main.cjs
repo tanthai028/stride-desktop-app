@@ -14,8 +14,8 @@ const {
   updateLibraryItem,
   deleteLibraryItem,
   resetLibraryItems,
-} = require("./libraryStore.cjs");
-
+} = require("./libraryService.cjs");
+const { serializeLibraryError } = require("./libraryErrors.cjs");
 const isDev = !app.isPackaged;
 
 function getWindowBackgroundColor() {
@@ -73,6 +73,16 @@ function createWindow() {
   });
 }
 
+function createIpcHandler(handler) {
+  return async (...args) => {
+    try {
+      return await handler(...args);
+    } catch (error) {
+      throw new Error(JSON.stringify(serializeLibraryError(error)));
+    }
+  };
+}
+
 function registerWindowEvents() {
   ipcMain.on("window:minimize", () => {
     const win = BrowserWindow.getFocusedWindow();
@@ -112,25 +122,34 @@ function registerWindowEvents() {
     win.setBackgroundColor(darkMode ? "#020617" : "#f6f1f8");
   });
 
-  ipcMain.handle("library:get-items", async () => {
-    return readLibraryItems();
-  });
+  ipcMain.handle(
+    "library:get-items",
+    createIpcHandler(async () => readLibraryItems()),
+  );
 
-  ipcMain.handle("library:add-item", async (_event, formValues) => {
-    return createLibraryItem(formValues);
-  });
+  ipcMain.handle(
+    "library:add-item",
+    createIpcHandler(async (_event, formValues) =>
+      createLibraryItem(formValues),
+    ),
+  );
 
-  ipcMain.handle("library:update-item", async (_event, itemId, formValues) => {
-    return updateLibraryItem(itemId, formValues);
-  });
+  ipcMain.handle(
+    "library:update-item",
+    createIpcHandler(async (_event, itemId, formValues) =>
+      updateLibraryItem(itemId, formValues),
+    ),
+  );
 
-  ipcMain.handle("library:delete-item", async (_event, itemId) => {
-    return deleteLibraryItem(itemId);
-  });
+  ipcMain.handle(
+    "library:delete-item",
+    createIpcHandler(async (_event, itemId) => deleteLibraryItem(itemId)),
+  );
 
-  ipcMain.handle("library:reset-items", async () => {
-    return resetLibraryItems();
-  });
+  ipcMain.handle(
+    "library:reset-items",
+    createIpcHandler(async () => resetLibraryItems()),
+  );
 
   ipcMain.handle("library:open-external-url", async (_event, url) => {
     if (!url || typeof url !== "string") {
