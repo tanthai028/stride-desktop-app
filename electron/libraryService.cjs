@@ -1,6 +1,10 @@
 const { DEFAULT_ITEMS } = require("./libraryDefaults.cjs");
 const {
-  readLibraryRows,
+  getAllLibraryRows,
+  getLibraryRowById,
+  insertLibraryRow,
+  updateLibraryRow,
+  deleteLibraryRow,
   replaceLibraryRows,
 } = require("./libraryRepository.cjs");
 const {
@@ -69,7 +73,7 @@ function normalizeLibraryItems(items) {
 
 function readLibraryItems() {
   try {
-    const rows = readLibraryRows(normalizeLibraryItems(DEFAULT_ITEMS));
+    const rows = getAllLibraryRows(normalizeLibraryItems(DEFAULT_ITEMS));
     return normalizeLibraryItems(rows);
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
@@ -82,87 +86,117 @@ function readLibraryItems() {
   }
 }
 
-function writeLibraryItems(items) {
+function createLibraryItem(formValues) {
   try {
-    const normalizedItems = normalizeLibraryItems(items);
-    replaceLibraryRows(normalizedItems);
-    return normalizedItems;
+    const timestamp = new Date().toISOString();
+    const validatedValues = validateLibraryFormValues(formValues);
+
+    const newItem = normalizeLibraryItem({
+      id: createItemId(),
+      ...validatedValues,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
+
+    insertLibraryRow(newItem, normalizeLibraryItems(DEFAULT_ITEMS));
+
+    return newItem;
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
+    if (error.code === "VALIDATION_ERROR" || error.code === "STORAGE_ERROR") {
       throw error;
     }
 
-    throw new LibraryStorageError("Failed to save library items.", {
+    throw new LibraryStorageError("Failed to create library item.", {
       cause: error.message,
     });
   }
 }
 
-function createLibraryItem(formValues) {
-  const currentItems = readLibraryItems();
-  const timestamp = new Date().toISOString();
-  const validatedValues = validateLibraryFormValues(formValues);
-
-  const newItem = normalizeLibraryItem({
-    id: createItemId(),
-    ...validatedValues,
-    createdAt: timestamp,
-    updatedAt: timestamp,
-  });
-
-  const nextItems = [newItem, ...currentItems];
-  writeLibraryItems(nextItems);
-
-  return newItem;
-}
-
 function updateLibraryItem(itemId, formValues) {
-  const currentItems = readLibraryItems();
-  const existingItem = currentItems.find((item) => item.id === itemId);
+  try {
+    const existingItem = getLibraryRowById(
+      itemId,
+      normalizeLibraryItems(DEFAULT_ITEMS),
+    );
 
-  if (!existingItem) {
-    throw new LibraryNotFoundError();
+    if (!existingItem) {
+      throw new LibraryNotFoundError();
+    }
+
+    const validatedValues = validateLibraryFormValues({
+      ...existingItem,
+      ...formValues,
+    });
+
+    const updatedItem = normalizeLibraryItem({
+      ...existingItem,
+      ...validatedValues,
+      updatedAt: new Date().toISOString(),
+    });
+
+    const didUpdate = updateLibraryRow(
+      itemId,
+      updatedItem,
+      normalizeLibraryItems(DEFAULT_ITEMS),
+    );
+
+    if (!didUpdate) {
+      throw new LibraryNotFoundError();
+    }
+
+    return updatedItem;
+  } catch (error) {
+    if (
+      error.code === "VALIDATION_ERROR" ||
+      error.code === "NOT_FOUND" ||
+      error.code === "STORAGE_ERROR"
+    ) {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to update library item.", {
+      cause: error.message,
+    });
   }
-
-  const validatedValues = validateLibraryFormValues({
-    ...existingItem,
-    ...formValues,
-  });
-
-  const nextItems = currentItems.map((item) =>
-    item.id === itemId
-      ? normalizeLibraryItem({
-          ...item,
-          ...validatedValues,
-          updatedAt: new Date().toISOString(),
-        })
-      : item,
-  );
-
-  writeLibraryItems(nextItems);
-
-  return nextItems.find((item) => item.id === itemId) ?? null;
 }
 
 function deleteLibraryItem(itemId) {
-  const currentItems = readLibraryItems();
-  const existingItem = currentItems.find((item) => item.id === itemId);
+  try {
+    const didDelete = deleteLibraryRow(
+      itemId,
+      normalizeLibraryItems(DEFAULT_ITEMS),
+    );
 
-  if (!existingItem) {
-    throw new LibraryNotFoundError();
+    if (!didDelete) {
+      throw new LibraryNotFoundError();
+    }
+
+    return { success: true };
+  } catch (error) {
+    if (error.code === "NOT_FOUND" || error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to delete library item.", {
+      cause: error.message,
+    });
   }
-
-  const nextItems = currentItems.filter((item) => item.id !== itemId);
-
-  writeLibraryItems(nextItems);
-
-  return { success: true };
 }
 
 function resetLibraryItems() {
-  const resetItems = normalizeLibraryItems(DEFAULT_ITEMS);
-  writeLibraryItems(resetItems);
-  return resetItems;
+  try {
+    const resetItems = normalizeLibraryItems(DEFAULT_ITEMS);
+    replaceLibraryRows(resetItems, resetItems);
+    return resetItems;
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to reset library items.", {
+      cause: error.message,
+    });
+  }
 }
 
 module.exports = {

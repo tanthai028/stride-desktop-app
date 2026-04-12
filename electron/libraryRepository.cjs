@@ -69,6 +69,23 @@ function getDatabase() {
   }
 }
 
+function mapLibraryRow(row) {
+  if (!row) return null;
+
+  return {
+    id: row.id,
+    company: row.company,
+    role: row.role,
+    status: row.status,
+    jobUrl: row.jobUrl,
+    location: row.location,
+    appliedAt: row.appliedAt,
+    notes: row.notes,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+  };
+}
+
 function readLegacyLibraryItems() {
   const legacyFilePath = getLegacyLibraryFilePath();
 
@@ -88,8 +105,9 @@ function readLegacyLibraryItems() {
   }
 }
 
-function insertLibraryItems(db, items) {
-  const insertStatement = db.prepare(`
+function insertLibraryItemRow(db, item) {
+  db.prepare(
+    `
     INSERT INTO library_items (
       id,
       company,
@@ -114,22 +132,19 @@ function insertLibraryItems(db, items) {
       ?,
       ?
     )
-  `);
-
-  for (const item of items) {
-    insertStatement.run(
-      item.id,
-      item.company,
-      item.role,
-      item.status,
-      item.jobUrl ?? "",
-      item.location ?? "",
-      item.appliedAt ?? "",
-      item.notes,
-      item.createdAt,
-      item.updatedAt,
-    );
-  }
+  `,
+  ).run(
+    item.id,
+    item.company,
+    item.role,
+    item.status,
+    item.jobUrl ?? "",
+    item.location ?? "",
+    item.appliedAt ?? "",
+    item.notes,
+    item.createdAt,
+    item.updatedAt,
+  );
 }
 
 function ensureLibraryRows(seedItems = []) {
@@ -154,7 +169,10 @@ function ensureLibraryRows(seedItems = []) {
     db.exec("BEGIN");
 
     try {
-      insertLibraryItems(db, sourceItems);
+      for (const item of sourceItems) {
+        insertLibraryItemRow(db, item);
+      }
+
       db.exec("COMMIT");
     } catch (error) {
       db.exec("ROLLBACK");
@@ -174,7 +192,7 @@ function ensureLibraryRows(seedItems = []) {
   }
 }
 
-function readLibraryRows(seedItems = []) {
+function getAllLibraryRows(seedItems = []) {
   try {
     ensureLibraryRows(seedItems);
 
@@ -198,7 +216,8 @@ function readLibraryRows(seedItems = []) {
         ORDER BY datetime(created_at) DESC, datetime(updated_at) DESC
       `,
       )
-      .all();
+      .all()
+      .map(mapLibraryRow);
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
       throw error;
@@ -210,37 +229,173 @@ function readLibraryRows(seedItems = []) {
   }
 }
 
-function replaceLibraryRows(items) {
+function getLibraryRowById(itemId, seedItems = []) {
   try {
+    ensureLibraryRows(seedItems);
+
+    const db = getDatabase();
+
+    const row = db
+      .prepare(
+        `
+      SELECT
+        id,
+        company,
+        role,
+        status,
+        job_url AS jobUrl,
+        location,
+        applied_at AS appliedAt,
+        notes,
+        created_at AS createdAt,
+        updated_at AS updatedAt
+      FROM library_items
+      WHERE id = ?
+      LIMIT 1
+    `,
+      )
+      .get(itemId);
+
+    return mapLibraryRow(row);
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to read library item.", {
+      cause: error.message,
+    });
+  }
+}
+
+function insertLibraryRow(item, seedItems = []) {
+  try {
+    ensureLibraryRows(seedItems);
+
+    const db = getDatabase();
+    insertLibraryItemRow(db, item);
+
+    return item;
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to create library item.", {
+      cause: error.message,
+    });
+  }
+}
+
+function updateLibraryRow(itemId, item, seedItems = []) {
+  try {
+    ensureLibraryRows(seedItems);
+
+    const db = getDatabase();
+
+    const result = db
+      .prepare(
+        `
+      UPDATE library_items
+      SET
+        company = ?,
+        role = ?,
+        status = ?,
+        job_url = ?,
+        location = ?,
+        applied_at = ?,
+        notes = ?,
+        created_at = ?,
+        updated_at = ?
+      WHERE id = ?
+    `,
+      )
+      .run(
+        item.company,
+        item.role,
+        item.status,
+        item.jobUrl ?? "",
+        item.location ?? "",
+        item.appliedAt ?? "",
+        item.notes,
+        item.createdAt,
+        item.updatedAt,
+        itemId,
+      );
+
+    return result.changes > 0;
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to update library item.", {
+      cause: error.message,
+    });
+  }
+}
+
+function deleteLibraryRow(itemId, seedItems = []) {
+  try {
+    ensureLibraryRows(seedItems);
+
+    const db = getDatabase();
+    const result = db
+      .prepare("DELETE FROM library_items WHERE id = ?")
+      .run(itemId);
+
+    return result.changes > 0;
+  } catch (error) {
+    if (error.code === "STORAGE_ERROR") {
+      throw error;
+    }
+
+    throw new LibraryStorageError("Failed to delete library item.", {
+      cause: error.message,
+    });
+  }
+}
+
+function replaceLibraryRows(items, seedItems = []) {
+  try {
+    ensureLibraryRows(seedItems);
+
     const db = getDatabase();
 
     db.exec("BEGIN");
 
     try {
       db.exec("DELETE FROM library_items");
-      insertLibraryItems(db, items);
+
+      for (const item of items) {
+        insertLibraryItemRow(db, item);
+      }
+
       db.exec("COMMIT");
+      return items;
     } catch (error) {
       db.exec("ROLLBACK");
 
-      throw new LibraryStorageError("Failed to write library data.", {
+      throw new LibraryStorageError("Failed to replace library data.", {
         cause: error.message,
       });
     }
-
-    return items;
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
       throw error;
     }
 
-    throw new LibraryStorageError("Failed to replace library data.", {
+    throw new LibraryStorageError("Failed to reset library data.", {
       cause: error.message,
     });
   }
 }
 
 module.exports = {
-  readLibraryRows,
+  getAllLibraryRows,
+  getLibraryRowById,
+  insertLibraryRow,
+  updateLibraryRow,
+  deleteLibraryRow,
   replaceLibraryRows,
 };
