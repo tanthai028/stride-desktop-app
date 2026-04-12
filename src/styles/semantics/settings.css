@@ -26,7 +26,7 @@
   border: 1px solid var(--theme-settings-choice-border);
   background-color: var(--theme-settings-choice-bg);
   color: var(--theme-settings-choice-text);
-  box-shadow: var(--theme-settings-choice-shadow);
+  box-shadow: var(--shadow-control);
   outline: none;
   transform: translateZ(0);
 
@@ -42,19 +42,19 @@
   transform: translateY(-1px);
   background-color: var(--theme-settings-choice-hover-bg);
   border-color: var(--theme-settings-choice-hover-border);
-  box-shadow: var(--theme-settings-choice-hover-shadow);
+  box-shadow: var(--shadow-control-hover);
 }
 
 .settings-choice-button:active {
   transform: scale(0.98);
-  box-shadow: var(--theme-settings-choice-pressed-shadow);
+  box-shadow: var(--shadow-pressed);
 }
 
 .settings-choice-button:focus,
 .settings-choice-button:focus-visible {
   outline: none;
   border-color: var(--theme-settings-choice-focus-border);
-  box-shadow: var(--theme-settings-choice-focus-shadow);
+  box-shadow: var(--shadow-control);
 }
 
 .settings-choice-button.is-selected {
@@ -92,7 +92,7 @@
 .settings-toggle:focus,
 .settings-toggle:focus-visible {
   outline: none;
-  box-shadow: var(--theme-settings-toggle-focus-shadow);
+  box-shadow: var(--shadow-control);
 }
 
 .settings-toggle.is-checked {

@@ -1,10 +1,4 @@
 body.theme-dark {
-  /* Shared glass utilities */
-  --theme-utility-surface-blur: blur(20px) saturate(135%);
-  --theme-utility-surface-saturate: blur(20px) saturate(135%);
-  --theme-utility-surface-shadow:
-    0 16px 40px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-
   /* Core surfaces */
   --theme-panel-bg: rgba(15, 23, 42, 0.46);
   --theme-panel-border: rgba(255, 255, 255, 0.08);
@@ -76,18 +70,13 @@ body.theme-dark {
   --theme-select-option-selected-text: var(--theme-text-secondary);
   --theme-select-icon: var(--theme-text-primary);
 
-  --theme-select-trigger-shadow: var(--shadow-control);
   --theme-select-trigger-hover-bg: rgba(30, 41, 59, 0.62);
   --theme-select-trigger-hover-border: rgba(148, 163, 184, 0.24);
-  --theme-select-trigger-hover-shadow: var(--shadow-control-hover);
-  --theme-select-trigger-pressed-shadow: var(--shadow-pressed);
   --theme-select-trigger-focus-bg: rgba(30, 41, 59, 0.68);
   --theme-select-trigger-focus-border: rgba(148, 163, 184, 0.26);
-  --theme-select-trigger-focus-shadow: var(--shadow-control);
 
   --theme-select-option-focus-bg: rgba(51, 65, 85, 0.72);
   --theme-select-option-focus-text: var(--theme-text-primary);
-  --theme-select-option-selected-shadow: none;
 
   /* Window controls */
   --theme-window-controls-bg: rgba(30, 41, 59, 0.46);
@@ -97,8 +86,6 @@ body.theme-dark {
     inset 0 0 10px rgba(255, 255, 255, 0.05), 0 8px 18px rgba(2, 6, 23, 0.28);
   --theme-window-controls-backdrop: blur(12px) saturate(145%);
   --theme-window-controls-backdrop-webkit: blur(12px) saturate(145%);
-
-  --theme-window-controls-shell-shadow: var(--shadow-card-soft);
 
   --theme-window-control-minimize-bg: #34d399;
   --theme-window-control-minimize-hover-bg: #10b981;
@@ -126,10 +113,6 @@ body.theme-dark {
   --theme-modal-secondary-border: rgba(255, 255, 255, 0.08);
   --theme-modal-secondary-text: var(--theme-text-primary);
   --theme-modal-secondary-hover-bg: rgba(30, 41, 59, 0.5);
-
-  --theme-modal-secondary-shadow: var(--shadow-control);
-  --theme-modal-secondary-hover-shadow: var(--shadow-control-hover);
-  --theme-modal-secondary-pressed-shadow: var(--shadow-pressed);
 
   /* Library */
   --theme-library-tag-label: var(--theme-text-primary);
@@ -161,14 +144,6 @@ body.theme-dark {
   --theme-library-card-hover-bg: var(--theme-accent-sky-bg);
   --theme-library-card-hover-border: var(--theme-accent-sky-border);
   --theme-library-card-hover-shadow: var(--theme-accent-sky-shadow);
-
-  --theme-library-delete-shadow: var(--theme-accent-pink-shadow);
-  --theme-library-delete-hover-shadow: var(--theme-accent-pink-shadow);
-  --theme-library-delete-pressed-shadow: var(--shadow-pressed);
-
-  --theme-library-submit-shadow: var(--theme-accent-pink-shadow);
-  --theme-library-submit-hover-shadow: var(--theme-accent-pink-shadow);
-  --theme-library-submit-pressed-shadow: var(--shadow-pressed);
 
   /* Startup */
   --theme-startup-screen-bg:
@@ -222,12 +197,8 @@ body.theme-dark {
   --theme-settings-toggle-thumb-checked-bg: #ffffff;
   --theme-settings-toggle-thumb-checked-shadow: 0 2px 12px rgba(2, 6, 23, 0.28);
 
-  --theme-settings-choice-shadow: var(--shadow-control);
   --theme-settings-choice-hover-border: rgba(255, 255, 255, 0.1);
-  --theme-settings-choice-hover-shadow: var(--shadow-control-hover);
-  --theme-settings-choice-pressed-shadow: var(--shadow-pressed);
   --theme-settings-choice-focus-border: rgba(244, 114, 182, 0.26);
-  --theme-settings-choice-focus-shadow: var(--shadow-control);
 
   --theme-settings-toggle-off-hover-bg: rgba(30, 41, 59, 0.54);
   --theme-settings-toggle-off-hover-border: rgba(255, 255, 255, 0.1);
@@ -235,7 +206,6 @@ body.theme-dark {
   --theme-settings-toggle-on-hover-bg: rgba(56, 189, 248, 0.8);
   --theme-settings-toggle-on-hover-border: rgba(255, 255, 255, 0.12);
   --theme-settings-toggle-on-hover-shadow: var(--shadow-control-hover);
-  --theme-settings-toggle-focus-shadow: var(--shadow-control);
 
   /* Dashboard and stats */
   --theme-progress-stat-value: var(--theme-text-muted);
@@ -272,10 +242,6 @@ body.theme-dark {
   --theme-action-button-default-bg: rgba(15, 23, 42, 0.46);
   --theme-action-button-default-border: rgba(255, 255, 255, 0.08);
   --theme-action-button-default-text: var(--theme-text-primary);
-
-  --theme-action-button-default-shadow: var(--shadow-control);
-  --theme-action-button-default-hover-shadow: var(--shadow-control-hover);
-  --theme-action-button-default-pressed-shadow: var(--shadow-pressed);
 
   /* Forms and text */
   --theme-text-primary: #e2e8f0;

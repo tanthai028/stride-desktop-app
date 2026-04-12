@@ -63,15 +63,15 @@
   border-color: var(--theme-action-button-default-border);
   background: var(--theme-action-button-default-bg);
   color: var(--theme-action-button-default-text);
-  box-shadow: var(--theme-action-button-default-shadow);
+  box-shadow: var(--shadow-control);
 }
 
 .action-button:hover {
-  box-shadow: var(--theme-action-button-default-hover-shadow);
+  box-shadow: var(--shadow-control-hover);
 }
 
 .action-button:active {
-  box-shadow: var(--theme-action-button-default-pressed-shadow);
+  box-shadow: var(--shadow-pressed);
 }
 
 .action-button-default {
@@ -105,49 +105,49 @@
   color: var(--theme-modal-secondary-text);
   background-color: var(--theme-modal-secondary-bg);
   border: 1px solid var(--theme-modal-secondary-border);
-  box-shadow: var(--theme-modal-secondary-shadow);
+  box-shadow: var(--shadow-control);
 }
 
 .modal-secondary-button:hover {
   background-color: var(--theme-modal-secondary-hover-bg);
-  box-shadow: var(--theme-modal-secondary-hover-shadow);
+  box-shadow: var(--shadow-control-hover);
   filter: none;
 }
 
 .modal-secondary-button:active {
-  box-shadow: var(--theme-modal-secondary-pressed-shadow);
+  box-shadow: var(--shadow-pressed);
 }
 
 .library-action-delete {
   color: var(--theme-library-delete-text);
   background-color: var(--theme-library-delete-bg);
   border: 1px solid var(--theme-library-delete-border);
-  box-shadow: var(--theme-library-delete-shadow);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .library-action-delete:hover {
   background-color: var(--theme-library-delete-hover-bg);
-  box-shadow: var(--theme-library-delete-hover-shadow);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .library-action-delete:active {
-  box-shadow: var(--theme-library-delete-pressed-shadow);
+  box-shadow: var(--shadow-pressed);
 }
 
 .library-action-submit {
   color: var(--theme-library-submit-text);
   background-color: var(--theme-library-submit-bg);
   border: 1px solid var(--theme-library-submit-border);
-  box-shadow: var(--theme-library-submit-shadow);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .library-action-submit:hover {
   background-color: var(--theme-library-submit-hover-bg);
-  box-shadow: var(--theme-library-submit-hover-shadow);
+  box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .library-action-submit:active {
-  box-shadow: var(--theme-library-submit-pressed-shadow);
+  box-shadow: var(--shadow-pressed);
 }
 
 .action-button svg,
