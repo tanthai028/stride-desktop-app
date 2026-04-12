@@ -1,30 +1,38 @@
 export const libraryItems = [
   {
     id: "1",
-    title: "Citi Bank",
+    title: "Raymond James - Software Developer Track",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nisl dui, tempor nec tortor id, accumsan mattis augue. Ut ornare luctus nibh, sed vehicula nibh tempor quis. Etiam lobortis imperdiet est, eget feugiat odio posuere ac. Curabitur pulvinar nunc non urna accumsan gravida. Nullam et massa id odio commodo pharetra et quis sapien. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam eget lectus tristique, bibendum quam at, commodo velit. Cras gravida ante dapibus quam maximus, ac blandit augue pulvinar. Duis mauris lectus, malesuada vitae convallis ut, pharetra eu purus. Aliquam nec enim tellus. Phasellus aliquet aliquet nibh. Ut volutpat faucibus tortor sed vestibulum. Aenean ac purus id ex tincidunt pellentesque quis quis leo.",
-    tag: "Data Analyst",
+      "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates and follow-up timing.",
+    tag: "Applied",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "2",
-    title: "GE Aerospace",
+    title: "GE Aerospace - Early Career SWE",
     description:
-      "Integer sagittis purus felis, ut rutrum nisl ultricies eget. Aliquam tristique non dolor at pretium. Pellentesque vitae ex odio. Sed euismod sem vel porta cursus. In eget justo et lectus imperdiet imperdiet ut et metus. Fusce rhoncus turpis eu sem lobortis bibendum. Sed vulputate pharetra ligula, et sodales sapien finibus id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec commodo lorem magna, quis viverra eros dignissim eu. Vivamus varius augue et ligula scelerisque facilisis.",
-    tag: "Software Engineer",
+      "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools or platform roles.",
+    tag: "Wishlist",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "3",
-    title: "Palantir",
+    title: "Palantir - Deployment Strategist / SWE",
     description:
-      "Donec vel sodales libero. Donec posuere nisi quis magna volutpat, scelerisque porta enim auctor. Proin fringilla, diam et volutpat volutpat, nisl quam aliquam quam, nec commodo ex lectus at sapien. Integer sed malesuada orci. Duis facilisis, ipsum sit amet consectetur ultricies, nunc nisl euismod leo, at finibus leo purus id lorem. Etiam euismod neque a massa feugiat, non interdum dui porttitor. Donec est magna, maximus blandit sollicitudin quis, lacinia nec nunc. Mauris ultricies arcu sed ligula venenatis sagittis. Aliquam finibus laoreet mi ut suscipit. Quisque id eros sed tortor fermentum mollis et sed arcu. Sed id tortor non diam ultricies mollis.",
-    tag: "Automation Engineer",
+      "High-interest company. Keep notes on role fit, technical expectations, and whether the workflow matches long-term goals.",
+    tag: "Interview",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: "4",
-    title: "JP Morgan Chase & Co.",
+    title: "JPMorgan Chase - Software Engineer Program",
     description:
-      "Nulla tincidunt magna sed mi hendrerit laoreet. Morbi pretium malesuada nulla quis consequat. Donec tincidunt nunc vel magna rutrum faucibus. Cras interdum posuere augue ut porttitor. Vivamus laoreet fermentum dui at aliquam. Nunc sit amet ligula faucibus, ullamcorper leo a, vestibulum libero. Morbi eu luctus felis. Fusce pulvinar eros vel laoreet efficitur. Quisque non neque nec ligula luctus pellentesque eu porttitor dui.",
-    tag: "Software Developer",
+      "Past internship connection makes this useful as a reference application. Keep notes on timeline and resume version used.",
+    tag: "OA",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];

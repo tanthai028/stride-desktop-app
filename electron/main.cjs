@@ -1,6 +1,13 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain, Menu, screen } = require("electron");
 const { readAppSettings, writeAppSettings } = require("./settingsStore.cjs");
+const {
+  readLibraryItems,
+  createLibraryItem,
+  updateLibraryItem,
+  deleteLibraryItem,
+  resetLibraryItems,
+} = require("./libraryStore.cjs");
 
 const isDev = !app.isPackaged;
 
@@ -96,6 +103,26 @@ function registerWindowEvents() {
     if (!win) return;
 
     win.setBackgroundColor(darkMode ? "#020617" : "#f6f1f8");
+  });
+
+  ipcMain.handle("library:get-items", async () => {
+    return readLibraryItems();
+  });
+
+  ipcMain.handle("library:add-item", async (_event, formValues) => {
+    return createLibraryItem(formValues);
+  });
+
+  ipcMain.handle("library:update-item", async (_event, itemId, formValues) => {
+    return updateLibraryItem(itemId, formValues);
+  });
+
+  ipcMain.handle("library:delete-item", async (_event, itemId) => {
+    return deleteLibraryItem(itemId);
+  });
+
+  ipcMain.handle("library:reset-items", async () => {
+    return resetLibraryItems();
   });
 }
 

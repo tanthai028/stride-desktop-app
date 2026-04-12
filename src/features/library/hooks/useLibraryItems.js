@@ -1,64 +1,65 @@
 import { useEffect, useState } from "react";
 import {
-  loadLibraryItems,
-  resetLibraryItems,
-  saveLibraryItems,
-} from "../utils/libraryStorage.js";
-import { createItemId } from "../utils/libraryItems.js";
+  addLibraryItem,
+  deleteLibraryItem,
+  getLibraryItems,
+  updateLibraryItem,
+} from "../utils/libraryApi.js";
 
-function useLibraryItems() {
+function useLibraryItems(resetVersion = 0) {
   const [items, setItems] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    setItems(loadLibraryItems());
-    setHasLoaded(true);
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    if (!hasLoaded) return;
-    saveLibraryItems(items);
-  }, [items, hasLoaded]);
+    async function loadItems() {
+      setHasLoaded(false);
 
-  function addItem(formValues) {
-    const newItem = {
-      id: createItemId(),
-      ...formValues,
+      const storedItems = await getLibraryItems();
+
+      if (!isMounted) return;
+
+      setItems(Array.isArray(storedItems) ? storedItems : []);
+      setHasLoaded(true);
+    }
+
+    loadItems();
+
+    return () => {
+      isMounted = false;
     };
+  }, [resetVersion]);
 
+  async function addItem(formValues) {
+    const newItem = await addLibraryItem(formValues);
     setItems((currentItems) => [newItem, ...currentItems]);
   }
 
-  function updateItem(itemId, formValues) {
+  async function updateItem(itemId, formValues) {
+    const updatedItem = await updateLibraryItem(itemId, formValues);
+
+    if (!updatedItem) return;
+
     setItems((currentItems) =>
-      currentItems.map((item) =>
-        item.id === itemId
-          ? {
-              ...item,
-              ...formValues,
-            }
-          : item,
-      ),
+      currentItems.map((item) => (item.id === itemId ? updatedItem : item)),
     );
   }
 
-  function deleteItem(itemId) {
+  async function deleteItem(itemId) {
+    await deleteLibraryItem(itemId);
+
     setItems((currentItems) =>
       currentItems.filter((item) => item.id !== itemId),
     );
   }
 
-  function resetItems() {
-    const defaultItems = resetLibraryItems();
-    setItems(defaultItems);
-  }
-
   return {
     items,
+    hasLoaded,
     addItem,
     updateItem,
     deleteItem,
-    resetItems,
   };
 }
 

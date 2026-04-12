@@ -4,7 +4,7 @@ import {
   getStoredSettings,
   saveStoredSettings,
 } from "../storage/settingsStorage.js";
-import { resetLibraryItems } from "../../library/utils/libraryStorage.js";
+import { resetLibraryItems } from "../../library/utils/libraryApi.js";
 
 export function useSettings() {
   const [settings, setSettings] = useState(() => {
@@ -22,8 +22,8 @@ export function useSettings() {
     }));
   }
 
-  function resetSettings() {
-    resetLibraryItems();
+  async function resetSettings() {
+    await resetLibraryItems();
 
     setSettings((prev) => ({
       ...DEFAULT_SETTINGS,

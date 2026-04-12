@@ -8,7 +8,9 @@ import useLibraryItems from "../hooks/useLibraryItems.js";
 import useLibraryPageState from "../hooks/useLibraryPageState.js";
 
 function LibraryPage({ settings }) {
-  const { items, addItem, updateItem, deleteItem } = useLibraryItems();
+  const { items, hasLoaded, addItem, updateItem, deleteItem } = useLibraryItems(
+    settings.resetVersion,
+  );
 
   const {
     isPageReady,
@@ -29,22 +31,22 @@ function LibraryPage({ settings }) {
     return getFilteredAndSortedLibraryItems(items, searchValue, sortValue);
   }, [items, searchValue, sortValue]);
 
-  function handleAddItem(formValues) {
-    addItem(formValues);
+  async function handleAddItem(formValues) {
+    await addItem(formValues);
     closeModal();
   }
 
-  function handleUpdateItem(formValues) {
+  async function handleUpdateItem(formValues) {
     if (!selectedItem) return;
 
-    updateItem(selectedItem.id, formValues);
+    await updateItem(selectedItem.id, formValues);
     closeModal();
   }
 
-  function handleDeleteItem() {
+  async function handleDeleteItem() {
     if (!selectedItem) return;
 
-    deleteItem(selectedItem.id);
+    await deleteItem(selectedItem.id);
     closeModal();
   }
 
@@ -77,7 +79,7 @@ function LibraryPage({ settings }) {
           onSearchChange={setSearchValue}
           sortValue={sortValue}
           onSortChange={setSortValue}
-          isPageReady={isPageReady}
+          isPageReady={isPageReady && hasLoaded}
           onItemClick={openEditModal}
           onClearFilters={clearFilters}
           onAddItem={openAddModal}

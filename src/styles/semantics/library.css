@@ -12,6 +12,7 @@
   border: 1px solid var(--theme-library-tag-border);
   backdrop-filter: var(--theme-library-tag-backdrop);
   -webkit-backdrop-filter: var(--theme-library-tag-backdrop-webkit);
+  cursor: pointer;
   transition:
     transform 120ms ease,
     background-color 120ms ease,
@@ -24,6 +25,16 @@
   transform: translateY(-1px);
   color: var(--theme-library-tag-hover-text);
   background-color: var(--theme-library-tag-hover-bg);
+}
+
+.library-tag-chip.is-selected {
+  color: var(--theme-library-tag-hover-text);
+  background-color: var(--theme-library-tag-hover-bg);
+  border-color: var(
+    --theme-library-tag-hover-border,
+    var(--theme-library-tag-border)
+  );
+  box-shadow: var(--shadow-control);
 }
 
 .library-card-title {

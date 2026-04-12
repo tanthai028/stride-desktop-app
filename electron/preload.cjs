@@ -28,3 +28,12 @@ contextBridge.exposeInMainWorld("appSettings", {
   updateThemeBackground: (darkMode) =>
     ipcRenderer.send("theme:update-background", darkMode),
 });
+
+contextBridge.exposeInMainWorld("libraryApi", {
+  getItems: () => ipcRenderer.invoke("library:get-items"),
+  addItem: (formValues) => ipcRenderer.invoke("library:add-item", formValues),
+  updateItem: (itemId, formValues) =>
+    ipcRenderer.invoke("library:update-item", itemId, formValues),
+  deleteItem: (itemId) => ipcRenderer.invoke("library:delete-item", itemId),
+  resetItems: () => ipcRenderer.invoke("library:reset-items"),
+});
