@@ -110,11 +110,38 @@ async function invokeElectronLibraryApi(methodName, ...args) {
   }
 }
 
+function formatLocation(value = "") {
+  const trimmed = String(value).trim();
+
+  if (!trimmed) return "";
+
+  const lowerValue = trimmed.toLowerCase();
+
+  if (
+    lowerValue === "remote" ||
+    lowerValue === "hybrid" ||
+    lowerValue === "onsite"
+  ) {
+    return trimmed;
+  }
+
+  const parts = trimmed
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+  if (parts.length >= 2) {
+    return `${parts[0]}, ${parts[1]}`;
+  }
+
+  return trimmed;
+}
+
 function normalizeParsedJobData(parsed = {}) {
   return {
     company: String(parsed.company ?? "").trim(),
     role: String(parsed.role ?? "").trim(),
-    location: String(parsed.location ?? "").trim(),
+    location: formatLocation(parsed.location),
     notes: String(parsed.notes ?? "").trim(),
     source: String(parsed.source ?? "").trim(),
     employmentType: String(parsed.employmentType ?? "").trim(),

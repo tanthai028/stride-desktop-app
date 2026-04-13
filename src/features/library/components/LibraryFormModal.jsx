@@ -138,11 +138,6 @@ function LibraryFormModal({
         company: shouldReplaceCompany ? extracted.company : prev.company,
         role: shouldReplaceRole ? extracted.role : prev.role,
         location: prev.location.trim() ? prev.location : extracted.location,
-        notes: prev.notes.trim()
-          ? prev.notes
-          : extracted.employmentType
-            ? `Employment type: ${extracted.employmentType}`
-            : prev.notes,
       };
     });
   }
@@ -187,11 +182,13 @@ function LibraryFormModal({
           onToggleAdvanced={handleToggleAdvanced}
         />
 
-        <LibraryStatusPicker
-          statusOptions={statusOptions}
-          selectedStatusValue={selectedStatusValue}
-          onStatusClick={handleStatusClick}
-        />
+        {isEditMode ? (
+          <LibraryStatusPicker
+            statusOptions={statusOptions}
+            selectedStatusValue={selectedStatusValue}
+            onStatusClick={handleStatusClick}
+          />
+        ) : null}
 
         {errorMessage ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
