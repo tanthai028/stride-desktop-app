@@ -54,9 +54,16 @@ function LibraryPage({ settings }) {
   }
 
   async function handleAddItem(formValues) {
+    if (formValues?.__clientValidationError) {
+      setModalErrorMessage(formValues.__clientValidationError);
+      return;
+    }
+
     try {
       await addItem(formValues);
-      handleCloseModal();
+
+      setModalErrorMessage("");
+      closeModal(); // ✅ add this back
     } catch (error) {
       setModalErrorMessage(
         error?.message || "Something went wrong. Please try again.",

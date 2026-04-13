@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Modal from "../../../components/ui/Modal.jsx";
 import {
   getLibraryStatusOptions,
@@ -52,6 +52,8 @@ function LibraryFormModal({
   const [formValues, setFormValues] = useState(createEmptyForm);
   const [selectedStatusValue, setSelectedStatusValue] = useState("applied");
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const jobUrlInputKeyRef = useRef(0);
 
   const statusOptions = getLibraryStatusOptions();
   const isEditMode = mode === "edit";
@@ -81,7 +83,17 @@ function LibraryFormModal({
     setFormValues(addModeDefaultValues);
     setSelectedStatusValue("applied");
     setShowAdvanced(false);
+    setIsSubmitting(false);
+    jobUrlInputKeyRef.current += 1;
   }, [addModeDefaultValues, isOpen, isEditMode, item]);
+
+  function resetAddForm() {
+    setFormValues(createEmptyForm());
+    setSelectedStatusValue("applied");
+    setShowAdvanced(false);
+    setIsSubmitting(false);
+    jobUrlInputKeyRef.current += 1;
+  }
 
   function updateField(fieldName, value) {
     onClearError?.();
@@ -114,16 +126,7 @@ function LibraryFormModal({
     );
   }
 
-  async function handleJobUrlPaste(pastedValue) {
-    onClearError?.();
-
-    const nextJobUrl = String(pastedValue ?? "").trim();
-
-    setFormValues((prev) => ({
-      ...prev,
-      jobUrl: nextJobUrl,
-    }));
-
+  async function applyParsedJobUrl(nextJobUrl) {
     const extracted = await parseLibraryJobUrl(nextJobUrl);
 
     setFormValues((prev) => {
@@ -140,10 +143,31 @@ function LibraryFormModal({
         location: prev.location.trim() ? prev.location : extracted.location,
       };
     });
+
+    return extracted;
   }
 
-  function handleSubmit(event) {
+  async function handleJobUrlPaste(pastedValue) {
+    onClearError?.();
+
+    const nextJobUrl = String(pastedValue ?? "").trim();
+
+    setFormValues((prev) => ({
+      ...prev,
+      jobUrl: nextJobUrl,
+    }));
+
+    await applyParsedJobUrl(nextJobUrl);
+  }
+
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
+
+    onClearError?.();
 
     const company = formValues.company.trim();
     const role = formValues.role.trim();
@@ -155,7 +179,55 @@ function LibraryFormModal({
       : new Date().toISOString();
     const notes = formValues.notes.trim();
 
-    onSubmit({
+    if (!isEditMode) {
+      if (!jobUrl) {
+        onSubmit?.({
+          __clientValidationError: "Job URL is required.",
+        });
+        return;
+      }
+
+      let nextCompany = company;
+      let nextRole = role;
+      let nextLocation = location;
+
+      if (!nextCompany || !nextRole) {
+        const extracted = await applyParsedJobUrl(jobUrl);
+        nextCompany = extracted.company.trim();
+        nextRole = extracted.role.trim();
+        nextLocation = nextLocation || extracted.location.trim();
+      }
+
+      if (!nextCompany || !nextRole) {
+        onSubmit?.({
+          __clientValidationError:
+            "Couldn’t extract job details from this link. Paste a direct job posting URL.",
+        });
+        return;
+      }
+
+      try {
+        setIsSubmitting(true);
+
+        await onSubmit({
+          company: nextCompany,
+          role: nextRole,
+          status,
+          jobUrl,
+          location: nextLocation,
+          appliedAt,
+          notes,
+        });
+
+        resetAddForm();
+      } finally {
+        setIsSubmitting(false);
+      }
+
+      return;
+    }
+
+    await onSubmit({
       company,
       role,
       status,
@@ -174,6 +246,7 @@ function LibraryFormModal({
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <LibraryFormFields
+          key={jobUrlInputKeyRef.current}
           formValues={formValues}
           onFieldChange={updateField}
           onJobUrlPaste={handleJobUrlPaste}

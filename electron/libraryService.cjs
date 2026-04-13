@@ -1,4 +1,3 @@
-const { DEFAULT_ITEMS } = require("./libraryDefaults.cjs");
 const {
   getAllLibraryRows,
   getLibraryRowById,
@@ -8,79 +7,37 @@ const {
   replaceLibraryRows,
 } = require("./libraryRepository.cjs");
 const {
-  validateLibraryFormValues,
-  normalizeStatusValue,
-} = require("./libraryValidation.cjs");
+  normalizeLibraryItems,
+  normalizeLibraryItem,
+} = require("./libraryDefaults.cjs");
 const {
   LibraryNotFoundError,
   LibraryStorageError,
 } = require("./libraryErrors.cjs");
+const { validateLibraryFormValues } = require("./libraryValidation.cjs");
+
+const DEFAULT_ITEMS = require("./libraryDefaults.cjs").DEFAULT_LIBRARY_ITEMS;
 
 function createItemId() {
-  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function toIsoDateTime(value) {
-  if (!value) return "";
-
-  const parsedDate = new Date(value);
-  return Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toISOString();
-}
-
-function normalizeLibraryItem(item = {}) {
-  const nowIso = new Date().toISOString();
-  const company = String(item.company ?? "").trim();
-  const role = String(item.role ?? "").trim();
-  const status = normalizeStatusValue(item.status ?? item.tag ?? "");
-  const jobUrl = String(item.jobUrl ?? "").trim();
-  const location = String(item.location ?? "").trim();
-  const notes = String(item.notes ?? item.description ?? "").trim();
-  const appliedAt = toIsoDateTime(item.appliedAt ?? item.createdAt ?? "");
-  const createdAt = toIsoDateTime(item.createdAt) || appliedAt || nowIso;
-  const updatedAt = toIsoDateTime(item.updatedAt) || nowIso;
-
-  let nextCompany = company;
-  let nextRole = role;
-
-  if (!nextCompany && item.title) {
-    const titleParts = String(item.title)
-      .split(" - ")
-      .map((part) => part.trim())
-      .filter(Boolean);
-
-    nextCompany = titleParts[0] || "";
-    nextRole = nextRole || titleParts.slice(1).join(" - ");
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+    return crypto.randomUUID();
   }
 
-  return {
-    id: item.id || createItemId(),
-    company: nextCompany,
-    role: nextRole,
-    status,
-    jobUrl,
-    location,
-    appliedAt,
-    notes,
-    createdAt,
-    updatedAt,
-  };
-}
-
-function normalizeLibraryItems(items) {
-  const sourceItems = Array.isArray(items) ? items : DEFAULT_ITEMS;
-  return sourceItems.map((item) => normalizeLibraryItem(item));
+  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 function readLibraryItems() {
   try {
-    const rows = getAllLibraryRows(normalizeLibraryItems(DEFAULT_ITEMS));
-    return normalizeLibraryItems(rows);
+    return getAllLibraryRows(normalizeLibraryItems(DEFAULT_ITEMS));
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
       throw error;
     }
 
-    throw new LibraryStorageError("Failed to load library items.", {
+    throw new LibraryStorageError("Failed to read library items.", {
       cause: error.message,
     });
   }
@@ -89,7 +46,9 @@ function readLibraryItems() {
 function createLibraryItem(formValues) {
   try {
     const timestamp = new Date().toISOString();
-    const validatedValues = validateLibraryFormValues(formValues);
+    const validatedValues = validateLibraryFormValues(formValues, {
+      mode: "create",
+    });
 
     const newItem = normalizeLibraryItem({
       id: createItemId(),
@@ -123,10 +82,13 @@ function updateLibraryItem(itemId, formValues) {
       throw new LibraryNotFoundError();
     }
 
-    const validatedValues = validateLibraryFormValues({
-      ...existingItem,
-      ...formValues,
-    });
+    const validatedValues = validateLibraryFormValues(
+      {
+        ...existingItem,
+        ...formValues,
+      },
+      { mode: "edit" },
+    );
 
     const updatedItem = normalizeLibraryItem({
       ...existingItem,

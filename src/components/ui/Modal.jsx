@@ -1,7 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 function Modal({ isOpen, title, children, onClose }) {
+  const shouldCloseFromOverlayRef = useRef(false);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -19,12 +21,28 @@ function Modal({ isOpen, title, children, onClose }) {
     };
   }, [isOpen, onClose]);
 
+  function handleOverlayMouseDown(event) {
+    shouldCloseFromOverlayRef.current = event.target === event.currentTarget;
+  }
+
+  function handleOverlayMouseUp(event) {
+    const endedOnOverlay = event.target === event.currentTarget;
+
+    if (shouldCloseFromOverlayRef.current && endedOnOverlay) {
+      document.activeElement?.blur();
+      onClose();
+    }
+
+    shouldCloseFromOverlayRef.current = false;
+  }
+
   return (
     <AnimatePresence>
       {isOpen ? (
         <motion.div
           className="modal-overlay fixed inset-0 z-[100] flex items-center justify-center px-4"
-          onClick={onClose}
+          onMouseDown={handleOverlayMouseDown}
+          onMouseUp={handleOverlayMouseUp}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -32,7 +50,9 @@ function Modal({ isOpen, title, children, onClose }) {
         >
           <motion.div
             className="modal-panel w-full max-w-xl"
-            onClick={(event) => event.stopPropagation()}
+            onMouseDown={() => {
+              shouldCloseFromOverlayRef.current = false;
+            }}
             initial={{ opacity: 0, y: 18, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.98 }}

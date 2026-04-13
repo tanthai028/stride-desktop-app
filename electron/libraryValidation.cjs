@@ -16,7 +16,7 @@ function normalizeStatusValue(status = "") {
 }
 
 function isValidUrl(value) {
-  if (!value) return true;
+  if (!value) return false;
 
   try {
     const parsed = new URL(value);
@@ -51,25 +51,14 @@ function getNormalizedAppliedAt(value) {
   return parsedDate.toISOString();
 }
 
-function validateLibraryFormValues(formValues = {}) {
+function validateLibraryFormValues(formValues = {}, options = {}) {
   const company = String(formValues.company ?? "").trim();
   const role = String(formValues.role ?? "").trim();
   const status = normalizeStatusValue(formValues.status) || DEFAULT_STATUS;
   const jobUrl = String(formValues.jobUrl ?? "").trim();
   const location = String(formValues.location ?? "").trim();
   const notes = String(formValues.notes ?? "").trim();
-
-  if (!company) {
-    throw new LibraryValidationError("Company is required.", {
-      field: "company",
-    });
-  }
-
-  if (!role) {
-    throw new LibraryValidationError("Role is required.", {
-      field: "role",
-    });
-  }
+  const mode = options.mode === "edit" ? "edit" : "create";
 
   if (!ALLOWED_STATUSES.has(status)) {
     throw new LibraryValidationError("Status is invalid.", {
@@ -78,11 +67,47 @@ function validateLibraryFormValues(formValues = {}) {
     });
   }
 
-  if (!isValidUrl(jobUrl)) {
-    throw new LibraryValidationError(
-      "Job URL must be a valid http or https link.",
-      { field: "jobUrl" },
-    );
+  if (mode === "create") {
+    if (!jobUrl) {
+      throw new LibraryValidationError("Job URL is required.", {
+        field: "jobUrl",
+      });
+    }
+
+    if (!isValidUrl(jobUrl)) {
+      throw new LibraryValidationError(
+        "Job URL must be a valid http or https link.",
+        { field: "jobUrl" },
+      );
+    }
+
+    if (!company || !role) {
+      throw new LibraryValidationError(
+        "Couldn’t extract job details from this link. Paste a direct job posting URL.",
+        {
+          field: "jobUrl",
+        },
+      );
+    }
+  } else {
+    if (!company) {
+      throw new LibraryValidationError("Company is required.", {
+        field: "company",
+      });
+    }
+
+    if (!role) {
+      throw new LibraryValidationError("Role is required.", {
+        field: "role",
+      });
+    }
+
+    if (jobUrl && !isValidUrl(jobUrl)) {
+      throw new LibraryValidationError(
+        "Job URL must be a valid http or https link.",
+        { field: "jobUrl" },
+      );
+    }
   }
 
   assertMaxLength("Company", company, 120);
