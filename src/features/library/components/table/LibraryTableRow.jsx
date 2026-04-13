@@ -4,7 +4,7 @@ import {
   formatAppliedDate,
   formatLocation,
   openJobUrl,
-} from "./libraryTableFormatters.js";
+} from "../../utils/libraryTableFormatters.js";
 
 function LibraryTableRow({ item, isPageReady, onItemClick }) {
   const statusMeta = getStatusMeta(item.status);

@@ -8,9 +8,9 @@
   box-sizing: border-box;
   box-shadow: var(--shadow-card-soft), var(--theme-window-controls-shadow);
   transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    box-shadow 160ms ease;
+    background-color var(--motion-base),
+    border-color var(--motion-base),
+    box-shadow var(--motion-base);
 }
 
 .window-control-dot {
@@ -25,17 +25,17 @@
   background: rgba(255, 255, 255, 0.2);
   box-shadow: var(--theme-window-controls-shadow);
   transition:
-    transform 120ms ease,
-    background-color 120ms ease,
-    box-shadow 120ms ease;
+    transform var(--motion-fast),
+    background-color var(--motion-fast),
+    box-shadow var(--motion-fast);
 }
 
 .window-control-dot:hover {
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
 }
 
 .window-control-dot:active {
-  transform: scale(0.97);
+  transform: var(--motion-press-scale-sm);
 }
 
 .window-control-dot:focus,

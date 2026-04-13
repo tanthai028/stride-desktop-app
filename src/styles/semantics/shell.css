@@ -1,3 +1,8 @@
+.app-shell {
+  min-height: 100vh;
+  background: var(--theme-app-shell-bg);
+}
+
 .frame-shell-text {
   color: var(--theme-frame-text);
 }

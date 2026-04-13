@@ -1,7 +1,6 @@
-@import "./base.css";
-
-@import "./semantics/surfaces.css";
+@import "./semantics/buttons/index.css";
 @import "./semantics/forms/index.css";
+@import "./semantics/surfaces.css";
 @import "./semantics/settings.css";
 @import "./semantics/header.css";
 @import "./semantics/sidebar.css";
@@ -15,5 +14,3 @@
 
 @import "./modes/light.css";
 @import "./modes/dark.css";
-
-@import "./semantics/buttons/index.css";

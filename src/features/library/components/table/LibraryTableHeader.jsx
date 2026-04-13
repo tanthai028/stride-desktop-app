@@ -1,5 +1,5 @@
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
-import { libraryTableColumns } from "./libraryTableColumns.js";
+import { libraryTableColumns } from "../../config/libraryTableColumns.js";
 
 function getNextSortValue(currentSortValue, columnKey) {
   const [activeKey, activeDirection] = String(currentSortValue).split("-");

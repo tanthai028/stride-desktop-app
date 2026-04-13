@@ -16,22 +16,22 @@
   backdrop-filter: var(--theme-select-trigger-backdrop);
   -webkit-backdrop-filter: var(--theme-select-trigger-backdrop-webkit);
   transition:
-    transform 150ms ease,
-    box-shadow 150ms ease,
-    background-color 150ms ease,
-    border-color 150ms ease,
-    color 150ms ease;
+    transform var(--motion-base),
+    box-shadow var(--motion-base),
+    background-color var(--motion-base),
+    border-color var(--motion-base),
+    color var(--motion-base);
 }
 
 .select-menu-trigger:hover {
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
   background-color: var(--theme-select-trigger-hover-bg);
   border-color: var(--theme-select-trigger-hover-border);
   box-shadow: var(--shadow-control-hover);
 }
 
 .select-menu-trigger:active {
-  transform: scale(0.98);
+  transform: var(--motion-press-scale);
   box-shadow: var(--shadow-pressed);
 }
 
@@ -58,20 +58,20 @@
   color: var(--theme-select-option-text);
   background-color: transparent;
   transition:
-    transform 120ms ease,
-    background-color 120ms ease,
-    color 120ms ease,
-    box-shadow 120ms ease;
+    transform var(--motion-fast),
+    background-color var(--motion-fast),
+    color var(--motion-fast),
+    box-shadow var(--motion-fast);
 }
 
 .select-menu-option:hover {
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
   color: var(--theme-select-option-hover-text);
   background-color: var(--theme-select-option-hover-bg);
 }
 
 .select-menu-option:active {
-  transform: scale(0.98);
+  transform: var(--motion-press-scale);
 }
 
 .select-menu-option:focus,

@@ -261,11 +261,9 @@
   --theme-interactive-input-hover-bg: rgba(255, 255, 255, 0.28);
   --theme-interactive-input-focus-bg: rgba(255, 255, 255, 0.34);
   --theme-interactive-input-focus-border: rgba(255, 255, 255, 0.42);
-}
 
-/* App background */
-.app-shell {
-  background:
+  /* App background */
+  --theme-app-shell-bg:
     radial-gradient(circle at top left, #ffe4e6, transparent 30%),
     radial-gradient(circle at top right, #ddd6fe, transparent 35%),
     radial-gradient(circle at bottom left, #bfdbfe, transparent 30%),

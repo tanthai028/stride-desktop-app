@@ -4,6 +4,13 @@
   --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
   --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
   --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
+
+  --motion-fast: 120ms ease;
+  --motion-base: 150ms ease;
+  --motion-slow: 200ms ease;
+  --motion-lift-y: translateY(-1px);
+  --motion-press-scale: scale(0.98);
+  --motion-press-scale-sm: scale(0.97);
 }
 
 .surface-card {

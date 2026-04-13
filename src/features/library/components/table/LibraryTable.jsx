@@ -21,10 +21,6 @@ function LibraryTable({
 
   return (
     <div className="library-table-shell">
-      <div className="library-width-debug">
-        {Math.round(scrollRef.current?.offsetWidth || 0)}px
-      </div>
-
       <div
         ref={scrollRef}
         onScroll={handleScroll}

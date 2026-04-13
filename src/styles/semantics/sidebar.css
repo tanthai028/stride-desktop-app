@@ -20,10 +20,10 @@
   backdrop-filter: var(--theme-sidebar-backdrop);
   -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
   transition:
-    width 0.2s ease-out,
-    background-color 0.2s ease-out,
-    border-color 0.2s ease-out,
-    box-shadow 0.2s ease-out;
+    width var(--motion-slow),
+    background-color var(--motion-slow),
+    border-color var(--motion-slow),
+    box-shadow var(--motion-slow);
 }
 
 .sidebar-shell:hover {
@@ -62,14 +62,14 @@
 
 .sidebar-item:hover {
   z-index: 40;
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
   background: var(--theme-sidebar-item-hover-bg);
   border-color: var(--theme-sidebar-item-hover-border);
   color: var(--theme-sidebar-item-hover-text);
 }
 
 .sidebar-item:active {
-  transform: scale(0.98);
+  transform: var(--motion-press-scale);
 }
 
 .sidebar-item.is-active {
@@ -106,8 +106,8 @@
   white-space: nowrap;
   opacity: 0;
   transition:
-    max-width 0.2s ease-out,
-    opacity 0.2s ease-out;
+    max-width var(--motion-slow),
+    opacity var(--motion-slow);
 }
 
 .sidebar-shell:hover .sidebar-label {

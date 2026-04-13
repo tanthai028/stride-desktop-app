@@ -20,13 +20,13 @@
   line-height: 1.25rem;
 
   transition:
-    transform 120ms ease,
-    background-color 150ms ease,
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    color 150ms ease,
-    filter 150ms ease,
-    opacity 150ms ease;
+    transform var(--motion-fast),
+    background-color var(--motion-base),
+    border-color var(--motion-base),
+    box-shadow var(--motion-base),
+    color var(--motion-base),
+    filter var(--motion-base),
+    opacity var(--motion-base);
 }
 
 .action-button:hover,
@@ -40,7 +40,7 @@
 .modal-secondary-button:active,
 .library-action-delete:active,
 .library-action-submit:active {
-  transform: scale(0.97);
+  transform: var(--motion-press-scale-sm);
 }
 
 .action-button:focus,

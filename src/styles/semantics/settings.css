@@ -5,9 +5,9 @@
   backdrop-filter: var(--theme-settings-card-backdrop);
   -webkit-backdrop-filter: var(--theme-settings-card-backdrop-webkit);
   transition:
-    box-shadow 150ms ease,
-    border-color 150ms ease,
-    background-color 150ms ease;
+    box-shadow var(--motion-base),
+    border-color var(--motion-base),
+    background-color var(--motion-base);
 }
 
 .settings-card:hover {
@@ -31,22 +31,22 @@
   transform: translateZ(0);
 
   transition:
-    background-color 120ms ease,
-    border-color 120ms ease,
-    color 120ms ease,
-    box-shadow 120ms ease,
-    transform 120ms ease;
+    background-color var(--motion-fast),
+    border-color var(--motion-fast),
+    color var(--motion-fast),
+    box-shadow var(--motion-fast),
+    transform var(--motion-fast);
 }
 
 .settings-choice-button:hover {
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
   background-color: var(--theme-settings-choice-hover-bg);
   border-color: var(--theme-settings-choice-hover-border);
   box-shadow: var(--shadow-control-hover);
 }
 
 .settings-choice-button:active {
-  transform: scale(0.98);
+  transform: var(--motion-press-scale);
   box-shadow: var(--shadow-pressed);
 }
 
@@ -72,21 +72,21 @@
   transform: translateZ(0);
 
   transition:
-    transform 120ms ease,
-    background-color 120ms ease,
-    border-color 120ms ease,
-    box-shadow 120ms ease;
+    transform var(--motion-fast),
+    background-color var(--motion-fast),
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
 }
 
 .settings-toggle:hover {
-  transform: translateY(-1px);
+  transform: var(--motion-lift-y);
   border-color: var(--theme-settings-toggle-off-hover-border);
   background-color: var(--theme-settings-toggle-off-hover-bg);
   box-shadow: var(--theme-settings-toggle-off-hover-shadow);
 }
 
 .settings-toggle:active {
-  transform: scale(0.97);
+  transform: var(--motion-press-scale-sm);
 }
 
 .settings-toggle:focus,
@@ -112,9 +112,9 @@
   background-color: var(--theme-settings-toggle-thumb-bg);
   box-shadow: var(--theme-settings-toggle-thumb-shadow);
   transition:
-    transform 150ms ease,
-    background-color 120ms ease,
-    box-shadow 120ms ease;
+    transform var(--motion-base),
+    background-color var(--motion-fast),
+    box-shadow var(--motion-fast);
 }
 
 .settings-toggle-thumb.is-checked {
