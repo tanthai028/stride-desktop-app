@@ -1,0 +1,117 @@
+.library-table-shell {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 1rem;
+  background-color: var(--theme-card-bg);
+  backdrop-filter: var(--theme-card-backdrop);
+  -webkit-backdrop-filter: var(--theme-card-backdrop-webkit);
+  container-type: inline-size;
+}
+
+.library-table-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+}
+
+.library-table {
+  width: 100%;
+  min-width: 700px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.library-table-header-row,
+.library-table-row {
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.library-table-header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  white-space: nowrap;
+  background-color: var(--theme-card-bg-solid);
+  font-weight: 500;
+}
+
+.library-table-row {
+  transition: background-color 120ms ease;
+}
+
+.library-table-row.is-clickable {
+  cursor: pointer;
+}
+
+.library-table-row.is-clickable:hover {
+  background-color: var(--theme-library-card-hover-bg);
+}
+
+.library-table-cell {
+  padding: 0.75rem 1rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.library-table-text-truncate {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.library-table-text-nowrap {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.library-table-status-chip {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.25rem;
+  overflow: hidden;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 9999px;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.library-table-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: auto;
+  white-space: nowrap;
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.85;
+  transition: opacity 120ms ease;
+}
+
+.library-table-link-button:hover {
+  opacity: 1;
+}
+
+.library-table-link-icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.library-open-label-compact {
+  display: none;
+}

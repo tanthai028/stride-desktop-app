@@ -1,0 +1,41 @@
+.interactive-input {
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.interactive-input:hover {
+  background-color: var(--theme-interactive-input-hover-bg);
+}
+
+.interactive-input:focus,
+.interactive-input:focus-visible {
+  background-color: var(--theme-interactive-input-focus-bg);
+  border-color: var(--theme-interactive-input-focus-border);
+  box-shadow: none;
+}
+
+.input-base {
+  @apply w-full rounded-2xl px-4 py-3 text-sm outline-none;
+
+  resize: none;
+  color: var(--theme-form-input-text);
+  border: 1px solid var(--theme-form-input-border);
+  background-color: var(--theme-form-input-bg);
+  transition:
+    border-color 120ms ease,
+    background-color 120ms ease,
+    box-shadow 120ms ease,
+    color 120ms ease;
+}
+
+.input-base::placeholder {
+  color: var(--theme-form-input-placeholder);
+}
+
+.search-icon {
+  color: var(--theme-search-icon);
+  flex-shrink: 0;
+  stroke-width: 1.9;
+}

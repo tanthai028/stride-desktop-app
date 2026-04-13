@@ -1,0 +1,24 @@
+.library-card-title {
+  color: var(--theme-library-card-title);
+}
+
+.library-card-description {
+  color: var(--theme-library-card-description);
+}
+
+.library-card-chip {
+  color: var(--theme-library-chip-text);
+  background-color: var(--theme-library-chip-bg);
+}
+
+.library-grid-card {
+  border: 1px solid var(--theme-card-border);
+  background-color: var(--theme-card-bg);
+  backdrop-filter: var(--theme-card-backdrop);
+  -webkit-backdrop-filter: var(--theme-card-backdrop-webkit);
+}
+
+.library-grid-card:hover {
+  border-color: var(--theme-library-card-hover-border);
+  background-color: var(--theme-library-card-hover-bg);
+}

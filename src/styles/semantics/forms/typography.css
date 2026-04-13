@@ -1,0 +1,31 @@
+.form-label {
+  color: var(--theme-form-label);
+}
+
+.page-eyebrow {
+  color: var(--theme-page-eyebrow);
+}
+
+.page-title {
+  color: var(--theme-page-title);
+}
+
+.page-description {
+  color: var(--theme-page-description);
+}
+
+.section-title {
+  color: var(--theme-section-title);
+}
+
+.section-description {
+  color: var(--theme-section-description);
+}
+
+.empty-state-title {
+  color: var(--theme-empty-state-title);
+}
+
+.empty-state-description {
+  color: var(--theme-empty-state-description);
+}

@@ -3,6 +3,75 @@ import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import { getStatusMeta } from "../constants/libraryStatuses.js";
 
+const STATE_ABBREVIATIONS = {
+  Alabama: "AL",
+  Alaska: "AK",
+  Arizona: "AZ",
+  Arkansas: "AR",
+  California: "CA",
+  Colorado: "CO",
+  Connecticut: "CT",
+  Delaware: "DE",
+  Florida: "FL",
+  Georgia: "GA",
+  Hawaii: "HI",
+  Idaho: "ID",
+  Illinois: "IL",
+  Indiana: "IN",
+  Iowa: "IA",
+  Kansas: "KS",
+  Kentucky: "KY",
+  Louisiana: "LA",
+  Maine: "ME",
+  Maryland: "MD",
+  Massachusetts: "MA",
+  Michigan: "MI",
+  Minnesota: "MN",
+  Mississippi: "MS",
+  Missouri: "MO",
+  Montana: "MT",
+  Nebraska: "NE",
+  Nevada: "NV",
+  "New Hampshire": "NH",
+  "New Jersey": "NJ",
+  "New Mexico": "NM",
+  "New York": "NY",
+  "North Carolina": "NC",
+  "North Dakota": "ND",
+  Ohio: "OH",
+  Oklahoma: "OK",
+  Oregon: "OR",
+  Pennsylvania: "PA",
+  "Rhode Island": "RI",
+  "South Carolina": "SC",
+  "South Dakota": "SD",
+  Tennessee: "TN",
+  Texas: "TX",
+  Utah: "UT",
+  Vermont: "VT",
+  Virginia: "VA",
+  Washington: "WA",
+  "West Virginia": "WV",
+  Wisconsin: "WI",
+  Wyoming: "WY",
+};
+
+function formatLocation(location) {
+  if (!location) return "-";
+
+  // Expecting "City, State"
+  const parts = location.split(",").map((p) => p.trim());
+
+  if (parts.length !== 2) return location;
+
+  const [city, state] = parts;
+  const shortState = STATE_ABBREVIATIONS[state];
+
+  if (!shortState) return location;
+
+  return `${city}, ${shortState}`;
+}
+
 function formatAppliedDate(appliedAt) {
   if (!appliedAt) return "-";
 
@@ -15,7 +84,7 @@ function formatAppliedDate(appliedAt) {
   return parsedDate.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
-    year: "numeric",
+    year: "2-digit",
   });
 }
 
@@ -101,6 +170,9 @@ function LibraryTable({
 
   return (
     <div className="library-table-shell">
+      <div className="library-width-debug">
+        {Math.round(scrollRef.current?.offsetWidth || 0)}px
+      </div>
       <div
         ref={scrollRef}
         onScroll={handleScroll}
@@ -116,32 +188,40 @@ function LibraryTable({
                 columnKey="company"
                 currentSortValue={sortValue}
                 onSortChange={onSortChange}
+                className="library-col-company"
               />
               <SortableHeader
                 label="Role"
                 columnKey="role"
                 currentSortValue={sortValue}
                 onSortChange={onSortChange}
+                className="library-col-role"
               />
               <SortableHeader
                 label="Status"
                 columnKey="status"
                 currentSortValue={sortValue}
                 onSortChange={onSortChange}
+                className="library-col-status"
               />
               <SortableHeader
                 label="Location"
                 columnKey="location"
                 currentSortValue={sortValue}
                 onSortChange={onSortChange}
+                className="library-col-location"
               />
               <SortableHeader
                 label="Applied"
                 columnKey="appliedAt"
                 currentSortValue={sortValue}
                 onSortChange={onSortChange}
+                className="library-col-applied"
               />
-              <th className="library-table-header-cell">Job Post</th>
+              <th className="library-table-header-cell library-col-open">
+                <span className="library-open-label-full">Job Post</span>
+                <span className="library-open-label-compact">Open</span>
+              </th>
             </tr>
           </thead>
 
@@ -158,27 +238,50 @@ function LibraryTable({
                     isClickable ? "is-clickable" : ""
                   }`}
                 >
-                  <td className="library-table-cell">{item.company || "-"}</td>
-                  <td className="library-table-cell">{item.role || "-"}</td>
-                  <td className="library-table-cell">
-                    <span className="library-table-status-chip">
-                      <span>{statusMeta.emoji}</span>
-                      <span>{statusMeta.label || "-"}</span>
+                  <td className="library-table-cell library-col-company">
+                    <span className="library-table-text-truncate">
+                      {item.company || "-"}
                     </span>
                   </td>
-                  <td className="library-table-cell">{item.location || "-"}</td>
-                  <td className="library-table-cell">
-                    {formatAppliedDate(item.appliedAt)}
+
+                  <td className="library-table-cell library-col-role">
+                    <span className="library-table-text-truncate">
+                      {item.role || "-"}
+                    </span>
                   </td>
-                  <td className="library-table-cell">
+
+                  <td className="library-table-cell library-col-status">
+                    <span className="library-table-status-chip">
+                      <span>{statusMeta.emoji}</span>
+                      <span className="library-table-text-truncate">
+                        {statusMeta.label || "-"}
+                      </span>
+                    </span>
+                  </td>
+
+                  <td className="library-table-cell library-col-location">
+                    <span className="library-table-text-truncate">
+                      {formatLocation(item.location)}
+                    </span>
+                  </td>
+
+                  <td className="library-table-cell library-col-applied">
+                    <span className="library-table-text-nowrap">
+                      {formatAppliedDate(item.appliedAt)}
+                    </span>
+                  </td>
+
+                  <td className="library-table-cell library-col-open">
                     {item.jobUrl ? (
                       <button
                         type="button"
                         onClick={(event) => openJobUrl(event, item.jobUrl)}
                         className="library-table-link-button"
+                        aria-label={`Open job post for ${item.company || item.role || "application"}`}
+                        title="Open job post"
                       >
                         <ExternalLink className="library-table-link-icon" />
-                        <span>Open</span>
+                        <span className="library-open-text">Open</span>
                       </button>
                     ) : (
                       "-"

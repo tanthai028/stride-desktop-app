@@ -1,0 +1,32 @@
+.library-col-company {
+  width: 15%;
+}
+
+.library-col-role {
+  width: 28%;
+}
+
+.library-col-status {
+  width: 16%;
+}
+
+.library-col-location {
+  width: 18%;
+}
+
+.library-col-applied {
+  width: 12%;
+}
+
+.library-col-open {
+  width: 11%;
+}
+
+.library-col-open.library-table-header-cell,
+.library-col-open.library-table-cell {
+  text-align: center;
+}
+
+.library-col-open .library-table-link-button {
+  justify-content: flex-start;
+}

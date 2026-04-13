@@ -1,0 +1,68 @@
+.action-button,
+.modal-secondary-button,
+.library-action-delete,
+.library-action-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+
+  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 1rem;
+
+  outline: none;
+  cursor: pointer;
+  transform: translateZ(0);
+
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+
+  transition:
+    transform 120ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease,
+    filter 150ms ease,
+    opacity 150ms ease;
+}
+
+.action-button:hover,
+.modal-secondary-button:hover,
+.library-action-delete:hover,
+.library-action-submit:hover {
+  transform: scale(1.05);
+}
+
+.action-button:active,
+.modal-secondary-button:active,
+.library-action-delete:active,
+.library-action-submit:active {
+  transform: scale(0.97);
+}
+
+.action-button:focus,
+.action-button:focus-visible,
+.modal-secondary-button:focus,
+.modal-secondary-button:focus-visible,
+.library-action-delete:focus,
+.library-action-delete:focus-visible,
+.library-action-submit:focus,
+.library-action-submit:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.action-button--with-icon {
+  gap: 0.5rem;
+}
+
+.action-button svg,
+.modal-secondary-button svg,
+.library-action-delete svg,
+.library-action-submit svg {
+  flex-shrink: 0;
+  stroke-width: 1.9;
+}
