@@ -8,7 +8,7 @@ import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 import LibraryCard from "./LibraryCard.jsx";
-import LibraryTable from "./LibraryTable.jsx";
+import LibraryTable from "./table/LibraryTable.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
 import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
 

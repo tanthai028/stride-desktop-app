@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import PageShell from "../../../components/page/PageShell.jsx";
-import LibraryFormModal from "../components/LibraryFormModal.jsx";
-import LibraryCollectionSection from "../components/LibraryCollectionSection.jsx";
-import { getFilteredAndSortedLibraryItems } from "../utils/libraryItems.js";
-import useLibraryItems from "../hooks/useLibraryItems.js";
-import useLibraryPageState from "../hooks/useLibraryPageState.js";
+import PageShell from "../../components/page/PageShell.jsx";
+import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
+import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx";
+import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
+import useLibraryItems from "./hooks/useLibraryItems.js";
+import useLibraryPageState from "./hooks/useLibraryPageState.js";
 
 function LibraryPage({ settings }) {
   const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =

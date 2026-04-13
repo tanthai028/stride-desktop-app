@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import SummaryCards from "../components/SummaryCards.jsx";
-import DashboardPreview from "../components/DashboardPreview.jsx";
-import QuickActionsPanel from "../components/QuickActionsPanel.jsx";
-import PageShell from "../../../components/page/PageShell.jsx";
-import PageSection from "../../../components/page/PageSection.jsx";
+import SummaryCards from "./components/SummaryCards.jsx";
+import DashboardPreview from "./components/DashboardPreview.jsx";
+import QuickActionsPanel from "./components/QuickActionsPanel.jsx";
+import PageShell from "../../components/page/PageShell.jsx";
+import PageSection from "../../components/page/PageSection.jsx";
 
 function DashboardPage({ settings, onAction }) {
   const [showBottomFade, setShowBottomFade] = useState(false);

@@ -1,11 +1,11 @@
 import { RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
-import PageShell from "../../../components/page/PageShell.jsx";
-import PageSection from "../../../components/page/PageSection.jsx";
-import SettingsToggleRow from "../components/SettingsToggleRow.jsx";
-import SettingsChoiceRow from "../components/SettingsChoiceRow.jsx";
-import { settingsSections } from "../config/settingsSections.js";
-import ActionButton from "../../../components/ui/ActionButton.jsx";
+import PageShell from "../../components/page/PageShell.jsx";
+import PageSection from "../../components/page/PageSection.jsx";
+import SettingsToggleRow from "./components/SettingsToggleRow.jsx";
+import SettingsChoiceRow from "./components/SettingsChoiceRow.jsx";
+import { settingsSections } from "./config/settingsSections.js";
+import ActionButton from "../../components/ui/ActionButton.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = {

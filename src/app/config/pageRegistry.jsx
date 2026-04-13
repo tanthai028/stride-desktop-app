@@ -1,6 +1,6 @@
-import DashboardPage from "../../features/dashboard/pages/DashboardPage.jsx";
-import LibraryPage from "../../features/library/pages/LibraryPage.jsx";
-import SettingsPage from "../../features/settings/pages/SettingsPage.jsx";
+import DashboardPage from "../../features/dashboard/DashboardPage.jsx";
+import LibraryPage from "../../features/library/LibraryPage.jsx";
+import SettingsPage from "../../features/settings/SettingsPage.jsx";
 
 export const APP_PAGES = {
   dashboard: "dashboard",

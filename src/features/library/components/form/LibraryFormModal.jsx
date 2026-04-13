@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import Modal from "../../../components/ui/Modal.jsx";
+import Modal from "../../../../components/ui/Modal.jsx";
 import {
   getLibraryStatusOptions,
   normalizeStatusValue,
-} from "../constants/libraryStatuses.js";
-import { parseLibraryJobUrl } from "../utils/libraryApi.js";
+} from "../../constants/libraryStatuses.js";
+import { parseLibraryJobUrl } from "../../utils/libraryClient.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
-import LibraryStatusPicker from "./LibraryStatusPicker.jsx";
+import LibraryStatusPicker from "../LibraryStatusPicker.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
 
 const DEFAULT_STATUS = "Applied";

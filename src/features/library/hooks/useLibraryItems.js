@@ -4,7 +4,7 @@ import {
   deleteLibraryItem,
   getLibraryItems,
   updateLibraryItem,
-} from "../utils/libraryApi.js";
+} from "../utils/libraryClient.js";
 
 function useLibraryItems(resetVersion = 0) {
   const [items, setItems] = useState([]);

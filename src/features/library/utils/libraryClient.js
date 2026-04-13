@@ -1,4 +1,4 @@
-import { libraryItems as defaultLibraryItems } from "../data/libraryData.js";
+import { libraryItems as defaultLibraryItems } from "../data/librarySeedData.js";
 import { parseJobUrl } from "./jobUrlParser.js";
 
 const DEFAULT_STATUS = "Applied";
