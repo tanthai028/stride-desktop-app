@@ -1,3 +1,11 @@
+.library-action-bar-grid {
+  margin-bottom: 1rem;
+}
+
+.library-action-bar-table {
+  margin-bottom: 0;
+}
+
 @container (max-width: 730px) {
   .library-table {
     min-width: 520px;
@@ -24,7 +32,16 @@
   }
 
   .library-col-open {
-    width: 14%;
+    width: 72px;
+  }
+
+  .library-open-label-full,
+  .library-open-text {
+    display: inline;
+  }
+
+  .library-open-label-compact {
+    display: none;
   }
 }
 
@@ -50,7 +67,7 @@
   }
 
   .library-col-open {
-    width: 18%;
+    width: 72px;
   }
 
   .library-open-label-full,
@@ -86,7 +103,7 @@
   }
 
   .library-col-open {
-    width: 12%;
+    width: 56px;
   }
 
   .library-col-open .library-table-link-button {

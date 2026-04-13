@@ -16,17 +16,19 @@
 
 .library-col-applied {
   width: 12%;
+  white-space: nowrap;
 }
 
 .library-col-open {
-  width: 11%;
+  width: 96px;
 }
 
 .library-col-open.library-table-header-cell,
 .library-col-open.library-table-cell {
   text-align: center;
+  padding-right: 1.5rem;
 }
 
 .library-col-open .library-table-link-button {
-  justify-content: flex-start;
+  justify-content: center;
 }

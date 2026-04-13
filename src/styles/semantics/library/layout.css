@@ -1,0 +1,28 @@
+.library-collection-action-bar-grid {
+  margin-bottom: 0.5rem;
+}
+
+.library-collection-action-bar-table {
+  margin-bottom: 0;
+}
+
+.page-action-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.page-action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* gap-3 */
+}
+
+.page-action-bar-search {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 0.75rem;
+}

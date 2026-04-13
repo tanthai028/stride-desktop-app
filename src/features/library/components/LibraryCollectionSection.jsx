@@ -61,12 +61,7 @@ function LibraryCollectionSection({
             className="library-view-mode-select"
           />
 
-          <ActionButton
-            onClick={onAddItem}
-            tone="pink"
-            withIcon
-            className="pl-3"
-          >
+          <ActionButton onClick={onAddItem} tone="pink" withIcon>
             <Plus className="h-4 w-4" />
             <span>Application</span>
           </ActionButton>
@@ -74,6 +69,11 @@ function LibraryCollectionSection({
       }
     >
       <PageActionBar
+        className={
+          isTableView
+            ? "library-collection-action-bar-table"
+            : "library-collection-action-bar-grid"
+        }
         searchValue={searchValue}
         onSearchChange={onSearchChange}
         sortValue={sortValue}

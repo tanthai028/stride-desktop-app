@@ -14,6 +14,7 @@ function PageActionBar({
   primaryAction,
   searchPlaceholder = "Search...",
   showSearch = true,
+  className = "",
 }) {
   const shouldShowSort =
     typeof onSortChange === "function" &&
@@ -26,10 +27,10 @@ function PageActionBar({
     filterOptions.length > 0;
 
   return (
-    <div className="mb-4 flex flex-col gap-3">
-      <div className="flex min-w-0 items-center gap-3">
+    <div className={`page-action-bar ${className}`}>
+      <div className="page-action-bar-row">
         {showSearch ? (
-          <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="page-action-bar-search">
             <Search size={16} className="search-icon shrink-0" />
             <input
               type="text"
@@ -51,7 +52,7 @@ function PageActionBar({
             value={filterValue}
             onChange={onFilterChange}
             options={filterOptions}
-            className="w-[132px] shrink-0"
+            className="shrink-0"
           />
         ) : null}
 
@@ -60,7 +61,7 @@ function PageActionBar({
             value={sortValue}
             onChange={onSortChange}
             options={sortOptions}
-            className="w-[110px] shrink-0"
+            className="shrink-0"
           />
         ) : null}
       </div>

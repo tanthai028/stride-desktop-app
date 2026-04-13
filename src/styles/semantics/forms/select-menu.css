@@ -1,9 +1,11 @@
 .select-menu-trigger {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  width: auto;
   height: 44px;
+  gap: 0.375rem;
+  padding: 0 0.75rem;
   border: 1px solid var(--theme-select-trigger-border);
   border-radius: 1rem;
   outline: none;
