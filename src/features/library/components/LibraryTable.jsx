@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, ExternalLink } from "lucide-react";
 import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import { getStatusMeta } from "../constants/libraryStatuses.js";
@@ -32,7 +32,64 @@ function openJobUrl(event, jobUrl) {
   window.open(jobUrl, "_blank", "noopener,noreferrer");
 }
 
-function LibraryTable({ items, isPageReady, onItemClick }) {
+function getNextSortValue(currentSortValue, columnKey) {
+  const [activeKey, activeDirection] = String(currentSortValue).split("-");
+
+  if (activeKey !== columnKey) {
+    return `${columnKey}-asc`;
+  }
+
+  return `${columnKey}-${activeDirection === "asc" ? "desc" : "asc"}`;
+}
+
+function renderSortIcon(isActive, direction) {
+  if (!isActive) {
+    return <ArrowUpDown className="library-table-sort-icon" />;
+  }
+
+  if (direction === "asc") {
+    return <ArrowUp className="library-table-sort-icon" />;
+  }
+
+  return <ArrowDown className="library-table-sort-icon" />;
+}
+
+function SortableHeader({
+  label,
+  columnKey,
+  currentSortValue,
+  onSortChange,
+  className = "",
+}) {
+  const [activeKey, activeDirection] = String(currentSortValue).split("-");
+  const isActive = activeKey === columnKey;
+  const nextSortValue = getNextSortValue(currentSortValue, columnKey);
+
+  function handleClick() {
+    onSortChange(nextSortValue);
+  }
+
+  return (
+    <th className={`library-table-header-cell ${className}`}>
+      <button
+        type="button"
+        onClick={handleClick}
+        className={`library-table-sort-button ${isActive ? "is-active" : ""}`}
+      >
+        <span>{label}</span>
+        {renderSortIcon(isActive, activeDirection)}
+      </button>
+    </th>
+  );
+}
+
+function LibraryTable({
+  items,
+  isPageReady,
+  onItemClick,
+  sortValue,
+  onSortChange,
+}) {
   const {
     scrollRef,
     scrollMetrics,
@@ -54,11 +111,36 @@ function LibraryTable({ items, isPageReady, onItemClick }) {
         <table className="library-table">
           <thead>
             <tr className="library-table-header-row">
-              <th className="library-table-header-cell">Company</th>
-              <th className="library-table-header-cell">Role</th>
-              <th className="library-table-header-cell">Status</th>
-              <th className="library-table-header-cell">Location</th>
-              <th className="library-table-header-cell">Applied</th>
+              <SortableHeader
+                label="Company"
+                columnKey="company"
+                currentSortValue={sortValue}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Role"
+                columnKey="role"
+                currentSortValue={sortValue}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Status"
+                columnKey="status"
+                currentSortValue={sortValue}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Location"
+                columnKey="location"
+                currentSortValue={sortValue}
+                onSortChange={onSortChange}
+              />
+              <SortableHeader
+                label="Applied"
+                columnKey="appliedAt"
+                currentSortValue={sortValue}
+                onSortChange={onSortChange}
+              />
               <th className="library-table-header-cell">Job Post</th>
             </tr>
           </thead>

@@ -7,6 +7,25 @@ function getAppliedTimestamp(item) {
   return Number.isNaN(parsedDate) ? 0 : parsedDate;
 }
 
+function sortByText(items, getValue, direction = "asc") {
+  const sortedItems = [...items].sort((leftItem, rightItem) =>
+    getNormalizedValue(getValue(leftItem)).localeCompare(
+      getNormalizedValue(getValue(rightItem)),
+    ),
+  );
+
+  return direction === "desc" ? sortedItems.reverse() : sortedItems;
+}
+
+function sortByAppliedDate(items, direction = "desc") {
+  const sortedItems = [...items].sort(
+    (leftItem, rightItem) =>
+      getAppliedTimestamp(leftItem) - getAppliedTimestamp(rightItem),
+  );
+
+  return direction === "desc" ? sortedItems.reverse() : sortedItems;
+}
+
 export function getFilteredAndSortedLibraryItems(
   items,
   searchValue,
@@ -39,34 +58,40 @@ export function getFilteredAndSortedLibraryItems(
     ].some((value) => getNormalizedValue(value).includes(normalizedSearch));
   });
 
-  if (sortValue === "appliedAt-desc") {
-    nextItems = [...nextItems].sort(
-      (leftItem, rightItem) =>
-        getAppliedTimestamp(rightItem) - getAppliedTimestamp(leftItem),
-    );
-  }
-
-  if (sortValue === "appliedAt-asc") {
-    nextItems = [...nextItems].sort(
-      (leftItem, rightItem) =>
-        getAppliedTimestamp(leftItem) - getAppliedTimestamp(rightItem),
-    );
-  }
-
-  if (sortValue === "company-asc") {
-    nextItems = [...nextItems].sort((leftItem, rightItem) =>
-      getNormalizedValue(leftItem.company).localeCompare(
-        getNormalizedValue(rightItem.company),
-      ),
-    );
-  }
-
-  if (sortValue === "status-asc") {
-    nextItems = [...nextItems].sort((leftItem, rightItem) =>
-      getNormalizedValue(leftItem.status).localeCompare(
-        getNormalizedValue(rightItem.status),
-      ),
-    );
+  switch (sortValue) {
+    case "appliedAt-asc":
+      nextItems = sortByAppliedDate(nextItems, "asc");
+      break;
+    case "appliedAt-desc":
+      nextItems = sortByAppliedDate(nextItems, "desc");
+      break;
+    case "company-asc":
+      nextItems = sortByText(nextItems, (item) => item.company, "asc");
+      break;
+    case "company-desc":
+      nextItems = sortByText(nextItems, (item) => item.company, "desc");
+      break;
+    case "role-asc":
+      nextItems = sortByText(nextItems, (item) => item.role, "asc");
+      break;
+    case "role-desc":
+      nextItems = sortByText(nextItems, (item) => item.role, "desc");
+      break;
+    case "status-asc":
+      nextItems = sortByText(nextItems, (item) => item.status, "asc");
+      break;
+    case "status-desc":
+      nextItems = sortByText(nextItems, (item) => item.status, "desc");
+      break;
+    case "location-asc":
+      nextItems = sortByText(nextItems, (item) => item.location, "asc");
+      break;
+    case "location-desc":
+      nextItems = sortByText(nextItems, (item) => item.location, "desc");
+      break;
+    default:
+      nextItems = sortByAppliedDate(nextItems, "desc");
+      break;
   }
 
   return nextItems;

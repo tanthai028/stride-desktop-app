@@ -19,6 +19,8 @@ function LibraryPage({ settings }) {
     setSearchValue,
     sortValue,
     setSortValue,
+    tableSortValue,
+    setTableSortValue,
     statusFilterValue,
     setStatusFilterValue,
     viewMode,
@@ -31,14 +33,19 @@ function LibraryPage({ settings }) {
     closeModal,
   } = useLibraryPageState();
 
+  const isTableView = viewMode === "table";
+  const activeSortValue = isTableView ? tableSortValue : sortValue;
+  const activeSearchValue = isTableView ? "" : searchValue;
+  const activeStatusFilterValue = isTableView ? "all" : statusFilterValue;
+
   const filteredItems = useMemo(() => {
     return getFilteredAndSortedLibraryItems(
       items,
-      searchValue,
-      sortValue,
-      statusFilterValue,
+      activeSearchValue,
+      activeSortValue,
+      activeStatusFilterValue,
     );
-  }, [items, searchValue, sortValue, statusFilterValue]);
+  }, [items, activeSearchValue, activeSortValue, activeStatusFilterValue]);
 
   function handleOpenAddModal() {
     setModalErrorMessage("");
@@ -133,6 +140,8 @@ function LibraryPage({ settings }) {
           onSearchChange={setSearchValue}
           sortValue={sortValue}
           onSortChange={setSortValue}
+          tableSortValue={tableSortValue}
+          onTableSortChange={setTableSortValue}
           statusFilterValue={statusFilterValue}
           onStatusFilterChange={setStatusFilterValue}
           viewMode={viewMode}

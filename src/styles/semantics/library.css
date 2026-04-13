@@ -172,3 +172,33 @@
   width: 124px;
   flex-shrink: 0;
 }
+
+.library-table-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font: inherit;
+  font-weight: 500;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    opacity 120ms ease,
+    color 120ms ease;
+}
+
+.library-table-sort-button:hover {
+  opacity: 1;
+}
+
+.library-table-sort-button.is-active {
+  opacity: 1;
+}
+
+.library-table-sort-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+}

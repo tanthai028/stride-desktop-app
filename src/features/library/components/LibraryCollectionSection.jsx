@@ -24,6 +24,8 @@ function LibraryCollectionSection({
   onSearchChange,
   sortValue,
   onSortChange,
+  tableSortValue,
+  onTableSortChange,
   statusFilterValue,
   onStatusFilterChange,
   viewMode,
@@ -81,7 +83,7 @@ function LibraryCollectionSection({
         onFilterChange={isTableView ? undefined : onStatusFilterChange}
         filterOptions={isTableView ? [] : libraryStatusFilterOptions}
         searchPlaceholder="Search company, role, notes, location..."
-        showSearch={!isTableView} // 👈 THIS LINE
+        showSearch={!isTableView}
       />
 
       <div className="relative min-h-0 flex-1 overflow-hidden">
@@ -91,6 +93,8 @@ function LibraryCollectionSection({
               items={filteredItems}
               isPageReady={isPageReady}
               onItemClick={onItemClick}
+              sortValue={tableSortValue}
+              onSortChange={onTableSortChange}
             />
           ) : (
             <>

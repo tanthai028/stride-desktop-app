@@ -4,6 +4,7 @@ function useLibraryPageState() {
   const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("appliedAt-desc");
+  const [tableSortValue, setTableSortValue] = useState("appliedAt-desc");
   const [statusFilterValue, setStatusFilterValue] = useState("all");
   const [viewMode, setViewMode] = useState("grid");
   const [modalMode, setModalMode] = useState(null);
@@ -13,6 +14,7 @@ function useLibraryPageState() {
     setSearchValue("");
     setSortValue("appliedAt-desc");
     setStatusFilterValue("all");
+    setTableSortValue("appliedAt-desc");
   }
 
   function openAddModal() {
@@ -41,6 +43,8 @@ function useLibraryPageState() {
     setSearchValue,
     sortValue,
     setSortValue,
+    tableSortValue,
+    setTableSortValue,
     statusFilterValue,
     setStatusFilterValue,
     viewMode,
