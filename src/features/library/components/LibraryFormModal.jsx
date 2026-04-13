@@ -39,6 +39,14 @@ function formatDateInputValue(value = "") {
   return parsedDate.toISOString().slice(0, 10);
 }
 
+function getEditModalTitle(item, formValues) {
+  const company =
+    formValues.company?.trim() || item?.company?.trim() || "Company";
+  const role = formValues.role?.trim() || item?.role?.trim() || "Role";
+
+  return `${company} - ${role}`;
+}
+
 function LibraryFormModal({
   isOpen,
   mode,
@@ -76,7 +84,8 @@ function LibraryFormModal({
       });
 
       setSelectedStatusValue(normalizedStatus || "applied");
-      setShowAdvanced(true);
+      setShowAdvanced(false);
+      setIsSubmitting(false);
       return;
     }
 
@@ -241,8 +250,26 @@ function LibraryFormModal({
   return (
     <Modal
       isOpen={isOpen}
-      title={isEditMode ? "🛠️ Edit Application" : "✨ Add Application"}
       onClose={onClose}
+      title={
+        isEditMode ? (
+          <div className="flex w-full items-center gap-3">
+            <span className="min-w-0 flex-1 truncate">
+              {getEditModalTitle(item, formValues)}
+            </span>
+
+            <div className="ml-auto shrink-0">
+              <LibraryStatusPicker
+                statusOptions={statusOptions}
+                selectedStatusValue={selectedStatusValue}
+                onStatusClick={handleStatusClick}
+              />
+            </div>
+          </div>
+        ) : (
+          "✨ Add Application"
+        )
+      }
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <LibraryFormFields
@@ -254,14 +281,6 @@ function LibraryFormModal({
           showAdvanced={showAdvanced}
           onToggleAdvanced={handleToggleAdvanced}
         />
-
-        {isEditMode ? (
-          <LibraryStatusPicker
-            statusOptions={statusOptions}
-            selectedStatusValue={selectedStatusValue}
-            onStatusClick={handleStatusClick}
-          />
-        ) : null}
 
         {errorMessage ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
