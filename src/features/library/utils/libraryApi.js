@@ -1,4 +1,5 @@
 import { libraryItems as defaultLibraryItems } from "../data/libraryData.js";
+import { parseJobUrl } from "./jobUrlParser.js";
 
 const DEFAULT_STATUS = "Applied";
 
@@ -107,6 +108,44 @@ async function invokeElectronLibraryApi(methodName, ...args) {
   } catch (error) {
     throw normalizeLibraryClientError(error);
   }
+}
+
+function normalizeParsedJobData(parsed = {}) {
+  return {
+    company: String(parsed.company ?? "").trim(),
+    role: String(parsed.role ?? "").trim(),
+    location: String(parsed.location ?? "").trim(),
+    notes: String(parsed.notes ?? "").trim(),
+    source: String(parsed.source ?? "").trim(),
+    employmentType: String(parsed.employmentType ?? "").trim(),
+    isAtsUrl: Boolean(parsed.isAtsUrl),
+    error: String(parsed.error ?? "").trim(),
+  };
+}
+
+export async function parseLibraryJobUrl(url) {
+  const trimmedUrl = String(url ?? "").trim();
+
+  if (!trimmedUrl) {
+    return normalizeParsedJobData({});
+  }
+
+  if (
+    hasElectronLibraryApi() &&
+    typeof window.libraryApi.parseJobPostingUrl === "function"
+  ) {
+    try {
+      const parsed = await invokeElectronLibraryApi(
+        "parseJobPostingUrl",
+        trimmedUrl,
+      );
+      return normalizeParsedJobData(parsed);
+    } catch {
+      return normalizeParsedJobData(parseJobUrl(trimmedUrl));
+    }
+  }
+
+  return normalizeParsedJobData(parseJobUrl(trimmedUrl));
 }
 
 export async function getLibraryItems() {

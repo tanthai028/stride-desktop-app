@@ -36,6 +36,8 @@ contextBridge.exposeInMainWorld("libraryApi", {
     ipcRenderer.invoke("library:update-item", itemId, formValues),
   deleteItem: (itemId) => ipcRenderer.invoke("library:delete-item", itemId),
   resetItems: () => ipcRenderer.invoke("library:reset-items"),
+  parseJobPostingUrl: (url) =>
+    ipcRenderer.invoke("library:parse-job-posting-url", url),
   openExternalUrl: (url) =>
     ipcRenderer.invoke("library:open-external-url", url),
 });

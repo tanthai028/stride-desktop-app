@@ -15,6 +15,7 @@ const {
   deleteLibraryItem,
   resetLibraryItems,
 } = require("./libraryService.cjs");
+const { parseJobPostingFromUrl } = require("./jobPostingParser.cjs");
 const { serializeLibraryError } = require("./libraryErrors.cjs");
 const isDev = !app.isPackaged;
 
@@ -149,6 +150,10 @@ function registerWindowEvents() {
   ipcMain.handle(
     "library:reset-items",
     createIpcHandler(async () => resetLibraryItems()),
+  );
+
+  ipcMain.handle("library:parse-job-posting-url", async (_event, url) =>
+    parseJobPostingFromUrl(url),
   );
 
   ipcMain.handle("library:open-external-url", async (_event, url) => {

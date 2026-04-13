@@ -4,6 +4,7 @@ import {
   getLibraryStatusOptions,
   normalizeStatusValue,
 } from "../constants/libraryStatuses.js";
+import { parseLibraryJobUrl } from "../utils/libraryApi.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
 import LibraryStatusPicker from "./LibraryStatusPicker.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
@@ -50,6 +51,7 @@ function LibraryFormModal({
 }) {
   const [formValues, setFormValues] = useState(createEmptyForm);
   const [selectedStatusValue, setSelectedStatusValue] = useState("applied");
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const statusOptions = getLibraryStatusOptions();
   const isEditMode = mode === "edit";
@@ -72,11 +74,13 @@ function LibraryFormModal({
       });
 
       setSelectedStatusValue(normalizedStatus || "applied");
+      setShowAdvanced(true);
       return;
     }
 
     setFormValues(addModeDefaultValues);
     setSelectedStatusValue("applied");
+    setShowAdvanced(false);
   }, [addModeDefaultValues, isOpen, isEditMode, item]);
 
   function updateField(fieldName, value) {
@@ -93,6 +97,54 @@ function LibraryFormModal({
 
     setSelectedStatusValue(option.value);
     updateField("status", option.rawLabel);
+  }
+
+  function handleToggleAdvanced() {
+    onClearError?.();
+    setShowAdvanced((current) => !current);
+  }
+
+  function isUuidLike(value = "") {
+    return /^[0-9a-f-]{36}$/i.test(String(value).trim());
+  }
+
+  function isAtsPlatformName(value = "") {
+    return ["ashby", "lever", "greenhouse", "workday"].includes(
+      String(value).trim().toLowerCase(),
+    );
+  }
+
+  async function handleJobUrlPaste(pastedValue) {
+    onClearError?.();
+
+    const nextJobUrl = String(pastedValue ?? "").trim();
+
+    setFormValues((prev) => ({
+      ...prev,
+      jobUrl: nextJobUrl,
+    }));
+
+    const extracted = await parseLibraryJobUrl(nextJobUrl);
+
+    setFormValues((prev) => {
+      const shouldReplaceCompany =
+        !prev.company.trim() || isAtsPlatformName(prev.company);
+
+      const shouldReplaceRole = !prev.role.trim() || isUuidLike(prev.role);
+
+      return {
+        ...prev,
+        jobUrl: nextJobUrl,
+        company: shouldReplaceCompany ? extracted.company : prev.company,
+        role: shouldReplaceRole ? extracted.role : prev.role,
+        location: prev.location.trim() ? prev.location : extracted.location,
+        notes: prev.notes.trim()
+          ? prev.notes
+          : extracted.employmentType
+            ? `Employment type: ${extracted.employmentType}`
+            : prev.notes,
+      };
+    });
   }
 
   function handleSubmit(event) {
@@ -129,7 +181,10 @@ function LibraryFormModal({
         <LibraryFormFields
           formValues={formValues}
           onFieldChange={updateField}
+          onJobUrlPaste={handleJobUrlPaste}
           isEditMode={isEditMode}
+          showAdvanced={showAdvanced}
+          onToggleAdvanced={handleToggleAdvanced}
         />
 
         <LibraryStatusPicker
