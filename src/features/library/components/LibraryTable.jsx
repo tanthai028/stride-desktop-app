@@ -1,4 +1,6 @@
 import { ExternalLink } from "lucide-react";
+import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
+import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import { getStatusMeta } from "../constants/libraryStatuses.js";
 
 function formatAppliedDate(appliedAt) {
@@ -31,69 +33,86 @@ function openJobUrl(event, jobUrl) {
 }
 
 function LibraryTable({ items, isPageReady, onItemClick }) {
+  const {
+    scrollRef,
+    scrollMetrics,
+    isScrollbarVisible,
+    handleScroll,
+    handlePointerEnter,
+    handlePointerLeave,
+  } = usePageScrollbar();
+
   return (
-    <div className="overflow-x-auto rounded-2xl border border-white/10">
-      <table className="w-full min-w-[860px] border-collapse text-left text-sm">
-        <thead>
-          <tr className="border-b border-white/10">
-            <th className="px-4 py-3 font-medium">Company</th>
-            <th className="px-4 py-3 font-medium">Role</th>
-            <th className="px-4 py-3 font-medium">Status</th>
-            <th className="px-4 py-3 font-medium">Location</th>
-            <th className="px-4 py-3 font-medium">Applied</th>
-            <th className="px-4 py-3 font-medium">Job Post</th>
-          </tr>
-        </thead>
+    <div className="library-table-shell">
+      <div
+        ref={scrollRef}
+        onScroll={handleScroll}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        className="library-table-scroll scrollbar-hide"
+      >
+        <table className="library-table">
+          <thead>
+            <tr className="library-table-header-row">
+              <th className="library-table-header-cell">Company</th>
+              <th className="library-table-header-cell">Role</th>
+              <th className="library-table-header-cell">Status</th>
+              <th className="library-table-header-cell">Location</th>
+              <th className="library-table-header-cell">Applied</th>
+              <th className="library-table-header-cell">Job Post</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          {items.map((item) => {
-            const statusMeta = getStatusMeta(item.status);
+          <tbody>
+            {items.map((item) => {
+              const statusMeta = getStatusMeta(item.status);
+              const isClickable = isPageReady && onItemClick;
 
-            return (
-              <tr
-                key={item.id}
-                onClick={
-                  isPageReady && onItemClick
-                    ? () => onItemClick(item)
-                    : undefined
-                }
-                className={`border-b border-white/5 transition ${
-                  isPageReady && onItemClick
-                    ? "cursor-pointer hover:bg-white/5"
-                    : ""
-                }`}
-              >
-                <td className="px-4 py-3">{item.company || "-"}</td>
-                <td className="px-4 py-3">{item.role || "-"}</td>
-                <td className="px-4 py-3">
-                  <span className="inline-flex items-center gap-1 rounded-full border border-white/10 px-2.5 py-1 text-xs font-medium">
-                    <span>{statusMeta.emoji}</span>
-                    <span>{statusMeta.label || "-"}</span>
-                  </span>
-                </td>
-                <td className="px-4 py-3">{item.location || "-"}</td>
-                <td className="px-4 py-3">
-                  {formatAppliedDate(item.appliedAt)}
-                </td>
-                <td className="px-4 py-3">
-                  {item.jobUrl ? (
-                    <button
-                      type="button"
-                      onClick={(event) => openJobUrl(event, item.jobUrl)}
-                      className="inline-flex items-center gap-2 text-sm font-medium underline underline-offset-4 opacity-85 transition-opacity hover:opacity-100"
-                    >
-                      <ExternalLink className="h-4 w-4 shrink-0" />
-                      <span>Open</span>
-                    </button>
-                  ) : (
-                    "-"
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr
+                  key={item.id}
+                  onClick={isClickable ? () => onItemClick(item) : undefined}
+                  className={`library-table-row ${
+                    isClickable ? "is-clickable" : ""
+                  }`}
+                >
+                  <td className="library-table-cell">{item.company || "-"}</td>
+                  <td className="library-table-cell">{item.role || "-"}</td>
+                  <td className="library-table-cell">
+                    <span className="library-table-status-chip">
+                      <span>{statusMeta.emoji}</span>
+                      <span>{statusMeta.label || "-"}</span>
+                    </span>
+                  </td>
+                  <td className="library-table-cell">{item.location || "-"}</td>
+                  <td className="library-table-cell">
+                    {formatAppliedDate(item.appliedAt)}
+                  </td>
+                  <td className="library-table-cell">
+                    {item.jobUrl ? (
+                      <button
+                        type="button"
+                        onClick={(event) => openJobUrl(event, item.jobUrl)}
+                        className="library-table-link-button"
+                      >
+                        <ExternalLink className="library-table-link-icon" />
+                        <span>Open</span>
+                      </button>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <PageScrollbar
+        isVisible={isScrollbarVisible}
+        scrollMetrics={scrollMetrics}
+      />
     </div>
   );
 }

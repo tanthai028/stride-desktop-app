@@ -35,6 +35,7 @@ function LibraryCollectionSection({
 }) {
   const hasItems = items.length > 0;
   const hasFilteredItems = filteredItems.length > 0;
+  const isTableView = viewMode === "table";
 
   const {
     scrollRef,
@@ -50,88 +51,98 @@ function LibraryCollectionSection({
       title="All Applications"
       description={`Tracked Applications: ${items.length}`}
       headerAction={
-        <ActionButton onClick={onAddItem} tone="pink" withIcon className="pl-3">
-          <Plus className="h-4 w-4" />
-          <span>Application</span>
-        </ActionButton>
+        <div className="library-section-header-actions">
+          <SelectMenu
+            value={viewMode}
+            onChange={onViewModeChange}
+            options={libraryViewOptions}
+            className="library-view-mode-select"
+          />
+
+          <ActionButton
+            onClick={onAddItem}
+            tone="pink"
+            withIcon
+            className="pl-3"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Application</span>
+          </ActionButton>
+        </div>
       }
     >
       <PageActionBar
         searchValue={searchValue}
         onSearchChange={onSearchChange}
         sortValue={sortValue}
-        onSortChange={onSortChange}
-        sortOptions={librarySortOptions}
+        onSortChange={isTableView ? undefined : onSortChange}
+        sortOptions={isTableView ? [] : librarySortOptions}
         filterValue={statusFilterValue}
-        onFilterChange={onStatusFilterChange}
-        filterOptions={libraryStatusFilterOptions}
-        extraControls={
-          <SelectMenu
-            value={viewMode}
-            onChange={onViewModeChange}
-            options={libraryViewOptions}
-            className="w-[124px] shrink-0"
-          />
-        }
+        onFilterChange={isTableView ? undefined : onStatusFilterChange}
+        filterOptions={isTableView ? [] : libraryStatusFilterOptions}
         searchPlaceholder="Search company, role, notes, location..."
+        showSearch={!isTableView} // 👈 THIS LINE
       />
 
-      <div className="relative min-h-0 flex-1 overflow-visible">
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          onPointerEnter={handlePointerEnter}
-          onPointerLeave={handlePointerLeave}
-          className="h-full min-h-0 overflow-y-auto overflow-x-auto scrollbar-hide"
-        >
-          <div className="min-h-full p-1 pt-1.5">
-            {hasFilteredItems ? (
-              viewMode === "table" ? (
-                <LibraryTable
-                  items={filteredItems}
-                  isPageReady={isPageReady}
-                  onItemClick={onItemClick}
-                />
-              ) : (
-                <ItemGrid
-                  items={filteredItems}
-                  onItemClick={isPageReady ? onItemClick : undefined}
-                  cardClassName="library-grid-card"
-                  renderItem={(item) => <LibraryCard item={item} />}
-                />
-              )
-            ) : (
-              <EmptyState
-                title={
-                  hasItems
-                    ? "🔎 No matching applications"
-                    : "📭 Your application tracker is empty"
-                }
-                description={
-                  hasItems
-                    ? "Try a different search, status filter, sort, or view to find the applications you want."
-                    : "Add your first application to start tracking roles, links, and notes in one place."
-                }
-                action={
-                  hasItems ? (
-                    <ActionButton onClick={onClearFilters}>
-                      Clear Filters
-                    </ActionButton>
-                  ) : (
-                    <ActionButton tone="pink" withIcon onClick={onAddItem}>
-                      ✨ Add First Application
-                    </ActionButton>
-                  )
-                }
-              />
-            )}
-          </div>
-        </div>
+      <div className="relative min-h-0 flex-1 overflow-hidden">
+        {hasFilteredItems ? (
+          isTableView ? (
+            <LibraryTable
+              items={filteredItems}
+              isPageReady={isPageReady}
+              onItemClick={onItemClick}
+            />
+          ) : (
+            <>
+              <div
+                ref={scrollRef}
+                onScroll={handleScroll}
+                onPointerEnter={handlePointerEnter}
+                onPointerLeave={handlePointerLeave}
+                className="h-full min-h-0 overflow-y-auto overflow-x-auto scrollbar-hide"
+              >
+                <div className="min-h-full p-1 pt-1.5">
+                  <ItemGrid
+                    items={filteredItems}
+                    onItemClick={isPageReady ? onItemClick : undefined}
+                    renderItem={(item) => <LibraryCard item={item} />}
+                  />
+                </div>
+              </div>
 
-        <PageScrollbar
-          isVisible={isScrollbarVisible}
-          scrollMetrics={scrollMetrics}
-        />
+              <PageScrollbar
+                isVisible={isScrollbarVisible}
+                scrollMetrics={scrollMetrics}
+              />
+            </>
+          )
+        ) : (
+          <div className="p-1 pt-1.5">
+            <EmptyState
+              title={
+                hasItems
+                  ? "🔎 No matching applications"
+                  : "📭 Your application tracker is empty"
+              }
+              description={
+                hasItems
+                  ? "Try a different search, status filter, sort, or view to find the applications you want."
+                  : "Add your first application to start tracking roles, links, and notes in one place."
+              }
+              action={
+                hasItems ? (
+                  <ActionButton onClick={onClearFilters}>
+                    Clear Filters
+                  </ActionButton>
+                ) : (
+                  <ActionButton tone="pink" withIcon onClick={onAddItem}>
+                    ✨ Add First Application
+                  </ActionButton>
+                )
+              }
+            />
+          </div>
+        )}
       </div>
     </PageSection>
   );

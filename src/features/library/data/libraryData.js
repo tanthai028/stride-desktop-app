@@ -8,7 +8,7 @@ function getDateOffset(daysAgo = 0) {
 
 export const libraryItems = [
   {
-    id: "1",
+    id: "item-default-raymond-james",
     company: "Raymond James",
     role: "Software Developer Track",
     status: "Applied",
@@ -21,7 +21,7 @@ export const libraryItems = [
     updatedAt: getDateOffset(3),
   },
   {
-    id: "2",
+    id: "item-default-ge-aerospace",
     company: "GE Aerospace",
     role: "Early Career Software Engineer",
     status: "Wishlist",
@@ -34,7 +34,7 @@ export const libraryItems = [
     updatedAt: getDateOffset(8),
   },
   {
-    id: "3",
+    id: "item-default-palantir",
     company: "Palantir",
     role: "Deployment Strategist / SWE",
     status: "Interview",
@@ -47,7 +47,7 @@ export const libraryItems = [
     updatedAt: getDateOffset(10),
   },
   {
-    id: "4",
+    id: "item-default-jpmorgan",
     company: "JPMorgan Chase",
     role: "Software Engineer Program",
     status: "OA",

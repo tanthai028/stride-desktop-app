@@ -7,6 +7,7 @@ body.theme-dark {
   --theme-panel-backdrop: blur(22px) saturate(135%);
   --theme-panel-backdrop-webkit: blur(22px) saturate(135%);
   --theme-card-bg: rgba(15, 23, 42, 0.55);
+  --theme-card-bg-solid: rgba(15, 23, 42, 1);
   --theme-card-border: rgba(255, 255, 255, 0.16);
   --theme-card-backdrop: blur(18px) saturate(135%);
   --theme-card-backdrop-webkit: blur(18px) saturate(135%);

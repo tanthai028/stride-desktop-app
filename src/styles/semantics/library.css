@@ -67,3 +67,108 @@
   background: var(--theme-library-card-hover-bg);
   border-color: var(--theme-library-card-hover-border);
 }
+
+.library-table-shell {
+  position: relative;
+  min-height: 0;
+  height: 100%;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--theme-card-border);
+  background-color: var(--theme-card-bg);
+  backdrop-filter: var(--theme-card-backdrop);
+  -webkit-backdrop-filter: var(--theme-card-backdrop-webkit);
+}
+
+.library-table-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+}
+
+.library-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.library-table-header-row {
+  border-bottom: 1px solid var(--theme-card-border);
+}
+
+.library-table-header-cell {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+
+  background-color: var(--theme-card-bg-solid);
+
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.library-table-row {
+  border-bottom: 1px solid var(--theme-card-border);
+  transition: background-color 120ms ease;
+}
+
+.library-table-row.is-clickable {
+  cursor: pointer;
+}
+
+.library-table-row.is-clickable:hover {
+  background-color: var(--theme-library-card-hover-bg);
+}
+
+.library-table-cell {
+  padding: 0.75rem 1rem;
+}
+
+.library-table-status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--theme-card-border);
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.library-table-link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: 0.85;
+  transition: opacity 120ms ease;
+}
+
+.library-table-link-button:hover {
+  opacity: 1;
+}
+
+.library-table-link-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.library-section-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.library-view-mode-select {
+  width: 124px;
+  flex-shrink: 0;
+}
