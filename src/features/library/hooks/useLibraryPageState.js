@@ -5,6 +5,7 @@ function useLibraryPageState() {
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("appliedAt-desc");
   const [statusFilterValue, setStatusFilterValue] = useState("all");
+  const [viewMode, setViewMode] = useState("grid");
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
@@ -42,6 +43,8 @@ function useLibraryPageState() {
     setSortValue,
     statusFilterValue,
     setStatusFilterValue,
+    viewMode,
+    setViewMode,
     modalMode,
     selectedItem,
     clearFilters,

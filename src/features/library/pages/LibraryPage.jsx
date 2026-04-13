@@ -21,6 +21,8 @@ function LibraryPage({ settings }) {
     setSortValue,
     statusFilterValue,
     setStatusFilterValue,
+    viewMode,
+    setViewMode,
     modalMode,
     selectedItem,
     clearFilters,
@@ -61,9 +63,8 @@ function LibraryPage({ settings }) {
 
     try {
       await addItem(formValues);
-
       setModalErrorMessage("");
-      closeModal(); // ✅ add this back
+      closeModal();
     } catch (error) {
       setModalErrorMessage(
         error?.message || "Something went wrong. Please try again.",
@@ -134,6 +135,8 @@ function LibraryPage({ settings }) {
           onSortChange={setSortValue}
           statusFilterValue={statusFilterValue}
           onStatusFilterChange={setStatusFilterValue}
+          viewMode={viewMode}
+          onViewModeChange={setViewMode}
           isPageReady={isPageReady && hasLoaded}
           onItemClick={handleOpenEditModal}
           onClearFilters={clearFilters}

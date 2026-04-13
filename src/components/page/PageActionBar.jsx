@@ -10,6 +10,7 @@ function PageActionBar({
   filterValue,
   onFilterChange,
   filterOptions = [],
+  extraControls = null,
   primaryAction,
   searchPlaceholder = "Search...",
 }) {
@@ -27,6 +28,8 @@ function PageActionBar({
             className="input-base min-w-0 flex-1"
           />
         </div>
+
+        {extraControls}
 
         {onFilterChange ? (
           <SelectMenu

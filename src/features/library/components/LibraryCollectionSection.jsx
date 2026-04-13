@@ -6,9 +6,16 @@ import EmptyState from "../../../components/page/EmptyState.jsx";
 import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
+import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 import LibraryCard from "./LibraryCard.jsx";
+import LibraryTable from "./LibraryTable.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
 import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
+
+const libraryViewOptions = [
+  { value: "grid", label: "Card Grid" },
+  { value: "table", label: "Table List" },
+];
 
 function LibraryCollectionSection({
   items,
@@ -19,6 +26,8 @@ function LibraryCollectionSection({
   onSortChange,
   statusFilterValue,
   onStatusFilterChange,
+  viewMode,
+  onViewModeChange,
   isPageReady,
   onItemClick,
   onClearFilters,
@@ -56,6 +65,14 @@ function LibraryCollectionSection({
         filterValue={statusFilterValue}
         onFilterChange={onStatusFilterChange}
         filterOptions={libraryStatusFilterOptions}
+        extraControls={
+          <SelectMenu
+            value={viewMode}
+            onChange={onViewModeChange}
+            options={libraryViewOptions}
+            className="w-[124px] shrink-0"
+          />
+        }
         searchPlaceholder="Search company, role, notes, location..."
       />
 
@@ -65,16 +82,24 @@ function LibraryCollectionSection({
           onScroll={handleScroll}
           onPointerEnter={handlePointerEnter}
           onPointerLeave={handlePointerLeave}
-          className="h-full min-h-0 overflow-y-auto overflow-x-visible scrollbar-hide"
+          className="h-full min-h-0 overflow-y-auto overflow-x-auto scrollbar-hide"
         >
           <div className="min-h-full p-1 pt-1.5">
             {hasFilteredItems ? (
-              <ItemGrid
-                items={filteredItems}
-                onItemClick={isPageReady ? onItemClick : undefined}
-                cardClassName="library-grid-card"
-                renderItem={(item) => <LibraryCard item={item} />}
-              />
+              viewMode === "table" ? (
+                <LibraryTable
+                  items={filteredItems}
+                  isPageReady={isPageReady}
+                  onItemClick={onItemClick}
+                />
+              ) : (
+                <ItemGrid
+                  items={filteredItems}
+                  onItemClick={isPageReady ? onItemClick : undefined}
+                  cardClassName="library-grid-card"
+                  renderItem={(item) => <LibraryCard item={item} />}
+                />
+              )
             ) : (
               <EmptyState
                 title={
@@ -84,7 +109,7 @@ function LibraryCollectionSection({
                 }
                 description={
                   hasItems
-                    ? "Try a different search, status filter, or sort to find the applications you want."
+                    ? "Try a different search, status filter, sort, or view to find the applications you want."
                     : "Add your first application to start tracking roles, links, and notes in one place."
                 }
                 action={

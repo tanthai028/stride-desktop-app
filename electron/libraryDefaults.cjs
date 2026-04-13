@@ -6,9 +6,9 @@ function getDateOffset(daysAgo = 0) {
   return date.toISOString();
 }
 
-const DEFAULT_ITEMS = [
+const DEFAULT_LIBRARY_ITEMS = [
   {
-    id: "1",
+    id: "item-default-raymond-james",
     company: "Raymond James",
     role: "Software Developer Track",
     status: "Applied",
@@ -21,7 +21,7 @@ const DEFAULT_ITEMS = [
     updatedAt: getDateOffset(3),
   },
   {
-    id: "2",
+    id: "item-default-ge-aerospace",
     company: "GE Aerospace",
     role: "Early Career Software Engineer",
     status: "Wishlist",
@@ -34,7 +34,7 @@ const DEFAULT_ITEMS = [
     updatedAt: getDateOffset(8),
   },
   {
-    id: "3",
+    id: "item-default-palantir",
     company: "Palantir",
     role: "Deployment Strategist / SWE",
     status: "Interview",
@@ -47,7 +47,7 @@ const DEFAULT_ITEMS = [
     updatedAt: getDateOffset(10),
   },
   {
-    id: "4",
+    id: "item-default-jpmorgan",
     company: "JPMorgan Chase",
     role: "Software Engineer Program",
     status: "OA",
@@ -61,6 +61,36 @@ const DEFAULT_ITEMS = [
   },
 ];
 
+function toIsoDateTime(value) {
+  if (!value) return "";
+
+  const parsedDate = new Date(value);
+  return Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toISOString();
+}
+
+function normalizeLibraryItem(item = {}) {
+  const nowIso = new Date().toISOString();
+
+  return {
+    id: String(item.id ?? "").trim(),
+    company: String(item.company ?? "").trim(),
+    role: String(item.role ?? "").trim(),
+    status: String(item.status ?? "").trim(),
+    jobUrl: String(item.jobUrl ?? "").trim(),
+    location: String(item.location ?? "").trim(),
+    appliedAt: toIsoDateTime(item.appliedAt),
+    notes: String(item.notes ?? "").trim(),
+    createdAt: toIsoDateTime(item.createdAt) || nowIso,
+    updatedAt: toIsoDateTime(item.updatedAt) || nowIso,
+  };
+}
+
+function normalizeLibraryItems(items = []) {
+  return Array.isArray(items) ? items.map(normalizeLibraryItem) : [];
+}
+
 module.exports = {
-  DEFAULT_ITEMS,
+  DEFAULT_LIBRARY_ITEMS,
+  normalizeLibraryItem,
+  normalizeLibraryItems,
 };
