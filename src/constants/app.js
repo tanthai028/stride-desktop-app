@@ -3,7 +3,7 @@ export const APP_TAGLINE = "Goodmorning Tan!";
 
 export const DEFAULT_SETTINGS = {
   darkMode: false,
-  hoverSoundProfile: "click",
+  hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",
 };

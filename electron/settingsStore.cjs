@@ -4,7 +4,7 @@ const { app } = require("electron");
 
 const DEFAULT_SETTINGS = {
   darkMode: false,
-  hoverSoundProfile: "click",
+  hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",
 };
