@@ -9,6 +9,7 @@
   --motion-base: 150ms ease;
   --motion-slow: 200ms ease;
   --motion-lift-y: translateY(-1px);
+  --motion-lift-card: translateY(-4px) scale(1.01);
   --motion-press-scale: scale(0.98);
   --motion-press-scale-sm: scale(0.97);
 }
@@ -42,4 +43,39 @@
   padding: 2rem;
   backdrop-filter: var(--theme-empty-backdrop);
   -webkit-backdrop-filter: var(--theme-empty-backdrop-webkit);
+}
+
+.page-card {
+  transform: translateZ(0);
+  transition:
+    transform var(--motion-base),
+    box-shadow var(--motion-base),
+    background-color var(--motion-base),
+    border-color var(--motion-base);
+  will-change: transform;
+}
+
+.page-card:hover {
+  transform: var(--motion-lift-card);
+}
+
+.page-card:active {
+  transform: var(--motion-press-scale);
+}
+
+.page-card.page-card-static:hover,
+.page-card.page-card-static:active {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-card {
+    transition: none;
+    will-change: auto;
+  }
+
+  .page-card:hover,
+  .page-card:active {
+    transform: none;
+  }
 }
