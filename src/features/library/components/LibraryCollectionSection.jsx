@@ -71,7 +71,7 @@ function LibraryCollectionSection({
         showSearch={!isTableView}
       />
 
-      <div className="relative min-h-0 flex-1 overflow-hidden">
+      <div className="relative min-h-0 flex-1 overflow-visible">
         {hasFilteredItems ? (
           isTableView ? (
             <LibraryTable
@@ -88,7 +88,7 @@ function LibraryCollectionSection({
                 onScroll={handleScroll}
                 onPointerEnter={handlePointerEnter}
                 onPointerLeave={handlePointerLeave}
-                className="h-full min-h-0 overflow-y-auto overflow-x-auto scrollbar-hide"
+                className="h-full min-h-0 overflow-y-auto overflow-x-visible scrollbar-hide"
               >
                 <div className="min-h-full p-1 pt-1.5">
                   <ItemGrid

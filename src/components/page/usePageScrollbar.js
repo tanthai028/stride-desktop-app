@@ -3,47 +3,63 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const SCROLLBAR_HIDE_DELAY_MS = 650;
 const MIN_THUMB_HEIGHT_PX = 44;
 
+function areScrollMetricsEqual(leftMetrics, rightMetrics) {
+  return (
+    leftMetrics.isScrollable === rightMetrics.isScrollable &&
+    leftMetrics.thumbHeight === rightMetrics.thumbHeight &&
+    leftMetrics.thumbTop === rightMetrics.thumbTop
+  );
+}
+
 function usePageScrollbar() {
   const scrollRef = useRef(null);
   const hideTimerRef = useRef(null);
-
-  const [isScrollbarVisible, setIsScrollbarVisible] = useState(false);
-  const [scrollMetrics, setScrollMetrics] = useState({
+  const frameRef = useRef(null);
+  const latestMetricsRef = useRef({
     isScrollable: false,
     thumbHeight: 0,
     thumbTop: 0,
   });
 
+  const [isScrollbarVisible, setIsScrollbarVisible] = useState(false);
+  const [scrollMetrics, setScrollMetrics] = useState(latestMetricsRef.current);
+
   const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) {
-      clearTimeout(hideTimerRef.current);
+      window.clearTimeout(hideTimerRef.current);
       hideTimerRef.current = null;
+    }
+  }, []);
+
+  const cancelScheduledFrame = useCallback(() => {
+    if (frameRef.current !== null) {
+      window.cancelAnimationFrame(frameRef.current);
+      frameRef.current = null;
     }
   }, []);
 
   const scheduleHide = useCallback(() => {
     clearHideTimer();
 
-    hideTimerRef.current = setTimeout(() => {
+    hideTimerRef.current = window.setTimeout(() => {
       setIsScrollbarVisible(false);
     }, SCROLLBAR_HIDE_DELAY_MS);
   }, [clearHideTimer]);
 
-  const updateScrollMetrics = useCallback(() => {
+  const readScrollMetrics = useCallback(() => {
     const element = scrollRef.current;
 
-    if (!element) return false;
+    if (!element) return null;
 
     const { scrollTop, scrollHeight, clientHeight } = element;
     const isScrollable = scrollHeight > clientHeight + 1;
 
     if (!isScrollable) {
-      setScrollMetrics({
+      return {
         isScrollable: false,
         thumbHeight: 0,
         thumbTop: 0,
-      });
-      return false;
+      };
     }
 
     const trackHeight = clientHeight;
@@ -53,47 +69,80 @@ function usePageScrollbar() {
     const maxScrollTop = Math.max(1, scrollHeight - clientHeight);
     const thumbTop = (scrollTop / maxScrollTop) * maxThumbTop;
 
-    setScrollMetrics({
+    return {
       isScrollable: true,
       thumbHeight,
       thumbTop,
-    });
-
-    return true;
+    };
   }, []);
 
-  const revealScrollbarTemporarily = useCallback(() => {
-    const isScrollable = updateScrollMetrics();
+  const commitScrollMetrics = useCallback((nextMetrics) => {
+    if (!nextMetrics) return false;
 
-    if (!isScrollable) return;
+    const previousMetrics = latestMetricsRef.current;
+    latestMetricsRef.current = nextMetrics;
 
-    setIsScrollbarVisible(true);
-    scheduleHide();
-  }, [scheduleHide, updateScrollMetrics]);
+    if (!areScrollMetricsEqual(previousMetrics, nextMetrics)) {
+      setScrollMetrics(nextMetrics);
+    }
+
+    return nextMetrics.isScrollable;
+  }, []);
+
+  const runScrollMeasurement = useCallback(
+    ({ reveal = false, hideAfterReveal = false } = {}) => {
+      const nextMetrics = readScrollMetrics();
+      const isScrollable = commitScrollMetrics(nextMetrics);
+
+      if (!isScrollable) {
+        setIsScrollbarVisible(false);
+        clearHideTimer();
+        return;
+      }
+
+      if (reveal) {
+        setIsScrollbarVisible(true);
+
+        if (hideAfterReveal) {
+          scheduleHide();
+        } else {
+          clearHideTimer();
+        }
+      }
+    },
+    [clearHideTimer, commitScrollMetrics, readScrollMetrics, scheduleHide],
+  );
+
+  const scheduleScrollMeasurement = useCallback(
+    (options = {}) => {
+      cancelScheduledFrame();
+
+      frameRef.current = window.requestAnimationFrame(() => {
+        frameRef.current = null;
+        runScrollMeasurement(options);
+      });
+    },
+    [cancelScheduledFrame, runScrollMeasurement],
+  );
 
   const handleScroll = useCallback(() => {
-    revealScrollbarTemporarily();
-  }, [revealScrollbarTemporarily]);
+    scheduleScrollMeasurement({ reveal: true, hideAfterReveal: true });
+  }, [scheduleScrollMeasurement]);
 
   const handlePointerEnter = useCallback(() => {
-    const isScrollable = updateScrollMetrics();
-
-    if (!isScrollable) return;
-
-    clearHideTimer();
-    setIsScrollbarVisible(true);
-  }, [clearHideTimer, updateScrollMetrics]);
+    scheduleScrollMeasurement({ reveal: true, hideAfterReveal: false });
+  }, [scheduleScrollMeasurement]);
 
   const handlePointerLeave = useCallback(() => {
-    if (!scrollMetrics.isScrollable) return;
+    if (!latestMetricsRef.current.isScrollable) return;
     scheduleHide();
-  }, [scheduleHide, scrollMetrics.isScrollable]);
+  }, [scheduleHide]);
 
   useEffect(() => {
-    updateScrollMetrics();
+    scheduleScrollMeasurement();
 
     function handleResize() {
-      updateScrollMetrics();
+      scheduleScrollMeasurement();
     }
 
     window.addEventListener("resize", handleResize);
@@ -101,8 +150,9 @@ function usePageScrollbar() {
     return () => {
       window.removeEventListener("resize", handleResize);
       clearHideTimer();
+      cancelScheduledFrame();
     };
-  }, [clearHideTimer, updateScrollMetrics]);
+  }, [cancelScheduledFrame, clearHideTimer, scheduleScrollMeasurement]);
 
   return {
     scrollRef,
