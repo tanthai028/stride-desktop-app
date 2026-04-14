@@ -296,3 +296,15 @@ export async function deleteLibraryItem(itemId) {
 
   return { success: true };
 }
+
+export async function resetLibraryItems() {
+  const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);
+
+  if (hasElectronLibraryApi()) {
+    const resetItems = await invokeElectronLibraryApi("resetItems");
+    return normalizeLibraryItems(resetItems);
+  }
+
+  localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
+  return normalizedDefaults;
+}
