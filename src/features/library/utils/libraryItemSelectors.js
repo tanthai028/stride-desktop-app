@@ -2,16 +2,9 @@ function getNormalizedValue(value = "") {
   return String(value).trim().toLowerCase();
 }
 
-function getAppliedTimestamp(item) {
-  const parsedDate = item.appliedAt ? new Date(item.appliedAt).getTime() : NaN;
-  return Number.isNaN(parsedDate) ? 0 : parsedDate;
-}
-
 function sortByText(items, getValue, direction = "asc") {
   const sortedItems = [...items].sort((leftItem, rightItem) =>
-    getNormalizedValue(getValue(leftItem)).localeCompare(
-      getNormalizedValue(getValue(rightItem)),
-    ),
+    getValue(leftItem).localeCompare(getValue(rightItem)),
   );
 
   return direction === "desc" ? sortedItems.reverse() : sortedItems;
@@ -20,10 +13,14 @@ function sortByText(items, getValue, direction = "asc") {
 function sortByAppliedDate(items, direction = "desc") {
   const sortedItems = [...items].sort(
     (leftItem, rightItem) =>
-      getAppliedTimestamp(leftItem) - getAppliedTimestamp(rightItem),
+      (leftItem._appliedTimestamp ?? 0) - (rightItem._appliedTimestamp ?? 0),
   );
 
   return direction === "desc" ? sortedItems.reverse() : sortedItems;
+}
+
+function getSortableText(item, key) {
+  return getNormalizedValue(item[key]);
 }
 
 export function getFilteredAndSortedLibraryItems(
@@ -38,7 +35,7 @@ export function getFilteredAndSortedLibraryItems(
   let nextItems = items.filter((item) => {
     const matchesStatus =
       normalizedStatusFilter === "all" ||
-      getNormalizedValue(item.status) === normalizedStatusFilter;
+      item._statusNormalized === normalizedStatusFilter;
 
     if (!matchesStatus) {
       return false;
@@ -48,14 +45,7 @@ export function getFilteredAndSortedLibraryItems(
       return true;
     }
 
-    return [
-      item.company,
-      item.role,
-      item.status,
-      item.location,
-      item.notes,
-      item.jobUrl,
-    ].some((value) => getNormalizedValue(value).includes(normalizedSearch));
+    return (item._searchText ?? "").includes(normalizedSearch);
   });
 
   switch (sortValue) {
@@ -66,28 +56,60 @@ export function getFilteredAndSortedLibraryItems(
       nextItems = sortByAppliedDate(nextItems, "desc");
       break;
     case "company-asc":
-      nextItems = sortByText(nextItems, (item) => item.company, "asc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "company"),
+        "asc",
+      );
       break;
     case "company-desc":
-      nextItems = sortByText(nextItems, (item) => item.company, "desc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "company"),
+        "desc",
+      );
       break;
     case "role-asc":
-      nextItems = sortByText(nextItems, (item) => item.role, "asc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "role"),
+        "asc",
+      );
       break;
     case "role-desc":
-      nextItems = sortByText(nextItems, (item) => item.role, "desc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "role"),
+        "desc",
+      );
       break;
     case "status-asc":
-      nextItems = sortByText(nextItems, (item) => item.status, "asc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => item._statusNormalized ?? "",
+        "asc",
+      );
       break;
     case "status-desc":
-      nextItems = sortByText(nextItems, (item) => item.status, "desc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => item._statusNormalized ?? "",
+        "desc",
+      );
       break;
     case "location-asc":
-      nextItems = sortByText(nextItems, (item) => item.location, "asc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "location"),
+        "asc",
+      );
       break;
     case "location-desc":
-      nextItems = sortByText(nextItems, (item) => item.location, "desc");
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "location"),
+        "desc",
+      );
       break;
     default:
       nextItems = sortByAppliedDate(nextItems, "desc");

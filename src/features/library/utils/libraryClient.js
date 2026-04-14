@@ -18,6 +18,38 @@ function toIsoDateTime(value) {
   return Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toISOString();
 }
 
+function normalizeText(value = "") {
+  return String(value).trim().toLowerCase();
+}
+
+function getAppliedTimestamp(value) {
+  const parsedDate = value ? new Date(value).getTime() : NaN;
+  return Number.isNaN(parsedDate) ? 0 : parsedDate;
+}
+
+function buildSearchText(fields = []) {
+  return fields
+    .map((value) => normalizeText(value))
+    .filter(Boolean)
+    .join(" ");
+}
+
+function addDerivedLibraryFields(item) {
+  return {
+    ...item,
+    _searchText: buildSearchText([
+      item.company,
+      item.role,
+      item.status,
+      item.location,
+      item.notes,
+      item.jobUrl,
+    ]),
+    _appliedTimestamp: getAppliedTimestamp(item.appliedAt),
+    _statusNormalized: normalizeText(item.status),
+  };
+}
+
 function normalizeLibraryItem(item = {}) {
   const nowIso = new Date().toISOString();
   const company = (item.company ?? "").trim();
@@ -45,7 +77,7 @@ function normalizeLibraryItem(item = {}) {
     nextRole = nextRole || titleParts.slice(1).join(" - ");
   }
 
-  return {
+  return addDerivedLibraryFields({
     id: item.id || createItemId(),
     company: nextCompany,
     role: nextRole,
@@ -56,7 +88,7 @@ function normalizeLibraryItem(item = {}) {
     notes,
     createdAt,
     updatedAt,
-  };
+  });
 }
 
 function normalizeLibraryItems(items) {
@@ -177,7 +209,8 @@ export async function parseLibraryJobUrl(url) {
 
 export async function getLibraryItems() {
   if (hasElectronLibraryApi()) {
-    return invokeElectronLibraryApi("getItems");
+    const items = await invokeElectronLibraryApi("getItems");
+    return normalizeLibraryItems(items);
   }
 
   const stored = localStorage.getItem("library-items");
@@ -202,7 +235,8 @@ export async function getLibraryItems() {
 
 export async function addLibraryItem(formValues) {
   if (hasElectronLibraryApi()) {
-    return invokeElectronLibraryApi("addItem", formValues);
+    const newItem = await invokeElectronLibraryApi("addItem", formValues);
+    return normalizeLibraryItem(newItem);
   }
 
   const currentItems = await getLibraryItems();
@@ -225,7 +259,12 @@ export async function addLibraryItem(formValues) {
 
 export async function updateLibraryItem(itemId, formValues) {
   if (hasElectronLibraryApi()) {
-    return invokeElectronLibraryApi("updateItem", itemId, formValues);
+    const updatedItem = await invokeElectronLibraryApi(
+      "updateItem",
+      itemId,
+      formValues,
+    );
+    return updatedItem ? normalizeLibraryItem(updatedItem) : null;
   }
 
   const currentItems = await getLibraryItems();
@@ -256,14 +295,4 @@ export async function deleteLibraryItem(itemId) {
   localStorage.setItem("library-items", JSON.stringify(nextItems));
 
   return { success: true };
-}
-
-export async function resetLibraryItems() {
-  if (hasElectronLibraryApi()) {
-    return invokeElectronLibraryApi("resetItems");
-  }
-
-  const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);
-  localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
-  return normalizedDefaults;
 }
