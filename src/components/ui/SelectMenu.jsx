@@ -14,7 +14,6 @@ function SelectMenu({
   const triggerRef = useRef(null);
 
   const selectedOption = options.find((option) => option.value === value);
-  const selectedIndex = options.findIndex((option) => option.value === value);
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
   useEffect(() => {
@@ -31,53 +30,67 @@ function SelectMenu({
       }
     }
 
+    function handleWindowBlur() {
+      setIsOpen(false);
+      triggerRef.current?.blur();
+    }
+
     window.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("keydown", handleEscape);
+    window.addEventListener("blur", handleWindowBlur);
 
     return () => {
       window.removeEventListener("mousedown", handleClickOutside);
       window.removeEventListener("keydown", handleEscape);
+      window.removeEventListener("blur", handleWindowBlur);
     };
   }, []);
 
-  function handleSelect(nextValue) {
+  function handleSelect(nextValue, { closeMenu = true } = {}) {
     onChange(nextValue);
-    setIsOpen(false);
-    triggerRef.current?.blur();
+
+    if (closeMenu) {
+      setIsOpen(false);
+      triggerRef.current?.blur();
+    }
   }
 
-  function handleWheel(event) {
-    if (!options.length) {
+  function handleTriggerClick() {
+    const topOption = options[0];
+
+    if (!topOption) {
       return;
     }
 
-    event.preventDefault();
+    handleSelect(topOption.value, { closeMenu: false });
+  }
 
-    const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+  function handleMouseEnter() {
+    setIsOpen(true);
+  }
 
-    if (event.deltaY > 0) {
-      const nextIndex = Math.min(currentIndex + 1, options.length - 1);
-      if (nextIndex !== currentIndex) {
-        onChange(options[nextIndex].value);
-      }
-      return;
-    }
+  function handleMouseLeave() {
+    setIsOpen(false);
+  }
 
-    if (event.deltaY < 0) {
-      const nextIndex = Math.max(currentIndex - 1, 0);
-      if (nextIndex !== currentIndex) {
-        onChange(options[nextIndex].value);
-      }
+  function handleBlur(event) {
+    if (!containerRef.current?.contains(event.relatedTarget)) {
+      setIsOpen(false);
     }
   }
 
   return (
-    <div ref={containerRef} className={`select-menu ${className}`}>
+    <div
+      ref={containerRef}
+      className={`select-menu ${isOpen ? "is-open" : ""} ${className}`.trim()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onBlur={handleBlur}
+    >
       <button
         ref={triggerRef}
         type="button"
-        onClick={() => setIsOpen((current) => !current)}
-        onWheel={handleWheel}
+        onClick={handleTriggerClick}
         className="select-menu-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
@@ -94,27 +107,31 @@ function SelectMenu({
       </button>
 
       {isOpen ? (
-        <div className="select-menu-panel">
-          <div role="listbox" className="select-menu-options">
-            {options.map((option) => {
-              const isSelected = option.value === value;
+        <>
+          <div className="select-menu-hover-bridge" aria-hidden="true" />
 
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => handleSelect(option.value)}
-                  className={`select-menu-option ${isSelected ? "is-selected" : ""}`}
-                  role="option"
-                  aria-selected={isSelected}
-                  {...hoverFeedbackHandlers}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
+          <div className="select-menu-panel">
+            <div role="listbox" className="select-menu-options">
+              {options.map((option) => {
+                const isSelected = option.value === value;
+
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => handleSelect(option.value)}
+                    className={`select-menu-option ${isSelected ? "is-selected" : ""}`}
+                    role="option"
+                    aria-selected={isSelected}
+                    {...hoverFeedbackHandlers}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        </>
       ) : null}
     </div>
   );
