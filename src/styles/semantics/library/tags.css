@@ -11,8 +11,7 @@
   background-color: var(--theme-library-tag-bg);
   font-size: 0.875rem;
   font-weight: 500;
-  backdrop-filter: var(--theme-library-tag-backdrop);
-  -webkit-backdrop-filter: var(--theme-library-tag-backdrop-webkit);
+  box-shadow: var(--shadow-control);
   transition:
     transform var(--motion-fast),
     background-color var(--motion-fast),
@@ -26,6 +25,7 @@
   transform: var(--motion-lift-y);
   color: var(--theme-library-tag-hover-text);
   background-color: var(--theme-library-tag-hover-bg);
+  box-shadow: var(--shadow-control-hover);
 }
 
 .library-tag-chip.is-selected {

@@ -2,8 +2,6 @@
   border: 1px solid var(--theme-settings-card-border);
   background-color: var(--theme-settings-card-bg);
   box-shadow: var(--theme-settings-card-shadow);
-  backdrop-filter: var(--theme-settings-card-backdrop);
-  -webkit-backdrop-filter: var(--theme-settings-card-backdrop-webkit);
   transition:
     box-shadow var(--motion-base),
     border-color var(--motion-base),
@@ -29,7 +27,6 @@
   box-shadow: var(--shadow-control);
   outline: none;
   transform: translateZ(0);
-
   transition:
     background-color var(--motion-fast),
     border-color var(--motion-fast),
@@ -70,7 +67,6 @@
   box-shadow: var(--theme-settings-toggle-off-shadow);
   outline: none;
   transform: translateZ(0);
-
   transition:
     transform var(--motion-fast),
     background-color var(--motion-fast),

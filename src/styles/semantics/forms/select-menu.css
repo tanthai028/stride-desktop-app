@@ -20,8 +20,6 @@
   box-shadow: var(--shadow-control);
   font-size: 0.875rem;
   font-weight: 500;
-  backdrop-filter: var(--theme-select-trigger-backdrop);
-  -webkit-backdrop-filter: var(--theme-select-trigger-backdrop-webkit);
   transition:
     transform var(--motion-base),
     box-shadow var(--motion-base),
@@ -71,8 +69,6 @@
   border-radius: 1rem;
   background-color: var(--theme-select-panel-bg);
   box-shadow: var(--theme-select-panel-shadow);
-  backdrop-filter: var(--theme-select-panel-backdrop);
-  -webkit-backdrop-filter: var(--theme-select-panel-backdrop-webkit);
 }
 
 .select-menu-options {

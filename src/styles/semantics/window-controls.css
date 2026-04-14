@@ -3,8 +3,6 @@
   border-radius: 9999px;
   border: 1px solid var(--theme-window-controls-border);
   background-color: var(--theme-window-controls-bg);
-  backdrop-filter: var(--theme-window-controls-backdrop);
-  -webkit-backdrop-filter: var(--theme-window-controls-backdrop-webkit);
   box-sizing: border-box;
   box-shadow: var(--shadow-card-soft), var(--theme-window-controls-shadow);
   transition:
