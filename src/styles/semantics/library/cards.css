@@ -1,22 +1,24 @@
 .library-card-title {
-  color: var(--theme-library-card-title);
+  color: var(--theme-library-card-title, var(--theme-text-secondary));
 }
 
 .library-card-description {
-  color: var(--theme-library-card-description);
+  color: var(--theme-library-card-description, var(--theme-text-descriptions));
 }
 
 .library-card-chip {
-  color: var(--theme-library-chip-text);
-  background-color: var(--theme-library-chip-bg);
+  color: var(--theme-library-chip-text, var(--theme-text-primary));
+  background-color: var(--theme-library-chip-bg, rgba(244, 114, 182, 0.12));
 }
 
 .library-grid-card {
   border: 1px solid var(--theme-card-border);
   background-color: var(--theme-card-bg);
+  color: var(--theme-text-primary);
 }
 
 .library-grid-card:hover {
   border-color: var(--theme-library-card-hover-border);
   background-color: var(--theme-library-card-hover-bg);
+  box-shadow: var(--theme-library-card-hover-shadow);
 }

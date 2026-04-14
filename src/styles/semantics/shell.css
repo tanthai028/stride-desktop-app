@@ -4,7 +4,7 @@
 }
 
 .frame-shell-text {
-  color: var(--theme-frame-text);
+  color: var(--theme-frame-text, var(--theme-text-primary));
 }
 
 .page-shell-header {

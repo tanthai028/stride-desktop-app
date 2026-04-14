@@ -1,31 +1,31 @@
 .form-label {
-  color: var(--theme-form-label);
+  color: var(--theme-form-label, var(--theme-text-primary));
 }
 
 .page-eyebrow {
-  color: var(--theme-page-eyebrow);
+  color: var(--theme-page-eyebrow, var(--theme-page-kicker));
 }
 
 .page-title {
-  color: var(--theme-page-title);
+  color: var(--theme-page-title, var(--theme-text-secondary));
 }
 
 .page-description {
-  color: var(--theme-page-description);
+  color: var(--theme-page-description, var(--theme-text-descriptions));
 }
 
 .section-title {
-  color: var(--theme-section-title);
+  color: var(--theme-section-title, var(--theme-text-secondary));
 }
 
 .section-description {
-  color: var(--theme-section-description);
+  color: var(--theme-section-description, var(--theme-text-descriptions));
 }
 
 .empty-state-title {
-  color: var(--theme-empty-state-title);
+  color: var(--theme-empty-state-title, var(--theme-text-secondary));
 }
 
 .empty-state-description {
-  color: var(--theme-empty-state-description);
+  color: var(--theme-empty-state-description, var(--theme-text-descriptions));
 }

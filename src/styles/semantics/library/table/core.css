@@ -7,6 +7,7 @@
   border: 1px solid var(--theme-card-border);
   border-radius: 1rem;
   background-color: var(--theme-card-bg);
+  color: var(--theme-text-primary);
   container-type: inline-size;
 }
 
@@ -23,6 +24,7 @@
   table-layout: fixed;
   text-align: left;
   font-size: 0.875rem;
+  color: var(--theme-text-primary);
 }
 
 .library-table-header-row,
@@ -37,11 +39,14 @@
   padding: 0.75rem 1rem;
   white-space: nowrap;
   background-color: var(--theme-card-bg-solid);
+  color: var(--theme-text-secondary);
   font-weight: 500;
 }
 
 .library-table-row {
-  transition: background-color 120ms ease;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
 }
 
 .library-table-row.is-clickable {
@@ -56,6 +61,7 @@
   padding: 0.75rem 1rem;
   vertical-align: middle;
   white-space: nowrap;
+  color: var(--theme-text-primary);
 }
 
 .library-table-text-truncate {
@@ -83,6 +89,7 @@
   white-space: nowrap;
   font-size: 0.75rem;
   font-weight: 500;
+  color: var(--theme-text-primary);
 }
 
 .library-table-link-button {
@@ -91,7 +98,7 @@
   gap: 0.5rem;
   width: auto;
   white-space: nowrap;
-  color: inherit;
+  color: var(--theme-text-primary);
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: underline;
