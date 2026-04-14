@@ -1,3 +1,5 @@
+import { getHoverFeedbackHandlers } from "../../../../lib/uiFeedback.js";
+
 const formActionsLayoutClassName = {
   edit: "flex items-center justify-between gap-3",
   create: "flex justify-end gap-3",
@@ -12,6 +14,8 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
     ? formActionsLayoutClassName.edit
     : formActionsLayoutClassName.create;
 
+  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
+
   return (
     <div className={`pt-2 ${layoutClassName}`}>
       {isEditMode ? (
@@ -19,6 +23,7 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
           type="button"
           onClick={onDelete}
           className={deleteButtonClassName}
+          {...hoverFeedbackHandlers}
         >
           Delete Application
         </button>
@@ -29,11 +34,16 @@ function LibraryFormActions({ isEditMode, onClose, onDelete }) {
           type="button"
           onClick={onClose}
           className={cancelButtonClassName}
+          {...hoverFeedbackHandlers}
         >
           Cancel
         </button>
 
-        <button type="submit" className={submitButtonClassName}>
+        <button
+          type="submit"
+          className={submitButtonClassName}
+          {...hoverFeedbackHandlers}
+        >
           {isEditMode ? "Save Changes" : "Add Application"}
         </button>
       </div>

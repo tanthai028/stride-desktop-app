@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 
 function SelectMenu({
   value,
@@ -14,6 +15,7 @@ function SelectMenu({
 
   const selectedOption = options.find((option) => option.value === value);
   const selectedIndex = options.findIndex((option) => option.value === value);
+  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -79,6 +81,7 @@ function SelectMenu({
         className="select-menu-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        {...hoverFeedbackHandlers}
       >
         <span className="select-menu-label">
           {selectedOption ? selectedOption.label : placeholder}
@@ -104,6 +107,7 @@ function SelectMenu({
                   className={`select-menu-option ${isSelected ? "is-selected" : ""}`}
                   role="option"
                   aria-selected={isSelected}
+                  {...hoverFeedbackHandlers}
                 >
                   {option.label}
                 </button>

@@ -1,6 +1,9 @@
 import { navigationItems } from "../../app/config/navigation.js";
+import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 
 function AppSidebar({ activePage, onNavigate }) {
+  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
+
   return (
     <div className="sidebar-rail">
       <aside className="sidebar-shell">
@@ -18,6 +21,7 @@ function AppSidebar({ activePage, onNavigate }) {
                   onNavigate(item.id);
                 }}
                 className={`sidebar-item ${isActive ? "is-active" : ""}`}
+                {...hoverFeedbackHandlers}
               >
                 <div className="sidebar-item-inner">
                   <div className="sidebar-icon">

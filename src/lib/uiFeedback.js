@@ -1,5 +1,8 @@
+import { getStoredSettings } from "../features/settings/storage/settingsStorage.js";
+
 let audioContext = null;
 let lastHoverAt = 0;
+let hasPrimedAudio = false;
 
 const HOVER_COOLDOWN_MS = 55;
 
@@ -29,6 +32,14 @@ async function ensureAudioReady() {
   }
 
   return context;
+}
+
+function getActiveHoverSoundProfile(profileOverride) {
+  if (profileOverride) {
+    return profileOverride;
+  }
+
+  return getStoredSettings().hoverSoundProfile;
 }
 
 export async function primeUiFeedbackAudio() {
@@ -126,6 +137,25 @@ export function triggerHoverFeedback(profile = "click") {
   if (!context || context.state !== "running") return;
 
   playFeedbackProfile(context, profile, context.currentTime);
+}
+
+export function getHoverFeedbackHandlers(profileOverride) {
+  return {
+    onPointerEnter: () => {
+      const profile = getActiveHoverSoundProfile(profileOverride);
+
+      if (profile === "off") {
+        return;
+      }
+
+      if (!hasPrimedAudio) {
+        hasPrimedAudio = true;
+        void primeUiFeedbackAudio();
+      }
+
+      triggerHoverFeedback(profile);
+    },
+  };
 }
 
 export async function triggerPreviewFeedback(profile = "click") {

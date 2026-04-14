@@ -1,4 +1,8 @@
+import { getHoverFeedbackHandlers } from "../../../lib/uiFeedback.js";
+
 function SettingsToggleRow({ title, description, checked, onToggle }) {
+  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
+
   return (
     <div className="settings-card rounded-2xl px-4 py-3">
       <div className="flex items-start justify-between gap-4">
@@ -16,6 +20,7 @@ function SettingsToggleRow({ title, description, checked, onToggle }) {
           className={`settings-toggle relative mt-1 h-7 w-12 rounded-full ${
             checked ? "is-checked" : ""
           }`}
+          {...hoverFeedbackHandlers}
         >
           <span
             className={`settings-toggle-thumb absolute top-1 h-5 w-5 rounded-full ${

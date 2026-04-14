@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { getHoverFeedbackHandlers } from "../../../lib/uiFeedback.js";
 
 function LibraryStatusPicker({
   statusOptions,
@@ -16,6 +17,8 @@ function LibraryStatusPicker({
       statusOptions[0]
     );
   }, [selectedStatusValue, statusOptions]);
+
+  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -55,6 +58,7 @@ function LibraryStatusPicker({
         className="library-tag-chip library-status-picker-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        {...hoverFeedbackHandlers}
       >
         <span className="library-status-picker-trigger-content">
           <span>{selectedOption?.emoji ?? "📌"}</span>
@@ -83,6 +87,7 @@ function LibraryStatusPicker({
                   className={`select-menu-option library-status-picker-option ${isSelected ? "is-selected" : ""}`}
                   role="option"
                   aria-selected={isSelected}
+                  {...hoverFeedbackHandlers}
                 >
                   <span className="library-status-picker-option-content">
                     <span>{option.emoji}</span>
