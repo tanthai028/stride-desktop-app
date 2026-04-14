@@ -1,4 +1,3 @@
-import { Plus } from "lucide-react";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
@@ -6,16 +5,11 @@ import EmptyState from "../../../components/page/EmptyState.jsx";
 import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
-import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 import LibraryCard from "./LibraryCard.jsx";
 import LibraryTable from "./table/LibraryTable.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
 import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
-
-const libraryViewOptions = [
-  { value: "grid", label: "Card Grid" },
-  { value: "table", label: "Table List" },
-];
+import { Plus } from "lucide-react";
 
 function LibraryCollectionSection({
   items,
@@ -53,19 +47,10 @@ function LibraryCollectionSection({
       title="All Applications"
       description={`Tracked Applications: ${items.length}`}
       headerAction={
-        <div className="library-section-header-actions">
-          <SelectMenu
-            value={viewMode}
-            onChange={onViewModeChange}
-            options={libraryViewOptions}
-            className="library-view-mode-select"
-          />
-
-          <ActionButton onClick={onAddItem} tone="pink" withIcon>
-            <Plus className="h-4 w-4" />
-            <span>Application</span>
-          </ActionButton>
-        </div>
+        <ActionButton onClick={onAddItem} tone="pink" withIcon>
+          <Plus className="h-4 w-4" />
+          <span>Application</span>
+        </ActionButton>
       }
     >
       <PageActionBar

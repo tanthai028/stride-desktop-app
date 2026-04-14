@@ -13,6 +13,7 @@ function SelectMenu({
   const triggerRef = useRef(null);
 
   const selectedOption = options.find((option) => option.value === value);
+  const selectedIndex = options.findIndex((option) => option.value === value);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -43,31 +44,55 @@ function SelectMenu({
     triggerRef.current?.blur();
   }
 
+  function handleWheel(event) {
+    if (!options.length) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const currentIndex = selectedIndex >= 0 ? selectedIndex : 0;
+
+    if (event.deltaY > 0) {
+      const nextIndex = Math.min(currentIndex + 1, options.length - 1);
+      if (nextIndex !== currentIndex) {
+        onChange(options[nextIndex].value);
+      }
+      return;
+    }
+
+    if (event.deltaY < 0) {
+      const nextIndex = Math.max(currentIndex - 1, 0);
+      if (nextIndex !== currentIndex) {
+        onChange(options[nextIndex].value);
+      }
+    }
+  }
+
   return (
-    <div ref={containerRef} className={`relative inline-block ${className}`}>
+    <div ref={containerRef} className={`select-menu ${className}`}>
       <button
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
+        onWheel={handleWheel}
         className="select-menu-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="block truncate text-center">
+        <span className="select-menu-label">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
 
         <ChevronDown
           size={16}
-          className={`select-menu-icon shrink-0 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`select-menu-icon ${isOpen ? "is-open" : ""}`}
         />
       </button>
 
       {isOpen ? (
-        <div className="select-menu-panel absolute right-0 z-30 mt-2 w-full rounded-2xl">
-          <div role="listbox" className="space-y-1">
+        <div className="select-menu-panel">
+          <div role="listbox" className="select-menu-options">
             {options.map((option) => {
               const isSelected = option.value === value;
 
@@ -76,9 +101,7 @@ function SelectMenu({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option.value)}
-                  className={`select-menu-option flex w-full items-center rounded-xl px-3 py-2.5 text-left text-sm ${
-                    isSelected ? "is-selected" : ""
-                  }`}
+                  className={`select-menu-option ${isSelected ? "is-selected" : ""}`}
                   role="option"
                   aria-selected={isSelected}
                 >

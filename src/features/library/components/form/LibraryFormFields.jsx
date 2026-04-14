@@ -18,9 +18,9 @@ function LibraryFormFields({
 
   if (isEditMode) {
     return (
-      <div className="space-y-4">
+      <div className="library-form-fields">
         <div>
-          <label className="form-label mb-2 block text-sm font-medium">
+          <label className="form-label library-form-label">
             📝 Notes <span className="opacity-70">(optional)</span>
           </label>
           <textarea
@@ -29,14 +29,16 @@ function LibraryFormFields({
             value={formValues.notes}
             onChange={(event) => onFieldChange("notes", event.target.value)}
             rows={4}
-            className="input-base min-h-[96px] resize-none scrollbar-hide"
+            className="input-base library-form-textarea scrollbar-hide"
           />
         </div>
 
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <div className="min-w-0">
-            <p className="text-sm font-medium">Advanced fields</p>
-            <p className="text-xs opacity-70">
+        <div className="library-form-advanced-toggle">
+          <div className="library-form-advanced-toggle-copy">
+            <p className="library-form-advanced-toggle-title">
+              Advanced fields
+            </p>
+            <p className="library-form-advanced-toggle-description">
               Company, role, job URL, location, and applied date
             </p>
           </div>
@@ -45,16 +47,16 @@ function LibraryFormFields({
             type="button"
             onClick={onToggleAdvanced}
             aria-expanded={showAdvanced}
-            className="shrink-0 rounded-full border border-white/10 px-3 py-1.5 text-sm font-medium transition hover:-translate-y-0.5 hover:bg-white/10"
+            className="library-form-advanced-toggle-button"
           >
             {showAdvanced ? "Hide" : "Show more"}
           </button>
         </div>
 
         {showAdvanced ? (
-          <div className="grid grid-cols-1 gap-4 min-[720px]:grid-cols-2">
+          <div className="library-form-grid">
             <div>
-              <label className="form-label mb-2 block text-sm font-medium">
+              <label className="form-label library-form-label">
                 🏢 Company
               </label>
               <input
@@ -68,9 +70,7 @@ function LibraryFormFields({
             </div>
 
             <div>
-              <label className="form-label mb-2 block text-sm font-medium">
-                💼 Role
-              </label>
+              <label className="form-label library-form-label">💼 Role</label>
               <input
                 placeholder="Add role"
                 value={formValues.role}
@@ -79,8 +79,8 @@ function LibraryFormFields({
               />
             </div>
 
-            <div className="min-[720px]:col-span-2">
-              <label className="form-label mb-2 block text-sm font-medium">
+            <div className="library-form-grid-span-full">
+              <label className="form-label library-form-label">
                 🔗 Job URL <span className="opacity-70">(optional)</span>
               </label>
               <input
@@ -95,7 +95,7 @@ function LibraryFormFields({
             </div>
 
             <div>
-              <label className="form-label mb-2 block text-sm font-medium">
+              <label className="form-label library-form-label">
                 📍 Location <span className="opacity-70">(optional)</span>
               </label>
               <input
@@ -109,7 +109,7 @@ function LibraryFormFields({
             </div>
 
             <div>
-              <label className="form-label mb-2 block text-sm font-medium">
+              <label className="form-label library-form-label">
                 📅 Applied Date{" "}
                 <span className="opacity-70">(defaults to today)</span>
               </label>
@@ -129,11 +129,9 @@ function LibraryFormFields({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="library-form-fields">
       <div>
-        <label className="form-label mb-2 block text-sm font-medium">
-          🔗 Job URL
-        </label>
+        <label className="form-label library-form-label">🔗 Job URL</label>
         <input
           autoFocus
           placeholder="Paste job posting link"
@@ -144,10 +142,10 @@ function LibraryFormFields({
         />
       </div>
 
-      <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-        <div className="min-w-0">
-          <p className="text-sm font-medium">Advanced fields</p>
-          <p className="text-xs opacity-70">
+      <div className="library-form-advanced-toggle">
+        <div className="library-form-advanced-toggle-copy">
+          <p className="library-form-advanced-toggle-title">Advanced fields</p>
+          <p className="library-form-advanced-toggle-description">
             Company, role, location, applied date, and notes
           </p>
         </div>
@@ -156,16 +154,16 @@ function LibraryFormFields({
           type="button"
           onClick={onToggleAdvanced}
           aria-expanded={showAdvanced}
-          className="shrink-0 rounded-full border border-white/10 px-3 py-1.5 text-sm font-medium transition hover:-translate-y-0.5 hover:bg-white/10"
+          className="library-form-advanced-toggle-button"
         >
           {showAdvanced ? "Hide" : "Show more"}
         </button>
       </div>
 
       {showAdvanced ? (
-        <div className="grid grid-cols-1 gap-4 min-[720px]:grid-cols-2">
+        <div className="library-form-grid">
           <div>
-            <label className="form-label mb-2 block text-sm font-medium">
+            <label className="form-label library-form-label">
               🏢 Company <span className="opacity-70">(optional)</span>
             </label>
             <input
@@ -177,7 +175,7 @@ function LibraryFormFields({
           </div>
 
           <div>
-            <label className="form-label mb-2 block text-sm font-medium">
+            <label className="form-label library-form-label">
               💼 Role <span className="opacity-70">(optional)</span>
             </label>
             <input
@@ -189,7 +187,7 @@ function LibraryFormFields({
           </div>
 
           <div>
-            <label className="form-label mb-2 block text-sm font-medium">
+            <label className="form-label library-form-label">
               📍 Location <span className="opacity-70">(optional)</span>
             </label>
             <input
@@ -203,7 +201,7 @@ function LibraryFormFields({
           </div>
 
           <div>
-            <label className="form-label mb-2 block text-sm font-medium">
+            <label className="form-label library-form-label">
               📅 Applied Date{" "}
               <span className="opacity-70">(defaults to today)</span>
             </label>
@@ -217,8 +215,8 @@ function LibraryFormFields({
             />
           </div>
 
-          <div className="min-[720px]:col-span-2">
-            <label className="form-label mb-2 block text-sm font-medium">
+          <div className="library-form-grid-span-full">
+            <label className="form-label library-form-label">
               📝 Notes <span className="opacity-70">(optional)</span>
             </label>
             <textarea
@@ -227,7 +225,7 @@ function LibraryFormFields({
               value={formValues.notes}
               onChange={(event) => onFieldChange("notes", event.target.value)}
               rows={4}
-              className="input-base min-h-[96px] resize-none scrollbar-hide"
+              className="input-base library-form-textarea scrollbar-hide"
             />
           </div>
         </div>

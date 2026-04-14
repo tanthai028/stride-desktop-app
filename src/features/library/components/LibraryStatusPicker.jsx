@@ -47,33 +47,31 @@ function LibraryStatusPicker({
   }
 
   return (
-    <div ref={containerRef} className="relative w-fit shrink-0">
+    <div ref={containerRef} className="library-status-picker">
       <button
         ref={triggerRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="library-tag-chip inline-flex h-9 items-center gap-1.5 px-2.5 py-1 text-sm leading-none"
+        className="library-tag-chip library-status-picker-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <span className="flex items-center gap-1">
+        <span className="library-status-picker-trigger-content">
           <span>{selectedOption?.emoji ?? "📌"}</span>
-          <span className="whitespace-nowrap">
+          <span className="library-status-picker-trigger-label">
             {selectedOption?.rawLabel ?? "Status"}
           </span>
         </span>
 
         <ChevronDown
           size={14}
-          className={`shrink-0 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`library-status-picker-icon ${isOpen ? "is-open" : ""}`}
         />
       </button>
 
       {isOpen ? (
-        <div className="select-menu-panel absolute right-0 top-full z-30 mt-2 min-w-[130px] rounded-2xl">
-          <div role="listbox" className="space-y-1">
+        <div className="select-menu-panel library-status-picker-panel">
+          <div role="listbox" className="select-menu-options">
             {statusOptions.map((option) => {
               const isSelected = option.value === selectedStatusValue;
 
@@ -82,13 +80,11 @@ function LibraryStatusPicker({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option)}
-                  className={`select-menu-option flex w-full items-center rounded-xl px-3 py-2.5 text-left text-sm ${
-                    isSelected ? "is-selected" : ""
-                  }`}
+                  className={`select-menu-option library-status-picker-option ${isSelected ? "is-selected" : ""}`}
                   role="option"
                   aria-selected={isSelected}
                 >
-                  <span className="flex items-center gap-2 whitespace-nowrap">
+                  <span className="library-status-picker-option-content">
                     <span>{option.emoji}</span>
                     <span>{option.rawLabel}</span>
                   </span>

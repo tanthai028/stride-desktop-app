@@ -6,3 +6,25 @@
 .frame-shell-text {
   color: var(--theme-frame-text);
 }
+
+.page-shell-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.page-shell-header > :first-child {
+  min-width: 0;
+  flex: 1;
+}
+
+.page-shell-header-actions {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: 0;
+}

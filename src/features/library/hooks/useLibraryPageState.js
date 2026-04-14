@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-function useLibraryPageState() {
+function useLibraryPageState(initialViewMode = "grid") {
   const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("appliedAt-desc");
   const [tableSortValue, setTableSortValue] = useState("appliedAt-desc");
   const [statusFilterValue, setStatusFilterValue] = useState("all");
-  const [viewMode, setViewMode] = useState("grid");
+  const [viewMode, setViewMode] = useState(initialViewMode);
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 

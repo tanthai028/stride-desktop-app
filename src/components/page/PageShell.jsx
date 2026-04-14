@@ -20,7 +20,7 @@ function PageShell({
 
   return (
     <div className="surface-panel flex min-h-0 flex-1 flex-col overflow-hidden p-6">
-      <div className="surface-section-divider flex shrink-0 flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div className="surface-section-divider page-shell-header">
         <div>
           {eyebrow ? (
             <p className="page-eyebrow text-sm font-medium">{eyebrow}</p>
@@ -33,7 +33,9 @@ function PageShell({
           ) : null}
         </div>
 
-        {actions ? <div className="flex gap-3">{actions}</div> : null}
+        {actions ? (
+          <div className="page-shell-header-actions">{actions}</div>
+        ) : null}
       </div>
 
       <div className="relative mt-6 min-h-0 flex-1">

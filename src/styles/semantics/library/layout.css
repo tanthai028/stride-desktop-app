@@ -6,17 +6,17 @@
   margin-bottom: 0;
 }
 
+.page-action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
 .page-action-bar-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   min-width: 0;
-}
-
-.page-action-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem; /* gap-3 */
 }
 
 .page-action-bar-search {
@@ -25,4 +25,120 @@
   flex: 1;
   align-items: center;
   gap: 0.75rem;
+}
+
+.library-page-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.library-view-mode-select {
+  flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+  .library-view-mode-select .select-menu-trigger {
+    width: 44px;
+    min-width: 44px;
+    padding-left: 0;
+    padding-right: 0;
+    justify-content: center;
+  }
+
+  .library-view-mode-select .select-menu-label {
+    display: none;
+  }
+
+  .library-view-mode-select .select-menu-icon {
+    margin: 0;
+  }
+
+  .library-view-mode-select .select-menu-panel {
+    min-width: 140px;
+  }
+}
+
+.library-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.library-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.library-form-textarea {
+  min-height: 96px;
+  resize: none;
+}
+
+.library-form-advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.05);
+  padding: 0.75rem 1rem;
+}
+
+.library-form-advanced-toggle-copy {
+  min-width: 0;
+}
+
+.library-form-advanced-toggle-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.library-form-advanced-toggle-description {
+  margin: 0;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.library-form-advanced-toggle-button {
+  flex-shrink: 0;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 9999px;
+  background: transparent;
+  padding: 0.375rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: inherit;
+  transition:
+    transform var(--motion-fast),
+    background-color var(--motion-fast);
+}
+
+.library-form-advanced-toggle-button:hover {
+  transform: var(--motion-lift-y);
+  background: rgb(255 255 255 / 0.1);
+}
+
+.library-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.library-form-grid-span-full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  .library-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

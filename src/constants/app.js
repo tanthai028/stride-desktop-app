@@ -5,4 +5,5 @@ export const DEFAULT_SETTINGS = {
   darkMode: false,
   hoverSoundProfile: "click",
   resetVersion: 0,
+  libraryViewMode: "grid",
 };

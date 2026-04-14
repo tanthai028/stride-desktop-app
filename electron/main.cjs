@@ -26,12 +26,12 @@ function getWindowBackgroundColor() {
 
 function createWindow() {
   const winWidth = 1024;
-  const winHeight = 640;
+  const winHeight = 820;
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
   const x = Math.round((width - winWidth) / 2);
-  const y = Math.round((height - winHeight) / 2 - 50);
+  const y = Math.max(20, Math.round((height - winHeight) / 2 - 30));
 
   const win = new BrowserWindow({
     height: winHeight,

@@ -1,14 +1,4 @@
-.library-section-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
 
-
-
-.library-view-mode-select {
-  flex-shrink: 0;
-}
 
 .library-table-sort-button {
   display: inline-flex;
@@ -38,3 +28,4 @@
   width: 0.9rem;
   height: 0.9rem;
 }
+

@@ -1,16 +1,22 @@
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
 import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx";
 import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
 import useLibraryItems from "./hooks/useLibraryItems.js";
 import useLibraryPageState from "./hooks/useLibraryPageState.js";
+import SelectMenu from "../../components/ui/SelectMenu.jsx";
 
-function LibraryPage({ settings }) {
+function LibraryPage({ settings, updateSetting }) {
   const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =
     useLibraryItems(settings.resetVersion);
   const [modalErrorMessage, setModalErrorMessage] = useState("");
+
+  const libraryViewOptions = [
+    { value: "grid", label: "Card Grid" },
+    { value: "table", label: "Table List" },
+  ];
 
   const {
     isPageReady,
@@ -31,7 +37,7 @@ function LibraryPage({ settings }) {
     openAddModal,
     openEditModal,
     closeModal,
-  } = useLibraryPageState();
+  } = useLibraryPageState(settings.libraryViewMode);
 
   const isTableView = viewMode === "table";
   const activeSortValue = isTableView ? tableSortValue : sortValue;
@@ -46,6 +52,12 @@ function LibraryPage({ settings }) {
       activeStatusFilterValue,
     );
   }, [items, activeSearchValue, activeSortValue, activeStatusFilterValue]);
+
+  useEffect(() => {
+    if (settings.libraryViewMode !== viewMode) {
+      updateSetting("libraryViewMode", viewMode);
+    }
+  }, [settings.libraryViewMode, updateSetting, viewMode]);
 
   function handleOpenAddModal() {
     setModalErrorMessage("");
@@ -125,6 +137,16 @@ function LibraryPage({ settings }) {
         eyebrow="📚 Application Tracker"
         title="My Job Application Library"
         description="Track companies, roles, statuses, links, and notes in one place."
+        actions={
+          <div className="library-page-header-actions">
+            <SelectMenu
+              value={viewMode}
+              onChange={setViewMode}
+              options={libraryViewOptions}
+              className="library-view-mode-select"
+            />
+          </div>
+        }
         scrollable={false}
       >
         {loadError ? (
