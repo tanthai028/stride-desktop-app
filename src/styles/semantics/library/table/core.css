@@ -120,3 +120,18 @@
 .library-open-label-compact {
   display: none;
 }
+
+.library-table-empty-state {
+  display: flex;
+  height: 100%;
+  padding: 1rem;
+  align-items: stretch;
+}
+
+.library-table-empty-state .empty-state-card {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}

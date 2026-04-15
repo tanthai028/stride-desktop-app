@@ -114,6 +114,10 @@ function playClick(context, t) {
 }
 
 function playFeedbackProfile(context, profile, t) {
+  if (profile === "off") {
+    return;
+  }
+
   if (profile === "thock") {
     playThock(context, t);
     return;

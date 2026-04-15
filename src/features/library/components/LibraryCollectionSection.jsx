@@ -9,7 +9,8 @@ import LibraryCard from "./LibraryCard.jsx";
 import LibraryTable from "./table/LibraryTable.jsx";
 import { librarySortOptions } from "../constants/sortOptions.js";
 import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
-import { Plus } from "lucide-react";
+import { Plus, LayoutGrid, Rows3 } from "lucide-react";
+import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 
 function LibraryCollectionSection({
   items,
@@ -32,6 +33,11 @@ function LibraryCollectionSection({
   const hasItems = items.length > 0;
   const hasFilteredItems = filteredItems.length > 0;
   const isTableView = viewMode === "table";
+
+  const libraryViewOptions = [
+    { value: "grid", label: "Card Grid", icon: LayoutGrid },
+    { value: "table", label: "Table List", icon: Rows3 },
+  ];
 
   const {
     scrollRef,
@@ -59,16 +65,24 @@ function LibraryCollectionSection({
             ? "library-collection-action-bar-table"
             : "library-collection-action-bar-grid"
         }
+        extraControls={
+          <SelectMenu
+            value={viewMode}
+            onChange={onViewModeChange}
+            options={libraryViewOptions}
+            className="library-view-mode-select library-view-mode-select-icon-only"
+          />
+        }
         searchValue={searchValue}
         onSearchChange={onSearchChange}
-        sortValue={sortValue}
+        sortValue={isTableView ? "" : sortValue}
         onSortChange={isTableView ? undefined : onSortChange}
         sortOptions={isTableView ? [] : librarySortOptions}
         filterValue={statusFilterValue}
-        onFilterChange={isTableView ? undefined : onStatusFilterChange}
+        onFilterChange={onStatusFilterChange}
         filterOptions={isTableView ? [] : libraryStatusFilterOptions}
         searchPlaceholder="Search company, role, notes, location..."
-        showSearch={!isTableView}
+        showSearch
       />
 
       <div className="relative min-h-0 flex-1 overflow-visible">
@@ -105,6 +119,23 @@ function LibraryCollectionSection({
               />
             </>
           )
+        ) : isTableView && hasItems ? (
+          <LibraryTable
+            items={[]}
+            isPageReady={isPageReady}
+            onItemClick={onItemClick}
+            sortValue={tableSortValue}
+            onSortChange={onTableSortChange}
+            emptyStateTitle="🔎 No matching applications"
+            emptyStateDescription="Try a different search to find the applications you want."
+            emptyStateAction={
+              searchValue ? (
+                <ActionButton onClick={() => onSearchChange("")}>
+                  Clear Search
+                </ActionButton>
+              ) : null
+            }
+          />
         ) : (
           <div className="p-1 pt-1.5">
             <EmptyState

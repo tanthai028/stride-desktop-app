@@ -2,6 +2,8 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 
+const PANEL_EXIT_DURATION_MS = 180;
+
 function SelectMenu({
   value,
   onChange,
@@ -10,28 +12,60 @@ function SelectMenu({
   className = "",
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPanelMounted, setIsPanelMounted] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
+  const closeTimeoutRef = useRef(null);
+  const shouldWaitForRehoverRef = useRef(false);
+  const didLeaveAfterSelectRef = useRef(false);
 
   const selectedOption = options.find((option) => option.value === value);
+  const SelectedIcon = selectedOption?.icon ?? null;
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
+
+  const selectMenuClassName = [
+    "select-menu",
+    isOpen && "is-open",
+    isClosing && "is-closing",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        window.clearTimeout(closeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  function resetHoverLock() {
+    shouldWaitForRehoverRef.current = false;
+    didLeaveAfterSelectRef.current = false;
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (!containerRef.current?.contains(event.target)) {
-        setIsOpen(false);
+        closeMenu();
+        resetHoverLock();
       }
     }
 
     function handleEscape(event) {
       if (event.key === "Escape") {
-        setIsOpen(false);
+        closeMenu();
+        resetHoverLock();
         triggerRef.current?.blur();
       }
     }
 
     function handleWindowBlur() {
-      setIsOpen(false);
+      closeMenu();
+      resetHoverLock();
       triggerRef.current?.blur();
     }
 
@@ -46,11 +80,51 @@ function SelectMenu({
     };
   }, []);
 
-  function handleSelect(nextValue, { closeMenu = true } = {}) {
+  function clearCloseTimeout() {
+    if (closeTimeoutRef.current) {
+      window.clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  }
+
+  function openMenu() {
+    if (isOpen && !isClosing) {
+      return;
+    }
+
+    clearCloseTimeout();
+    setIsClosing(false);
+    setIsPanelMounted(true);
+
+    requestAnimationFrame(() => {
+      setIsOpen(true);
+    });
+  }
+
+  function closeMenu() {
+    if (!isOpen && !isPanelMounted) {
+      return;
+    }
+
+    clearCloseTimeout();
+
+    setIsOpen(false);
+    setIsClosing(true);
+
+    closeTimeoutRef.current = window.setTimeout(() => {
+      setIsClosing(false);
+      setIsPanelMounted(false);
+      closeTimeoutRef.current = null;
+    }, PANEL_EXIT_DURATION_MS);
+  }
+
+  function handleSelect(nextValue, { closeMenuOnSelect = true } = {}) {
     onChange(nextValue);
 
-    if (closeMenu) {
-      setIsOpen(false);
+    if (closeMenuOnSelect) {
+      shouldWaitForRehoverRef.current = true;
+      didLeaveAfterSelectRef.current = false;
+      closeMenu();
       triggerRef.current?.blur();
     }
   }
@@ -62,27 +136,46 @@ function SelectMenu({
       return;
     }
 
-    handleSelect(topOption.value, { closeMenu: false });
+    handleSelect(topOption.value, { closeMenuOnSelect: false });
+  }
+
+  function tryOpenFromHover() {
+    if (shouldWaitForRehoverRef.current) {
+      if (!didLeaveAfterSelectRef.current) {
+        return;
+      }
+
+      shouldWaitForRehoverRef.current = false;
+      didLeaveAfterSelectRef.current = false;
+    }
+
+    if (!isOpen) {
+      openMenu();
+    }
   }
 
   function handleMouseEnter() {
-    setIsOpen(true);
+    tryOpenFromHover();
   }
 
   function handleMouseLeave() {
-    setIsOpen(false);
+    if (shouldWaitForRehoverRef.current) {
+      didLeaveAfterSelectRef.current = true;
+    }
+
+    closeMenu();
   }
 
   function handleBlur(event) {
     if (!containerRef.current?.contains(event.relatedTarget)) {
-      setIsOpen(false);
+      closeMenu();
     }
   }
 
   return (
     <div
       ref={containerRef}
-      className={`select-menu ${isOpen ? "is-open" : ""} ${className}`.trim()}
+      className={selectMenuClassName}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onBlur={handleBlur}
@@ -96,6 +189,10 @@ function SelectMenu({
         aria-expanded={isOpen}
         {...hoverFeedbackHandlers}
       >
+        {SelectedIcon ? (
+          <SelectedIcon size={16} className="select-menu-option-icon" />
+        ) : null}
+
         <span className="select-menu-label">
           {selectedOption ? selectedOption.label : placeholder}
         </span>
@@ -106,14 +203,17 @@ function SelectMenu({
         />
       </button>
 
-      {isOpen ? (
+      {isPanelMounted ? (
         <>
           <div className="select-menu-hover-bridge" aria-hidden="true" />
 
-          <div className="select-menu-panel">
+          <div
+            className={`select-menu-panel ${isOpen ? "is-entering" : ""} ${isClosing ? "is-exiting" : ""}`.trim()}
+          >
             <div role="listbox" className="select-menu-options">
               {options.map((option) => {
                 const isSelected = option.value === value;
+                const OptionIcon = option.icon ?? null;
 
                 return (
                   <button
@@ -125,7 +225,15 @@ function SelectMenu({
                     aria-selected={isSelected}
                     {...hoverFeedbackHandlers}
                   >
-                    {option.label}
+                    {OptionIcon ? (
+                      <OptionIcon
+                        size={16}
+                        className="select-menu-option-icon"
+                      />
+                    ) : null}
+                    <span className="select-menu-option-label">
+                      {option.label}
+                    </span>
                   </button>
                 );
               })}

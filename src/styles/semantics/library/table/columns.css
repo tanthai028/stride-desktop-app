@@ -1,5 +1,5 @@
 .library-col-company {
-  width: 15%;
+  width: 18%;
 }
 
 .library-col-role {
@@ -15,12 +15,11 @@
 }
 
 .library-col-applied {
-  width: 12%;
-  white-space: nowrap;
+  width: 10%;
 }
 
 .library-col-open {
-  width: 96px;
+  width: 104px;
 }
 
 .library-col-open.library-table-header-cell,

@@ -6,17 +6,11 @@ import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx"
 import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
 import useLibraryItems from "./hooks/useLibraryItems.js";
 import useLibraryPageState from "./hooks/useLibraryPageState.js";
-import SelectMenu from "../../components/ui/SelectMenu.jsx";
 
 function LibraryPage({ settings, updateSetting }) {
   const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =
     useLibraryItems(settings.resetVersion);
   const [modalErrorMessage, setModalErrorMessage] = useState("");
-
-  const libraryViewOptions = [
-    { value: "grid", label: "Card Grid" },
-    { value: "table", label: "Table List" },
-  ];
 
   const {
     isPageReady,
@@ -41,7 +35,7 @@ function LibraryPage({ settings, updateSetting }) {
 
   const isTableView = viewMode === "table";
   const activeSortValue = isTableView ? tableSortValue : sortValue;
-  const activeSearchValue = isTableView ? "" : searchValue;
+  const activeSearchValue = searchValue;
   const activeStatusFilterValue = isTableView ? "all" : statusFilterValue;
 
   const filteredItems = useMemo(() => {
@@ -137,16 +131,6 @@ function LibraryPage({ settings, updateSetting }) {
         eyebrow="📚 Application Tracker"
         title="My Job Application Library"
         description="Track companies, roles, statuses, links, and notes in one place."
-        actions={
-          <div className="library-page-header-actions">
-            <SelectMenu
-              value={viewMode}
-              onChange={setViewMode}
-              options={libraryViewOptions}
-              className="library-view-mode-select"
-            />
-          </div>
-        }
         scrollable={false}
       >
         {loadError ? (

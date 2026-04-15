@@ -4,22 +4,31 @@ function PageSection({
   children,
   className = "",
   headerAction = null,
+  headerLeading = null,
 }) {
   return (
     <section className={`flex min-h-0 flex-1 flex-col ${className}`}>
-      {title || description || headerAction ? (
+      {title || description || headerAction || headerLeading ? (
         <div className="mb-3 shrink-0">
           <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              {title ? (
-                <h3 className="section-title text-sm font-semibold">{title}</h3>
+            <div className="flex min-w-0 items-start gap-3">
+              {headerLeading ? (
+                <div className="shrink-0">{headerLeading}</div>
               ) : null}
 
-              {description ? (
-                <p className="section-description mt-1 text-xs">
-                  {description}
-                </p>
-              ) : null}
+              <div className="min-w-0">
+                {title ? (
+                  <h3 className="section-title text-sm font-semibold">
+                    {title}
+                  </h3>
+                ) : null}
+
+                {description ? (
+                  <p className="section-description mt-1 text-xs">
+                    {description}
+                  </p>
+                ) : null}
+              </div>
             </div>
 
             {headerAction ? (

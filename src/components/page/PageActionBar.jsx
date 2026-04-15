@@ -1,4 +1,3 @@
-import { Search } from "lucide-react";
 import SelectMenu from "../ui/SelectMenu.jsx";
 
 function PageActionBar({
@@ -29,9 +28,10 @@ function PageActionBar({
   return (
     <div className={`page-action-bar ${className}`}>
       <div className="page-action-bar-row">
+        {extraControls}
+
         {showSearch ? (
           <div className="page-action-bar-search">
-            <Search size={16} className="search-icon shrink-0" />
             <input
               type="text"
               spellCheck={false}
@@ -45,23 +45,21 @@ function PageActionBar({
           <div className="flex-1" />
         )}
 
-        {extraControls}
+        {shouldShowSort ? (
+          <SelectMenu
+            value={sortValue}
+            onChange={onSortChange}
+            options={sortOptions}
+            className="page-action-bar-select page-action-bar-sort-select"
+          />
+        ) : null}
 
         {shouldShowFilter ? (
           <SelectMenu
             value={filterValue}
             onChange={onFilterChange}
             options={filterOptions}
-            className="shrink-0"
-          />
-        ) : null}
-
-        {shouldShowSort ? (
-          <SelectMenu
-            value={sortValue}
-            onChange={onSortChange}
-            options={sortOptions}
-            className="shrink-0"
+            className="page-action-bar-select page-action-bar-filter-select"
           />
         ) : null}
       </div>
