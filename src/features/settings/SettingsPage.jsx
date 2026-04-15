@@ -15,7 +15,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
   };
 
   const resetButton = (
-    <div className="mt-1 mr-1">
+    <div className="settings-reset-action">
       <ActionButton onClick={resetSettings} tone="violet" withIcon>
         <RotateCcw size={16} className="shrink-0" />
         <span>Reset to Default</span>
@@ -24,22 +24,22 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
   );
 
   return (
-    <motion.div className="flex min-h-0 flex-1 flex-col" {...motionProps}>
+    <motion.div className="settings-page" {...motionProps}>
       <PageShell
         eyebrow="⚙️ Settings"
         title="App Preferences"
         description="Manage template behavior and local preferences."
       >
-        <div className="space-y-6">
+        <div className="settings-page-content">
           {settingsSections.map((section) => (
             <PageSection
               key={section.id}
               title={section.title}
               description={section.description}
-              className="flex-none"
+              className="settings-page-section"
               headerAction={section.id === "display" ? resetButton : null}
             >
-              <div className="space-y-3">
+              <div className="settings-page-section-content">
                 {section.items.map((item) => {
                   if (item.type === "choice") {
                     return (

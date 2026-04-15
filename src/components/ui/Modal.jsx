@@ -49,7 +49,7 @@ function Modal({ isOpen, title, children, onClose }) {
           transition={{ duration: 0.18 }}
         >
           <motion.div
-            className="modal-panel w-full max-w-xl"
+            className="modal-panel"
             onMouseDown={() => {
               shouldCloseFromOverlayRef.current = false;
             }}
@@ -58,8 +58,8 @@ function Modal({ isOpen, title, children, onClose }) {
             exit={{ opacity: 0, y: 10, scale: 0.98 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
           >
-            <div className="mb-4 flex w-full items-start gap-3">
-              <h2 className="modal-title min-w-0 flex-1 text-lg font-semibold">
+            <div className="modal-header">
+              <h2 className="modal-title modal-title-text text-lg font-semibold">
                 {title}
               </h2>
             </div>

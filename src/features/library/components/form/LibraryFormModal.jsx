@@ -135,8 +135,27 @@ function LibraryFormModal({
     );
   }
 
+  function canAutofillParsedJob(extracted) {
+    if (!extracted) return false;
+    if (extracted.error) return false;
+
+    const company = String(extracted.company ?? "").trim();
+    const role = String(extracted.role ?? "").trim();
+    const isAtsUrl = Boolean(extracted.isAtsUrl);
+    const source = String(extracted.source ?? "").trim();
+
+    const hasRequiredJobFields = Boolean(company && role);
+    const looksLikeRealJobPosting = isAtsUrl || source === "html-jsonld";
+
+    return hasRequiredJobFields && looksLikeRealJobPosting;
+  }
+
   async function applyParsedJobUrl(nextJobUrl) {
-    const extracted = await parseLibraryJobUrl(nextJobUrl);
+    const extracted = await parseJobUrlForAutofill(nextJobUrl);
+
+    if (!canAutofillParsedJob(extracted)) {
+      return extracted;
+    }
 
     setFormValues((prev) => {
       const shouldReplaceCompany =
@@ -165,6 +184,16 @@ function LibraryFormModal({
       ...prev,
       jobUrl: nextJobUrl,
     }));
+
+    const extracted = await parseJobUrlForAutofill(nextJobUrl);
+
+    if (!canAutofillParsedJob(extracted)) {
+      onSubmit?.({
+        __clientValidationError:
+          "Couldn’t extract job details from this link. Paste a direct job posting URL.",
+      });
+      return;
+    }
 
     await applyParsedJobUrl(nextJobUrl);
   }
@@ -201,10 +230,13 @@ function LibraryFormModal({
       let nextLocation = location;
 
       if (!nextCompany || !nextRole) {
-        const extracted = await applyParsedJobUrl(jobUrl);
-        nextCompany = extracted.company.trim();
-        nextRole = extracted.role.trim();
-        nextLocation = nextLocation || extracted.location.trim();
+        const extracted = await parseJobUrlForAutofill(jobUrl);
+
+        if (canAutofillParsedJob(extracted)) {
+          nextCompany = extracted.company.trim();
+          nextRole = extracted.role.trim();
+          nextLocation = nextLocation || extracted.location.trim();
+        }
       }
 
       if (!nextCompany || !nextRole) {
@@ -253,12 +285,12 @@ function LibraryFormModal({
       onClose={onClose}
       title={
         isEditMode ? (
-          <div className="flex w-full items-center gap-3">
-            <span className="min-w-0 flex-1 truncate">
+          <div className="library-form-modal-title">
+            <span className="library-form-modal-title-text">
               {getEditModalTitle(item, formValues)}
             </span>
 
-            <div className="ml-auto shrink-0">
+            <div className="library-form-modal-title-status">
               <LibraryStatusPicker
                 statusOptions={statusOptions}
                 selectedStatusValue={selectedStatusValue}
@@ -271,7 +303,7 @@ function LibraryFormModal({
         )
       }
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="modal-form" onSubmit={handleSubmit}>
         <LibraryFormFields
           key={jobUrlInputKeyRef.current}
           formValues={formValues}
@@ -283,9 +315,7 @@ function LibraryFormModal({
         />
 
         {errorMessage ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {errorMessage}
-          </div>
+          <div className="library-form-error">{errorMessage}</div>
         ) : null}
 
         <LibraryFormActions

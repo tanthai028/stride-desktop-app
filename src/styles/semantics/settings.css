@@ -1,3 +1,31 @@
+.settings-page {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.settings-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.settings-page-section {
+  flex: none;
+}
+
+.settings-page-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.settings-reset-action {
+  margin-top: 0.25rem;
+  margin-right: 0.25rem;
+}
+
 .settings-card {
   border: 1px solid var(--theme-settings-card-border);
   background-color: var(--theme-settings-card-bg);
@@ -20,6 +48,26 @@
   color: var(--theme-settings-description);
 }
 
+.settings-card-header {
+  margin-bottom: 0.75rem;
+}
+
+.settings-card-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.settings-card-description {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+}
+
+.settings-choice-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .settings-choice-button {
   border: 1px solid var(--theme-settings-choice-border);
   background-color: var(--theme-settings-choice-bg);
@@ -33,6 +81,11 @@
     color var(--motion-fast),
     box-shadow var(--motion-fast),
     transform var(--motion-fast);
+
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .settings-choice-button:hover {
@@ -61,6 +114,13 @@
   box-shadow: var(--theme-settings-choice-selected-shadow);
 }
 
+.settings-toggle-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .settings-toggle {
   border: 1px solid var(--theme-settings-toggle-off-border);
   background-color: var(--theme-settings-toggle-off-bg);
@@ -72,6 +132,12 @@
     background-color var(--motion-fast),
     border-color var(--motion-fast),
     box-shadow var(--motion-fast);
+
+  position: relative;
+  margin-top: 0.25rem;
+  height: 1.75rem;
+  width: 3rem;
+  border-radius: 9999px;
 }
 
 .settings-toggle:hover {
@@ -111,10 +177,21 @@
     transform var(--motion-base),
     background-color var(--motion-fast),
     box-shadow var(--motion-fast);
+
+  position: absolute;
+  top: 0.25rem;
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 9999px;
 }
 
 .settings-toggle-thumb.is-checked {
   transform: translateX(1.25rem);
   background-color: var(--theme-settings-toggle-thumb-checked-bg);
   box-shadow: var(--theme-settings-toggle-thumb-checked-shadow);
+}
+
+.settings-card-padded {
+  border-radius: 1rem;
+  padding: 0.75rem 1rem;
 }

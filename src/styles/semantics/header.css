@@ -1,9 +1,24 @@
+.app-header {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .app-header-brand {
   overflow: hidden;
+  min-width: 0;
+  flex: 1;
   padding: 1.25rem 1.5rem;
   background-color: var(--theme-header-bg);
   border: 1px solid var(--theme-header-border);
   box-shadow: var(--theme-header-shadow);
+}
+
+.app-header-brand-copy {
+  position: relative;
+  z-index: 10;
 }
 
 .app-header-kicker {
@@ -15,13 +30,30 @@
 }
 
 .header-clock-card {
+  flex-shrink: 0;
   border: 1px solid var(--theme-header-clock-border);
   background-color: var(--theme-header-clock-bg);
   color: var(--theme-header-clock-text);
 }
 
+.header-clock-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .header-clock-icon-wrap {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
   background-color: var(--theme-header-clock-icon-wrap-bg);
+}
+
+.header-clock-text {
+  text-align: right;
 }
 
 .header-clock-icon {

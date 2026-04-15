@@ -3,12 +3,12 @@ import { dashboardStats } from "../data/dashboardStats.js";
 
 function DashboardPreview() {
   return (
-    <div className="surface-card rounded-[28px] p-5">
-      <p className="stat-card-description mb-3 text-sm font-medium">
+    <div className="surface-card dashboard-card">
+      <p className="stat-card-description dashboard-card-title text-sm font-medium">
         Dashboard Preview
       </p>
 
-      <div className="space-y-4">
+      <div className="dashboard-preview-stats">
         {dashboardStats.map((stat) => (
           <ProgressStat
             key={stat.label}

@@ -275,4 +275,9 @@
   --theme-accent-pink-border: rgba(244, 114, 182, 0.16);
   --theme-accent-pink-shadow:
     0 8px 20px rgba(2, 6, 23, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  /* Error */
+  --theme-error-bg: rgba(248, 113, 113, 0.12);
+  --theme-error-border: rgba(248, 113, 113, 0.3);
+  --theme-error-text: #fca5a5;
 }

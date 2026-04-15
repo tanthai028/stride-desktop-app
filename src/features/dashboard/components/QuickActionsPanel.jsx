@@ -3,12 +3,12 @@ import { quickActions } from "../data/quickActions.js";
 
 function QuickActionsPanel({ onAction }) {
   return (
-    <div className="surface-card rounded-[28px] p-5">
-      <p className="stat-card-description mb-3 text-sm font-medium">
+    <div className="surface-card dashboard-card">
+      <p className="stat-card-description dashboard-card-title text-sm font-medium">
         Quick Actions
       </p>
 
-      <div className="flex flex-col gap-3">
+      <div className="dashboard-quick-actions">
         {quickActions.map((action) => (
           <ActionButton
             key={action.id}

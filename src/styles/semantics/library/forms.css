@@ -1,0 +1,119 @@
+.library-form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.library-form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.library-form-textarea {
+  min-height: 96px;
+  resize: none;
+
+  /* override input-base single-line behavior */
+  overflow: auto;
+  text-overflow: clip;
+  white-space: pre-wrap;
+}
+
+.library-form-advanced-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--theme-card-bg-solid) 84%, transparent);
+  color: var(--theme-text-primary);
+}
+
+.library-form-advanced-toggle-copy {
+  min-width: 0;
+}
+
+.library-form-advanced-toggle-title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--theme-text-secondary);
+}
+
+.library-form-advanced-toggle-description {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--theme-text-descriptions);
+}
+
+.library-form-advanced-toggle-button {
+  flex-shrink: 0;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--theme-text-primary);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition:
+    transform var(--motion-fast),
+    background-color var(--motion-fast),
+    border-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.library-form-advanced-toggle-button:hover {
+  transform: var(--motion-lift-y);
+  background: color-mix(in srgb, var(--theme-card-bg-solid) 92%, transparent);
+}
+
+.library-form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.library-form-grid-span-full {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  .library-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.library-form-modal-title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.library-form-modal-title-text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-form-modal-title-status {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.library-form-error {
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--theme-error-border);
+  background-color: var(--theme-error-bg);
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--theme-error-text);
+}

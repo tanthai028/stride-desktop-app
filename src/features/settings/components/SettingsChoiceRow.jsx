@@ -7,13 +7,13 @@ function SettingsChoiceRow({ title, description, value, options, onChange }) {
   }
 
   return (
-    <div className="settings-card rounded-2xl px-4 py-3">
-      <div className="mb-3">
-        <p className="settings-card-title text-sm font-semibold">{title}</p>
-        <p className="settings-card-description mt-1 text-xs">{description}</p>
+    <div className="settings-card settings-card-padded">
+      <div className="settings-card-header">
+        <p className="settings-card-title">{title}</p>
+        <p className="settings-card-description">{description}</p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="settings-choice-list">
         {options.map((option) => {
           const isSelected = value === option.value;
 
@@ -23,9 +23,7 @@ function SettingsChoiceRow({ title, description, value, options, onChange }) {
               type="button"
               onClick={() => handleChoiceClick(option.value)}
               aria-pressed={isSelected}
-              className={`settings-choice-button rounded-xl px-3 py-2 text-xs font-medium ${
-                isSelected ? "is-selected" : ""
-              }`}
+              className={`settings-choice-button ${isSelected ? "is-selected" : ""}`}
             >
               {option.label}
             </button>

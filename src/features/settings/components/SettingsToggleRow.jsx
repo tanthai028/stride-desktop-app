@@ -4,28 +4,22 @@ function SettingsToggleRow({ title, description, checked, onToggle }) {
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
   return (
-    <div className="settings-card rounded-2xl px-4 py-3">
-      <div className="flex items-start justify-between gap-4">
+    <div className="settings-card settings-card-padded">
+      <div className="settings-toggle-row">
         <div>
-          <p className="settings-card-title text-sm font-semibold">{title}</p>
-          <p className="settings-card-description mt-1 text-xs">
-            {description}
-          </p>
+          <p className="settings-card-title">{title}</p>
+          <p className="settings-card-description">{description}</p>
         </div>
 
         <button
           type="button"
           onClick={onToggle}
           aria-pressed={checked}
-          className={`settings-toggle relative mt-1 h-7 w-12 rounded-full ${
-            checked ? "is-checked" : ""
-          }`}
+          className={`settings-toggle ${checked ? "is-checked" : ""}`}
           {...hoverFeedbackHandlers}
         >
           <span
-            className={`settings-toggle-thumb absolute top-1 h-5 w-5 rounded-full ${
-              checked ? "is-checked" : ""
-            }`}
+            className={`settings-toggle-thumb ${checked ? "is-checked" : ""}`}
           />
         </button>
       </div>

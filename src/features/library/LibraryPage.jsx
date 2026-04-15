@@ -134,9 +134,7 @@ function LibraryPage({ settings, updateSetting }) {
         scrollable={false}
       >
         {loadError ? (
-          <div className="mb-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {loadError}
-          </div>
+          <div className="library-form-error">{loadError}</div>
         ) : null}
 
         <LibraryCollectionSection

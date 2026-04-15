@@ -19,7 +19,7 @@ function PageShell({
   } = usePageScrollbar();
 
   return (
-    <div className="surface-panel flex min-h-0 flex-1 flex-col overflow-hidden p-6">
+    <div className="surface-panel page-shell">
       <div className="surface-section-divider page-shell-header">
         <div>
           {eyebrow ? (
@@ -38,7 +38,7 @@ function PageShell({
         ) : null}
       </div>
 
-      <div className="relative mt-6 min-h-0 flex-1">
+      <div className="page-shell-body">
         {scrollable ? (
           <>
             <div
@@ -46,9 +46,9 @@ function PageShell({
               onScroll={handleScroll}
               onPointerEnter={handlePointerEnter}
               onPointerLeave={handlePointerLeave}
-              className="h-full min-h-0 overflow-y-auto scrollbar-hide"
+              className="page-shell-scroll-area scrollbar-hide"
             >
-              <div className="flex min-h-full flex-col">{children}</div>
+              <div className="page-shell-scroll-content">{children}</div>
             </div>
 
             <PageScrollbar
@@ -57,9 +57,7 @@ function PageShell({
             />
           </>
         ) : (
-          <div className="flex h-full min-h-0 flex-col overflow-visible">
-            {children}
-          </div>
+          <div className="page-shell-static-content">{children}</div>
         )}
       </div>
     </div>

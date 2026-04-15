@@ -3,7 +3,7 @@ import { summaryCards } from "../data/summaryCards.js";
 
 function SummaryCards() {
   return (
-    <div className="grid grid-cols-1 gap-5 md:grid-cols-3 p-1">
+    <div className="dashboard-summary-grid">
       {summaryCards.map((card) => (
         <StatCard
           key={card.label}
@@ -16,4 +16,5 @@ function SummaryCards() {
     </div>
   );
 }
+
 export default SummaryCards;

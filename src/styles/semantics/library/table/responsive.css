@@ -1,11 +1,3 @@
-.library-action-bar-grid {
-  margin-bottom: 1rem;
-}
-
-.library-action-bar-table {
-  margin-bottom: 0;
-}
-
 @container (max-width: 840px) {
   .library-table {
     min-width: 520px;

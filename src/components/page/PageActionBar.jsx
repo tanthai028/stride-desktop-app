@@ -26,7 +26,7 @@ function PageActionBar({
     filterOptions.length > 0;
 
   return (
-    <div className={`page-action-bar ${className}`}>
+    <div className={`page-action-bar ${className}`.trim()}>
       <div className="page-action-bar-row">
         {extraControls}
 
@@ -38,11 +38,11 @@ function PageActionBar({
               value={searchValue}
               onChange={(event) => onSearchChange(event.target.value)}
               placeholder={searchPlaceholder}
-              className="input-base min-w-0 flex-1"
+              className="input-base page-action-bar-search-input"
             />
           </div>
         ) : (
-          <div className="flex-1" />
+          <div className="page-action-bar-spacer" />
         )}
 
         {shouldShowSort ? (
@@ -64,7 +64,9 @@ function PageActionBar({
         ) : null}
       </div>
 
-      {primaryAction ? <div>{primaryAction}</div> : null}
+      {primaryAction ? (
+        <div className="page-action-bar-primary-action">{primaryAction}</div>
+      ) : null}
     </div>
   );
 }

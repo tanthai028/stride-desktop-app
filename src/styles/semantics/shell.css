@@ -7,24 +7,34 @@
   color: var(--theme-frame-text, var(--theme-text-primary));
 }
 
-.page-shell-header {
+.frame-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: nowrap;
-}
-
-.page-shell-header > :first-child {
-  min-width: 0;
-  flex: 1;
-}
-
-.page-shell-header-actions {
-  display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
-  flex-wrap: nowrap;
-  flex-shrink: 0;
-  min-width: 0;
+}
+
+.frame-content {
+  max-width: 1400px;
+  height: calc(100% - 4.75rem);
+  margin: 1rem auto 0;
+}
+
+.frame-grid {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 72px 1fr;
+  gap: 1rem;
+}
+
+.frame-sidebar {
+  position: relative;
+  min-height: 0;
+  overflow: visible;
+}
+
+.frame-main {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 1rem;
 }

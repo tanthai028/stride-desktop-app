@@ -13,6 +13,7 @@ function LibraryFormFields({
       return;
     }
 
+    event.preventDefault();
     onJobUrlPaste?.(pastedText);
   }
 

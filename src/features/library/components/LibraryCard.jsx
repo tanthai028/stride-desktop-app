@@ -57,14 +57,12 @@ const STATE_ABBREVIATIONS = {
 function formatLocation(location = "") {
   if (!location) return "";
 
-  // "San Francisco, California" → ["San Francisco", "California"]
-  const parts = location.split(",").map((p) => p.trim());
+  const parts = location.split(",").map((part) => part.trim());
 
   if (parts.length < 2) return location;
 
   const city = parts[0];
   const stateFull = parts[1];
-
   const stateAbbr = STATE_ABBREVIATIONS[stateFull];
 
   return stateAbbr ? `${city}, ${stateAbbr}` : location;
@@ -104,29 +102,29 @@ function LibraryCard({ item }) {
   const title = [item.company, item.role].filter(Boolean).join(" — ");
 
   return (
-    <div className="flex h-full w-full flex-col gap-3">
-      <div className="flex items-start gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-3">
-            <p className="library-card-title min-w-0 flex-1 truncate text-lg font-semibold">
+    <div className="library-card-content">
+      <div className="library-card-top">
+        <div className="library-card-main">
+          <div className="library-card-header">
+            <p className="library-card-title">
               {title || "Untitled application"}
             </p>
 
-            <span className="library-card-chip flex shrink-0 items-center gap-1 rounded-full px-3 py-1 pl-2 text-xs font-medium">
+            <span className="library-card-chip">
               <span>{statusMeta.emoji}</span>
               <span>{statusMeta.label}</span>
             </span>
           </div>
 
-          <div className="mt-1 flex items-start justify-between gap-3 text-sm opacity-80">
-            <span className="min-w-0 shrink-0">
+          <div className="library-card-meta">
+            <span className="library-card-applied">
               Applied: {formatAppliedDate(item.appliedAt)}
             </span>
 
             {item.location ? (
-              <span className="flex min-w-0 items-start justify-end gap-1 text-right">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-                <span className="min-w-0 break-words">
+              <span className="library-card-location">
+                <MapPin className="library-card-location-icon" />
+                <span className="library-card-location-text">
                   {formatLocation(item.location)}
                 </span>
               </span>
@@ -135,7 +133,7 @@ function LibraryCard({ item }) {
         </div>
       </div>
 
-      <p className="library-card-description line-clamp-2 flex-1 text-sm leading-6">
+      <p className="library-card-description line-clamp-2">
         {item.notes || "No notes yet."}
       </p>
 
@@ -143,9 +141,9 @@ function LibraryCard({ item }) {
         <button
           type="button"
           onClick={(event) => openJobUrl(event, item.jobUrl)}
-          className="mt-auto inline-flex w-fit items-center gap-2 text-sm font-medium underline underline-offset-4 opacity-85 transition-opacity hover:opacity-100"
+          className="library-card-link"
         >
-          <ExternalLink className="h-4 w-4 shrink-0" />
+          <ExternalLink className="library-card-link-icon" />
           <span>Open job post</span>
         </button>
       ) : null}

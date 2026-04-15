@@ -7,16 +7,18 @@ function PageSection({
   headerLeading = null,
 }) {
   return (
-    <section className={`flex min-h-0 flex-1 flex-col ${className}`}>
+    <section className={`page-section ${className}`.trim()}>
       {title || description || headerAction || headerLeading ? (
-        <div className="mb-3 shrink-0">
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex min-w-0 items-start gap-3">
+        <div className="page-section-header">
+          <div className="page-section-header-row">
+            <div className="page-section-header-main">
               {headerLeading ? (
-                <div className="shrink-0">{headerLeading}</div>
+                <div className="page-section-header-leading">
+                  {headerLeading}
+                </div>
               ) : null}
 
-              <div className="min-w-0">
+              <div className="page-section-header-copy">
                 {title ? (
                   <h3 className="section-title text-sm font-semibold">
                     {title}
@@ -32,13 +34,13 @@ function PageSection({
             </div>
 
             {headerAction ? (
-              <div className="shrink-0">{headerAction}</div>
+              <div className="page-section-header-action">{headerAction}</div>
             ) : null}
           </div>
         </div>
       ) : null}
 
-      <div className="flex min-h-0 flex-1 flex-col">{children}</div>
+      <div className="page-section-body">{children}</div>
     </section>
   );
 }

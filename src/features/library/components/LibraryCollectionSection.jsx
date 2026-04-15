@@ -12,6 +12,11 @@ import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
 import { Plus, LayoutGrid, Rows3 } from "lucide-react";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 
+const libraryViewOptions = [
+  { value: "grid", label: "Card Grid", icon: LayoutGrid },
+  { value: "table", label: "Table List", icon: Rows3 },
+];
+
 function LibraryCollectionSection({
   items,
   filteredItems,
@@ -33,11 +38,9 @@ function LibraryCollectionSection({
   const hasItems = items.length > 0;
   const hasFilteredItems = filteredItems.length > 0;
   const isTableView = viewMode === "table";
-
-  const libraryViewOptions = [
-    { value: "grid", label: "Card Grid", icon: LayoutGrid },
-    { value: "table", label: "Table List", icon: Rows3 },
-  ];
+  const actionBarClassName = isTableView
+    ? "library-collection-action-bar-table"
+    : "library-collection-action-bar-grid";
 
   const {
     scrollRef,
@@ -60,11 +63,7 @@ function LibraryCollectionSection({
       }
     >
       <PageActionBar
-        className={
-          isTableView
-            ? "library-collection-action-bar-table"
-            : "library-collection-action-bar-grid"
-        }
+        className={actionBarClassName}
         extraControls={
           <SelectMenu
             value={viewMode}
@@ -85,7 +84,7 @@ function LibraryCollectionSection({
         showSearch
       />
 
-      <div className="relative min-h-0 flex-1 overflow-visible">
+      <div className="library-collection-content">
         {hasFilteredItems ? (
           isTableView ? (
             <LibraryTable
@@ -102,9 +101,9 @@ function LibraryCollectionSection({
                 onScroll={handleScroll}
                 onPointerEnter={handlePointerEnter}
                 onPointerLeave={handlePointerLeave}
-                className="h-full min-h-0 overflow-y-auto overflow-x-visible scrollbar-hide"
+                className="library-grid-scroll-area scrollbar-hide"
               >
-                <div className="min-h-full p-1 pt-1.5">
+                <div className="library-grid-scroll-inner">
                   <ItemGrid
                     items={filteredItems}
                     onItemClick={isPageReady ? onItemClick : undefined}
@@ -137,7 +136,7 @@ function LibraryCollectionSection({
             }
           />
         ) : (
-          <div className="p-1 pt-1.5">
+          <div className="library-empty-state-wrap">
             <EmptyState
               title={
                 hasItems
