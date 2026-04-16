@@ -1,16 +1,18 @@
+import { Plus, LayoutGrid, Rows3 } from "lucide-react";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
 import ItemGrid from "../../../components/page/ItemGrid.jsx";
-import EmptyState from "../../../components/page/EmptyState.jsx";
 import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
-import LibraryCard from "./LibraryCard.jsx";
-import LibraryTable from "./table/LibraryTable.jsx";
-import { librarySortOptions } from "../constants/sortOptions.js";
-import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
-import { Plus, LayoutGrid, Rows3 } from "lucide-react";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
+import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
+import { librarySortOptions } from "../constants/sortOptions.js";
+import LibraryCard from "./LibraryCard.jsx";
+import LibraryCollectionEmptyState, {
+  LibraryCollectionInlineEmptyState,
+} from "./LibraryCollectionEmptyState.jsx";
+import LibraryTable from "./table/LibraryTable.jsx";
 
 const libraryViewOptions = [
   { value: "grid", label: "Card Grid", icon: LayoutGrid },
@@ -38,9 +40,19 @@ function LibraryCollectionSection({
   const hasItems = items.length > 0;
   const hasFilteredItems = filteredItems.length > 0;
   const isTableView = viewMode === "table";
+
   const actionBarClassName = isTableView
     ? "library-collection-action-bar-table"
     : "library-collection-action-bar-grid";
+
+  const emptyState = LibraryCollectionEmptyState({
+    hasItems,
+    searchValue,
+    onSearchChange,
+    onClearFilters,
+    onAddItem,
+    isTableView,
+  });
 
   const {
     scrollRef,
@@ -118,49 +130,23 @@ function LibraryCollectionSection({
               />
             </>
           )
-        ) : isTableView && hasItems ? (
+        ) : emptyState.renderAsTableEmptyState ? (
           <LibraryTable
             items={[]}
             isPageReady={isPageReady}
             onItemClick={onItemClick}
             sortValue={tableSortValue}
             onSortChange={onTableSortChange}
-            emptyStateTitle="🔎 No matching applications"
-            emptyStateDescription="Try a different search to find the applications you want."
-            emptyStateAction={
-              searchValue ? (
-                <ActionButton onClick={() => onSearchChange("")}>
-                  Clear Search
-                </ActionButton>
-              ) : null
-            }
+            emptyStateTitle={emptyState.title}
+            emptyStateDescription={emptyState.description}
+            emptyStateAction={emptyState.action}
           />
         ) : (
-          <div className="library-empty-state-wrap">
-            <EmptyState
-              title={
-                hasItems
-                  ? "🔎 No matching applications"
-                  : "📭 Your application tracker is empty"
-              }
-              description={
-                hasItems
-                  ? "Try a different search, status filter, sort, or view to find the applications you want."
-                  : "Add your first application to start tracking roles, links, and notes in one place."
-              }
-              action={
-                hasItems ? (
-                  <ActionButton onClick={onClearFilters}>
-                    Clear Filters
-                  </ActionButton>
-                ) : (
-                  <ActionButton tone="pink" withIcon onClick={onAddItem}>
-                    ✨ Add First Application
-                  </ActionButton>
-                )
-              }
-            />
-          </div>
+          <LibraryCollectionInlineEmptyState
+            title={emptyState.title}
+            description={emptyState.description}
+            action={emptyState.action}
+          />
         )}
       </div>
     </PageSection>

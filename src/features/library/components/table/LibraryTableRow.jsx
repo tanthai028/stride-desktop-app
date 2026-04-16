@@ -1,10 +1,10 @@
 import { ExternalLink } from "lucide-react";
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
-  formatAppliedDate,
-  formatLocation,
-  openJobUrl,
-} from "../../utils/libraryTableFormatters.js";
+  formatLibraryAppliedDate,
+  formatLibraryLocation,
+  openLibraryJobUrl,
+} from "../../utils/libraryDisplayFormatters.js";
 
 function LibraryTableRow({ item, isPageReady, onItemClick }) {
   const statusMeta = getStatusMeta(item.status);
@@ -36,13 +36,13 @@ function LibraryTableRow({ item, isPageReady, onItemClick }) {
 
       <td className="library-table-cell library-col-location">
         <span className="library-table-text-truncate">
-          {formatLocation(item.location)}
+          {formatLibraryLocation(item.location)}
         </span>
       </td>
 
       <td className="library-table-cell library-col-applied">
         <span className="library-table-text-nowrap">
-          {formatAppliedDate(item.appliedAt)}
+          {formatLibraryAppliedDate(item.appliedAt)}
         </span>
       </td>
 
@@ -50,7 +50,7 @@ function LibraryTableRow({ item, isPageReady, onItemClick }) {
         {item.jobUrl ? (
           <button
             type="button"
-            onClick={(event) => openJobUrl(event, item.jobUrl)}
+            onClick={(event) => openLibraryJobUrl(event, item.jobUrl)}
             className="library-table-link-button"
             aria-label={`Open job post for ${item.company || item.role || "application"}`}
             title="Open job post"

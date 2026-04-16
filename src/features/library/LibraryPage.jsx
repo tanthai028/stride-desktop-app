@@ -1,15 +1,19 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
-import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
 import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx";
-import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
+import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
+import { DEFAULT_LIBRARY_STATUS_FILTER } from "./constants/libraryPageState.js";
 import useLibraryItems from "./hooks/useLibraryItems.js";
 import useLibraryPageState from "./hooks/useLibraryPageState.js";
+import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
+
+const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
 function LibraryPage({ settings, updateSetting }) {
   const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =
     useLibraryItems(settings.resetVersion);
+
   const [modalErrorMessage, setModalErrorMessage] = useState("");
 
   const {
@@ -34,18 +38,23 @@ function LibraryPage({ settings, updateSetting }) {
   } = useLibraryPageState(settings.libraryViewMode);
 
   const isTableView = viewMode === "table";
+  const isModalOpen = modalMode === "add" || modalMode === "edit";
+  const modalSubmitHandler =
+    modalMode === "edit" ? handleUpdateItem : handleAddItem;
+
   const activeSortValue = isTableView ? tableSortValue : sortValue;
-  const activeSearchValue = searchValue;
-  const activeStatusFilterValue = isTableView ? "all" : statusFilterValue;
+  const activeStatusFilterValue = isTableView
+    ? DEFAULT_LIBRARY_STATUS_FILTER
+    : statusFilterValue;
 
   const filteredItems = useMemo(() => {
     return getFilteredAndSortedLibraryItems(
       items,
-      activeSearchValue,
+      searchValue,
       activeSortValue,
       activeStatusFilterValue,
     );
-  }, [items, activeSearchValue, activeSortValue, activeStatusFilterValue]);
+  }, [items, searchValue, activeSortValue, activeStatusFilterValue]);
 
   useEffect(() => {
     if (settings.libraryViewMode !== viewMode) {
@@ -53,18 +62,26 @@ function LibraryPage({ settings, updateSetting }) {
     }
   }, [settings.libraryViewMode, updateSetting, viewMode]);
 
-  function handleOpenAddModal() {
+  function clearModalError() {
     setModalErrorMessage("");
+  }
+
+  function getErrorMessage(error) {
+    return error?.message || FALLBACK_MODAL_ERROR;
+  }
+
+  function handleOpenAddModal() {
+    clearModalError();
     openAddModal();
   }
 
   function handleOpenEditModal(item) {
-    setModalErrorMessage("");
+    clearModalError();
     openEditModal(item);
   }
 
   function handleCloseModal() {
-    setModalErrorMessage("");
+    clearModalError();
     closeModal();
   }
 
@@ -76,12 +93,9 @@ function LibraryPage({ settings, updateSetting }) {
 
     try {
       await addItem(formValues);
-      setModalErrorMessage("");
-      closeModal();
+      handleCloseModal();
     } catch (error) {
-      setModalErrorMessage(
-        error?.message || "Something went wrong. Please try again.",
-      );
+      setModalErrorMessage(getErrorMessage(error));
     }
   }
 
@@ -92,9 +106,7 @@ function LibraryPage({ settings, updateSetting }) {
       await updateItem(selectedItem.id, formValues);
       handleCloseModal();
     } catch (error) {
-      setModalErrorMessage(
-        error?.message || "Something went wrong. Please try again.",
-      );
+      setModalErrorMessage(getErrorMessage(error));
     }
   }
 
@@ -105,27 +117,17 @@ function LibraryPage({ settings, updateSetting }) {
       await deleteItem(selectedItem.id);
       handleCloseModal();
     } catch (error) {
-      setModalErrorMessage(
-        error?.message || "Something went wrong. Please try again.",
-      );
+      setModalErrorMessage(getErrorMessage(error));
     }
   }
 
-  const motionProps = {
-    initial: { opacity: 0, y: 14 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.45 },
-  };
-
-  const isModalOpen = modalMode === "add" || modalMode === "edit";
-
   return (
     <motion.div
-      {...motionProps}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
       className="flex min-h-0 flex-1 flex-col"
-      onAnimationComplete={() => {
-        setIsPageReady(true);
-      }}
+      onAnimationComplete={() => setIsPageReady(true)}
     >
       <PageShell
         eyebrow="📚 Application Tracker"
@@ -162,9 +164,9 @@ function LibraryPage({ settings, updateSetting }) {
         mode={modalMode}
         item={selectedItem}
         errorMessage={modalErrorMessage}
-        onClearError={() => setModalErrorMessage("")}
+        onClearError={clearModalError}
         onClose={handleCloseModal}
-        onSubmit={modalMode === "edit" ? handleUpdateItem : handleAddItem}
+        onSubmit={modalSubmitHandler}
         onDelete={handleDeleteItem}
       />
     </motion.div>

@@ -1,20 +1,27 @@
 import { useState } from "react";
+import {
+  DEFAULT_LIBRARY_SORT,
+  DEFAULT_LIBRARY_STATUS_FILTER,
+  DEFAULT_LIBRARY_VIEW_MODE,
+} from "../constants/libraryPageState.js";
 
-function useLibraryPageState(initialViewMode = "grid") {
+function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
   const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
-  const [sortValue, setSortValue] = useState("appliedAt-desc");
-  const [tableSortValue, setTableSortValue] = useState("appliedAt-desc");
-  const [statusFilterValue, setStatusFilterValue] = useState("all");
+  const [sortValue, setSortValue] = useState(DEFAULT_LIBRARY_SORT);
+  const [tableSortValue, setTableSortValue] = useState(DEFAULT_LIBRARY_SORT);
+  const [statusFilterValue, setStatusFilterValue] = useState(
+    DEFAULT_LIBRARY_STATUS_FILTER,
+  );
   const [viewMode, setViewMode] = useState(initialViewMode);
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
 
   function clearFilters() {
     setSearchValue("");
-    setSortValue("appliedAt-desc");
-    setStatusFilterValue("all");
-    setTableSortValue("appliedAt-desc");
+    setSortValue(DEFAULT_LIBRARY_SORT);
+    setStatusFilterValue(DEFAULT_LIBRARY_STATUS_FILTER);
+    setTableSortValue(DEFAULT_LIBRARY_SORT);
   }
 
   function openAddModal() {

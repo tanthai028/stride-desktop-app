@@ -5,6 +5,7 @@ import {
   getLibraryStatusOptions,
   normalizeStatusValue,
 } from "../../constants/libraryStatuses.js";
+import { PRIORITY_OPTIONS } from "../../constants/libraryPriorities.js";
 import { parseLibraryJobUrl } from "../../utils/libraryClient.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
@@ -297,7 +298,7 @@ function LibraryFormModal({
                   value: opt.rawLabel,
                   label: opt.label,
                 }))}
-                className="library-status-select library-form-priority-select"
+                className="library-status-select library-form-header-select"
               />
             </div>
           </div>
@@ -311,13 +312,9 @@ function LibraryFormModal({
               <SelectMenu
                 value={formValues.priority ?? ""}
                 onChange={(value) => updateField("priority", value)}
-                options={[
-                  { value: "High", label: "High" },
-                  { value: "Medium", label: "Medium" },
-                  { value: "Low", label: "Low" },
-                ]}
+                options={PRIORITY_OPTIONS}
                 placeholder="Priority"
-                className="library-status-select library-status-select-priority library-form-priority-select library-form-priority-select-header"
+                className="library-form-priority-select library-form-header-select library-form-priority-select-header"
               />
             </div>
           </div>

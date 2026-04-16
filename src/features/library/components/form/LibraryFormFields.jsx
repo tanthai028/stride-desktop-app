@@ -1,10 +1,6 @@
 import SelectMenu from "../../../../components/ui/SelectMenu.jsx";
-
-const PRIORITY_OPTIONS = [
-  { value: "High", label: "High" },
-  { value: "Medium", label: "Medium" },
-  { value: "Low", label: "Low" },
-];
+import { PRIORITY_OPTIONS } from "../../constants/libraryPriorities.js";
+import LibraryFormAdvancedToggle from "./LibraryFormAdvancedToggle.jsx";
 
 function LibraryFormFields({
   formValues,
@@ -44,25 +40,11 @@ function LibraryFormFields({
           />
         </div>
 
-        <div className="library-form-advanced-toggle">
-          <div className="library-form-advanced-toggle-copy">
-            <p className="library-form-advanced-toggle-title">
-              Advanced fields
-            </p>
-            <p className="library-form-advanced-toggle-description">
-              Company, role, job URL, location, and priority
-            </p>
-          </div>
-
-          <button
-            type="button"
-            onClick={onToggleAdvanced}
-            aria-expanded={showAdvanced}
-            className="library-form-advanced-toggle-button"
-          >
-            {showAdvanced ? "Hide" : "Show more"}
-          </button>
-        </div>
+        <LibraryFormAdvancedToggle
+          description="Company, role, job URL, location, and priority"
+          showAdvanced={showAdvanced}
+          onToggle={onToggleAdvanced}
+        />
 
         {showAdvanced ? (
           <div className="library-form-grid">
@@ -150,23 +132,11 @@ function LibraryFormFields({
         />
       </div>
 
-      <div className="library-form-advanced-toggle">
-        <div className="library-form-advanced-toggle-copy">
-          <p className="library-form-advanced-toggle-title">Advanced fields</p>
-          <p className="library-form-advanced-toggle-description">
-            Company, role, and location
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={onToggleAdvanced}
-          aria-expanded={showAdvanced}
-          className="library-form-advanced-toggle-button"
-        >
-          {showAdvanced ? "Hide" : "Show more"}
-        </button>
-      </div>
+      <LibraryFormAdvancedToggle
+        description="Company, role, and location"
+        showAdvanced={showAdvanced}
+        onToggle={onToggleAdvanced}
+      />
 
       {showAdvanced ? (
         <div className="library-form-grid">

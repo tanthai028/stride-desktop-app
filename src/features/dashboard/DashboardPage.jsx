@@ -78,17 +78,6 @@ function DashboardPage({ settings, onAction }) {
               </div>
             </div>
           </div>
-
-          {/* {Blur} */}
-          {/* <div
-            className={`pointer-events-none absolute left-0 right-0 rounded-bl-[28px] rounded-br-[28px] bottom-0 h-30 transition-opacity duration-300 ${
-              showBottomFade ? "opacity-100" : "opacity-0"
-            } ${
-              settings.darkMode
-                ? "bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent"
-                : "bg-gradient-to-t from-white/90 via-white/40 to-transparent"
-            }`}
-          /> */}
         </div>
       </PageShell>
     </motion.div>

@@ -51,41 +51,60 @@ const STATE_ABBREVIATIONS = {
   Wyoming: "WY",
 };
 
-export function formatLocation(location = "") {
-  if (!location) return "-";
+function getShortState(state = "") {
+  return STATE_ABBREVIATIONS[String(state).trim()] ?? "";
+}
 
-  const parts = location.split(",").map((part) => part.trim());
+export function formatLibraryLocation(location = "", fallback = "-") {
+  const trimmedLocation = String(location).trim();
 
-  if (parts.length !== 2) return location;
+  if (!trimmedLocation) {
+    return fallback;
+  }
+
+  const parts = trimmedLocation.split(",").map((part) => part.trim());
+
+  if (parts.length !== 2) {
+    return trimmedLocation;
+  }
 
   const [city, state] = parts;
-  const shortState = STATE_ABBREVIATIONS[state];
+  const shortState = getShortState(state);
 
-  if (!shortState) return location;
+  if (!shortState) {
+    return trimmedLocation;
+  }
 
   return `${city}, ${shortState}`;
 }
 
-export function formatAppliedDate(appliedAt) {
-  if (!appliedAt) return "-";
+export function formatLibraryAppliedDate(
+  appliedAt,
+  { fallback = "-", year = "2-digit" } = {},
+) {
+  if (!appliedAt) {
+    return fallback;
+  }
 
   const parsedDate = new Date(appliedAt);
 
   if (Number.isNaN(parsedDate.getTime())) {
-    return "-";
+    return fallback;
   }
 
   return parsedDate.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
-    year: "2-digit",
+    year,
   });
 }
 
-export function openJobUrl(event, jobUrl) {
+export function openLibraryJobUrl(event, jobUrl) {
   event.stopPropagation();
 
-  if (!jobUrl) return;
+  if (!jobUrl) {
+    return;
+  }
 
   if (window.libraryApi?.openExternalUrl) {
     window.libraryApi.openExternalUrl(jobUrl);
