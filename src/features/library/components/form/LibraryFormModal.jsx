@@ -10,23 +10,21 @@ import { parseLibraryJobUrl } from "../../utils/libraryClient.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
 
+/* =========================
+   Constants
+   ========================= */
+
 const DEFAULT_STATUS = "Applied";
+const DEFAULT_PRIORITY = "Medium";
+const INVALID_JOB_URL_MESSAGE =
+  "Couldn’t extract job details from this link. Paste a direct job posting URL.";
+
+/* =========================
+   Date + form helpers
+   ========================= */
 
 function getTodayDateInputValue() {
   return new Date().toISOString().slice(0, 10);
-}
-
-function createEmptyForm() {
-  return {
-    company: "",
-    role: "",
-    status: DEFAULT_STATUS,
-    jobUrl: "",
-    location: "",
-    priority: "Medium",
-    appliedAt: getTodayDateInputValue(),
-    notes: "",
-  };
 }
 
 function formatDateInputValue(value = "") {
@@ -41,12 +39,79 @@ function formatDateInputValue(value = "") {
   return parsedDate.toISOString().slice(0, 10);
 }
 
+function createEmptyForm() {
+  return {
+    company: "",
+    role: "",
+    status: DEFAULT_STATUS,
+    jobUrl: "",
+    location: "",
+    priority: DEFAULT_PRIORITY,
+    appliedAt: getTodayDateInputValue(),
+    notes: "",
+  };
+}
+
+function createEditFormValues(item) {
+  return {
+    company: item?.company ?? "",
+    role: item?.role ?? "",
+    status: item?.status ?? DEFAULT_STATUS,
+    jobUrl: item?.jobUrl ?? "",
+    location: item?.location ?? "",
+    priority: item?.priority ?? DEFAULT_PRIORITY,
+    appliedAt: formatDateInputValue(item?.appliedAt),
+    notes: item?.notes ?? "",
+  };
+}
+
+function buildFormPayload(formValues) {
+  return {
+    company: formValues.company.trim(),
+    role: formValues.role.trim(),
+    status: (formValues.status || DEFAULT_STATUS).trim(),
+    jobUrl: formValues.jobUrl.trim(),
+    location: formValues.location.trim(),
+    priority: (formValues.priority || DEFAULT_PRIORITY).trim(),
+    appliedAt: formValues.appliedAt
+      ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
+      : new Date().toISOString(),
+    notes: formValues.notes.trim(),
+  };
+}
+
 function getEditModalTitle(item, formValues) {
   const company =
     formValues.company?.trim() || item?.company?.trim() || "Company";
   const role = formValues.role?.trim() || item?.role?.trim() || "Role";
 
   return `${company} - ${role}`;
+}
+
+/* =========================
+   Job URL parsing + autofill helpers
+   ========================= */
+
+function isUuidLike(value = "") {
+  return /^[0-9a-f-]{36}$/i.test(String(value).trim());
+}
+
+function isAtsPlatformName(value = "") {
+  return ["ashby", "lever", "greenhouse", "workday"].includes(
+    String(value).trim().toLowerCase(),
+  );
+}
+
+function canAutofillParsedJob(extracted) {
+  if (!extracted || extracted.error) {
+    return false;
+  }
+
+  const company = String(extracted.company ?? "").trim();
+  const role = String(extracted.role ?? "").trim();
+  const location = String(extracted.location ?? "").trim();
+
+  return Boolean(company && role && location);
 }
 
 function LibraryFormModal({
@@ -67,49 +132,59 @@ function LibraryFormModal({
   const isEditMode = mode === "edit";
   const addModeDefaultValues = useMemo(() => createEmptyForm(), [isOpen]);
   const statusOptions = getLibraryStatusOptions();
+  const normalizedStatusValue = normalizeStatusValue(formValues.status);
 
   const selectedStatusOption =
-    statusOptions.find(
-      (option) => option.value === normalizeStatusValue(formValues.status),
-    ) ??
+    statusOptions.find((option) => option.value === normalizedStatusValue) ??
     statusOptions.find((option) => option.rawLabel === DEFAULT_STATUS) ??
     null;
 
-  useEffect(() => {
-    if (!isOpen) return;
+  /* =========================
+     Reset + initialization helpers
+     ========================= */
 
+  function clearError() {
+    onClearError?.();
+  }
+
+  function resetSharedUiState() {
+    setShowAdvanced(false);
+    setIsSubmitting(false);
+  }
+
+  function bumpJobUrlInputKey() {
+    jobUrlInputKeyRef.current += 1;
+  }
+
+  function resetAddForm() {
+    setFormValues(createEmptyForm());
+    resetSharedUiState();
+    bumpJobUrlInputKey();
+  }
+
+  function syncFormStateFromModal() {
     if (isEditMode && item) {
-      setFormValues({
-        company: item.company ?? "",
-        role: item.role ?? "",
-        status: item.status ?? DEFAULT_STATUS,
-        jobUrl: item.jobUrl ?? "",
-        location: item.location ?? "",
-        priority: item.priority ?? "Medium",
-        appliedAt: formatDateInputValue(item.appliedAt),
-        notes: item.notes ?? "",
-      });
-
-      setShowAdvanced(false);
-      setIsSubmitting(false);
+      setFormValues(createEditFormValues(item));
+      resetSharedUiState();
       return;
     }
 
     setFormValues(addModeDefaultValues);
-    setShowAdvanced(false);
-    setIsSubmitting(false);
-    jobUrlInputKeyRef.current += 1;
-  }, [addModeDefaultValues, isOpen, isEditMode, item]);
-
-  function resetAddForm() {
-    setFormValues(createEmptyForm());
-    setShowAdvanced(false);
-    setIsSubmitting(false);
-    jobUrlInputKeyRef.current += 1;
+    resetSharedUiState();
+    bumpJobUrlInputKey();
   }
 
+  useEffect(() => {
+    if (!isOpen) return;
+    syncFormStateFromModal();
+  }, [addModeDefaultValues, isOpen, isEditMode, item]);
+
+  /* =========================
+     Field handlers
+     ========================= */
+
   function updateField(fieldName, value) {
-    onClearError?.();
+    clearError();
 
     setFormValues((prev) => ({
       ...prev,
@@ -118,37 +193,16 @@ function LibraryFormModal({
   }
 
   function handleToggleAdvanced() {
-    onClearError?.();
+    clearError();
     setShowAdvanced((current) => !current);
   }
 
-  function isUuidLike(value = "") {
-    return /^[0-9a-f-]{36}$/i.test(String(value).trim());
-  }
-
-  function isAtsPlatformName(value = "") {
-    return ["ashby", "lever", "greenhouse", "workday"].includes(
-      String(value).trim().toLowerCase(),
-    );
-  }
-
-  function canAutofillParsedJob(extracted) {
-    if (!extracted) return false;
-    if (extracted.error) return false;
-
-    const company = String(extracted.company ?? "").trim();
-    const role = String(extracted.role ?? "").trim();
-    const location = String(extracted.location ?? "").trim();
-
-    return Boolean(company && role && location);
-  }
-
-  async function parseJobUrlForAutofill(nextJobUrl) {
-    return await parseLibraryJobUrl(nextJobUrl);
-  }
+  /* =========================
+     Job URL handlers
+     ========================= */
 
   async function applyParsedJobUrl(nextJobUrl) {
-    const extracted = await parseJobUrlForAutofill(nextJobUrl);
+    const extracted = await parseLibraryJobUrl(nextJobUrl);
 
     if (!canAutofillParsedJob(extracted)) {
       return extracted;
@@ -157,7 +211,6 @@ function LibraryFormModal({
     setFormValues((prev) => {
       const shouldReplaceCompany =
         !prev.company.trim() || isAtsPlatformName(prev.company);
-
       const shouldReplaceRole = !prev.role.trim() || isUuidLike(prev.role);
 
       return {
@@ -173,7 +226,7 @@ function LibraryFormModal({
   }
 
   async function handleJobUrlPaste(pastedValue) {
-    onClearError?.();
+    clearError();
 
     const nextJobUrl = String(pastedValue ?? "").trim();
 
@@ -182,17 +235,69 @@ function LibraryFormModal({
       jobUrl: nextJobUrl,
     }));
 
-    const extracted = await parseJobUrlForAutofill(nextJobUrl);
+    const extracted = await parseLibraryJobUrl(nextJobUrl);
 
     if (!canAutofillParsedJob(extracted)) {
       onSubmit?.({
-        __clientValidationError:
-          "Couldn’t extract job details from this link. Paste a direct job posting URL.",
+        __clientValidationError: INVALID_JOB_URL_MESSAGE,
       });
       return;
     }
 
     await applyParsedJobUrl(nextJobUrl);
+  }
+
+  /* =========================
+     Submit handlers
+     ========================= */
+
+  async function handleAddSubmit(payload) {
+    if (!payload.jobUrl) {
+      onSubmit?.({
+        __clientValidationError: "Job URL is required.",
+      });
+      return;
+    }
+
+    let nextCompany = payload.company;
+    let nextRole = payload.role;
+    let nextLocation = payload.location;
+
+    if (!nextCompany || !nextRole) {
+      const extracted = await parseLibraryJobUrl(payload.jobUrl);
+
+      if (canAutofillParsedJob(extracted)) {
+        nextCompany = extracted.company.trim();
+        nextRole = extracted.role.trim();
+        nextLocation = nextLocation || extracted.location.trim();
+      }
+    }
+
+    if (!nextCompany || !nextRole) {
+      onSubmit?.({
+        __clientValidationError: INVALID_JOB_URL_MESSAGE,
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+
+      await onSubmit({
+        ...payload,
+        company: nextCompany,
+        role: nextRole,
+        location: nextLocation,
+      });
+
+      resetAddForm();
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleEditSubmit(payload) {
+    await onSubmit(payload);
   }
 
   async function handleSubmit(event) {
@@ -202,125 +307,66 @@ function LibraryFormModal({
       return;
     }
 
-    onClearError?.();
+    clearError();
 
-    const company = formValues.company.trim();
-    const role = formValues.role.trim();
-    const status = (formValues.status || DEFAULT_STATUS).trim();
-    const jobUrl = formValues.jobUrl.trim();
-    const location = formValues.location.trim();
-    const appliedAt = formValues.appliedAt
-      ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
-      : new Date().toISOString();
-    const notes = formValues.notes.trim();
-    const priority = (formValues.priority || "Medium").trim();
+    const payload = buildFormPayload(formValues);
 
-    if (!isEditMode) {
-      if (!jobUrl) {
-        onSubmit?.({
-          __clientValidationError: "Job URL is required.",
-        });
-        return;
-      }
-
-      let nextCompany = company;
-      let nextRole = role;
-      let nextLocation = location;
-
-      if (!nextCompany || !nextRole) {
-        const extracted = await parseJobUrlForAutofill(jobUrl);
-
-        if (canAutofillParsedJob(extracted)) {
-          nextCompany = extracted.company.trim();
-          nextRole = extracted.role.trim();
-          nextLocation = nextLocation || extracted.location.trim();
-        }
-      }
-
-      if (!nextCompany || !nextRole) {
-        onSubmit?.({
-          __clientValidationError:
-            "Couldn’t extract job details from this link. Paste a direct job posting URL.",
-        });
-        return;
-      }
-
-      try {
-        setIsSubmitting(true);
-
-        await onSubmit({
-          company: nextCompany,
-          role: nextRole,
-          status,
-          jobUrl,
-          location: nextLocation,
-          priority,
-          appliedAt,
-          notes,
-        });
-
-        resetAddForm();
-      } finally {
-        setIsSubmitting(false);
-      }
-
+    if (isEditMode) {
+      await handleEditSubmit(payload);
       return;
     }
 
-    await onSubmit({
-      company,
-      role,
-      status,
-      jobUrl,
-      location,
-      priority,
-      appliedAt,
-      notes,
-    });
+    await handleAddSubmit(payload);
+  }
+
+  /* =========================
+     Title render helper
+     ========================= */
+
+  function renderModalTitle() {
+    if (isEditMode) {
+      return (
+        <div className="library-form-modal-title">
+          <span className="library-form-modal-title-text">
+            {getEditModalTitle(item, formValues)}
+          </span>
+
+          <div className="library-form-modal-title-status">
+            <SelectMenu
+              value={selectedStatusOption?.rawLabel ?? DEFAULT_STATUS}
+              onChange={(value) => updateField("status", value)}
+              options={statusOptions.map((opt) => ({
+                value: opt.rawLabel,
+                label: opt.label,
+              }))}
+              className="library-status-select library-form-header-select"
+            />
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="library-form-modal-title">
+        <span className="library-form-modal-title-text">
+          ✨ Add Application
+        </span>
+
+        <div className="library-form-modal-title-status">
+          <SelectMenu
+            value={formValues.priority ?? ""}
+            onChange={(value) => updateField("priority", value)}
+            options={PRIORITY_OPTIONS}
+            placeholder="Priority"
+            className="library-form-priority-select library-form-header-select library-form-priority-select-header"
+          />
+        </div>
+      </div>
+    );
   }
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={
-        isEditMode ? (
-          <div className="library-form-modal-title">
-            <span className="library-form-modal-title-text">
-              {getEditModalTitle(item, formValues)}
-            </span>
-
-            <div className="library-form-modal-title-status">
-              <SelectMenu
-                value={selectedStatusOption?.rawLabel ?? DEFAULT_STATUS}
-                onChange={(value) => updateField("status", value)}
-                options={statusOptions.map((opt) => ({
-                  value: opt.rawLabel,
-                  label: opt.label,
-                }))}
-                className="library-status-select library-form-header-select"
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="library-form-modal-title">
-            <span className="library-form-modal-title-text">
-              ✨ Add Application
-            </span>
-
-            <div className="library-form-modal-title-status">
-              <SelectMenu
-                value={formValues.priority ?? ""}
-                onChange={(value) => updateField("priority", value)}
-                options={PRIORITY_OPTIONS}
-                placeholder="Priority"
-                className="library-form-priority-select library-form-header-select library-form-priority-select-header"
-              />
-            </div>
-          </div>
-        )
-      }
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title={renderModalTitle()}>
       <form className="modal-form" onSubmit={handleSubmit}>
         <LibraryFormFields
           key={jobUrlInputKeyRef.current}
