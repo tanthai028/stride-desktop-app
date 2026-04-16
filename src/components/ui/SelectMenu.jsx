@@ -8,7 +8,7 @@ function SelectMenu({
   value,
   onChange,
   options = [],
-  placeholder = "Select an option",
+  placeholder = "Status",
   className = "",
 }) {
   const [isOpen, setIsOpen] = useState(false);

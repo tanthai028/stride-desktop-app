@@ -91,6 +91,8 @@
 .library-form-modal-title {
   display: flex;
   width: 100%;
+  min-width: 0;
+  min-height: 46px;
   align-items: center;
   gap: 0.75rem;
 }
@@ -98,6 +100,8 @@
 .library-form-modal-title-text {
   min-width: 0;
   flex: 1;
+  display: block;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -106,6 +110,84 @@
 .library-form-modal-title-status {
   margin-left: auto;
   flex-shrink: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.library-form-priority-select {
+  display: block;
+  width: 100%;
+}
+
+.library-form-priority-select .select-menu-trigger {
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--theme-form-input-border, rgba(148, 163, 184, 0.22));
+  background-color: var(--theme-form-input-bg, rgba(255, 255, 255, 0.04));
+  color: var(--theme-form-input-text, var(--theme-text-primary));
+  box-shadow: none;
+}
+
+.library-form-priority-select:hover .select-menu-trigger,
+.library-form-priority-select.is-open .select-menu-trigger,
+.library-form-priority-select .select-menu-trigger:focus,
+.library-form-priority-select .select-menu-trigger:focus-visible {
+  transform: none;
+  border-color: var(
+    --theme-interactive-input-focus-border,
+    var(--theme-form-input-border, rgba(148, 163, 184, 0.5))
+  );
+  background-color: var(
+    --theme-interactive-input-focus-bg,
+    var(--theme-form-input-bg, rgba(255, 255, 255, 0.08))
+  );
+  box-shadow: none;
+}
+
+.library-form-priority-select .select-menu-trigger:active {
+  transform: none;
+  box-shadow: none;
+}
+
+.library-form-priority-select .select-menu-label {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.library-form-priority-select .select-menu-icon {
+  flex-shrink: 0;
+}
+
+.library-form-priority-select .select-menu-panel {
+  width: 100%;
+  min-width: 100%;
+}
+
+.library-form-priority-select .select-menu-option {
+  justify-content: flex-start;
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+}
+
+.library-form-priority-select .select-menu-option-label {
+  flex: 1;
+  text-align: left;
+}
+
+.library-form-priority-select-header {
+  width: 132px;
+  min-width: 132px;
+  max-width: 132px;
+}
+
+.library-form-priority-select-header .select-menu-panel {
+  width: 132px;
+  min-width: 132px;
 }
 
 .library-form-error {

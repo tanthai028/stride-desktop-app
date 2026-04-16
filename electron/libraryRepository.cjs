@@ -24,6 +24,48 @@ function ensureDatabaseDirectory() {
   }
 }
 
+function ensureLibrarySchema(db) {
+  db.exec(`
+    PRAGMA journal_mode = WAL;
+    PRAGMA foreign_keys = ON;
+
+    CREATE TABLE IF NOT EXISTS library_items (
+      id TEXT PRIMARY KEY,
+      company TEXT NOT NULL,
+      role TEXT NOT NULL,
+      status TEXT NOT NULL,
+      job_url TEXT NOT NULL DEFAULT '',
+      location TEXT NOT NULL DEFAULT '',
+      priority TEXT NOT NULL DEFAULT 'Medium',
+      applied_at TEXT NOT NULL DEFAULT '',
+      notes TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_library_items_status
+    ON library_items (status);
+
+    CREATE INDEX IF NOT EXISTS idx_library_items_created_at
+    ON library_items (created_at DESC);
+
+    CREATE INDEX IF NOT EXISTS idx_library_items_updated_at
+    ON library_items (updated_at DESC);
+  `);
+
+  const columns = db
+    .prepare("PRAGMA table_info(library_items)")
+    .all()
+    .map((column) => column.name);
+
+  if (!columns.includes("priority")) {
+    db.exec(`
+      ALTER TABLE library_items
+      ADD COLUMN priority TEXT NOT NULL DEFAULT 'Medium'
+    `);
+  }
+}
+
 function getDatabase() {
   if (database) {
     return database;
@@ -33,33 +75,7 @@ function getDatabase() {
     ensureDatabaseDirectory();
 
     database = new DatabaseSync(getLibraryDatabasePath());
-
-    database.exec(`
-      PRAGMA journal_mode = WAL;
-      PRAGMA foreign_keys = ON;
-
-      CREATE TABLE IF NOT EXISTS library_items (
-        id TEXT PRIMARY KEY,
-        company TEXT NOT NULL,
-        role TEXT NOT NULL,
-        status TEXT NOT NULL,
-        job_url TEXT NOT NULL DEFAULT '',
-        location TEXT NOT NULL DEFAULT '',
-        applied_at TEXT NOT NULL DEFAULT '',
-        notes TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL
-      );
-
-      CREATE INDEX IF NOT EXISTS idx_library_items_status
-      ON library_items (status);
-
-      CREATE INDEX IF NOT EXISTS idx_library_items_created_at
-      ON library_items (created_at DESC);
-
-      CREATE INDEX IF NOT EXISTS idx_library_items_updated_at
-      ON library_items (updated_at DESC);
-    `);
+    ensureLibrarySchema(database);
 
     return database;
   } catch (error) {
@@ -79,6 +95,7 @@ function mapLibraryRow(row) {
     status: row.status,
     jobUrl: row.jobUrl,
     location: row.location,
+    priority: row.priority ?? "Medium",
     appliedAt: row.appliedAt,
     notes: row.notes,
     createdAt: row.createdAt,
@@ -115,12 +132,14 @@ function insertLibraryItemRow(db, item) {
       status,
       job_url,
       location,
+      priority,
       applied_at,
       notes,
       created_at,
       updated_at
     )
     VALUES (
+      ?,
       ?,
       ?,
       ?,
@@ -140,6 +159,7 @@ function insertLibraryItemRow(db, item) {
     item.status,
     item.jobUrl ?? "",
     item.location ?? "",
+    item.priority ?? "Medium",
     item.appliedAt ?? "",
     item.notes,
     item.createdAt,
@@ -208,6 +228,7 @@ function getAllLibraryRows(seedItems = []) {
           status,
           job_url AS jobUrl,
           location,
+          priority,
           applied_at AS appliedAt,
           notes,
           created_at AS createdAt,
@@ -245,6 +266,7 @@ function getLibraryRowById(itemId, seedItems = []) {
         status,
         job_url AS jobUrl,
         location,
+        priority,
         applied_at AS appliedAt,
         notes,
         created_at AS createdAt,
@@ -303,6 +325,7 @@ function updateLibraryRow(itemId, item, seedItems = []) {
         status = ?,
         job_url = ?,
         location = ?,
+        priority = ?,
         applied_at = ?,
         notes = ?,
         created_at = ?,
@@ -316,6 +339,7 @@ function updateLibraryRow(itemId, item, seedItems = []) {
         item.status,
         item.jobUrl ?? "",
         item.location ?? "",
+        item.priority ?? "Medium",
         item.appliedAt ?? "",
         item.notes,
         item.createdAt,

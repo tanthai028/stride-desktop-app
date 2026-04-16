@@ -84,6 +84,7 @@ function normalizeLibraryItem(item = {}) {
     status,
     jobUrl,
     location,
+    priority: String(item.priority ?? "Medium").trim() || "Medium",
     appliedAt,
     notes,
     createdAt,

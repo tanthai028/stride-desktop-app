@@ -8,6 +8,8 @@ const ALLOWED_STATUSES = new Set([
   "offer",
   "rejected",
 ]);
+const ALLOWED_PRIORITIES = new Set(["high", "medium", "low"]);
+const DEFAULT_PRIORITY = "medium";
 
 const DEFAULT_STATUS = "applied";
 
@@ -51,6 +53,12 @@ function getNormalizedAppliedAt(value) {
   return parsedDate.toISOString();
 }
 
+function formatPriorityLabel(priority = "") {
+  const normalized = String(priority).trim().toLowerCase();
+  if (!normalized) return "Medium";
+  return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+}
+
 function validateLibraryFormValues(formValues = {}, options = {}) {
   const company = String(formValues.company ?? "").trim();
   const role = String(formValues.role ?? "").trim();
@@ -59,11 +67,22 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
   const location = String(formValues.location ?? "").trim();
   const notes = String(formValues.notes ?? "").trim();
   const mode = options.mode === "edit" ? "edit" : "create";
+  const priority =
+    String(formValues.priority ?? "")
+      .trim()
+      .toLowerCase() || DEFAULT_PRIORITY;
 
   if (!ALLOWED_STATUSES.has(status)) {
     throw new LibraryValidationError("Status is invalid.", {
       field: "status",
       allowedValues: Array.from(ALLOWED_STATUSES),
+    });
+  }
+
+  if (!ALLOWED_PRIORITIES.has(priority)) {
+    throw new LibraryValidationError("Priority is invalid.", {
+      field: "priority",
+      allowedValues: Array.from(ALLOWED_PRIORITIES),
     });
   }
 
@@ -122,6 +141,7 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
     status,
     jobUrl,
     location,
+    priority: formatPriorityLabel(priority),
     appliedAt: getNormalizedAppliedAt(formValues.appliedAt),
     notes,
   };

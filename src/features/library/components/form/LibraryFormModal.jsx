@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Modal from "../../../../components/ui/Modal.jsx";
+import SelectMenu from "../../../../components/ui/SelectMenu.jsx";
 import {
   getLibraryStatusOptions,
   normalizeStatusValue,
 } from "../../constants/libraryStatuses.js";
 import { parseLibraryJobUrl } from "../../utils/libraryClient.js";
 import LibraryFormFields from "./LibraryFormFields.jsx";
-import LibraryStatusPicker from "../LibraryStatusPicker.jsx";
 import LibraryFormActions from "./LibraryFormActions.jsx";
 
 const DEFAULT_STATUS = "Applied";
@@ -22,6 +22,7 @@ function createEmptyForm() {
     status: DEFAULT_STATUS,
     jobUrl: "",
     location: "",
+    priority: "Medium",
     appliedAt: getTodayDateInputValue(),
     notes: "",
   };
@@ -58,39 +59,42 @@ function LibraryFormModal({
   onDelete,
 }) {
   const [formValues, setFormValues] = useState(createEmptyForm);
-  const [selectedStatusValue, setSelectedStatusValue] = useState("applied");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const jobUrlInputKeyRef = useRef(0);
 
-  const statusOptions = getLibraryStatusOptions();
   const isEditMode = mode === "edit";
   const addModeDefaultValues = useMemo(() => createEmptyForm(), [isOpen]);
+  const statusOptions = getLibraryStatusOptions();
+
+  const selectedStatusOption =
+    statusOptions.find(
+      (option) => option.value === normalizeStatusValue(formValues.status),
+    ) ??
+    statusOptions.find((option) => option.rawLabel === DEFAULT_STATUS) ??
+    null;
 
   useEffect(() => {
     if (!isOpen) return;
 
     if (isEditMode && item) {
-      const normalizedStatus = normalizeStatusValue(item.status);
-
       setFormValues({
         company: item.company ?? "",
         role: item.role ?? "",
         status: item.status ?? DEFAULT_STATUS,
         jobUrl: item.jobUrl ?? "",
         location: item.location ?? "",
+        priority: item.priority ?? "Medium",
         appliedAt: formatDateInputValue(item.appliedAt),
         notes: item.notes ?? "",
       });
 
-      setSelectedStatusValue(normalizedStatus || "applied");
       setShowAdvanced(false);
       setIsSubmitting(false);
       return;
     }
 
     setFormValues(addModeDefaultValues);
-    setSelectedStatusValue("applied");
     setShowAdvanced(false);
     setIsSubmitting(false);
     jobUrlInputKeyRef.current += 1;
@@ -98,7 +102,6 @@ function LibraryFormModal({
 
   function resetAddForm() {
     setFormValues(createEmptyForm());
-    setSelectedStatusValue("applied");
     setShowAdvanced(false);
     setIsSubmitting(false);
     jobUrlInputKeyRef.current += 1;
@@ -111,13 +114,6 @@ function LibraryFormModal({
       ...prev,
       [fieldName]: value,
     }));
-  }
-
-  function handleStatusClick(option) {
-    onClearError?.();
-
-    setSelectedStatusValue(option.value);
-    updateField("status", option.rawLabel);
   }
 
   function handleToggleAdvanced() {
@@ -141,13 +137,13 @@ function LibraryFormModal({
 
     const company = String(extracted.company ?? "").trim();
     const role = String(extracted.role ?? "").trim();
-    const isAtsUrl = Boolean(extracted.isAtsUrl);
-    const source = String(extracted.source ?? "").trim();
+    const location = String(extracted.location ?? "").trim();
 
-    const hasRequiredJobFields = Boolean(company && role);
-    const looksLikeRealJobPosting = isAtsUrl || source === "html-jsonld";
+    return Boolean(company && role && location);
+  }
 
-    return hasRequiredJobFields && looksLikeRealJobPosting;
+  async function parseJobUrlForAutofill(nextJobUrl) {
+    return await parseLibraryJobUrl(nextJobUrl);
   }
 
   async function applyParsedJobUrl(nextJobUrl) {
@@ -216,6 +212,7 @@ function LibraryFormModal({
       ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
       : new Date().toISOString();
     const notes = formValues.notes.trim();
+    const priority = (formValues.priority || "Medium").trim();
 
     if (!isEditMode) {
       if (!jobUrl) {
@@ -256,6 +253,7 @@ function LibraryFormModal({
           status,
           jobUrl,
           location: nextLocation,
+          priority,
           appliedAt,
           notes,
         });
@@ -274,6 +272,7 @@ function LibraryFormModal({
       status,
       jobUrl,
       location,
+      priority,
       appliedAt,
       notes,
     });
@@ -291,15 +290,37 @@ function LibraryFormModal({
             </span>
 
             <div className="library-form-modal-title-status">
-              <LibraryStatusPicker
-                statusOptions={statusOptions}
-                selectedStatusValue={selectedStatusValue}
-                onStatusClick={handleStatusClick}
+              <SelectMenu
+                value={selectedStatusOption?.rawLabel ?? DEFAULT_STATUS}
+                onChange={(value) => updateField("status", value)}
+                options={statusOptions.map((opt) => ({
+                  value: opt.rawLabel,
+                  label: opt.label,
+                }))}
+                className="library-status-select library-form-priority-select"
               />
             </div>
           </div>
         ) : (
-          "✨ Add Application"
+          <div className="library-form-modal-title">
+            <span className="library-form-modal-title-text">
+              ✨ Add Application
+            </span>
+
+            <div className="library-form-modal-title-status">
+              <SelectMenu
+                value={formValues.priority ?? ""}
+                onChange={(value) => updateField("priority", value)}
+                options={[
+                  { value: "High", label: "High" },
+                  { value: "Medium", label: "Medium" },
+                  { value: "Low", label: "Low" },
+                ]}
+                placeholder="Priority"
+                className="library-status-select library-status-select-priority library-form-priority-select library-form-priority-select-header"
+              />
+            </div>
+          </div>
         )
       }
     >

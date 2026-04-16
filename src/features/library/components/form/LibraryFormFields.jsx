@@ -1,3 +1,11 @@
+import SelectMenu from "../../../../components/ui/SelectMenu.jsx";
+
+const PRIORITY_OPTIONS = [
+  { value: "High", label: "High" },
+  { value: "Medium", label: "Medium" },
+  { value: "Low", label: "Low" },
+];
+
 function LibraryFormFields({
   formValues,
   onFieldChange,
@@ -17,13 +25,15 @@ function LibraryFormFields({
     onJobUrlPaste?.(pastedText);
   }
 
+  function handlePriorityChange(nextValue) {
+    onFieldChange("priority", nextValue);
+  }
+
   if (isEditMode) {
     return (
       <div className="library-form-fields">
         <div>
-          <label className="form-label library-form-label">
-            📝 Notes <span className="opacity-70">(optional)</span>
-          </label>
+          <label className="form-label library-form-label">📝 Notes</label>
           <textarea
             spellCheck={false}
             placeholder="Add notes"
@@ -40,7 +50,7 @@ function LibraryFormFields({
               Advanced fields
             </p>
             <p className="library-form-advanced-toggle-description">
-              Company, role, job URL, location, and applied date
+              Company, role, job URL, location, and priority
             </p>
           </div>
 
@@ -80,24 +90,9 @@ function LibraryFormFields({
               />
             </div>
 
-            <div className="library-form-grid-span-full">
-              <label className="form-label library-form-label">
-                🔗 Job URL <span className="opacity-70">(optional)</span>
-              </label>
-              <input
-                placeholder="Paste job posting link"
-                value={formValues.jobUrl}
-                onChange={(event) =>
-                  onFieldChange("jobUrl", event.target.value)
-                }
-                onPaste={handleJobUrlPaste}
-                className="input-base"
-              />
-            </div>
-
             <div>
               <label className="form-label library-form-label">
-                📍 Location <span className="opacity-70">(optional)</span>
+                📍 Location
               </label>
               <input
                 placeholder="Add location"
@@ -111,15 +106,27 @@ function LibraryFormFields({
 
             <div>
               <label className="form-label library-form-label">
-                📅 Applied Date{" "}
-                <span className="opacity-70">(defaults to today)</span>
+                🚦 Priority
+              </label>
+              <SelectMenu
+                value={formValues.priority ?? "Medium"}
+                onChange={handlePriorityChange}
+                options={PRIORITY_OPTIONS}
+                className="library-form-priority-select"
+              />
+            </div>
+
+            <div className="library-form-grid-span-full">
+              <label className="form-label library-form-label">
+                🔗 Job URL
               </label>
               <input
-                type="date"
-                value={formValues.appliedAt}
+                placeholder="Paste job posting link"
+                value={formValues.jobUrl}
                 onChange={(event) =>
-                  onFieldChange("appliedAt", event.target.value)
+                  onFieldChange("jobUrl", event.target.value)
                 }
+                onPaste={handleJobUrlPaste}
                 className="input-base"
               />
             </div>
@@ -147,7 +154,7 @@ function LibraryFormFields({
         <div className="library-form-advanced-toggle-copy">
           <p className="library-form-advanced-toggle-title">Advanced fields</p>
           <p className="library-form-advanced-toggle-description">
-            Company, role, location, applied date, and notes
+            Company, role, and location
           </p>
         </div>
 
@@ -163,22 +170,8 @@ function LibraryFormFields({
 
       {showAdvanced ? (
         <div className="library-form-grid">
-          <div>
-            <label className="form-label library-form-label">
-              🏢 Company <span className="opacity-70">(optional)</span>
-            </label>
-            <input
-              placeholder="Add company"
-              value={formValues.company}
-              onChange={(event) => onFieldChange("company", event.target.value)}
-              className="input-base"
-            />
-          </div>
-
-          <div>
-            <label className="form-label library-form-label">
-              💼 Role <span className="opacity-70">(optional)</span>
-            </label>
+          <div className="library-form-grid-span-full">
+            <label className="form-label library-form-label">💼 Role</label>
             <input
               placeholder="Add role"
               value={formValues.role}
@@ -188,9 +181,17 @@ function LibraryFormFields({
           </div>
 
           <div>
-            <label className="form-label library-form-label">
-              📍 Location <span className="opacity-70">(optional)</span>
-            </label>
+            <label className="form-label library-form-label">🏢 Company</label>
+            <input
+              placeholder="Add company"
+              value={formValues.company}
+              onChange={(event) => onFieldChange("company", event.target.value)}
+              className="input-base"
+            />
+          </div>
+
+          <div>
+            <label className="form-label library-form-label">📍 Location</label>
             <input
               placeholder="Add location"
               value={formValues.location}
@@ -198,35 +199,6 @@ function LibraryFormFields({
                 onFieldChange("location", event.target.value)
               }
               className="input-base"
-            />
-          </div>
-
-          <div>
-            <label className="form-label library-form-label">
-              📅 Applied Date{" "}
-              <span className="opacity-70">(defaults to today)</span>
-            </label>
-            <input
-              type="date"
-              value={formValues.appliedAt}
-              onChange={(event) =>
-                onFieldChange("appliedAt", event.target.value)
-              }
-              className="input-base"
-            />
-          </div>
-
-          <div className="library-form-grid-span-full">
-            <label className="form-label library-form-label">
-              📝 Notes <span className="opacity-70">(optional)</span>
-            </label>
-            <textarea
-              spellCheck={false}
-              placeholder="Skip this for quick add"
-              value={formValues.notes}
-              onChange={(event) => onFieldChange("notes", event.target.value)}
-              rows={4}
-              className="input-base library-form-textarea scrollbar-hide"
             />
           </div>
         </div>

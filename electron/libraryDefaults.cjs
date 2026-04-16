@@ -19,6 +19,7 @@ const DEFAULT_LIBRARY_ITEMS = [
       "Applied to the IT Accelerated Development Program software developer track. Need to track recruiter updates, follow-up timing, and resume version used.",
     createdAt: getDateOffset(3),
     updatedAt: getDateOffset(3),
+    priority: "High",
   },
   {
     id: "item-default-ge-aerospace",
@@ -32,6 +33,7 @@ const DEFAULT_LIBRARY_ITEMS = [
       "Saved as a target role because prior internship experience is relevant. Need to compare against other internal tools and platform roles before applying.",
     createdAt: getDateOffset(8),
     updatedAt: getDateOffset(8),
+    priority: "High",
   },
   {
     id: "item-default-palantir",
@@ -45,6 +47,7 @@ const DEFAULT_LIBRARY_ITEMS = [
       "High-interest company. Keep notes on role fit, technical expectations, and whether the workflow matches long-term goals.",
     createdAt: getDateOffset(14),
     updatedAt: getDateOffset(10),
+    priority: "High",
   },
   {
     id: "item-default-jpmorgan",
@@ -58,6 +61,7 @@ const DEFAULT_LIBRARY_ITEMS = [
       "Past internship connection makes this useful as a reference application. Keep notes on timeline, OA progress, and follow-up decisions.",
     createdAt: getDateOffset(21),
     updatedAt: getDateOffset(5),
+    priority: "High",
   },
 ];
 
@@ -82,6 +86,7 @@ function normalizeLibraryItem(item = {}) {
     notes: String(item.notes ?? "").trim(),
     createdAt: toIsoDateTime(item.createdAt) || nowIso,
     updatedAt: toIsoDateTime(item.updatedAt) || nowIso,
+    priority: String(item.priority ?? "Medium").trim() || "Medium",
   };
 }
 
