@@ -1,10 +1,10 @@
 /* Motion and shadow primitives */
 :root {
   --shadow-card: none;
-  --shadow-card-soft: 0 8px 22px rgba(15, 23, 42, 0.06);
-  --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.08);
-  --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.12);
-  --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.08);
+  --shadow-card-soft: 0 8px 22px rgba(15, 23, 42, 0.05);
+  --shadow-control: 0 6px 14px rgba(15, 23, 42, 0.06);
+  --shadow-control-hover: 0 10px 22px rgba(15, 23, 42, 0.09);
+  --shadow-pressed: 0 4px 10px rgba(15, 23, 42, 0.06);
 
   --motion-fast: 120ms ease;
   --motion-base: 150ms ease;

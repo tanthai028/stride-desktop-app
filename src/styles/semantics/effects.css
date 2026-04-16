@@ -10,7 +10,7 @@
 .app-startup-enter {
   opacity: 0;
   transform: translateY(28px) scale(0.965);
-  filter: blur(10px);
+  filter: blur(8px);
 
   transition:
     opacity 700ms ease,
