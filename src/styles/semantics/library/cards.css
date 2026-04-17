@@ -45,8 +45,8 @@
   padding-left: 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--theme-library-chip-text, var(--theme-text-primary));
-  background-color: var(--theme-library-chip-bg, rgba(244, 114, 182, 0.12));
+  color: var(--theme-library-chip-text, var(--theme-text-secondary));
+  background-color: var(--theme-library-chip-bg, rgba(244, 114, 182, 0.08));
 }
 
 .library-card-meta {
