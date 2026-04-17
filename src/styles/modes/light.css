@@ -71,6 +71,16 @@
   --theme-section-description: var(--theme-text-descriptions);
   --theme-section-divider: rgba(148, 163, 184, 0.18);
 
+  /* Semantic color roles */
+  --theme-accent-selection-bg: rgba(244, 114, 182, 0.12);
+  --theme-accent-selection-border: rgba(244, 114, 182, 0.18);
+  --theme-accent-selection-focus-ring: rgba(244, 114, 182, 0.24);
+  --theme-accent-selection-bg-emphasized: rgba(244, 114, 182, 0.18);
+
+  --theme-action-button-default-bg: rgba(241, 245, 249, 0.96);
+  --theme-action-button-default-border: rgba(203, 213, 225, 0.92);
+  --theme-action-button-default-text: var(--theme-text-primary);
+
   /* Header */
   --theme-header-bg: rgba(255, 255, 255, 0.46);
   --theme-header-border: rgba(255, 255, 255, 0.32);
@@ -103,7 +113,7 @@
   --theme-select-option-text: var(--theme-text-primary);
   --theme-select-option-hover-bg: rgba(241, 245, 249, 0.9);
   --theme-select-option-hover-text: var(--theme-text-secondary);
-  --theme-select-option-selected-bg: rgba(244, 114, 182, 0.12);
+  --theme-select-option-selected-bg: var(--theme-accent-selection-bg-emphasized);
   --theme-select-option-selected-text: var(--theme-text-secondary);
   --theme-select-option-focus-bg: rgba(241, 245, 249, 0.95);
   --theme-select-option-focus-text: var(--theme-text-primary);
@@ -156,8 +166,8 @@
   --theme-library-tag-text: var(--theme-text-primary);
   --theme-library-tag-hover-bg: rgba(241, 245, 249, 0.96);
   --theme-library-tag-hover-text: var(--theme-text-secondary);
-  --theme-library-tag-selected-bg: rgba(244, 114, 182, 0.12);
-  --theme-library-tag-selected-border: rgba(244, 114, 182, 0.18);
+  --theme-library-tag-selected-bg: var(--theme-accent-selection-bg);
+  --theme-library-tag-selected-border: var(--theme-accent-selection-border);
   --theme-library-tag-selected-text: var(--theme-text-secondary);
   --theme-library-tag-backdrop: none;
   --theme-library-tag-backdrop-webkit: none;
@@ -224,9 +234,9 @@
   --theme-settings-choice-text: var(--theme-text-primary);
   --theme-settings-choice-hover-bg: rgba(241, 245, 249, 0.96);
   --theme-settings-choice-hover-border: rgba(203, 213, 225, 0.96);
-  --theme-settings-choice-focus-border: rgba(244, 114, 182, 0.24);
-  --theme-settings-choice-selected-bg: rgba(244, 114, 182, 0.12);
-  --theme-settings-choice-selected-border: rgba(244, 114, 182, 0.18);
+  --theme-settings-choice-focus-border: var(--theme-accent-selection-focus-ring);
+  --theme-settings-choice-selected-bg: var(--theme-accent-selection-bg);
+  --theme-settings-choice-selected-border: var(--theme-accent-selection-border);
   --theme-settings-choice-selected-text: var(--theme-text-secondary);
   --theme-settings-choice-selected-shadow:
     0 8px 20px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.24);

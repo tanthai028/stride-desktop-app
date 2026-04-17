@@ -13,11 +13,28 @@
   --motion-lift-card: translateY(-4px) scale(1.01);
   --motion-press-scale: scale(0.98);
   --motion-press-scale-sm: scale(0.97);
+
+  /* Radius: large surfaces vs controls vs chips */
+  --radius-xl: 36px;
+  --radius-lg: 28px;
+  --radius-md: 1rem;
+  --radius-sm: 0.75rem;
+  --radius-sidebar-item: 24px;
+  --radius-pill: 9999px;
+
+  /* Spacing rhythm */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.25rem;
+  --space-2xl: 1.5rem;
+  --space-3xl: 2rem;
 }
 
 /* Surface primitives */
 .surface-card {
-  border-radius: 28px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--theme-card-border);
   background-color: var(--theme-card-bg);
   box-shadow: var(--shadow-card);
@@ -26,7 +43,7 @@
 }
 
 .surface-panel {
-  border-radius: 36px;
+  border-radius: var(--radius-xl);
   border: 1px solid var(--theme-panel-border);
   background-color: var(--theme-panel-bg);
   box-shadow: var(--theme-panel-shadow);
@@ -39,7 +56,7 @@
 }
 
 .empty-state-card {
-  padding: 2rem;
+  padding: var(--space-3xl);
   border: 1px dashed var(--theme-empty-border);
   border-style: dashed;
   background-color: var(--theme-empty-bg);

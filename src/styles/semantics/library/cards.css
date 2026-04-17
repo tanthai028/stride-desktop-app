@@ -3,13 +3,13 @@
   width: 100%;
   height: 100%;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .library-card-top {
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .library-card-main {
@@ -21,7 +21,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .library-card-title {
@@ -39,8 +39,8 @@
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 0.25rem;
-  border-radius: 9999px;
+  gap: var(--space-xs);
+  border-radius: var(--radius-pill);
   padding: 0.25rem 0.75rem;
   padding-left: 0.5rem;
   font-size: 0.75rem;
@@ -54,7 +54,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-md);
   font-size: 0.875rem;
   opacity: 0.8;
 }
@@ -69,7 +69,7 @@
   min-width: 0;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 0.25rem;
+  gap: var(--space-xs);
   text-align: right;
 }
 
@@ -97,7 +97,7 @@
   display: inline-flex;
   width: fit-content;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: underline;

@@ -4,9 +4,9 @@
 
 .library-tag-chip {
   cursor: pointer;
-  padding: 0.5rem 0.75rem;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--theme-library-tag-border);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   color: var(--theme-library-tag-text);
   background-color: var(--theme-library-tag-bg);
   font-size: 0.875rem;

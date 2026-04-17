@@ -39,7 +39,7 @@
 .header-clock-content {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--space-lg);
 }
 
 .header-clock-icon-wrap {
@@ -48,7 +48,7 @@
   width: 3rem;
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   background-color: var(--theme-header-clock-icon-wrap-bg);
 }
 

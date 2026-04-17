@@ -4,14 +4,14 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  padding: 1.5rem;
+  padding: var(--space-2xl);
 }
 
 .page-shell-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--space-lg);
   flex-wrap: nowrap;
 }
 
@@ -31,7 +31,7 @@
 
 .page-shell-body {
   position: relative;
-  margin-top: 1.5rem;
+  margin-top: var(--space-2xl);
   min-height: 0;
   flex: 1;
 }
@@ -64,7 +64,7 @@
 }
 
 .page-section-header {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-md);
   flex-shrink: 0;
 }
 
@@ -72,14 +72,14 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .page-section-header-main {
   display: flex;
   min-width: 0;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .page-section-header-leading,
@@ -101,13 +101,13 @@
 .page-action-bar {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .page-action-bar-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   min-width: 0;
 }
 

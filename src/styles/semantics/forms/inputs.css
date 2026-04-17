@@ -28,7 +28,6 @@
 .input-base {
   @apply w-full rounded-2xl px-4 py-3 text-sm outline-none;
   resize: none;
-  
 
   /* ellipsis behavior */
   overflow: hidden;

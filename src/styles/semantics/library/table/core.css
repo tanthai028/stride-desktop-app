@@ -5,7 +5,7 @@
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--theme-card-border);
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   background-color: var(--theme-card-bg);
   color: var(--theme-text-primary);
   container-type: inline-size;
@@ -81,11 +81,11 @@
   display: inline-flex;
   max-width: 100%;
   align-items: center;
-  gap: 0.25rem;
+  gap: var(--space-xs);
   overflow: hidden;
   padding: 0.25rem 0.625rem;
   border: 1px solid var(--theme-card-border);
-  border-radius: 9999px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
   font-size: 0.75rem;
   font-weight: 500;
@@ -129,7 +129,7 @@
 .library-table-empty-state {
   display: flex;
   height: 100%;
-  padding: 1rem;
+  padding: var(--space-lg);
   align-items: stretch;
 }
 

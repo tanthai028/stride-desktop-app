@@ -1,29 +1,29 @@
 .dashboard-card {
-  padding: 1.25rem;
-  border-radius: 28px;
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
 }
 
 .dashboard-card-title {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-md);
 }
 
 .dashboard-preview-stats {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--space-lg);
 }
 
 .dashboard-quick-actions {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .dashboard-summary-grid {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 1.25rem;
-  padding: 0.25rem;
+  gap: var(--space-xl);
+  padding: var(--space-xs);
 }
 
 @media (min-width: 768px) {
