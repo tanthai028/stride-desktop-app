@@ -46,24 +46,21 @@
 
 .stat-card {
   background: var(--stat-card-bg, var(--theme-card-bg));
-  border: 1px solid var(--stat-card-border, var(--theme-card-border));
+  border: none;
   box-shadow: var(--stat-card-shadow, none);
   color: var(--theme-text-primary);
 }
 
 .stat-card[data-tone="pink"] {
-  --stat-card-bg: var(--theme-accent-pink-bg);
-  --stat-card-border: var(--theme-accent-pink-border);
+  --stat-card-bg: rgba(var(--theme-accent-pink-bg), 0.12);
 }
 
 .stat-card[data-tone="violet"] {
-  --stat-card-bg: var(--theme-accent-violet-bg);
-  --stat-card-border: var(--theme-accent-violet-border);
+  --stat-card-bg: rgba(var(--theme-accent-violet-bg), 0.12);
 }
 
 .stat-card[data-tone="sky"] {
-  --stat-card-bg: var(--theme-accent-sky-bg);
-  --stat-card-border: var(--theme-accent-sky-border);
+  --stat-card-bg: rgba(var(--theme-accent-sky-bg), 0.12);
 }
 
 .stat-card-label--pink {

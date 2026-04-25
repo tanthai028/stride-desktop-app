@@ -271,17 +271,17 @@
   --theme-progress-bar-sky: #7dd3fc;
 
   /* Action buttons and accents */
-  --theme-accent-sky-bg: rgba(14, 165, 233, 0.18);
+  --theme-accent-sky-bg: 14, 165, 233;
   --theme-accent-sky-border: rgba(56, 189, 248, 0.16);
   --theme-accent-sky-shadow:
     0 8px 20px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  --theme-accent-violet-bg: rgba(139, 92, 246, 0.18);
+  --theme-accent-violet-bg: 139, 92, 246;
   --theme-accent-violet-border: rgba(167, 139, 250, 0.16);
   --theme-accent-violet-shadow:
     0 8px 20px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);
 
-  --theme-accent-pink-bg: rgba(244, 114, 182, 0.18);
+  --theme-accent-pink-bg: 244, 114, 182;
   --theme-accent-pink-border: rgba(244, 114, 182, 0.16);
   --theme-accent-pink-shadow:
     0 8px 20px rgba(2, 6, 23, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.05);

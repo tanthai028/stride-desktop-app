@@ -28,6 +28,11 @@
 
 .sidebar-shell:hover {
   width: 170px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.99) 0%,
+    rgba(248, 250, 252, 0.97) 100%
+  );
 }
 
 .sidebar-list {
@@ -44,7 +49,7 @@
   align-items: center;
   overflow: hidden;
   border-radius: var(--radius-sidebar-item);
-  border: 1px solid var(--theme-sidebar-item-border);
+  border: none;
   padding: var(--space-md);
   font-size: 14px;
   font-weight: 500;

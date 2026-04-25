@@ -20,22 +20,22 @@
 }
 
 .action-button-pink {
-  border-color: var(--theme-accent-pink-border);
-  background-color: var(--theme-accent-pink-bg);
+  border-color: transparent;
+  background-color: rgba(var(--theme-accent-pink-bg), 0.24);
   color: var(--theme-text-primary);
   box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .action-button-violet {
-  border-color: var(--theme-accent-violet-border);
-  background-color: var(--theme-accent-violet-bg);
+  border-color: transparent;
+  background-color: rgba(var(--theme-accent-violet-bg), 0.24);
   color: var(--theme-text-primary);
   box-shadow: var(--theme-accent-violet-shadow);
 }
 
 .action-button-sky {
-  border-color: var(--theme-accent-sky-border);
-  background-color: var(--theme-accent-sky-bg);
+  border-color: transparent;
+  background-color: rgba(var(--theme-accent-sky-bg), 0.24);
   color: var(--theme-text-primary);
   box-shadow: var(--theme-accent-sky-shadow);
 }

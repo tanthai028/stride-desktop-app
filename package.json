@@ -7,7 +7,8 @@
     "dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
     "build": "vite build",
     "preview": "vite preview",
-    "zip": "tar -a -c -f ../my-app.zip --exclude=node_modules --exclude=dist --exclude=.git --exclude=.vscode --exclude=*.log --exclude=*.zip ."
+    "zip": "powershell -NoProfile -Command \"$exclude=@('node_modules','dist','release','.git','.vscode'); Get-ChildItem -Force | Where-Object { $exclude -notcontains $_.Name -and $_.Name -notlike '*.log' -and $_.Name -notlike '*.zip' } | Compress-Archive -DestinationPath ../my-app.zip -Force\"",
+    "dist": "npm run build && electron-builder --win nsis"
   },
   "dependencies": {
     "framer-motion": "^12.0.0",
@@ -20,8 +21,32 @@
     "@vitejs/plugin-react": "^5.0.0",
     "concurrently": "^9.0.0",
     "electron": "^37.0.0",
+    "electron-builder": "^26.8.1",
     "tailwindcss": "^4.0.0",
     "vite": "^7.0.0",
     "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.tan.myapp",
+    "productName": "My App",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**",
+      "electron/**",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true
+    }
   }
 }

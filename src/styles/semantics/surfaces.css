@@ -35,7 +35,7 @@
 /* Surface primitives */
 .surface-card {
   border-radius: var(--radius-lg);
-  border: 1px solid var(--theme-card-border);
+  border: none;
   background-color: var(--theme-card-bg);
   box-shadow: var(--shadow-card);
   backdrop-filter: var(--theme-card-backdrop);
