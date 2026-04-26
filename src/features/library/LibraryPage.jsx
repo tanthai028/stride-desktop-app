@@ -123,8 +123,8 @@ function LibraryPage({ settings, updateSetting }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ y: 14 }}
+      animate={{ y: 0 }}
       transition={{ duration: 0.45 }}
       className="flex min-h-0 flex-1 flex-col"
       onAnimationComplete={() => setIsPageReady(true)}

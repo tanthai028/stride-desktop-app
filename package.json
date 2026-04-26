@@ -7,7 +7,7 @@
     "dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
     "build": "vite build",
     "preview": "vite preview",
-    "zip": "powershell -NoProfile -Command \"$exclude=@('node_modules','dist','release','.git','.vscode'); Get-ChildItem -Force | Where-Object { $exclude -notcontains $_.Name -and $_.Name -notlike '*.log' -and $_.Name -notlike '*.zip' } | Compress-Archive -DestinationPath ../my-app.zip -Force\"",
+    "zip": "git archive -o ../my-app.zip HEAD",
     "dist": "npm run build && electron-builder --win nsis"
   },
   "dependencies": {

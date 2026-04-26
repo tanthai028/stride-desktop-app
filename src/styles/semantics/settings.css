@@ -28,9 +28,8 @@
 }
 
 .settings-card {
-  border: 1px solid var(--theme-settings-card-border);
+  border: 1px solid var(--theme-panel-border);
   background-color: var(--theme-settings-card-bg);
-  box-shadow: var(--theme-settings-card-shadow);
   transition:
     box-shadow var(--motion-base),
     border-color var(--motion-base),
@@ -155,13 +154,13 @@
 
 .settings-toggle.is-checked {
   border-color: var(--theme-settings-toggle-on-border);
-  background-color: var(--theme-settings-toggle-on-bg);
+  background-color: var(--theme-page-kicker);
   box-shadow: var(--theme-settings-toggle-on-shadow);
 }
 
 .settings-toggle.is-checked:hover {
   border-color: var(--theme-settings-toggle-on-hover-border);
-  background-color: var(--theme-settings-toggle-on-hover-bg);
+  /* background-color: var(--theme-settings-toggle-on-hover-bg); */
   box-shadow: var(--theme-settings-toggle-on-hover-shadow);
 }
 

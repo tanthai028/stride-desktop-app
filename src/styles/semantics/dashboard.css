@@ -52,15 +52,15 @@
 }
 
 .stat-card[data-tone="pink"] {
-  --stat-card-bg: rgba(var(--theme-accent-pink-bg), 0.12);
+  --stat-card-bg: rgba(var(--theme-accent-pink-bg), 0.25);
 }
 
 .stat-card[data-tone="violet"] {
-  --stat-card-bg: rgba(var(--theme-accent-violet-bg), 0.12);
+  --stat-card-bg: rgba(var(--theme-accent-violet-bg), 0.25);
 }
 
 .stat-card[data-tone="sky"] {
-  --stat-card-bg: rgba(var(--theme-accent-sky-bg), 0.12);
+  --stat-card-bg: rgba(var(--theme-accent-sky-bg), 0.25);
 }
 
 .stat-card-label--pink {

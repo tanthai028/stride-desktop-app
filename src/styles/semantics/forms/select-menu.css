@@ -35,7 +35,6 @@
   outline: none;
   transform: var(--motion-lift-y);
   background-color: var(--theme-select-trigger-hover-bg);
-  border-color: var(--theme-select-trigger-hover-border);
   box-shadow: var(--shadow-control-hover);
 }
 

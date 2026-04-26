@@ -54,7 +54,7 @@
 }
 
 .library-table-row.is-clickable:hover {
-  background-color: var(--theme-library-card-hover-bg);
+  background-color: rgba(var(--theme-library-card-hover-bg), 0.25);
 }
 
 .library-table-cell {
@@ -109,7 +109,9 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   opacity: 0.85;
-  transition: opacity 120ms ease, color 120ms ease;
+  transition:
+    opacity 120ms ease,
+    color 120ms ease;
 }
 
 .library-table-link-button:hover {

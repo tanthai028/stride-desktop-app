@@ -117,13 +117,11 @@
 }
 
 .library-grid-card {
-  border: 1px solid var(--theme-card-border);
   background-color: var(--theme-card-bg);
   color: var(--theme-text-primary);
+  border: 2px solid var(--theme-panel-border);
 }
 
 .library-grid-card:hover {
-  border-color: var(--theme-library-card-hover-border);
-  background-color: var(--theme-library-card-hover-bg);
-  box-shadow: var(--theme-library-card-hover-shadow);
+  background-color: rgba(var(--theme-accent-sky-bg), 0.25);
 }

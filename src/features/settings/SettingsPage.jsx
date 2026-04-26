@@ -9,8 +9,8 @@ import ActionButton from "../../components/ui/ActionButton.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = {
-    initial: { opacity: 0, y: 14 },
-    animate: { opacity: 1, y: 0 },
+    initial: { y: 14 },
+    animate: { y: 0 },
     transition: { duration: 0.45 },
   };
 

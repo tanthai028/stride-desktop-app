@@ -14,10 +14,10 @@
   overflow: hidden;
   padding: var(--space-md);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--theme-sidebar-border);
-  background: var(--theme-sidebar-bg);
-  box-shadow: var(--theme-sidebar-shadow);
-  backdrop-filter: var(--theme-sidebar-backdrop);
+  border: 1px solid var(--theme-panel-border);
+  background: var(--theme-panel-bg);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
   -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
   transition:
     width var(--motion-slow),
@@ -28,11 +28,6 @@
 
 .sidebar-shell:hover {
   width: 170px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.99) 0%,
-    rgba(248, 250, 252, 0.97) 100%
-  );
 }
 
 .sidebar-list {

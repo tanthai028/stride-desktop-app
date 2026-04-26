@@ -60,7 +60,6 @@
 .library-action-delete {
   color: var(--theme-library-delete-text);
   background-color: var(--theme-library-delete-bg);
-  border: 1px solid var(--theme-library-delete-border);
   box-shadow: var(--theme-accent-pink-shadow);
 }
 
@@ -76,12 +75,10 @@
 .library-action-submit {
   color: var(--theme-library-submit-text);
   background-color: var(--theme-library-submit-bg);
-  border: 1px solid var(--theme-library-submit-border);
   box-shadow: var(--theme-accent-pink-shadow);
 }
 
 .library-action-submit:hover {
-  background-color: var(--theme-library-submit-hover-bg);
   box-shadow: var(--theme-accent-pink-shadow);
 }
 

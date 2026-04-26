@@ -35,7 +35,8 @@
   white-space: nowrap;
 
   color: var(--theme-form-input-text, var(--theme-text-primary));
-  border: 1px solid var(--theme-form-input-border, rgba(148, 163, 184, 0.22));
+  border: var(--theme-form-input-border);
+  box-shadow: var(--shadow-control);
   background-color: var(--theme-form-input-bg, rgba(255, 255, 255, 0.04));
   transition:
     border-color 120ms ease,

@@ -123,6 +123,10 @@
   flex: 1;
 }
 
+.page-action-bar-search-input:hover {
+  background-color: var(--theme-select-trigger-hover-bg);
+}
+
 .page-action-bar-spacer {
   flex: 1;
 }
@@ -149,20 +153,8 @@
 
 .page-action-bar-filter-select .select-menu-trigger,
 .page-action-bar-sort-select .select-menu-trigger {
-  border: none;
+  border: var(--theme-page-action-select-border);
   background-color: transparent;
-}
-
-.page-action-bar-filter-select:hover .select-menu-trigger,
-.page-action-bar-filter-select.is-open .select-menu-trigger,
-.page-action-bar-filter-select .select-menu-trigger:focus,
-.page-action-bar-filter-select .select-menu-trigger:focus-visible,
-.page-action-bar-sort-select:hover .select-menu-trigger,
-.page-action-bar-sort-select.is-open .select-menu-trigger,
-.page-action-bar-sort-select .select-menu-trigger:focus,
-.page-action-bar-sort-select .select-menu-trigger:focus-visible {
-  background-color: rgba(255, 255, 255, 0.76);
-  border: none;
 }
 
 .page-action-bar-filter-select .select-menu-trigger:active,

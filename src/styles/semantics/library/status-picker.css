@@ -67,7 +67,7 @@
   padding: 0 0.875rem;
   border-radius: 1rem;
   font-size: 0.875rem;
-  box-shadow: none;
+  box-shadow: var(--shadow-control);
 }
 
 .library-status-select .select-menu-label {

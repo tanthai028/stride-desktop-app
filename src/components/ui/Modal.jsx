@@ -43,9 +43,6 @@ function Modal({ isOpen, title, children, onClose }) {
           className="modal-overlay fixed inset-0 z-[100] flex items-center justify-center px-4"
           onMouseDown={handleOverlayMouseDown}
           onMouseUp={handleOverlayMouseUp}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
           transition={{ duration: 0.18 }}
         >
           <motion.div
@@ -53,10 +50,10 @@ function Modal({ isOpen, title, children, onClose }) {
             onMouseDown={() => {
               shouldCloseFromOverlayRef.current = false;
             }}
-            initial={{ opacity: 0, y: 18, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.98 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
+            initial={{ y: 18, scale: 0.97 }}
+            animate={{ y: 0, scale: 1 }}
+            exit={{ y: 10, scale: 0.98 }}
+            transition={{ duration: 0.1, ease: "easeOut" }}
           >
             <div className="modal-header">
               <h2 className="modal-title modal-title-text text-lg font-semibold">
