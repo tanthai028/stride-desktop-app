@@ -15,6 +15,8 @@ function usePageScrollbar() {
   const scrollRef = useRef(null);
   const hideTimerRef = useRef(null);
   const frameRef = useRef(null);
+  const isPointerInsideRef = useRef(false);
+
   const latestMetricsRef = useRef({
     isScrollable: false,
     thumbHeight: 0,
@@ -42,7 +44,9 @@ function usePageScrollbar() {
     clearHideTimer();
 
     hideTimerRef.current = window.setTimeout(() => {
-      setIsScrollbarVisible(false);
+      if (!isPointerInsideRef.current) {
+        setIsScrollbarVisible(false);
+      }
     }, SCROLLBAR_HIDE_DELAY_MS);
   }, [clearHideTimer]);
 
@@ -103,7 +107,7 @@ function usePageScrollbar() {
       if (reveal) {
         setIsScrollbarVisible(true);
 
-        if (hideAfterReveal) {
+        if (hideAfterReveal && !isPointerInsideRef.current) {
           scheduleHide();
         } else {
           clearHideTimer();
@@ -126,15 +130,23 @@ function usePageScrollbar() {
   );
 
   const handleScroll = useCallback(() => {
-    scheduleScrollMeasurement({ reveal: true, hideAfterReveal: true });
+    scheduleScrollMeasurement({
+      reveal: true,
+      hideAfterReveal: !isPointerInsideRef.current,
+    });
   }, [scheduleScrollMeasurement]);
 
   const handlePointerEnter = useCallback(() => {
+    isPointerInsideRef.current = true;
+    clearHideTimer();
     scheduleScrollMeasurement({ reveal: true, hideAfterReveal: false });
-  }, [scheduleScrollMeasurement]);
+  }, [clearHideTimer, scheduleScrollMeasurement]);
 
   const handlePointerLeave = useCallback(() => {
+    isPointerInsideRef.current = false;
+
     if (!latestMetricsRef.current.isScrollable) return;
+
     scheduleHide();
   }, [scheduleHide]);
 

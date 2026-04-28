@@ -20,12 +20,7 @@
   box-shadow: var(--shadow-control);
   font-size: 0.875rem;
   font-weight: 500;
-  transition:
-    transform var(--motion-base),
-    box-shadow var(--motion-base),
-    background-color var(--motion-base),
-    border-color var(--motion-base),
-    color var(--motion-base);
+  transition: var(--transition-control);
 }
 
 .select-menu:hover .select-menu-trigger,
@@ -57,9 +52,9 @@
   position: absolute;
   top: 100%;
   right: 0;
+  z-index: 29;
   width: 100%;
   height: 0.5rem;
-  z-index: 29;
   background: transparent;
 }
 
@@ -90,11 +85,7 @@
   font: inherit;
   font-size: 0.875rem;
   text-align: left;
-  transition:
-    transform var(--motion-fast),
-    background-color var(--motion-fast),
-    color var(--motion-fast),
-    box-shadow var(--motion-fast);
+  transition: var(--transition-control);
 }
 
 .select-menu-option:hover {
@@ -122,8 +113,8 @@
 }
 
 .select-menu-icon {
-  color: var(--theme-select-icon);
   flex-shrink: 0;
+  color: var(--theme-select-icon);
   stroke-width: 1.9;
   transition: transform var(--motion-base);
 }
@@ -144,6 +135,14 @@
   border-radius: var(--radius-md);
   background-color: var(--theme-select-panel-bg);
   box-shadow: var(--theme-select-panel-shadow);
+  backdrop-filter: var(
+    --theme-select-panel-backdrop,
+    blur(18px) saturate(145%)
+  );
+  -webkit-backdrop-filter: var(
+    --theme-select-panel-backdrop-webkit,
+    blur(18px) saturate(145%)
+  );
   transform-origin: top right;
   opacity: 0;
   transform: translateY(-0.125rem) scale(0.965);

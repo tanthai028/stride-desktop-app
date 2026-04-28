@@ -45,8 +45,8 @@
 
 .library-table-row {
   transition:
-    background-color 120ms ease,
-    color 120ms ease;
+    background-color var(--motion-fast),
+    color var(--motion-fast);
 }
 
 .library-table-row.is-clickable {
@@ -109,9 +109,7 @@
   text-decoration: underline;
   text-underline-offset: 4px;
   opacity: 0.85;
-  transition:
-    opacity 120ms ease,
-    color 120ms ease;
+  transition: var(--transition-link);
 }
 
 .library-table-link-button:hover {

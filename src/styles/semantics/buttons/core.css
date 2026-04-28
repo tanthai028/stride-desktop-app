@@ -19,14 +19,7 @@
   font-weight: 500;
   line-height: 1.25rem;
 
-  transition:
-    transform var(--motion-fast),
-    background-color var(--motion-base),
-    border-color var(--motion-base),
-    box-shadow var(--motion-base),
-    color var(--motion-base),
-    filter var(--motion-base),
-    opacity var(--motion-base);
+  transition: var(--transition-button);
 }
 
 .action-button:hover,
@@ -57,7 +50,7 @@
 
 .action-button--with-icon {
   height: 44px;
-  padding: 0 var(--space-lg) 0 var(--space-lg);
+  padding: 0 var(--space-lg);
   gap: 0.375rem;
 }
 
