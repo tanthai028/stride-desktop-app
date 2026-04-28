@@ -129,12 +129,7 @@ function LibraryPage({ settings, updateSetting }) {
       className="flex min-h-0 flex-1 flex-col"
       onAnimationComplete={() => setIsPageReady(true)}
     >
-      <PageShell
-        eyebrow="📚 Application Tracker"
-        title="My Job Application Library"
-        description="Track companies, roles, statuses, links, and notes in one place."
-        scrollable={false}
-      >
+      <PageShell scrollable={false}>
         {loadError ? (
           <div className="library-form-error">{loadError}</div>
         ) : null}

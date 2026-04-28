@@ -8,6 +8,29 @@ export const APP_PAGES = {
   settings: "settings",
 };
 
+export const PAGE_METADATA = {
+  [APP_PAGES.dashboard]: {
+    eyebrow: "🏠 Dashboard",
+    title: "Overview",
+    description: "Preview the base template layout, cards, and quick actions.",
+  },
+  [APP_PAGES.library]: {
+    eyebrow: "📚 Application Tracker",
+    title: "My Job Application Library",
+    description:
+      "Track companies, roles, statuses, links, and notes in one place.",
+  },
+  [APP_PAGES.settings]: {
+    eyebrow: "⚙️ Settings",
+    title: "App Preferences",
+    description: "Manage template behavior and local preferences.",
+  },
+};
+
+export function getPageMetadata(pageName) {
+  return PAGE_METADATA[pageName] || PAGE_METADATA[APP_PAGES.dashboard];
+}
+
 export function getPageComponent(pageName, pageProps) {
   if (pageName === APP_PAGES.settings) {
     return <SettingsPage {...pageProps} />;

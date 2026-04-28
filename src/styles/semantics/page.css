@@ -31,7 +31,7 @@
 
 .page-shell-body {
   position: relative;
-  margin-top: var(--space-2xl);
+  /* margin-top: var(--space-2xl); */
   min-height: 0;
   flex: 1;
 }

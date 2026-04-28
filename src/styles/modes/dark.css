@@ -61,7 +61,7 @@
   --theme-text-muted: #94a3b8;
   --theme-text-descriptions: #cbd5e1;
 
-  --theme-page-kicker: #38bdf8;
+  --theme-page-kicker: rgba(56, 189, 248, 0.75);
   --theme-page-title: var(--theme-text-secondary);
   --theme-page-description: var(--theme-text-descriptions);
   --theme-section-title: var(--theme-text-secondary);

@@ -3,7 +3,11 @@ import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
-import { APP_PAGES, getPageComponent } from "./config/pageRegistry";
+import {
+  APP_PAGES,
+  getPageComponent,
+  getPageMetadata,
+} from "./config/pageRegistry";
 import StartupSplash from "./startup/StartupSplash.jsx";
 import useStartupSequence from "./startup/useStartupSequence.js";
 
@@ -38,6 +42,8 @@ function App() {
     onAction: handleQuickAction,
   });
 
+  const activePageMetadata = getPageMetadata(activePage);
+
   if (showSplash && !mountRealApp) {
     return <StartupSplash />;
   }
@@ -60,7 +66,11 @@ function App() {
             <AppSidebar activePage={activePage} onNavigate={setActivePage} />
           }
         >
-          <AppHeader />
+          <AppHeader
+            eyebrow={activePageMetadata.eyebrow}
+            title={activePageMetadata.title}
+            description={activePageMetadata.description}
+          />
           {activePageContent}
         </WindowFrame>
       </div>

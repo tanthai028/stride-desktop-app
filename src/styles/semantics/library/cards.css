@@ -106,10 +106,6 @@
   transition: opacity var(--motion-base, 180ms ease);
 }
 
-.library-card-link:hover {
-  opacity: 1;
-}
-
 .library-card-link-icon {
   width: 1rem;
   height: 1rem;

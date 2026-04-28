@@ -6,7 +6,7 @@ import QuickActionsPanel from "./components/QuickActionsPanel.jsx";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 
-function DashboardPage({ settings, onAction }) {
+function DashboardPage({ onAction }) {
   const [showBottomFade, setShowBottomFade] = useState(false);
   const scrollRef = useRef(null);
 
@@ -42,11 +42,7 @@ function DashboardPage({ settings, onAction }) {
 
   return (
     <motion.div {...motionProps} className="flex min-h-0 flex-1 flex-col">
-      <PageShell
-        eyebrow="🏠 Dashboard"
-        title="Overview"
-        description="Preview the base template layout, cards, and quick actions."
-      >
+      <PageShell>
         <div className="relative flex min-h-0 flex-1 flex-col">
           <div
             ref={scrollRef}

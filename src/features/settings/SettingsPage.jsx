@@ -25,11 +25,7 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
 
   return (
     <motion.div className="settings-page" {...motionProps}>
-      <PageShell
-        eyebrow="⚙️ Settings"
-        title="App Preferences"
-        description="Manage template behavior and local preferences."
-      >
+      <PageShell>
         <div className="settings-page-content">
           {settingsSections.map((section) => (
             <PageSection

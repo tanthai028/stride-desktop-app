@@ -65,7 +65,6 @@
   --theme-text-muted: #64748b;
   --theme-text-descriptions: rgba(71, 85, 105, 0.85);
 
-  --theme-page-kicker: #0284c7;
   --theme-page-title: var(--theme-text-secondary);
   --theme-page-description: var(--theme-text-descriptions);
   --theme-section-title: var(--theme-text-secondary);
