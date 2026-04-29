@@ -14,6 +14,7 @@ function PageActionBar({
   searchPlaceholder = "Search...",
   showSearch = true,
   className = "",
+  sortTriggerClick,
 }) {
   const shouldShowSort =
     typeof onSortChange === "function" &&
@@ -51,6 +52,7 @@ function PageActionBar({
             onChange={onSortChange}
             options={sortOptions}
             className="page-action-bar-select page-action-bar-sort-select"
+            onTriggerClick={sortTriggerClick}
           />
         ) : null}
 

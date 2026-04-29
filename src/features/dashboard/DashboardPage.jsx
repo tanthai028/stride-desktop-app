@@ -1,80 +1,113 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import SummaryCards from "./components/SummaryCards.jsx";
-import DashboardPreview from "./components/DashboardPreview.jsx";
-import QuickActionsPanel from "./components/QuickActionsPanel.jsx";
+import { useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
+import SummaryCards from "./components/SummaryCards.jsx";
+import DashboardPreview from "./components/DashboardPreview.jsx";
+import useLibraryItems from "../library/hooks/useLibraryItems.js";
 
-function DashboardPage({ onAction }) {
-  const [showBottomFade, setShowBottomFade] = useState(false);
-  const scrollRef = useRef(null);
+function getWeekStart(date) {
+  const weekStart = new Date(date);
+  const day = weekStart.getDay();
+  weekStart.setHours(0, 0, 0, 0);
+  weekStart.setDate(weekStart.getDate() - day);
+  return weekStart;
+}
 
-  const motionProps = {
-    initial: { y: 14 },
-    animate: { y: 0 },
-    transition: { duration: 0.45 },
-  };
+function DashboardPage({ settings, onAction }) {
+  const { items, loadError } = useLibraryItems(settings.resetVersion);
+  const [snapshotPeriod, setSnapshotPeriod] = useState("today");
 
-  useEffect(() => {
-    const container = scrollRef.current;
-    if (!container) return;
+  const dashboardData = useMemo(() => {
+    const total = items.length;
 
-    const updateBottomFade = () => {
-      const hasOverflow = container.scrollHeight > container.clientHeight + 4;
-      const isNearBottom =
-        container.scrollTop + container.clientHeight >=
-        container.scrollHeight - 4;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-      setShowBottomFade(hasOverflow && !isNearBottom);
+    const todayCount = items.filter((item) => {
+      if (!item.appliedAt) return false;
+
+      const appliedDate = new Date(item.appliedAt);
+      if (Number.isNaN(appliedDate.getTime())) return false;
+
+      appliedDate.setHours(0, 0, 0, 0);
+      return appliedDate.getTime() === today.getTime();
+    }).length;
+
+    const thisWeekStart = getWeekStart(new Date());
+
+    const thisWeek = items.filter((item) => {
+      if (!item.appliedAt) return false;
+
+      const appliedDate = new Date(item.appliedAt);
+
+      return (
+        !Number.isNaN(appliedDate.getTime()) && appliedDate >= thisWeekStart
+      );
+    }).length;
+
+    const activePeriodCount =
+      snapshotPeriod === "today" ? todayCount : thisWeek;
+
+    const summaryCards = [
+      {
+        label: "Total",
+        title: total,
+        description: "Applications tracked",
+        tone: "sky",
+      },
+      {
+        label: snapshotPeriod === "today" ? "Today" : "This Week",
+        title: activePeriodCount,
+        description:
+          snapshotPeriod === "today"
+            ? "Submitted today"
+            : "Submitted this week",
+        tone: snapshotPeriod === "today" ? "pink" : "violet",
+        onClick: () =>
+          setSnapshotPeriod((current) =>
+            current === "today" ? "week" : "today",
+          ),
+      },
+    ];
+
+    const recentItems = [...items]
+      .sort((a, b) => new Date(b.appliedAt || 0) - new Date(a.appliedAt || 0))
+      .slice(0, 6);
+
+    return {
+      summaryCards,
+      recentItems,
     };
-
-    updateBottomFade();
-
-    container.addEventListener("scroll", updateBottomFade);
-    window.addEventListener("resize", updateBottomFade);
-
-    return () => {
-      container.removeEventListener("scroll", updateBottomFade);
-      window.removeEventListener("resize", updateBottomFade);
-    };
-  }, []);
+  }, [items, snapshotPeriod]);
 
   return (
-    <motion.div {...motionProps} className="flex min-h-0 flex-1 flex-col">
+    <motion.div
+      initial={{ y: 14 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="flex min-h-0 flex-1 flex-col"
+    >
       <PageShell>
-        <div className="relative flex min-h-0 flex-1 flex-col">
-          <div
-            ref={scrollRef}
-            className="min-h-0 flex-1 overflow-y-auto scrollbar-hide"
-          >
-            <div className="flex min-h-full flex-col">
-              <PageSection
-                className="shrink-0 flex-none"
-                title="✨ Summary"
-                description="Small reusable stat cards for top-level information."
-              >
-                <SummaryCards />
-              </PageSection>
+        {loadError ? (
+          <div className="library-form-error">{loadError}</div>
+        ) : null}
 
-              <div className="mt-6 grid min-h-0 grid-cols-1 gap-5 md:grid-cols-[1.2fr_0.8fr]">
-                <PageSection
-                  title="📊 Preview"
-                  description="Example progress rows inside a reusable content card."
-                >
-                  <DashboardPreview />
-                </PageSection>
+        <PageSection className="dashboard-overview-section">
+          <div className="dashboard-overview-grid">
+            <div className="dashboard-overview-left">
+              <SummaryCards cards={dashboardData.summaryCards} />
 
-                <PageSection
-                  title="⚡ Actions"
-                  description="Quick actions that navigate or trigger future workflows."
-                >
-                  <QuickActionsPanel onAction={onAction} />
-                </PageSection>
-              </div>
+              <DashboardPreview variant="dailyGoal" />
             </div>
+
+            <DashboardPreview
+              variant="recentApplications"
+              recentItems={dashboardData.recentItems}
+              onRecentApplicationsClick={() => onAction("library")}
+            />
           </div>
-        </div>
+        </PageSection>
       </PageShell>
     </motion.div>
   );

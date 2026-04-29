@@ -12,7 +12,7 @@ export const PAGE_METADATA = {
   [APP_PAGES.dashboard]: {
     eyebrow: "🏠 Dashboard",
     title: "Overview",
-    description: "Preview the base template layout, cards, and quick actions.",
+    description: "Your job search command center",
   },
   [APP_PAGES.library]: {
     eyebrow: "📚 Application Tracker",

@@ -10,6 +10,7 @@ function SelectMenu({
   options = [],
   placeholder = "Status",
   className = "",
+  onTriggerClick,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
@@ -130,6 +131,11 @@ function SelectMenu({
   }
 
   function handleTriggerClick() {
+    if (onTriggerClick) {
+      onTriggerClick(value);
+      return;
+    }
+
     const topOption = options[0];
 
     if (!topOption) {

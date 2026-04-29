@@ -19,6 +19,9 @@
   --theme-empty-backdrop: blur(18px) saturate(130%);
   --theme-empty-backdrop-webkit: blur(18px) saturate(130%);
 
+  --theme-card-hover-shadow: 0 20px 24px -24px
+    rgba(var(--theme-accent-sky-bg), 0.75);
+
   /* App shell and sidebar */
   --theme-app-shell-bg:
     radial-gradient(
@@ -173,7 +176,6 @@
   --theme-library-submit-bg: rgba(var(--theme-accent-sky-bg), 0.25);
   --theme-library-submit-text: #fff1f2;
   --theme-library-submit-border: rgba(244, 114, 182, 0.2);
-  /* --theme-library-submit-hover-bg: rgba(var(--theme-accent-sky-bg), 0.25); */
 
   --theme-library-card-title: var(--theme-text-secondary);
   --theme-library-card-description: var(--theme-text-descriptions);
@@ -181,7 +183,7 @@
   --theme-library-chip-text: #fbcfe8;
   --theme-library-card-hover-bg: var(--theme-accent-sky-bg);
   --theme-library-card-hover-border: var(--theme-accent-sky-border);
-  --theme-library-card-hover-shadow: var(--theme-accent-sky-shadow);
+  --theme-library-card-hover-shadow: var(--theme-card-hover-shadow);
 
   /* Input */
   --theme-input-border: none;

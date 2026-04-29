@@ -61,6 +61,7 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
+  margin-bottom: var(--space-2xl);
 }
 
 .page-section-header {

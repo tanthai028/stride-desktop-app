@@ -30,7 +30,7 @@ function App() {
       return;
     }
 
-    if (actionId === "view-stats") {
+    if (actionId === "library") {
       setActivePage(APP_PAGES.library);
     }
   }

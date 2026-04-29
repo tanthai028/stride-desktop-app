@@ -18,6 +18,8 @@
   --theme-empty-backdrop: blur(18px) saturate(145%);
   --theme-empty-backdrop-webkit: blur(18px) saturate(145%);
 
+  --theme-card-hover-shadow: 0 18px 24px -22px rgba(15, 23, 42, 0.42);
+
   /* App shell and sidebar */
   --theme-app-shell-bg:
     radial-gradient(
@@ -181,7 +183,7 @@
   --theme-library-chip-text: #9d174d;
   --theme-library-card-hover-bg: var(--theme-accent-sky-bg);
   --theme-library-card-hover-border: var(--theme-accent-sky-border);
-  --theme-library-card-hover-shadow: none;
+  --theme-library-card-hover-shadow: var(--theme-card-hover-shadow);
 
   /* Startup */
   --theme-startup-screen-bg:

@@ -41,6 +41,26 @@ function LibraryCollectionSection({
   const hasFilteredItems = filteredItems.length > 0;
   const isTableView = viewMode === "table";
 
+  function cycleOption(currentValue, options, onChange) {
+    const currentIndex = options.findIndex(
+      (option) => option.value === currentValue,
+    );
+
+    if (currentIndex < 0 || options.length === 0) return;
+
+    const nextIndex = (currentIndex + 1) % options.length;
+
+    onChange(options[nextIndex].value);
+  }
+
+  function handleViewModeTriggerClick() {
+    cycleOption(viewMode, libraryViewOptions, onViewModeChange);
+  }
+
+  function handleSortTriggerClick() {
+    cycleOption(sortValue, librarySortOptions, onSortChange);
+  }
+
   const actionBarClassName = isTableView
     ? "library-collection-action-bar-table"
     : "library-collection-action-bar-grid";
@@ -82,6 +102,7 @@ function LibraryCollectionSection({
             onChange={onViewModeChange}
             options={libraryViewOptions}
             className="library-view-mode-select library-view-mode-select-icon-only"
+            onTriggerClick={handleViewModeTriggerClick}
           />
         }
         searchValue={searchValue}
@@ -89,6 +110,7 @@ function LibraryCollectionSection({
         sortValue={isTableView ? "" : sortValue}
         onSortChange={isTableView ? undefined : onSortChange}
         sortOptions={isTableView ? [] : librarySortOptions}
+        sortTriggerClick={handleSortTriggerClick}
         filterValue={statusFilterValue}
         onFilterChange={onStatusFilterChange}
         filterOptions={isTableView ? [] : libraryStatusFilterOptions}
