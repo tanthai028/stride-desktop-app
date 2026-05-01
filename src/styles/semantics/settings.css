@@ -154,7 +154,7 @@
 
 .settings-toggle.is-checked {
   border-color: var(--theme-settings-toggle-on-border);
-  background-color: var(--theme-page-kicker);
+  background-color: rgba(var(--theme-accent-sky-bg), 0.5);
   box-shadow: var(--theme-settings-toggle-on-shadow);
 }
 

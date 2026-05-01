@@ -1,0 +1,111 @@
+/* ================================
+   Shared dashboard cards
+================================ */
+
+.dashboard-card,
+.dashboard-metric-card,
+.dashboard-quick-link-button,
+.dashboard-icon-action,
+.dashboard-quick-link-row input {
+  font-family: inherit;
+}
+
+.dashboard-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.dashboard-card-title {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0;
+  padding-bottom: 0.65rem;
+  color: var(--theme-stat-description);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-card-title::after,
+.dashboard-metric-card .stat-card-label::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--theme-accent-sky-bg), 0.38),
+    rgba(var(--theme-accent-violet-bg), 0.22),
+    transparent
+  );
+  content: "";
+}
+
+.dashboard-clickable-card {
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.dashboard-clickable-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  box-shadow: var(--theme-card-hover-shadow);
+}
+
+.dashboard-clickable-card:focus-visible,
+.dashboard-metric-card--button:focus-visible,
+.dashboard-recent-card:focus-visible {
+  outline: 2px solid var(--theme-focus-ring, rgba(125, 92, 255, 0.45));
+  outline-offset: 3px;
+}
+
+.stat-card {
+  background: var(--stat-card-bg, var(--theme-card-bg));
+  border: 1px solid var(--theme-card-border);
+  box-shadow: var(--stat-card-shadow, none);
+  color: var(--theme-text-primary);
+}
+
+.stat-card[data-tone="pink"] {
+  --stat-card-bg: rgba(var(--theme-accent-pink-bg), 0.25);
+}
+
+.stat-card[data-tone="violet"] {
+  --stat-card-bg: rgba(var(--theme-accent-violet-bg), 0.25);
+}
+
+.stat-card[data-tone="sky"] {
+  --stat-card-bg: rgba(var(--theme-accent-sky-bg), 0.25);
+}
+
+.stat-card-title {
+  color: var(--theme-stat-title);
+}
+
+.stat-card-description {
+  color: var(--theme-stat-description);
+}
+
+.stat-card-label--pink {
+  color: var(--theme-stat-card-pink-label);
+}
+
+.stat-card-label--violet {
+  color: var(--theme-stat-card-violet-label);
+}
+
+.stat-card-label--sky {
+  color: var(--theme-stat-card-sky-label);
+}

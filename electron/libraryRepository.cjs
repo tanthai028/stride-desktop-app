@@ -6,6 +6,8 @@ const { LibraryStorageError } = require("./libraryErrors.cjs");
 
 let database = null;
 
+const LIBRARY_SEED_FLAG_KEY = "library_seeded";
+
 function getLibraryDatabasePath() {
   return path.join(app.getPath("userData"), "library.db");
 }
@@ -41,6 +43,11 @@ function ensureLibrarySchema(db) {
       notes TEXT NOT NULL,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS library_metadata (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
     );
 
     CREATE INDEX IF NOT EXISTS idx_library_items_status
@@ -122,6 +129,24 @@ function readLegacyLibraryItems() {
   }
 }
 
+function hasLibraryBeenSeeded(db) {
+  const row = db
+    .prepare("SELECT value FROM library_metadata WHERE key = ? LIMIT 1")
+    .get(LIBRARY_SEED_FLAG_KEY);
+
+  return row?.value === "true";
+}
+
+function markLibrarySeeded(db) {
+  db.prepare(
+    `
+    INSERT INTO library_metadata (key, value)
+    VALUES (?, 'true')
+    ON CONFLICT(key) DO UPDATE SET value = excluded.value
+  `,
+  ).run(LIBRARY_SEED_FLAG_KEY);
+}
+
 function insertLibraryItemRow(db, item) {
   db.prepare(
     `
@@ -171,8 +196,14 @@ function ensureLibraryRows(seedItems = []) {
   try {
     const db = getDatabase();
     const row = db.prepare("SELECT COUNT(*) AS count FROM library_items").get();
+    const itemCount = row?.count ?? 0;
 
-    if ((row?.count ?? 0) > 0) {
+    if (itemCount > 0) {
+      markLibrarySeeded(db);
+      return;
+    }
+
+    if (hasLibraryBeenSeeded(db)) {
       return;
     }
 
@@ -183,6 +214,7 @@ function ensureLibraryRows(seedItems = []) {
         : seedItems;
 
     if (!Array.isArray(sourceItems) || sourceItems.length === 0) {
+      markLibrarySeeded(db);
       return;
     }
 
@@ -193,6 +225,7 @@ function ensureLibraryRows(seedItems = []) {
         insertLibraryItemRow(db, item);
       }
 
+      markLibrarySeeded(db);
       db.exec("COMMIT");
     } catch (error) {
       db.exec("ROLLBACK");
@@ -296,6 +329,7 @@ function insertLibraryRow(item, seedItems = []) {
 
     const db = getDatabase();
     insertLibraryItemRow(db, item);
+    markLibrarySeeded(db);
 
     return item;
   } catch (error) {
@@ -368,6 +402,8 @@ function deleteLibraryRow(itemId, seedItems = []) {
       .prepare("DELETE FROM library_items WHERE id = ?")
       .run(itemId);
 
+    markLibrarySeeded(db);
+
     return result.changes > 0;
   } catch (error) {
     if (error.code === "STORAGE_ERROR") {
@@ -395,6 +431,7 @@ function replaceLibraryRows(items, seedItems = []) {
         insertLibraryItemRow(db, item);
       }
 
+      markLibrarySeeded(db);
       db.exec("COMMIT");
       return items;
     } catch (error) {

@@ -1,0 +1,90 @@
+/* ================================
+   Metric cards + progress bars
+================================ */
+
+.dashboard-metric-card {
+  position: relative;
+  display: flex;
+  min-height: 7rem;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  isolation: isolate;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+.dashboard-metric-card .stat-card-label {
+  position: relative;
+  width: 100%;
+  padding-bottom: 0.65rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-metric-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+.dashboard-metric-value {
+  font-size: var(--font-size-display-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dashboard-summary-grid .dashboard-metric-card .dashboard-metric-value {
+  margin-top: 0.625rem;
+}
+
+.dashboard-metric-description {
+  margin: auto 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.progress-stat-value {
+  color: var(--theme-progress-stat-value);
+}
+
+.progress-stat-track--pink {
+  background-color: var(--theme-progress-track-pink);
+}
+
+.progress-stat-track--violet {
+  background-color: var(--theme-progress-track-violet);
+}
+
+.progress-stat-track--sky,
+.dashboard-status-chart-track {
+  background-color: var(--theme-progress-track-sky);
+}
+
+.progress-stat-bar--pink {
+  background-color: var(--theme-progress-bar-pink);
+}
+
+.progress-stat-bar--violet {
+  background-color: var(--theme-progress-bar-violet);
+}
+
+.progress-stat-bar--sky,
+.dashboard-status-chart-fill--sky {
+  background-color: var(--theme-progress-bar-sky);
+}
+
+.dashboard-status-chart-track {
+  height: 0.75rem;
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.dashboard-status-chart-fill {
+  height: 100%;
+  min-width: 0.4rem;
+  border-radius: inherit;
+  transition: width 220ms ease;
+}

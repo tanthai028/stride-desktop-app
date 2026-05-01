@@ -6,7 +6,7 @@
 @import "./semantics/header.css";
 @import "./semantics/sidebar.css";
 @import "./semantics/modals.css";
-@import "./semantics/dashboard.css";
+@import "./semantics/dashboard/index.css";
 @import "./semantics/settings.css";
 @import "./semantics/startup.css";
 @import "./semantics/library/index.css";

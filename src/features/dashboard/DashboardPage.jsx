@@ -2,16 +2,36 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
-import SummaryCards from "./components/SummaryCards.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
+import SummaryCards from "./components/SummaryCards.jsx";
 import useLibraryItems from "../library/hooks/useLibraryItems.js";
+
+const SNAPSHOT_PERIODS = ["today", "week", "total"];
+
+function getStartOfToday() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+}
 
 function getWeekStart(date) {
   const weekStart = new Date(date);
-  const day = weekStart.getDay();
   weekStart.setHours(0, 0, 0, 0);
-  weekStart.setDate(weekStart.getDate() - day);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
   return weekStart;
+}
+
+function getAppliedDate(item) {
+  const appliedDate = item?.appliedAt ? new Date(item.appliedAt) : null;
+  return appliedDate && !Number.isNaN(appliedDate.getTime())
+    ? appliedDate
+    : null;
+}
+
+function isSameDay(date, targetDate) {
+  const normalizedDate = new Date(date);
+  normalizedDate.setHours(0, 0, 0, 0);
+  return normalizedDate.getTime() === targetDate.getTime();
 }
 
 function DashboardPage({ settings, onAction }) {
@@ -19,67 +39,64 @@ function DashboardPage({ settings, onAction }) {
   const [snapshotPeriod, setSnapshotPeriod] = useState("today");
 
   const dashboardData = useMemo(() => {
-    const total = items.length;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = getStartOfToday();
+    const weekStart = getWeekStart(new Date());
 
     const todayCount = items.filter((item) => {
-      if (!item.appliedAt) return false;
-
-      const appliedDate = new Date(item.appliedAt);
-      if (Number.isNaN(appliedDate.getTime())) return false;
-
-      appliedDate.setHours(0, 0, 0, 0);
-      return appliedDate.getTime() === today.getTime();
+      const appliedDate = getAppliedDate(item);
+      return appliedDate ? isSameDay(appliedDate, today) : false;
     }).length;
 
-    const thisWeekStart = getWeekStart(new Date());
-
-    const thisWeek = items.filter((item) => {
-      if (!item.appliedAt) return false;
-
-      const appliedDate = new Date(item.appliedAt);
-
-      return (
-        !Number.isNaN(appliedDate.getTime()) && appliedDate >= thisWeekStart
-      );
+    const weekCount = items.filter((item) => {
+      const appliedDate = getAppliedDate(item);
+      return appliedDate ? appliedDate >= weekStart : false;
     }).length;
 
-    const activePeriodCount =
-      snapshotPeriod === "today" ? todayCount : thisWeek;
+    const totalCount = items.length;
 
-    const summaryCards = [
-      {
-        label: "Total",
-        title: total,
-        description: "Applications tracked",
+    const snapshotCardsByPeriod = {
+      today: {
+        label: "Jobs Applied",
+        title: todayCount,
+        description: "Today",
+        tone: "pink",
+      },
+      week: {
+        label: "Jobs Applied",
+        title: weekCount,
+        description: "This Week",
+        tone: "violet",
+      },
+      total: {
+        label: "Jobs Applied",
+        title: totalCount,
+        description: "Total",
         tone: "sky",
       },
-      {
-        label: snapshotPeriod === "today" ? "Today" : "This Week",
-        title: activePeriodCount,
-        description:
-          snapshotPeriod === "today"
-            ? "Submitted today"
-            : "Submitted this week",
-        tone: snapshotPeriod === "today" ? "pink" : "violet",
-        onClick: () =>
-          setSnapshotPeriod((current) =>
-            current === "today" ? "week" : "today",
-          ),
-      },
-    ];
+    };
 
     const recentItems = [...items]
-      .sort((a, b) => new Date(b.appliedAt || 0) - new Date(a.appliedAt || 0))
+      .sort((firstItem, secondItem) => {
+        const firstDate = getAppliedDate(firstItem)?.getTime() ?? 0;
+        const secondDate = getAppliedDate(secondItem)?.getTime() ?? 0;
+        return secondDate - firstDate;
+      })
       .slice(0, 6);
 
     return {
-      summaryCards,
+      snapshotCard: snapshotCardsByPeriod[snapshotPeriod],
+      todayCount,
       recentItems,
     };
   }, [items, snapshotPeriod]);
+
+  function cycleSnapshotPeriod() {
+    setSnapshotPeriod((currentPeriod) => {
+      const currentIndex = SNAPSHOT_PERIODS.indexOf(currentPeriod);
+      const nextIndex = (currentIndex + 1) % SNAPSHOT_PERIODS.length;
+      return SNAPSHOT_PERIODS[nextIndex];
+    });
+  }
 
   return (
     <motion.div
@@ -88,7 +105,11 @@ function DashboardPage({ settings, onAction }) {
       transition={{ duration: 0.45 }}
       className="flex min-h-0 flex-1 flex-col"
     >
-      <PageShell>
+      <PageShell
+        eyebrow="🏠 Dashboard"
+        title="Overview"
+        description="Track today's application push, quick links, and recent activity."
+      >
         {loadError ? (
           <div className="library-form-error">{loadError}</div>
         ) : null}
@@ -96,12 +117,27 @@ function DashboardPage({ settings, onAction }) {
         <PageSection className="dashboard-overview-section">
           <div className="dashboard-overview-grid">
             <div className="dashboard-overview-left">
-              <SummaryCards cards={dashboardData.summaryCards} />
+              <div className="dashboard-top-card-grid">
+                <SummaryCards
+                  cards={[
+                    {
+                      ...dashboardData.snapshotCard,
+                      onClick: cycleSnapshotPeriod,
+                    },
+                  ]}
+                />
 
-              <DashboardPreview variant="dailyGoal" />
+                <DashboardPreview
+                  variant="applyGoal"
+                  todayApplicationCount={dashboardData.todayCount}
+                />
+              </div>
+
+              <DashboardPreview variant="quickLinks" />
             </div>
 
             <DashboardPreview
+            
               variant="recentApplications"
               recentItems={dashboardData.recentItems}
               onRecentApplicationsClick={() => onAction("library")}

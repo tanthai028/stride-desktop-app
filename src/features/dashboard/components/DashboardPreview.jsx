@@ -2,74 +2,162 @@ import { useEffect, useState } from "react";
 import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
 
-const DAILY_GOALS_STORAGE_KEY = "dashboardDailyGoals";
+const APPLY_GOAL_STORAGE_KEY = "dashboardApplyGoalTarget";
+const QUICK_LINKS_STORAGE_KEY = "dashboardQuickLinks";
 
-const DEFAULT_DAILY_GOALS = [
-  { id: "apply", label: "Apply to 3 jobs", completed: false },
-  { id: "follow-up", label: "Follow up on 1 application", completed: false },
-  { id: "resume", label: "Improve resume or profile", completed: false },
+const DEFAULT_APPLY_GOAL_TARGET = 3;
+const DEFAULT_QUICK_LINKS = [
+  {
+    id: "job-sheet",
+    label: "Job Tracker Sheet",
+    url: "https://docs.google.com/spreadsheets/",
+  },
+  {
+    id: "leetcode",
+    label: "LeetCode",
+    url: "https://leetcode.com/",
+  },
+  {
+    id: "youtube",
+    label: "YouTube",
+    url: "https://www.youtube.com/",
+  },
 ];
 
-function getSavedDailyGoals() {
+function IconButton({ type }) {
+  const paths = {
+    edit: "M12 20h9 M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z",
+    done: "M20 6 9 17l-5-5",
+    add: "M12 5v14 M5 12h14",
+    remove: "M3 6h18 M8 6V4h8v2 M6 6l1 14h10l1-14",
+    open: "M7 17 17 7 M9 7h8v8",
+  };
+
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d={paths[type]} />
+    </svg>
+  );
+}
+
+function getSavedApplyGoalTarget() {
+  const savedTarget = Number(localStorage.getItem(APPLY_GOAL_STORAGE_KEY));
+
+  return Number.isFinite(savedTarget) && savedTarget > 0
+    ? savedTarget
+    : DEFAULT_APPLY_GOAL_TARGET;
+}
+
+function getSavedQuickLinks() {
   try {
-    const savedGoals = JSON.parse(
-      localStorage.getItem(DAILY_GOALS_STORAGE_KEY),
+    const savedLinks = JSON.parse(
+      localStorage.getItem(QUICK_LINKS_STORAGE_KEY),
     );
 
-    return Array.isArray(savedGoals) && savedGoals.length > 0
-      ? savedGoals
-      : DEFAULT_DAILY_GOALS;
+    return Array.isArray(savedLinks) && savedLinks.length > 0
+      ? savedLinks
+      : DEFAULT_QUICK_LINKS;
   } catch {
-    return DEFAULT_DAILY_GOALS;
+    return DEFAULT_QUICK_LINKS;
   }
 }
 
+function normalizeUrl(url) {
+  const trimmedUrl = String(url || "").trim();
+
+  if (!trimmedUrl) return "";
+
+  if (/^https?:\/\//i.test(trimmedUrl)) {
+    return trimmedUrl;
+  }
+
+  return `https://${trimmedUrl}`;
+}
+
+function getFaviconUrl(url) {
+  const normalizedUrl = normalizeUrl(url);
+
+  if (!normalizedUrl) return "";
+
+  try {
+    const { origin } = new URL(normalizedUrl);
+
+    return `${origin}/favicon.ico`;
+  } catch {
+    return "";
+  }
+}
+
+function openDashboardLink(url) {
+  const normalizedUrl = normalizeUrl(url);
+
+  if (!normalizedUrl) return;
+
+  if (window.libraryApi?.openExternalUrl) {
+    window.libraryApi.openExternalUrl(normalizedUrl);
+    return;
+  }
+
+  window.open(normalizedUrl, "_blank", "noopener,noreferrer");
+}
+
 function DashboardPreview({
-  variant = "dailyGoal",
+  variant = "applyGoal",
+  todayApplicationCount = 0,
   recentItems = [],
   onRecentApplicationsClick,
 }) {
-  const [dailyGoals, setDailyGoals] = useState(getSavedDailyGoals);
-  const [isEditingGoals, setIsEditingGoals] = useState(false);
+  const [applyGoalTarget, setApplyGoalTarget] = useState(
+    getSavedApplyGoalTarget,
+  );
+  const [quickLinks, setQuickLinks] = useState(getSavedQuickLinks);
+  const [isEditingLinks, setIsEditingLinks] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(DAILY_GOALS_STORAGE_KEY, JSON.stringify(dailyGoals));
-  }, [dailyGoals]);
+    localStorage.setItem(APPLY_GOAL_STORAGE_KEY, String(applyGoalTarget));
+  }, [applyGoalTarget]);
 
-  const completedGoalCount = dailyGoals.filter((goal) => goal.completed).length;
-  const totalGoalCount = dailyGoals.length || 1;
-  const goalProgress = Math.round((completedGoalCount / totalGoalCount) * 100);
+  useEffect(() => {
+    localStorage.setItem(QUICK_LINKS_STORAGE_KEY, JSON.stringify(quickLinks));
+  }, [quickLinks]);
 
-  const updateGoalLabel = (goalId, nextLabel) => {
-    setDailyGoals((goals) =>
-      goals.map((goal) =>
-        goal.id === goalId ? { ...goal, label: nextLabel } : goal,
+  const applyGoalProgress = Math.min(
+    100,
+    Math.round((todayApplicationCount / applyGoalTarget) * 100),
+  );
+
+  const updateQuickLink = (linkId, field, value) => {
+    setQuickLinks((links) =>
+      links.map((link) =>
+        link.id === linkId ? { ...link, [field]: value } : link,
       ),
     );
   };
 
-  const toggleGoalComplete = (goalId) => {
-    setDailyGoals((goals) =>
-      goals.map((goal) =>
-        goal.id === goalId ? { ...goal, completed: !goal.completed } : goal,
-      ),
-    );
-  };
-
-  const addGoal = () => {
-    setDailyGoals((goals) => [
-      ...goals,
+  const addQuickLink = () => {
+    setQuickLinks((links) => [
+      ...links,
       {
-        id: `goal-${Date.now()}`,
-        label: "New daily goal",
-        completed: false,
+        id: `link-${Date.now()}`,
+        label: "New Link",
+        url: "https://",
       },
     ]);
+
+    setIsEditingLinks(true);
   };
 
-  const removeGoal = (goalId) => {
-    setDailyGoals((goals) =>
-      goals.length > 1 ? goals.filter((goal) => goal.id !== goalId) : goals,
+  const removeQuickLink = (linkId) => {
+    setQuickLinks((links) =>
+      links.length > 1 ? links.filter((link) => link.id !== linkId) : links,
     );
   };
 
@@ -91,18 +179,20 @@ function DashboardPreview({
 
               return (
                 <div key={item.id} className="dashboard-recent-item">
-                  <div className="min-w-0">
-                    <p className="dashboard-recent-title">
-                      {item.company || "Untitled Company"}
-                    </p>
-                    <p className="dashboard-recent-description">
-                      {item.role || "Untitled Role"}
-                    </p>
-                  </div>
+                  <p className="dashboard-recent-title">
+                    {item.company || "Untitled Company"} ·{" "}
+                    {item.role || "Untitled Role"}
+                  </p>
 
                   <div className="dashboard-recent-meta">
-                    <span>{statusMeta.displayLabel}</span>
-                    <span>{formatLibraryAppliedDate(item.appliedAt)}</span>
+                    <span className="dashboard-recent-location">
+                      {item.location || "Unknown"}
+                    </span>
+
+                    <span className="dashboard-recent-right">
+                      {statusMeta.displayLabel || statusMeta.label} -{" "}
+                      {formatLibraryAppliedDate(item.appliedAt)}
+                    </span>
                   </div>
                 </div>
               );
@@ -117,90 +207,163 @@ function DashboardPreview({
     );
   }
 
+  if (variant === "quickLinks") {
+    return (
+      <div className="surface-card dashboard-card dashboard-quick-links-card">
+        <div className="dashboard-card-header dashboard-quick-links-header">
+          <p className="stat-card-description dashboard-card-title text-sm font-medium">
+            Quick Links
+          </p>
+
+          <div className="dashboard-quick-links-actions">
+            {isEditingLinks ? (
+              <button
+                type="button"
+                className="dashboard-icon-action"
+                onClick={addQuickLink}
+                aria-label="Add quick link"
+                title="Add link"
+              >
+                <IconButton type="add" />
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="dashboard-icon-action"
+              onClick={() => setIsEditingLinks((current) => !current)}
+              aria-label={
+                isEditingLinks ? "Done editing quick links" : "Edit quick links"
+              }
+              title={isEditingLinks ? "Done" : "Edit"}
+            >
+              <IconButton type={isEditingLinks ? "done" : "edit"} />
+            </button>
+          </div>
+        </div>
+
+        <div className="dashboard-quick-links-list">
+          {quickLinks.map((link) => {
+            const faviconUrl = getFaviconUrl(link.url);
+
+            return (
+              <div key={link.id} className="dashboard-quick-link-row">
+                {isEditingLinks ? (
+                  <>
+                    <label className="dashboard-quick-link-field">
+                      <span className="dashboard-quick-link-input-label">
+                        Name
+                      </span>
+                      <input
+                        aria-label="Quick link label"
+                        value={link.label}
+                        onChange={(event) =>
+                          updateQuickLink(link.id, "label", event.target.value)
+                        }
+                      />
+                    </label>
+
+                    <label className="dashboard-quick-link-field">
+                      <span className="dashboard-quick-link-input-label">
+                        Link
+                      </span>
+                      <input
+                        aria-label="Quick link URL"
+                        value={link.url}
+                        onChange={(event) =>
+                          updateQuickLink(link.id, "url", event.target.value)
+                        }
+                      />
+                    </label>
+
+                    <button
+                      type="button"
+                      className="dashboard-icon-action dashboard-quick-link-delete"
+                      onClick={() => removeQuickLink(link.id)}
+                      aria-label={`Remove ${link.label || "quick link"}`}
+                      title="Remove"
+                    >
+                      <IconButton type="remove" />
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    className="dashboard-quick-link-button"
+                    onClick={() => openDashboardLink(link.url)}
+                  >
+                    <span className="dashboard-quick-link-main">
+                      <span className="dashboard-quick-link-site-icon">
+                        {faviconUrl ? (
+                          <img
+                            src={faviconUrl}
+                            alt=""
+                            loading="lazy"
+                            onError={(event) => {
+                              event.currentTarget.style.display = "none";
+                            }}
+                          />
+                        ) : (
+                          <span className="dashboard-quick-link-fallback-icon">
+                            {link.label?.charAt(0)?.toUpperCase() || "L"}
+                          </span>
+                        )}
+                      </span>
+
+                      <span className="dashboard-quick-link-label">
+                        {link.label || "Untitled Link"}
+                      </span>
+                    </span>
+
+                    <span className="dashboard-quick-link-open-icon">
+                      <IconButton type="open" />
+                    </span>
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      className="surface-card dashboard-card dashboard-daily-goal-card dashboard-clickable-card"
-      onClick={() => setIsEditingGoals((current) => !current)}
-      onKeyDown={(event) => {
-        const isEditingField =
-          event.target.tagName === "INPUT" ||
-          event.target.tagName === "TEXTAREA";
+    <div className="surface-card stat-card dashboard-metric-card dashboard-apply-goal-card">
+      <div className="dashboard-metric-content">
+        <div className="dashboard-apply-goal-header">
+          <p className="stat-card-label stat-card-label--sky">Daily Goal</p>
 
-        if (isEditingField) return;
+          <input
+            aria-label="Daily application goal target"
+            className="dashboard-apply-goal-input"
+            type="number"
+            min="1"
+            value={applyGoalTarget}
+            onChange={(event) => {
+              const nextTarget = Number(event.target.value);
 
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          setIsEditingGoals((current) => !current);
-        }
-      }}
-    >
-      <div className="dashboard-card-header">
-        <p className="stat-card-description dashboard-card-title text-sm font-medium">
-          Daily Goal
+              setApplyGoalTarget(
+                Number.isFinite(nextTarget) && nextTarget > 0 ? nextTarget : 1,
+              );
+            }}
+          />
+        </div>
+
+        <h2 className="stat-card-title dashboard-metric-value">
+          {todayApplicationCount}/{applyGoalTarget}
+        </h2>
+
+        <p className="stat-card-description dashboard-metric-description">
+          Apply to {applyGoalTarget} jobs
         </p>
 
-        <span className="dashboard-daily-goal-count">
-          {completedGoalCount}/{dailyGoals.length}
-        </span>
-      </div>
-
-      <div className="dashboard-daily-goal-list">
-        {dailyGoals.map((goal) => (
-          <label
-            key={goal.id}
-            className="dashboard-daily-goal-item"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <input
-              type="checkbox"
-              checked={goal.completed}
-              onChange={() => toggleGoalComplete(goal.id)}
-            />
-            <span>{goal.label}</span>
-          </label>
-        ))}
-      </div>
-
-      <div className="dashboard-status-chart-track">
-        <div
-          className="dashboard-status-chart-fill dashboard-status-chart-fill--violet"
-          style={{ width: `${goalProgress}%` }}
-        />
-      </div>
-
-      {isEditingGoals ? (
-        <div
-          className="dashboard-daily-goal-editor"
-          onClick={(event) => event.stopPropagation()}
-        >
-          {dailyGoals.map((goal) => (
-            <div key={goal.id} className="dashboard-daily-goal-edit-row">
-              <input
-                value={goal.label}
-                onChange={(event) =>
-                  updateGoalLabel(goal.id, event.target.value)
-                }
-                onClick={(event) => event.stopPropagation()}
-                onKeyDown={(event) => event.stopPropagation()}
-              />
-
-              <button type="button" onClick={() => removeGoal(goal.id)}>
-                Remove
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            className="dashboard-daily-goal-add-button"
-            onClick={addGoal}
-          >
-            + Add goal
-          </button>
+        <div className="dashboard-status-chart-track dashboard-apply-goal-track">
+          <div
+            className="dashboard-status-chart-fill dashboard-status-chart-fill--sky"
+            style={{ width: `${applyGoalProgress}%` }}
+          />
         </div>
-      ) : null}
+      </div>
     </div>
   );
 }

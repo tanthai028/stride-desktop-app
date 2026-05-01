@@ -1,0 +1,65 @@
+/* ================================
+   Recent applications
+================================ */
+
+.dashboard-recent-card {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  text-align: left;
+}
+
+.dashboard-recent-list {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dashboard-recent-item {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.78rem 0;
+  text-align: left;
+}
+
+.dashboard-recent-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-recent-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.dashboard-recent-location {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-recent-right {
+  flex-shrink: 0;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  text-align: right;
+  white-space: nowrap;
+}
