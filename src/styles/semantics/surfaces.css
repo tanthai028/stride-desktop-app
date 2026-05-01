@@ -74,6 +74,8 @@
 }
 
 .page-card {
+  padding: 1.5rem;
+  border-radius: 30px;
   transform: translateZ(0);
   transition: var(--transition-control);
   will-change: transform;

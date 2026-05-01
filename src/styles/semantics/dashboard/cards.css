@@ -72,10 +72,18 @@
 }
 
 .stat-card {
+  padding: 1.25rem;
+  border-radius: 28px;
   background: var(--stat-card-bg, var(--theme-card-bg));
   border: 1px solid var(--theme-card-border);
   box-shadow: var(--stat-card-shadow, none);
   color: var(--theme-text-primary);
+}
+
+.stat-card-label {
+  margin-bottom: 0.5rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
 }
 
 .stat-card[data-tone="pink"] {
@@ -91,10 +99,14 @@
 }
 
 .stat-card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
   color: var(--theme-stat-title);
 }
 
 .stat-card-description {
+  margin-top: 0.5rem;
+  font-size: var(--font-size-sm);
   color: var(--theme-stat-description);
 }
 
