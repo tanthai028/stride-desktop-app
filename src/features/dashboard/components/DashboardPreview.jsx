@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
+const TIMER_STORAGE_KEY = "dashboardTimerMinutes";
+const DEFAULT_TIMER_MINUTES = 30;
 
 const APPLY_GOAL_STORAGE_KEY = "dashboardApplyGoalTarget";
 const QUICK_LINKS_STORAGE_KEY = "dashboardQuickLinks";
@@ -54,6 +56,23 @@ function getSavedApplyGoalTarget() {
   return Number.isFinite(savedTarget) && savedTarget > 0
     ? savedTarget
     : DEFAULT_APPLY_GOAL_TARGET;
+}
+
+function getSavedTimerMinutes() {
+  const savedMinutes = Number(localStorage.getItem(TIMER_STORAGE_KEY));
+
+  return Number.isFinite(savedMinutes) && savedMinutes > 0
+    ? savedMinutes
+    : DEFAULT_TIMER_MINUTES;
+}
+
+function formatTimerSeconds(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${String(minutes).padStart(2, "0")}:${String(
+    remainingSeconds,
+  ).padStart(2, "0")}`;
 }
 
 function getSavedQuickLinks() {
@@ -113,6 +132,8 @@ function DashboardPreview({
   variant = "applyGoal",
   todayApplicationCount = 0,
   recentItems = [],
+  recentPeriod = "today",
+  onRecentPeriodClick,
   onRecentApplicationsClick,
 }) {
   const [applyGoalTarget, setApplyGoalTarget] = useState(
@@ -120,6 +141,12 @@ function DashboardPreview({
   );
   const [quickLinks, setQuickLinks] = useState(getSavedQuickLinks);
   const [isEditingLinks, setIsEditingLinks] = useState(false);
+  const [timerMinutes, setTimerMinutes] = useState(getSavedTimerMinutes);
+  const [timerSeconds, setTimerSeconds] = useState(
+    () => getSavedTimerMinutes() * 60,
+  );
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isEditingTimer, setIsEditingTimer] = useState(false);
 
   useEffect(() => {
     localStorage.setItem(APPLY_GOAL_STORAGE_KEY, String(applyGoalTarget));
@@ -128,6 +155,27 @@ function DashboardPreview({
   useEffect(() => {
     localStorage.setItem(QUICK_LINKS_STORAGE_KEY, JSON.stringify(quickLinks));
   }, [quickLinks]);
+
+  useEffect(() => {
+    localStorage.setItem(TIMER_STORAGE_KEY, String(timerMinutes));
+  }, [timerMinutes]);
+
+  useEffect(() => {
+    if (!isTimerRunning) return undefined;
+
+    const intervalId = window.setInterval(() => {
+      setTimerSeconds((currentSeconds) => {
+        if (currentSeconds <= 1) {
+          setIsTimerRunning(false);
+          return 0;
+        }
+
+        return currentSeconds - 1;
+      });
+    }, 1000);
+
+    return () => window.clearInterval(intervalId);
+  }, [isTimerRunning]);
 
   const applyGoalProgress = Math.min(
     100,
@@ -161,16 +209,113 @@ function DashboardPreview({
     );
   };
 
-  if (variant === "recentApplications") {
+  if (variant === "timer") {
     return (
       <button
         type="button"
-        className="surface-card dashboard-card dashboard-recent-card dashboard-clickable-card"
-        onClick={onRecentApplicationsClick}
+        className="surface-card stat-card dashboard-metric-card dashboard-timer-card dashboard-clickable-card"
+        onClick={() => setIsEditingTimer(true)}
       >
-        <p className="stat-card-description dashboard-card-title text-sm font-medium">
-          Recent Applications
-        </p>
+        <div className="dashboard-metric-content">
+          <p className="stat-card-label stat-card-label--violet">Timer</p>
+
+          {isEditingTimer ? (
+            <label
+              className="dashboard-timer-editor"
+              onClick={(event) => event.stopPropagation()}
+            >
+              <span className="dashboard-timer-editor-label">Minutes</span>
+
+              <input
+                aria-label="Timer minutes"
+                className="dashboard-timer-input"
+                type="number"
+                min="1"
+                value={timerMinutes}
+                onChange={(event) => {
+                  const nextMinutes = Number(event.target.value);
+                  const normalizedMinutes =
+                    Number.isFinite(nextMinutes) && nextMinutes > 0
+                      ? nextMinutes
+                      : 1;
+
+                  setTimerMinutes(normalizedMinutes);
+                  setTimerSeconds(normalizedMinutes * 60);
+                  setIsTimerRunning(false);
+                }}
+                onBlur={() => setIsEditingTimer(false)}
+                autoFocus
+              />
+            </label>
+          ) : (
+            <h2 className="stat-card-title dashboard-metric-value dashboard-timer-value">
+              {formatTimerSeconds(timerSeconds)}
+            </h2>
+          )}
+
+          <div
+            className="dashboard-timer-actions"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="dashboard-timer-action"
+              onClick={() => setIsTimerRunning((current) => !current)}
+            >
+              {isTimerRunning ? "Pause" : "Start"}
+            </button>
+
+            <button
+              type="button"
+              className="dashboard-timer-action"
+              onClick={() => {
+                setIsTimerRunning(false);
+                setTimerSeconds(timerMinutes * 60);
+              }}
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      </button>
+    );
+  }
+
+  if (variant === "recentApplications") {
+    const periodLabel = recentPeriod === "today" ? "Today" : "This Week";
+
+    return (
+      <div
+        className="surface-card dashboard-card dashboard-recent-card dashboard-clickable-card"
+        role="button"
+        tabIndex={0}
+        onClick={onRecentApplicationsClick}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onRecentApplicationsClick?.();
+          }
+        }}
+      >
+        <div className="dashboard-recent-header">
+          <p className="stat-card-description dashboard-card-title dashboard-recent-card-title text-sm font-medium">
+            Recent Applications{" "}
+            <span className="dashboard-recent-count-chip">
+              {recentItems.length}
+            </span>
+          </p>
+
+          <button
+            type="button"
+            className="dashboard-recent-period-button"
+            onClick={(event) => {
+              event.stopPropagation();
+              onRecentPeriodClick?.();
+            }}
+          >
+            {periodLabel}
+          </button>
+        </div>
 
         <div className="dashboard-recent-list">
           {recentItems.length > 0 ? (
@@ -199,11 +344,11 @@ function DashboardPreview({
             })
           ) : (
             <p className="stat-card-description text-sm">
-              No applications yet.
+              No applications listed for {periodLabel.toLowerCase()}.
             </p>
           )}
         </div>
-      </button>
+      </div>
     );
   }
 

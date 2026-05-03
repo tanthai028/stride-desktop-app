@@ -1,5 +1,14 @@
+import { Sparkles } from "lucide-react";
 import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
+
+function AppFrameIcon() {
+  return (
+    <div className="frame-app-icon no-drag" aria-label="Temporary app icon">
+      <Sparkles size={22} />
+    </div>
+  );
+}
 
 function FrameHeader({ children }) {
   return <div className="frame-header drag-region">{children}</div>;
@@ -34,7 +43,11 @@ function FrameShell({ children }) {
 function WindowFrame({ sidebar, children }) {
   return (
     <FrameShell>
-      <FrameHeader>{isElectron() && <WindowControls />}</FrameHeader>
+      <FrameHeader>
+        <AppFrameIcon />
+        <div className="frame-header-spacer" />
+        {isElectron() && <WindowControls />}
+      </FrameHeader>
 
       <FrameContent>
         <FrameGrid>

@@ -3,10 +3,7 @@ import { useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
-import SummaryCards from "./components/SummaryCards.jsx";
 import useLibraryItems from "../library/hooks/useLibraryItems.js";
-
-const SNAPSHOT_PERIODS = ["today", "week", "total"];
 
 function getStartOfToday() {
   const today = new Date();
@@ -23,6 +20,7 @@ function getWeekStart(date) {
 
 function getAppliedDate(item) {
   const appliedDate = item?.appliedAt ? new Date(item.appliedAt) : null;
+
   return appliedDate && !Number.isNaN(appliedDate.getTime())
     ? appliedDate
     : null;
@@ -36,7 +34,7 @@ function isSameDay(date, targetDate) {
 
 function DashboardPage({ settings, onAction }) {
   const { items, loadError } = useLibraryItems(settings.resetVersion);
-  const [snapshotPeriod, setSnapshotPeriod] = useState("today");
+  const [recentPeriod, setRecentPeriod] = useState("today");
 
   const dashboardData = useMemo(() => {
     const today = getStartOfToday();
@@ -47,35 +45,16 @@ function DashboardPage({ settings, onAction }) {
       return appliedDate ? isSameDay(appliedDate, today) : false;
     }).length;
 
-    const weekCount = items.filter((item) => {
-      const appliedDate = getAppliedDate(item);
-      return appliedDate ? appliedDate >= weekStart : false;
-    }).length;
-
-    const totalCount = items.length;
-
-    const snapshotCardsByPeriod = {
-      today: {
-        label: "Jobs Applied",
-        title: todayCount,
-        description: "Today",
-        tone: "pink",
-      },
-      week: {
-        label: "Jobs Applied",
-        title: weekCount,
-        description: "This Week",
-        tone: "violet",
-      },
-      total: {
-        label: "Jobs Applied",
-        title: totalCount,
-        description: "Total",
-        tone: "sky",
-      },
-    };
-
     const recentItems = [...items]
+      .filter((item) => {
+        const appliedDate = getAppliedDate(item);
+
+        if (!appliedDate) return false;
+
+        return recentPeriod === "today"
+          ? isSameDay(appliedDate, today)
+          : appliedDate >= weekStart;
+      })
       .sort((firstItem, secondItem) => {
         const firstDate = getAppliedDate(firstItem)?.getTime() ?? 0;
         const secondDate = getAppliedDate(secondItem)?.getTime() ?? 0;
@@ -84,18 +63,15 @@ function DashboardPage({ settings, onAction }) {
       .slice(0, 6);
 
     return {
-      snapshotCard: snapshotCardsByPeriod[snapshotPeriod],
       todayCount,
       recentItems,
     };
-  }, [items, snapshotPeriod]);
+  }, [items, recentPeriod]);
 
-  function cycleSnapshotPeriod() {
-    setSnapshotPeriod((currentPeriod) => {
-      const currentIndex = SNAPSHOT_PERIODS.indexOf(currentPeriod);
-      const nextIndex = (currentIndex + 1) % SNAPSHOT_PERIODS.length;
-      return SNAPSHOT_PERIODS[nextIndex];
-    });
+  function cycleRecentPeriod() {
+    setRecentPeriod((currentPeriod) =>
+      currentPeriod === "today" ? "week" : "today",
+    );
   }
 
   return (
@@ -118,14 +94,7 @@ function DashboardPage({ settings, onAction }) {
           <div className="dashboard-overview-grid">
             <div className="dashboard-overview-left">
               <div className="dashboard-top-card-grid">
-                <SummaryCards
-                  cards={[
-                    {
-                      ...dashboardData.snapshotCard,
-                      onClick: cycleSnapshotPeriod,
-                    },
-                  ]}
-                />
+                <DashboardPreview variant="timer" />
 
                 <DashboardPreview
                   variant="applyGoal"
@@ -137,9 +106,10 @@ function DashboardPage({ settings, onAction }) {
             </div>
 
             <DashboardPreview
-            
               variant="recentApplications"
               recentItems={dashboardData.recentItems}
+              recentPeriod={recentPeriod}
+              onRecentPeriodClick={cycleRecentPeriod}
               onRecentApplicationsClick={() => onAction("library")}
             />
           </div>

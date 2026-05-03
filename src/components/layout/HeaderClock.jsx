@@ -5,7 +5,7 @@ function HeaderClock() {
   const { time, fullDate, isDay } = useHeaderClock();
 
   return (
-    <div className="header-clock-card surface-card">
+    <div className="header-clock-card surface-card rounded-[24px] px-5 py-4 text-right backdrop-blur-xl">
       <div className="header-clock-content">
         <div className="header-clock-icon-wrap">
           {isDay ? (

@@ -87,15 +87,39 @@
   color: var(--theme-header-clock-subtext);
 }
 
-@media (max-width: 725px) {
-  .app-header-brand-responsive {
-    flex: 0 0 auto;
-    width: auto;
-    max-width: 55%;
-  }
+.header-clock-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--theme-panel-border);
+  border-radius: var(--radius-pill);
+  background: var(--theme-panel-bg);
+  color: var(--theme-header-clock-text);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop);
+}
 
-  .app-header-brand-mask {
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
+.header-clock-pill-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  stroke-width: 2;
+}
+
+.header-clock-pill-icon--day {
+  color: var(--theme-header-clock-day-icon);
+}
+
+.header-clock-pill-icon--night {
+  color: var(--theme-header-clock-night-icon);
+  fill: currentColor;
+  stroke: none;
+}
+
+.header-clock-pill-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
 }

@@ -88,3 +88,61 @@
   border-radius: inherit;
   transition: width 220ms ease;
 }
+
+.dashboard-timer-card {
+  text-align: left;
+}
+
+.dashboard-timer-value {
+  margin-top: 0.625rem;
+}
+
+.dashboard-timer-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: auto;
+}
+
+.dashboard-timer-action {
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.7rem;
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+}
+
+.dashboard-timer-action:hover {
+  background: var(--theme-sidebar-item-hover-bg);
+}
+
+.dashboard-timer-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.625rem;
+}
+
+.dashboard-timer-editor-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-text-secondary);
+}
+
+.dashboard-timer-input {
+  width: 6rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 0.6rem;
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-primary);
+  font-weight: var(--font-weight-semibold);
+  outline: none;
+}
+
+.dashboard-timer-input::-webkit-outer-spin-button,
+.dashboard-timer-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

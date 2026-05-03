@@ -9,14 +9,15 @@
 
 .frame-header {
   display: flex;
+  min-height: 2.4rem;
   align-items: center;
-  justify-content: flex-end;
+  gap: var(--space-md);
 }
 
 .frame-content {
   max-width: 1400px;
   height: calc(100% - 4.75rem);
-  margin: 1rem auto 0;
+  margin: 0.75rem auto 0;
 }
 
 .frame-grid {
@@ -37,4 +38,24 @@
   min-height: 0;
   flex-direction: column;
   gap: 1rem;
+}
+
+.frame-header-spacer {
+  flex: 1;
+}
+
+.frame-app-icon {
+  display: flex;
+  width: 56px;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-panel-border);
+  border-radius: var(--radius-lg);
+  background: var(--theme-panel-bg);
+  color: var(--theme-header-kicker);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+  margin: 0 0.5rem;
 }

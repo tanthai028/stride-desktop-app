@@ -11,19 +11,18 @@ export const APP_PAGES = {
 export const PAGE_METADATA = {
   [APP_PAGES.dashboard]: {
     eyebrow: "🏠 Dashboard",
-    title: "Overview",
-    description: "Your job search command center",
+    title: "Dashboard Overview",
+    description: "",
   },
   [APP_PAGES.library]: {
     eyebrow: "📚 Application Tracker",
-    title: "My Job Application Library",
-    description:
-      "Track companies, roles, statuses, links, and notes in one place.",
+    title: "Job Application Library",
+    description: "",
   },
   [APP_PAGES.settings]: {
     eyebrow: "⚙️ Settings",
     title: "App Preferences",
-    description: "Manage template behavior and local preferences.",
+    description: "",
   },
 };
 

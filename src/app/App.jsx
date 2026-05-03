@@ -13,6 +13,7 @@ import useStartupSequence from "./startup/useStartupSequence.js";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
+
   const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
 
   const { showSplash, mountRealApp, isAppReady } = useStartupSequence();
@@ -71,6 +72,7 @@ function App() {
             title={activePageMetadata.title}
             description={activePageMetadata.description}
           />
+
           {activePageContent}
         </WindowFrame>
       </div>

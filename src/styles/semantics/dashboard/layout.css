@@ -43,3 +43,44 @@
 .dashboard-apply-goal-input::-webkit-inner-spin-button {
   -webkit-appearance: none;
 }
+
+@media (max-width: 900px) {
+  .dashboard-overview-left {
+    display: contents;
+  }
+
+  .dashboard-overview-grid {
+    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+  }
+
+  /* top row always spans full width */
+  .dashboard-top-card-grid {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* bottom row = 2 equal columns */
+  .dashboard-quick-links-card,
+  .dashboard-recent-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 750px) {
+  .dashboard-overview-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* stack bottom cards only */
+  .dashboard-quick-links-card,
+  .dashboard-recent-card {
+    grid-column: 1 / -1;
+  }
+
+  .dashboard-recent-card {
+    min-height: 18rem;
+  }
+}
