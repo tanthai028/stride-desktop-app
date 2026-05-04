@@ -585,6 +585,16 @@ function DashboardPreview({
         </div>
 
         <div className="dashboard-quick-links-list">
+          {isEditingLinks ? (
+            <div
+              className="dashboard-quick-links-edit-header"
+              aria-hidden="true"
+            >
+              <span>Name</span>
+              <span>Link</span>
+              <span />
+            </div>
+          ) : null}
           {quickLinks.map((link) => {
             const faviconUrl = getFaviconUrl(link.url);
 
@@ -592,31 +602,21 @@ function DashboardPreview({
               <div key={link.id} className="dashboard-quick-link-row">
                 {isEditingLinks ? (
                   <>
-                    <label className="dashboard-quick-link-field">
-                      <span className="dashboard-quick-link-input-label">
-                        Name
-                      </span>
-                      <input
-                        aria-label="Quick link label"
-                        value={link.label}
-                        onChange={(event) =>
-                          updateQuickLink(link.id, "label", event.target.value)
-                        }
-                      />
-                    </label>
+                    <input
+                      aria-label="Quick link label"
+                      value={link.label}
+                      onChange={(event) =>
+                        updateQuickLink(link.id, "label", event.target.value)
+                      }
+                    />
 
-                    <label className="dashboard-quick-link-field">
-                      <span className="dashboard-quick-link-input-label">
-                        Link
-                      </span>
-                      <input
-                        aria-label="Quick link URL"
-                        value={link.url}
-                        onChange={(event) =>
-                          updateQuickLink(link.id, "url", event.target.value)
-                        }
-                      />
-                    </label>
+                    <input
+                      aria-label="Quick link URL"
+                      value={link.url}
+                      onChange={(event) =>
+                        updateQuickLink(link.id, "url", event.target.value)
+                      }
+                    />
 
                     <button
                       type="button"
