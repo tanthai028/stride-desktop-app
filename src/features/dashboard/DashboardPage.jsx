@@ -62,8 +62,7 @@ function DashboardPage({ settings, onAction }) {
         const firstDate = getAppliedDate(firstItem)?.getTime() ?? 0;
         const secondDate = getAppliedDate(secondItem)?.getTime() ?? 0;
         return secondDate - firstDate;
-      })
-      .slice(0, 6);
+      });
 
     return {
       todayCount,

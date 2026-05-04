@@ -3,7 +3,9 @@
 ================================ */
 
 .dashboard-quick-links-card {
+  display: flex;
   min-height: 0;
+  flex-direction: column;
 }
 
 .dashboard-quick-links-header {
@@ -63,7 +65,9 @@
 }
 
 .dashboard-quick-links-list {
-  display: grid;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
   gap: var(--space-sm);
 }
 
@@ -109,10 +113,11 @@
 .dashboard-quick-link-button {
   display: flex;
   width: 100%;
+  height: 3rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding: 0.75rem 0.85rem;
+  padding: 0 0.75rem;
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-md);
   background: var(--theme-card-bg-solid);

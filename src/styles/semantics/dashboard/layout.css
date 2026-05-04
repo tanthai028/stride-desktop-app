@@ -80,16 +80,32 @@
 }
 
 @media (max-width: 850px) {
-  .dashboard-overview-grid {
-    grid-template-columns: minmax(0, 1fr);
+  .dashboard-overview-section,
+  .dashboard-overview-section .page-section-body {
+    flex: 0 0 auto;
+    min-height: auto;
   }
 
+  .dashboard-overview-grid {
+    flex: 0 0 auto;
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+  }
+
+  .dashboard-top-card-grid,
   .dashboard-quick-links-card,
   .dashboard-recent-card {
     grid-column: 1 / -1;
   }
 
+  .dashboard-quick-links-card {
+    height: 26rem;
+    min-height: 26rem;
+  }
+
   .dashboard-recent-card {
-    min-height: 18rem;
+    height: 30rem;
+    min-height: 30rem;
   }
 }

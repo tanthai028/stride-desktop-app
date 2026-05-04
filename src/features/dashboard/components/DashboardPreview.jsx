@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import {
   Check,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   ExternalLink,
   Link,
@@ -26,6 +28,9 @@ const APPLY_GOAL_STORAGE_KEY = "dashboardApplyGoalTarget";
 const QUICK_LINKS_STORAGE_KEY = "dashboardQuickLinks";
 
 const DEFAULT_APPLY_GOAL_TARGET = 3;
+const DEFAULT_RECENT_APPS_PER_PAGE = 4;
+const RECENT_APP_ROW_HEIGHT = 58;
+const QUICK_LINKS_PER_PAGE = 5;
 const DEFAULT_QUICK_LINKS = [
   {
     id: "job-sheet",
@@ -146,6 +151,90 @@ function DashboardTitle({ icon: Icon, children, className = "" }) {
   );
 }
 
+function getPaginationItems(currentPage, totalPages) {
+  if (totalPages <= 6) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  if (currentPage <= 4) {
+    return [1, 2, 3, 4, 5, "ellipsis", totalPages];
+  }
+
+  if (currentPage >= totalPages - 3) {
+    return [
+      1,
+      "ellipsis",
+      totalPages - 4,
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ];
+  }
+
+  return [
+    1,
+    "ellipsis-left",
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    "ellipsis-right",
+    totalPages,
+  ];
+}
+
+function DashboardPagination({ currentPage, totalPages, onPageChange }) {
+  if (totalPages <= 1) return null;
+
+  const pageItems = getPaginationItems(currentPage, totalPages);
+
+  return (
+    <div
+      className="dashboard-pagination"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <button
+        type="button"
+        className="dashboard-pagination-button"
+        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+        disabled={currentPage === 1}
+        aria-label="Previous page"
+      >
+        <ChevronLeft />
+      </button>
+
+      {pageItems.map((item) =>
+        String(item).startsWith("ellipsis") ? (
+          <span key={item} className="dashboard-pagination-ellipsis">
+            ...
+          </span>
+        ) : (
+          <button
+            key={item}
+            type="button"
+            className={`dashboard-pagination-button ${
+              item === currentPage ? "dashboard-pagination-button--active" : ""
+            }`}
+            onClick={() => onPageChange(item)}
+          >
+            {item}
+          </button>
+        ),
+      )}
+
+      <button
+        type="button"
+        className="dashboard-pagination-button"
+        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+        disabled={currentPage === totalPages}
+        aria-label="Next page"
+      >
+        <ChevronRight />
+      </button>
+    </div>
+  );
+}
+
 function DashboardPreview({
   variant = "applyGoal",
   todayApplicationCount = 0,
@@ -159,6 +248,8 @@ function DashboardPreview({
     getSavedApplyGoalTarget,
   );
   const [quickLinks, setQuickLinks] = useState(getSavedQuickLinks);
+  const [recentPage, setRecentPage] = useState(1);
+  const [quickLinksPage, setQuickLinksPage] = useState(1);
   const [isEditingLinks, setIsEditingLinks] = useState(false);
   const [timerMinutes, setTimerMinutes] = useState(getSavedTimerMinutes);
   const [timerSeconds, setTimerSeconds] = useState(
@@ -172,6 +263,10 @@ function DashboardPreview({
   const hasTimerFinishedRef = useRef(false);
   const timerMinutesInputRef = useRef(null);
   const timerSecondsInputRef = useRef(null);
+  const recentListRef = useRef(null);
+  const [recentAppsPerPage, setRecentAppsPerPage] = useState(
+    DEFAULT_RECENT_APPS_PER_PAGE,
+  );
 
   const applyGoalCardRef = useRef(null);
   const applyGoalInputRef = useRef(null);
@@ -272,6 +367,41 @@ function DashboardPreview({
     };
   }, [isEditingTimer, isEditingApplyGoal]);
 
+  useEffect(() => {
+    const listElement = recentListRef.current;
+    if (!listElement) return undefined;
+
+    const updateRecentAppsPerPage = () => {
+      const availableHeight = listElement.clientHeight;
+      const nextPerPage = Math.max(
+        1,
+        Math.floor(availableHeight / RECENT_APP_ROW_HEIGHT),
+      );
+
+      setRecentAppsPerPage(nextPerPage);
+    };
+
+    updateRecentAppsPerPage();
+
+    const resizeObserver = new ResizeObserver(updateRecentAppsPerPage);
+    resizeObserver.observe(listElement);
+
+    return () => resizeObserver.disconnect();
+  }, [variant]);
+
+  useEffect(() => {
+    setRecentPage(1);
+  }, [recentItems.length, recentAppsPerPage]);
+
+  useEffect(() => {
+    const totalPages = Math.max(
+      1,
+      Math.ceil(quickLinks.length / QUICK_LINKS_PER_PAGE),
+    );
+
+    setQuickLinksPage((page) => Math.min(page, totalPages));
+  }, [quickLinks.length]);
+
   const applyGoalProgress = Math.min(
     100,
     Math.round((todayApplicationCount / applyGoalTarget) * 100),
@@ -291,14 +421,19 @@ function DashboardPreview({
   };
 
   const addQuickLink = () => {
-    setQuickLinks((links) => [
-      ...links,
-      {
-        id: `link-${Date.now()}`,
-        label: "New Link",
-        url: "https://",
-      },
-    ]);
+    setQuickLinks((links) => {
+      const nextLinks = [
+        ...links,
+        {
+          id: `link-${Date.now()}`,
+          label: "New Link",
+          url: "https://",
+        },
+      ];
+
+      setQuickLinksPage(Math.ceil(nextLinks.length / QUICK_LINKS_PER_PAGE));
+      return nextLinks;
+    });
 
     setIsEditingLinks(true);
   };
@@ -505,6 +640,14 @@ function DashboardPreview({
 
   if (variant === "recentApplications") {
     const periodLabel = recentPeriod === "today" ? "Today" : "This Week";
+    const recentTotalPages = Math.max(
+      1,
+      Math.ceil(recentItems.length / recentAppsPerPage),
+    );
+    const visibleRecentItems = recentItems.slice(
+      (recentPage - 1) * recentAppsPerPage,
+      recentPage * recentAppsPerPage,
+    );
 
     return (
       <div
@@ -541,9 +684,9 @@ function DashboardPreview({
           </button>
         </div>
 
-        <div className="dashboard-recent-list">
+        <div ref={recentListRef} className="dashboard-recent-list">
           {recentItems.length > 0 ? (
-            recentItems.map((item) => {
+            visibleRecentItems.map((item) => {
               const statusMeta = getStatusMeta(item.status);
 
               return (
@@ -581,6 +724,11 @@ function DashboardPreview({
             </p>
           )}
         </div>
+        <DashboardPagination
+          currentPage={recentPage}
+          totalPages={recentTotalPages}
+          onPageChange={setRecentPage}
+        />
         <button
           type="button"
           className="dashboard-recent-add-button"
@@ -598,6 +746,14 @@ function DashboardPreview({
   }
 
   if (variant === "quickLinks") {
+    const quickLinksTotalPages = Math.max(
+      1,
+      Math.ceil(quickLinks.length / QUICK_LINKS_PER_PAGE),
+    );
+    const visibleQuickLinks = quickLinks.slice(
+      (quickLinksPage - 1) * QUICK_LINKS_PER_PAGE,
+      quickLinksPage * QUICK_LINKS_PER_PAGE,
+    );
     return (
       <div
         className="surface-card dashboard-card dashboard-quick-links-card dashboard-clickable-card"
@@ -662,7 +818,7 @@ function DashboardPreview({
               <span />
             </div>
           ) : null}
-          {quickLinks.map((link) => {
+          {visibleQuickLinks.map((link) => {
             const faviconUrl = getFaviconUrl(link.url);
 
             return (
@@ -704,7 +860,10 @@ function DashboardPreview({
                   <button
                     type="button"
                     className="dashboard-quick-link-button"
-                    onClick={() => openDashboardLink(link.url)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openDashboardLink(link.url);
+                    }}
                   >
                     <span className="dashboard-quick-link-main">
                       <span className="dashboard-quick-link-site-icon">
@@ -738,6 +897,11 @@ function DashboardPreview({
             );
           })}
         </div>
+        <DashboardPagination
+          currentPage={quickLinksPage}
+          totalPages={quickLinksTotalPages}
+          onPageChange={setQuickLinksPage}
+        />
       </div>
     );
   }
