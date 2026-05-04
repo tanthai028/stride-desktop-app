@@ -1,4 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Check,
+  Clock3,
+  ExternalLink,
+  Link,
+  ListChecks,
+  Pause,
+  Pencil,
+  Play,
+  Plus,
+  RotateCcw,
+  Target,
+  Trash2,
+} from "lucide-react";
 import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
 const TIMER_STORAGE_KEY = "dashboardTimerMinutes";
@@ -26,30 +40,6 @@ const DEFAULT_QUICK_LINKS = [
   },
 ];
 
-function IconButton({ type }) {
-  const paths = {
-    edit: "M12 20h9 M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z",
-    done: "M20 6 9 17l-5-5",
-    add: "M12 5v14 M5 12h14",
-    remove: "M3 6h18 M8 6V4h8v2 M6 6l1 14h10l1-14",
-    open: "M7 17 17 7 M9 7h8v8",
-  };
-
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d={paths[type]} />
-    </svg>
-  );
-}
-
 function getSavedApplyGoalTarget() {
   const savedTarget = Number(localStorage.getItem(APPLY_GOAL_STORAGE_KEY));
 
@@ -73,6 +63,21 @@ function formatTimerSeconds(seconds) {
   return `${String(minutes).padStart(2, "0")}:${String(
     remainingSeconds,
   ).padStart(2, "0")}`;
+}
+
+function formatTimerDurationLabel(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes > 0 && remainingSeconds > 0) {
+    return `${minutes} min ${remainingSeconds} sec`;
+  }
+
+  if (minutes > 0) {
+    return `${minutes} minute${minutes === 1 ? "" : "s"}`;
+  }
+
+  return `${remainingSeconds} second${remainingSeconds === 1 ? "" : "s"}`;
 }
 
 function getSavedQuickLinks() {
@@ -128,6 +133,15 @@ function openDashboardLink(url) {
   window.open(normalizedUrl, "_blank", "noopener,noreferrer");
 }
 
+function DashboardTitle({ icon: Icon, children, className = "" }) {
+  return (
+    <span className={`dashboard-title-with-icon ${className}`}>
+      <Icon className="dashboard-title-icon" />
+      <span>{children}</span>
+    </span>
+  );
+}
+
 function DashboardPreview({
   variant = "applyGoal",
   todayApplicationCount = 0,
@@ -147,6 +161,16 @@ function DashboardPreview({
   );
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isEditingTimer, setIsEditingTimer] = useState(false);
+  const [timerDraftMinutes, setTimerDraftMinutes] = useState("");
+  const [timerDraftSeconds, setTimerDraftSeconds] = useState("");
+  const timerCardRef = useRef(null);
+  const timerMinutesInputRef = useRef(null);
+  const timerSecondsInputRef = useRef(null);
+
+  const applyGoalCardRef = useRef(null);
+  const applyGoalInputRef = useRef(null);
+  const [isEditingApplyGoal, setIsEditingApplyGoal] = useState(false);
+  const [applyGoalDraft, setApplyGoalDraft] = useState("");
 
   useEffect(() => {
     localStorage.setItem(APPLY_GOAL_STORAGE_KEY, String(applyGoalTarget));
@@ -177,9 +201,58 @@ function DashboardPreview({
     return () => window.clearInterval(intervalId);
   }, [isTimerRunning]);
 
+  useEffect(() => {
+    if (!isEditingTimer) return;
+
+    timerMinutesInputRef.current?.focus();
+    timerMinutesInputRef.current?.select();
+  }, [isEditingTimer]);
+
+  useEffect(() => {
+    if (!isEditingApplyGoal) return;
+
+    applyGoalInputRef.current?.focus();
+    applyGoalInputRef.current?.select();
+  }, [isEditingApplyGoal]);
+
+  useEffect(() => {
+    if (!isEditingTimer && !isEditingApplyGoal) return undefined;
+
+    function handlePointerDown(event) {
+      if (
+        isEditingTimer &&
+        timerCardRef.current &&
+        !timerCardRef.current.contains(event.target)
+      ) {
+        cancelTimerEdit();
+      }
+
+      if (
+        isEditingApplyGoal &&
+        applyGoalCardRef.current &&
+        !applyGoalCardRef.current.contains(event.target)
+      ) {
+        cancelApplyGoalEdit();
+      }
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+    };
+  }, [isEditingTimer, isEditingApplyGoal]);
+
   const applyGoalProgress = Math.min(
     100,
     Math.round((todayApplicationCount / applyGoalTarget) * 100),
+  );
+
+  const timerTotalSeconds = Math.max(1, Math.round(timerMinutes * 60));
+
+  const timerProgress = Math.min(
+    100,
+    Math.round((timerSeconds / timerTotalSeconds) * 100),
   );
 
   const updateQuickLink = (linkId, field, value) => {
@@ -209,75 +282,189 @@ function DashboardPreview({
     );
   };
 
+  const startEditingTimer = () => {
+    const minutes = Math.floor(timerSeconds / 60);
+    const seconds = timerSeconds % 60;
+
+    setTimerDraftMinutes(String(minutes));
+    setTimerDraftSeconds(String(seconds).padStart(2, "0"));
+    setIsEditingTimer(true);
+  };
+
+  const confirmTimerEdit = (
+    nextDraftMinutes = timerDraftMinutes,
+    nextDraftSeconds = timerDraftSeconds,
+  ) => {
+    const minutes = Number(nextDraftMinutes || 0);
+    const seconds = Math.min(59, Number(nextDraftSeconds || 0));
+    const nextSeconds = Math.max(1, Math.round(minutes * 60 + seconds));
+
+    setTimerMinutes(nextSeconds / 60);
+    setTimerSeconds(nextSeconds);
+    setIsTimerRunning(false);
+    setIsEditingTimer(false);
+  };
+
+  const cancelTimerEdit = () => {
+    setIsEditingTimer(false);
+  };
+
+  const startEditingApplyGoal = () => {
+    setApplyGoalDraft(String(applyGoalTarget));
+    setIsEditingApplyGoal(true);
+  };
+
+  const confirmApplyGoalEdit = () => {
+    const nextGoal = Number(applyGoalDraft);
+
+    setApplyGoalTarget(
+      Number.isFinite(nextGoal) && nextGoal > 0
+        ? nextGoal
+        : DEFAULT_APPLY_GOAL_TARGET,
+    );
+
+    setIsEditingApplyGoal(false);
+  };
+
+  const cancelApplyGoalEdit = () => {
+    setApplyGoalDraft(String(applyGoalTarget));
+    setIsEditingApplyGoal(false);
+  };
+
   if (variant === "timer") {
     return (
-      <button
-        type="button"
-        className="surface-card stat-card dashboard-metric-card dashboard-timer-card dashboard-clickable-card"
-        onClick={() => setIsEditingTimer(true)}
+      <div
+        ref={timerCardRef}
+        className="surface-card stat-card dashboard-metric-card dashboard-timer-card dashboard-editable-card"
+        role="button"
+        tabIndex={0}
+        onClick={startEditingTimer}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            startEditingTimer();
+          }
+        }}
       >
         <div className="dashboard-metric-content">
-          <p className="stat-card-label stat-card-label--violet">Timer</p>
+          <div className="dashboard-timer-header">
+            <p className="stat-card-label stat-card-label--violet">
+              <DashboardTitle icon={Clock3}>Timer</DashboardTitle>
+            </p>
+
+            <div className="dashboard-timer-header-actions">
+              <button
+                type="button"
+                className="dashboard-icon-action dashboard-timer-icon-button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsTimerRunning((current) => !current);
+                }}
+                aria-label={isTimerRunning ? "Pause timer" : "Start timer"}
+                title={isTimerRunning ? "Pause" : "Start"}
+              >
+                {isTimerRunning ? <Pause /> : <Play />}
+              </button>
+
+              <button
+                type="button"
+                className="dashboard-icon-action dashboard-timer-icon-button"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsTimerRunning(false);
+                  setTimerSeconds(timerTotalSeconds);
+                }}
+                aria-label="Reset timer"
+                title="Reset"
+              >
+                <RotateCcw />
+              </button>
+            </div>
+          </div>
 
           {isEditingTimer ? (
-            <label
-              className="dashboard-timer-editor"
-              onClick={(event) => event.stopPropagation()}
-            >
-              <span className="dashboard-timer-editor-label">Minutes</span>
-
+            <h2 className="stat-card-title dashboard-metric-value dashboard-timer-edit-value">
               <input
-                aria-label="Timer minutes"
-                className="dashboard-timer-input"
-                type="number"
-                min="1"
-                value={timerMinutes}
-                onChange={(event) => {
-                  const nextMinutes = Number(event.target.value);
-                  const normalizedMinutes =
-                    Number.isFinite(nextMinutes) && nextMinutes > 0
-                      ? nextMinutes
-                      : 1;
+                ref={timerMinutesInputRef}
+                value={timerDraftMinutes}
+                onChange={(event) =>
+                  setTimerDraftMinutes(event.target.value.replace(/\D/g, ""))
+                }
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => {
+                  event.stopPropagation();
 
-                  setTimerMinutes(normalizedMinutes);
-                  setTimerSeconds(normalizedMinutes * 60);
-                  setIsTimerRunning(false);
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+
+                    const nextMinutes = event.currentTarget.value.replace(
+                      /\D/g,
+                      "",
+                    );
+                    setTimerDraftMinutes(nextMinutes);
+
+                    window.requestAnimationFrame(() => {
+                      timerSecondsInputRef.current?.focus();
+                      timerSecondsInputRef.current?.select();
+                    });
+                  }
+
+                  if (event.key === "Escape") {
+                    cancelTimerEdit();
+                  }
                 }}
-                onBlur={() => setIsEditingTimer(false)}
-                autoFocus
+                className="dashboard-inline-edit dashboard-inline-edit--timer-minutes"
+                inputMode="numeric"
               />
-            </label>
+              <span>:</span>
+              <input
+                ref={timerSecondsInputRef}
+                value={timerDraftSeconds}
+                onChange={(event) =>
+                  setTimerDraftSeconds(
+                    event.target.value.replace(/\D/g, "").slice(0, 2),
+                  )
+                }
+                onClick={(event) => event.stopPropagation()}
+                onKeyDown={(event) => {
+                  event.stopPropagation();
+
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+
+                    const nextSeconds = event.currentTarget.value
+                      .replace(/\D/g, "")
+                      .slice(0, 2);
+
+                    confirmTimerEdit(timerDraftMinutes, nextSeconds);
+                  }
+
+                  if (event.key === "Escape") {
+                    cancelTimerEdit();
+                  }
+                }}
+                className="dashboard-inline-edit dashboard-inline-edit--timer-seconds"
+                inputMode="numeric"
+              />
+            </h2>
           ) : (
             <h2 className="stat-card-title dashboard-metric-value dashboard-timer-value">
               {formatTimerSeconds(timerSeconds)}
             </h2>
           )}
 
-          <div
-            className="dashboard-timer-actions"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              type="button"
-              className="dashboard-timer-action"
-              onClick={() => setIsTimerRunning((current) => !current)}
-            >
-              {isTimerRunning ? "Pause" : "Start"}
-            </button>
+          <p className="stat-card-description dashboard-timer-duration-text">
+            Duration: {formatTimerDurationLabel(timerTotalSeconds)}
+          </p>
 
-            <button
-              type="button"
-              className="dashboard-timer-action"
-              onClick={() => {
-                setIsTimerRunning(false);
-                setTimerSeconds(timerMinutes * 60);
-              }}
-            >
-              Reset
-            </button>
+          <div className="dashboard-status-chart-track dashboard-timer-track">
+            <div
+              className="dashboard-status-chart-fill dashboard-status-chart-fill--violet"
+              style={{ width: `${timerProgress}%` }}
+            />
           </div>
         </div>
-      </button>
+      </div>
     );
   }
 
@@ -299,7 +486,9 @@ function DashboardPreview({
       >
         <div className="dashboard-recent-header">
           <p className="stat-card-description dashboard-card-title dashboard-recent-card-title text-sm font-medium">
-            Recent Applications{" "}
+            <DashboardTitle icon={ListChecks}>
+              Recent Applications
+            </DashboardTitle>{" "}
             <span className="dashboard-recent-count-chip">
               {recentItems.length}
             </span>
@@ -323,7 +512,16 @@ function DashboardPreview({
               const statusMeta = getStatusMeta(item.status);
 
               return (
-                <div key={item.id} className="dashboard-recent-item">
+                <button
+                  key={item.id}
+                  type="button"
+                  className="dashboard-recent-item"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    openDashboardLink(item.jobUrl);
+                  }}
+                  disabled={!item.jobUrl}
+                >
                   <p className="dashboard-recent-title">
                     {item.company || "Untitled Company"} ·{" "}
                     {item.role || "Untitled Role"}
@@ -339,7 +537,7 @@ function DashboardPreview({
                       {formatLibraryAppliedDate(item.appliedAt)}
                     </span>
                   </div>
-                </div>
+                </button>
               );
             })
           ) : (
@@ -357,7 +555,7 @@ function DashboardPreview({
       <div className="surface-card dashboard-card dashboard-quick-links-card">
         <div className="dashboard-card-header dashboard-quick-links-header">
           <p className="stat-card-description dashboard-card-title text-sm font-medium">
-            Quick Links
+            <DashboardTitle icon={Link}>Quick Links</DashboardTitle>
           </p>
 
           <div className="dashboard-quick-links-actions">
@@ -369,7 +567,7 @@ function DashboardPreview({
                 aria-label="Add quick link"
                 title="Add link"
               >
-                <IconButton type="add" />
+                <Plus />
               </button>
             ) : null}
             <button
@@ -381,7 +579,7 @@ function DashboardPreview({
               }
               title={isEditingLinks ? "Done" : "Edit"}
             >
-              <IconButton type={isEditingLinks ? "done" : "edit"} />
+              {isEditingLinks ? <Check /> : <Pencil />}
             </button>
           </div>
         </div>
@@ -427,7 +625,7 @@ function DashboardPreview({
                       aria-label={`Remove ${link.label || "quick link"}`}
                       title="Remove"
                     >
-                      <IconButton type="remove" />
+                      <Trash2 />
                     </button>
                   </>
                 ) : (
@@ -460,7 +658,7 @@ function DashboardPreview({
                     </span>
 
                     <span className="dashboard-quick-link-open-icon">
-                      <IconButton type="open" />
+                      <ExternalLink />
                     </span>
                   </button>
                 )}
@@ -473,30 +671,59 @@ function DashboardPreview({
   }
 
   return (
-    <div className="surface-card stat-card dashboard-metric-card dashboard-apply-goal-card">
+    <div
+      ref={applyGoalCardRef}
+      className="surface-card stat-card dashboard-metric-card dashboard-apply-goal-card dashboard-editable-card"
+      role="button"
+      tabIndex={0}
+      onClick={startEditingApplyGoal}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          startEditingApplyGoal();
+        }
+      }}
+    >
       <div className="dashboard-metric-content">
         <div className="dashboard-apply-goal-header">
-          <p className="stat-card-label stat-card-label--sky">Daily Goal</p>
-
-          <input
-            aria-label="Daily application goal target"
-            className="dashboard-apply-goal-input"
-            type="number"
-            min="1"
-            value={applyGoalTarget}
-            onChange={(event) => {
-              const nextTarget = Number(event.target.value);
-
-              setApplyGoalTarget(
-                Number.isFinite(nextTarget) && nextTarget > 0 ? nextTarget : 1,
-              );
-            }}
-          />
+          <p className="stat-card-label stat-card-label--sky">
+            <DashboardTitle icon={Target}>Daily Goal</DashboardTitle>
+          </p>
         </div>
 
-        <h2 className="stat-card-title dashboard-metric-value">
-          {todayApplicationCount}/{applyGoalTarget}
-        </h2>
+        {isEditingApplyGoal ? (
+          <h2 className="stat-card-title dashboard-metric-value">
+            <span>{todayApplicationCount}/</span>
+            <input
+              ref={applyGoalInputRef}
+              type="number"
+              min="1"
+              value={applyGoalDraft}
+              onChange={(event) => {
+                setApplyGoalDraft(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                event.stopPropagation();
+
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  confirmApplyGoalEdit();
+                }
+
+                if (event.key === "Escape") {
+                  event.preventDefault();
+                  cancelApplyGoalEdit();
+                }
+              }}
+              className="dashboard-inline-edit dashboard-inline-edit--goal"
+              onClick={(event) => event.stopPropagation()}
+            />
+          </h2>
+        ) : (
+          <h2 className="stat-card-title dashboard-metric-value">
+            {todayApplicationCount}/{applyGoalTarget}
+          </h2>
+        )}
 
         <p className="stat-card-description dashboard-metric-description">
           Apply to {applyGoalTarget} jobs

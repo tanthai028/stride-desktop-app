@@ -24,6 +24,7 @@
 .dashboard-summary-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: var(--space-xl);
   padding: var(--space-xs);
 }
@@ -44,37 +45,45 @@
   -webkit-appearance: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
   .dashboard-overview-left {
     display: contents;
   }
 
   .dashboard-overview-grid {
-    grid-template-columns: minmax(0, 0.4fr) minmax(0, 0.6fr);
+    align-items: stretch;
+    grid-template-columns: minmax(0, 0.45fr) minmax(0, 0.55fr);
+    grid-auto-rows: auto minmax(0, 1fr);
   }
 
-  /* top row always spans full width */
   .dashboard-top-card-grid {
     grid-column: 1 / -1;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
   }
 
-  /* bottom row = 2 equal columns */
+  .dashboard-top-card-grid .dashboard-metric-card,
+  .dashboard-top-card-grid .dashboard-apply-goal-card {
+    height: 100%;
+  }
+
   .dashboard-quick-links-card,
   .dashboard-recent-card {
     display: flex;
-    flex-direction: column;
-    height: 100%;
     min-width: 0;
+    flex-direction: column;
+  }
+
+  .dashboard-recent-card {
+    height: 100%;
   }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 850px) {
   .dashboard-overview-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* stack bottom cards only */
   .dashboard-quick-links-card,
   .dashboard-recent-card {
     grid-column: 1 / -1;

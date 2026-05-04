@@ -59,7 +59,6 @@
 }
 
 .dashboard-clickable-card:hover {
-  transform: translateY(-1px);
   border-color: var(--theme-card-border-hover, var(--theme-card-border));
   box-shadow: var(--theme-card-hover-shadow);
 }
@@ -81,7 +80,7 @@
 }
 
 .stat-card-label {
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
@@ -120,4 +119,18 @@
 
 .stat-card-label--sky {
   color: var(--theme-stat-card-sky-label);
+}
+
+.dashboard-title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.dashboard-title-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  stroke-width: 2.15;
 }

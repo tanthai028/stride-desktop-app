@@ -22,7 +22,30 @@
   flex-direction: column;
   gap: 0.25rem;
   padding: 0.78rem 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
   text-align: left;
+  cursor: pointer;
+}
+
+.dashboard-recent-item:hover {
+  background: transparent;
+}
+
+.dashboard-recent-item:hover .dashboard-recent-title {
+  color: var(--theme-text-primary);
+}
+
+.dashboard-recent-item:disabled {
+  cursor: default;
+  opacity: 0.75;
+}
+
+.dashboard-recent-item:disabled:hover {
+  background: transparent;
 }
 
 .dashboard-recent-title {
@@ -72,8 +95,10 @@
 }
 
 .dashboard-recent-card-title {
-  width: auto;
+  display: flex;
   min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .dashboard-recent-period-button {
@@ -97,7 +122,6 @@
 .dashboard-recent-count-chip {
   display: inline-flex;
   align-items: center;
-  margin-left: 0.5rem;
   padding: 0.2rem 0.55rem;
   border-radius: var(--radius-pill);
   border: 1px solid var(--theme-card-border);
