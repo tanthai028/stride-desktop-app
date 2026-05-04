@@ -85,6 +85,28 @@ function createIpcHandler(handler) {
 }
 
 function registerWindowEvents() {
+  ipcMain.on("timer:flash-taskbar", () => {
+    const win = BrowserWindow.getAllWindows()[0];
+
+    if (!win || win.isDestroyed()) return;
+
+    win.flashFrame(true);
+
+    win.once("focus", () => {
+      if (!win.isDestroyed()) {
+        win.flashFrame(false);
+      }
+    });
+  });
+
+  ipcMain.on("timer:stop-flash-taskbar", () => {
+    const win = BrowserWindow.getAllWindows()[0];
+
+    if (!win || win.isDestroyed()) return;
+
+    win.flashFrame(false);
+  });
+
   ipcMain.on("window:minimize", () => {
     const win = BrowserWindow.getFocusedWindow();
     if (win) win.minimize();

@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld("windowControls", {
   close: () => ipcRenderer.send("window:close"),
 });
 
+contextBridge.exposeInMainWorld("timerApi", {
+  flashTaskbar: () => ipcRenderer.send("timer:flash-taskbar"),
+  stopFlashTaskbar: () => ipcRenderer.send("timer:stop-flash-taskbar"),
+});
+
 contextBridge.exposeInMainWorld("appStartup", {
   onWindowShown: (callback) => {
     const handler = () => callback();

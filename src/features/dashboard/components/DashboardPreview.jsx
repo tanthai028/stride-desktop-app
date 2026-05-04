@@ -14,6 +14,11 @@ import {
 } from "lucide-react";
 import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
+import {
+  playTimerAlarm,
+  primeUiFeedbackAudio,
+  stopTimerAlarm,
+} from "../../../lib/uiFeedback.js";
 const TIMER_STORAGE_KEY = "dashboardTimerMinutes";
 const DEFAULT_TIMER_MINUTES = 30;
 
@@ -164,6 +169,7 @@ function DashboardPreview({
   const [timerDraftMinutes, setTimerDraftMinutes] = useState("");
   const [timerDraftSeconds, setTimerDraftSeconds] = useState("");
   const timerCardRef = useRef(null);
+  const hasTimerFinishedRef = useRef(false);
   const timerMinutesInputRef = useRef(null);
   const timerSecondsInputRef = useRef(null);
 
@@ -171,6 +177,7 @@ function DashboardPreview({
   const applyGoalInputRef = useRef(null);
   const [isEditingApplyGoal, setIsEditingApplyGoal] = useState(false);
   const [applyGoalDraft, setApplyGoalDraft] = useState("");
+  const timerTotalSeconds = Math.max(1, Math.round(timerMinutes * 60));
 
   useEffect(() => {
     localStorage.setItem(APPLY_GOAL_STORAGE_KEY, String(applyGoalTarget));
@@ -200,6 +207,28 @@ function DashboardPreview({
 
     return () => window.clearInterval(intervalId);
   }, [isTimerRunning]);
+
+  useEffect(() => {
+    if (timerSeconds > 0) {
+      hasTimerFinishedRef.current = false;
+      window.timerApi?.stopFlashTaskbar?.();
+      return;
+    }
+
+    if (hasTimerFinishedRef.current) return;
+
+    hasTimerFinishedRef.current = true;
+    setIsTimerRunning(false);
+
+    // reset instantly
+    setTimerSeconds(timerTotalSeconds);
+    hasTimerFinishedRef.current = false;
+
+    // play sound after reset
+    playTimerAlarm({ loopCount: 2 });
+
+    window.timerApi?.flashTaskbar?.();
+  }, [timerSeconds, timerTotalSeconds]);
 
   useEffect(() => {
     if (!isEditingTimer) return;
@@ -247,8 +276,6 @@ function DashboardPreview({
     100,
     Math.round((todayApplicationCount / applyGoalTarget) * 100),
   );
-
-  const timerTotalSeconds = Math.max(1, Math.round(timerMinutes * 60));
 
   const timerProgress = Math.min(
     100,
@@ -431,6 +458,9 @@ function DashboardPreview({
                 className="dashboard-icon-action dashboard-timer-icon-button"
                 onClick={(event) => {
                   event.stopPropagation();
+                  void primeUiFeedbackAudio();
+                  stopTimerAlarm();
+                  window.timerApi?.stopFlashTaskbar?.();
                   setIsTimerRunning((current) => !current);
                 }}
                 aria-label={isTimerRunning ? "Pause timer" : "Start timer"}
@@ -444,8 +474,11 @@ function DashboardPreview({
                 className="dashboard-icon-action dashboard-timer-icon-button"
                 onClick={(event) => {
                   event.stopPropagation();
+                  stopTimerAlarm();
                   setIsTimerRunning(false);
                   setTimerSeconds(timerTotalSeconds);
+                  window.timerApi?.stopFlashTaskbar?.();
+                  hasTimerFinishedRef.current = false;
                 }}
                 aria-label="Reset timer"
                 title="Reset"
