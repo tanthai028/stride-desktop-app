@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import LibraryFormModal from "../library/components/form/LibraryFormModal.jsx";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
@@ -33,8 +34,10 @@ function isSameDay(date, targetDate) {
 }
 
 function DashboardPage({ settings, onAction }) {
-  const { items, loadError } = useLibraryItems(settings.resetVersion);
+  const { items, loadError, addItem } = useLibraryItems(settings.resetVersion);
   const [recentPeriod, setRecentPeriod] = useState("today");
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [modalErrorMessage, setModalErrorMessage] = useState("");
 
   const dashboardData = useMemo(() => {
     const today = getStartOfToday();
@@ -74,6 +77,36 @@ function DashboardPage({ settings, onAction }) {
     );
   }
 
+  function clearModalError() {
+    setModalErrorMessage("");
+  }
+
+  function handleOpenAddModal() {
+    clearModalError();
+    setIsAddModalOpen(true);
+  }
+
+  function handleCloseAddModal() {
+    clearModalError();
+    setIsAddModalOpen(false);
+  }
+
+  async function handleAddItem(formValues) {
+    if (formValues?.__clientValidationError) {
+      setModalErrorMessage(formValues.__clientValidationError);
+      return;
+    }
+
+    try {
+      await addItem(formValues);
+      handleCloseAddModal();
+    } catch (error) {
+      setModalErrorMessage(
+        error?.message || "Something went wrong. Please try again.",
+      );
+    }
+  }
+
   return (
     <motion.div
       initial={{ y: 14 }}
@@ -111,10 +144,21 @@ function DashboardPage({ settings, onAction }) {
               recentPeriod={recentPeriod}
               onRecentPeriodClick={cycleRecentPeriod}
               onRecentApplicationsClick={() => onAction("library")}
+              onAddApplicationClick={handleOpenAddModal}
             />
           </div>
         </PageSection>
       </PageShell>
+      <LibraryFormModal
+        isOpen={isAddModalOpen}
+        mode="add"
+        item={null}
+        errorMessage={modalErrorMessage}
+        onClearError={clearModalError}
+        onClose={handleCloseAddModal}
+        onSubmit={handleAddItem}
+        onDelete={undefined}
+      />
     </motion.div>
   );
 }

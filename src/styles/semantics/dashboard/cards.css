@@ -10,6 +10,11 @@
   font-family: inherit;
 }
 
+.dashboard-icon-action:hover {
+  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  background: var(--theme-sidebar-item-hover-bg);
+}
+
 .dashboard-card {
   padding: var(--space-lg);
   border-radius: var(--radius-lg);

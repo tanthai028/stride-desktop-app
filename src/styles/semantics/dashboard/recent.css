@@ -3,6 +3,7 @@
 ================================ */
 
 .dashboard-recent-card {
+  position: relative;
   display: flex;
   min-height: 0;
   flex-direction: column;
@@ -99,6 +100,7 @@
   min-width: 0;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
 }
 
 .dashboard-recent-period-button {
@@ -133,4 +135,47 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
   white-space: nowrap;
+}
+
+.dashboard-recent-add-button {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-primary);
+  box-shadow: var(--theme-card-hover-shadow);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(0.25rem) scale(0.96);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dashboard-recent-card:hover .dashboard-recent-add-button,
+.dashboard-recent-card:focus-within .dashboard-recent-add-button {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.dashboard-recent-add-button:hover {
+  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  background: var(--theme-sidebar-item-hover-bg);
+}
+
+.dashboard-recent-add-button svg {
+  width: 1rem;
+  height: 1rem;
 }

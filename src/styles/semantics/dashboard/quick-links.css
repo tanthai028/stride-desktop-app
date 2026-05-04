@@ -9,7 +9,7 @@
 .dashboard-quick-links-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  align-items: start;
   gap: var(--space-md);
 }
 
@@ -25,6 +25,23 @@
   gap: var(--space-xs);
   padding-top: 0;
   margin-top: -0.25rem;
+}
+
+.dashboard-quick-links-actions {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.25rem) scale(0.96);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.dashboard-quick-links-card:hover .dashboard-quick-links-actions,
+.dashboard-quick-links-card:focus-within .dashboard-quick-links-actions,
+.dashboard-quick-links-card:has(.dashboard-quick-links-edit-header)
+  .dashboard-quick-links-actions {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .dashboard-icon-action {

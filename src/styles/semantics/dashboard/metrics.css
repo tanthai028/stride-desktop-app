@@ -16,7 +16,7 @@
 .dashboard-metric-card .stat-card-label {
   position: relative;
   width: 100%;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.65rem;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
@@ -109,8 +109,24 @@
 
 .dashboard-timer-header-actions {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.4rem;
+}
+
+.dashboard-timer-header-actions {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(0.25rem);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.dashboard-timer-card:hover .dashboard-timer-header-actions,
+.dashboard-timer-card:focus-within .dashboard-timer-header-actions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .dashboard-editable-card {
@@ -197,4 +213,19 @@
 .dashboard-inline-edit--timer-seconds {
   width: 2ch;
   text-align: left;
+}
+
+.dashboard-timer-value-row {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-timer-value-row .dashboard-timer-value,
+.dashboard-timer-value-row .dashboard-timer-edit-value {
+  min-width: 0;
+}
+
+.dashboard-timer-value-row .dashboard-timer-header-actions {
+  margin-top: 0;
+  flex-shrink: 0;
 }

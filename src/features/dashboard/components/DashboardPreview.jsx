@@ -6,7 +6,6 @@ import {
   Link,
   ListChecks,
   Pause,
-  Pencil,
   Play,
   Plus,
   RotateCcw,
@@ -149,6 +148,7 @@ function DashboardPreview({
   recentPeriod = "today",
   onRecentPeriodClick,
   onRecentApplicationsClick,
+  onAddApplicationClick,
 }) {
   const [applyGoalTarget, setApplyGoalTarget] = useState(
     getSavedApplyGoalTarget,
@@ -335,7 +335,7 @@ function DashboardPreview({
     return (
       <div
         ref={timerCardRef}
-        className="surface-card stat-card dashboard-metric-card dashboard-timer-card dashboard-editable-card"
+        className="surface-card stat-card dashboard-metric-card dashboard-timer-card dashboard-editable-card dashboard-clickable-card"
         role="button"
         tabIndex={0}
         onClick={startEditingTimer}
@@ -351,6 +351,79 @@ function DashboardPreview({
             <p className="stat-card-label stat-card-label--violet">
               <DashboardTitle icon={Clock3}>Timer</DashboardTitle>
             </p>
+          </div>
+
+          <div className="dashboard-timer-value-row">
+            {isEditingTimer ? (
+              <h2 className="stat-card-title dashboard-metric-value dashboard-timer-edit-value">
+                <input
+                  ref={timerMinutesInputRef}
+                  value={timerDraftMinutes}
+                  onChange={(event) =>
+                    setTimerDraftMinutes(event.target.value.replace(/\D/g, ""))
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  onKeyDown={(event) => {
+                    event.stopPropagation();
+
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+
+                      const nextMinutes = event.currentTarget.value.replace(
+                        /\D/g,
+                        "",
+                      );
+                      setTimerDraftMinutes(nextMinutes);
+
+                      window.requestAnimationFrame(() => {
+                        timerSecondsInputRef.current?.focus();
+                        timerSecondsInputRef.current?.select();
+                      });
+                    }
+
+                    if (event.key === "Escape") {
+                      cancelTimerEdit();
+                    }
+                  }}
+                  className="dashboard-inline-edit dashboard-inline-edit--timer-minutes"
+                  inputMode="numeric"
+                />
+                <span>:</span>
+                <input
+                  ref={timerSecondsInputRef}
+                  value={timerDraftSeconds}
+                  onChange={(event) =>
+                    setTimerDraftSeconds(
+                      event.target.value.replace(/\D/g, "").slice(0, 2),
+                    )
+                  }
+                  onClick={(event) => event.stopPropagation()}
+                  onKeyDown={(event) => {
+                    event.stopPropagation();
+
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+
+                      const nextSeconds = event.currentTarget.value
+                        .replace(/\D/g, "")
+                        .slice(0, 2);
+
+                      confirmTimerEdit(timerDraftMinutes, nextSeconds);
+                    }
+
+                    if (event.key === "Escape") {
+                      cancelTimerEdit();
+                    }
+                  }}
+                  className="dashboard-inline-edit dashboard-inline-edit--timer-seconds"
+                  inputMode="numeric"
+                />
+              </h2>
+            ) : (
+              <h2 className="stat-card-title dashboard-metric-value dashboard-timer-value">
+                {formatTimerSeconds(timerSeconds)}
+              </h2>
+            )}
 
             <div className="dashboard-timer-header-actions">
               <button
@@ -381,77 +454,6 @@ function DashboardPreview({
               </button>
             </div>
           </div>
-
-          {isEditingTimer ? (
-            <h2 className="stat-card-title dashboard-metric-value dashboard-timer-edit-value">
-              <input
-                ref={timerMinutesInputRef}
-                value={timerDraftMinutes}
-                onChange={(event) =>
-                  setTimerDraftMinutes(event.target.value.replace(/\D/g, ""))
-                }
-                onClick={(event) => event.stopPropagation()}
-                onKeyDown={(event) => {
-                  event.stopPropagation();
-
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-
-                    const nextMinutes = event.currentTarget.value.replace(
-                      /\D/g,
-                      "",
-                    );
-                    setTimerDraftMinutes(nextMinutes);
-
-                    window.requestAnimationFrame(() => {
-                      timerSecondsInputRef.current?.focus();
-                      timerSecondsInputRef.current?.select();
-                    });
-                  }
-
-                  if (event.key === "Escape") {
-                    cancelTimerEdit();
-                  }
-                }}
-                className="dashboard-inline-edit dashboard-inline-edit--timer-minutes"
-                inputMode="numeric"
-              />
-              <span>:</span>
-              <input
-                ref={timerSecondsInputRef}
-                value={timerDraftSeconds}
-                onChange={(event) =>
-                  setTimerDraftSeconds(
-                    event.target.value.replace(/\D/g, "").slice(0, 2),
-                  )
-                }
-                onClick={(event) => event.stopPropagation()}
-                onKeyDown={(event) => {
-                  event.stopPropagation();
-
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-
-                    const nextSeconds = event.currentTarget.value
-                      .replace(/\D/g, "")
-                      .slice(0, 2);
-
-                    confirmTimerEdit(timerDraftMinutes, nextSeconds);
-                  }
-
-                  if (event.key === "Escape") {
-                    cancelTimerEdit();
-                  }
-                }}
-                className="dashboard-inline-edit dashboard-inline-edit--timer-seconds"
-                inputMode="numeric"
-              />
-            </h2>
-          ) : (
-            <h2 className="stat-card-title dashboard-metric-value dashboard-timer-value">
-              {formatTimerSeconds(timerSeconds)}
-            </h2>
-          )}
 
           <p className="stat-card-description dashboard-timer-duration-text">
             Duration: {formatTimerDurationLabel(timerTotalSeconds)}
@@ -546,42 +548,74 @@ function DashboardPreview({
             </p>
           )}
         </div>
+        <button
+          type="button"
+          className="dashboard-recent-add-button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onAddApplicationClick?.();
+          }}
+          aria-label="Add application"
+          title="Add application"
+        >
+          <Plus />
+        </button>
       </div>
     );
   }
 
   if (variant === "quickLinks") {
     return (
-      <div className="surface-card dashboard-card dashboard-quick-links-card">
+      <div
+        className="surface-card dashboard-card dashboard-quick-links-card dashboard-clickable-card"
+        role="button"
+        tabIndex={0}
+        onClick={() => {
+          if (!isEditingLinks) setIsEditingLinks(true);
+        }}
+        onKeyDown={(event) => {
+          if (isEditingLinks) return;
+
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setIsEditingLinks(true);
+          }
+        }}
+      >
         <div className="dashboard-card-header dashboard-quick-links-header">
           <p className="stat-card-description dashboard-card-title text-sm font-medium">
             <DashboardTitle icon={Link}>Quick Links</DashboardTitle>
           </p>
 
-          <div className="dashboard-quick-links-actions">
-            {isEditingLinks ? (
+          {isEditingLinks ? (
+            <div className="dashboard-quick-links-actions">
               <button
                 type="button"
                 className="dashboard-icon-action"
-                onClick={addQuickLink}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  addQuickLink();
+                }}
                 aria-label="Add quick link"
                 title="Add link"
               >
                 <Plus />
               </button>
-            ) : null}
-            <button
-              type="button"
-              className="dashboard-icon-action"
-              onClick={() => setIsEditingLinks((current) => !current)}
-              aria-label={
-                isEditingLinks ? "Done editing quick links" : "Edit quick links"
-              }
-              title={isEditingLinks ? "Done" : "Edit"}
-            >
-              {isEditingLinks ? <Check /> : <Pencil />}
-            </button>
-          </div>
+
+              <button
+                type="button"
+                className="dashboard-icon-action"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  setIsEditingLinks(false);
+                }}
+                aria-label="Done editing quick links"
+                title="Done"
+              >
+                <Check />
+              </button>
+            </div>
+          ) : null}
         </div>
 
         <div className="dashboard-quick-links-list">
@@ -605,6 +639,7 @@ function DashboardPreview({
                     <input
                       aria-label="Quick link label"
                       value={link.label}
+                      onClick={(event) => event.stopPropagation()}
                       onChange={(event) =>
                         updateQuickLink(link.id, "label", event.target.value)
                       }
@@ -613,6 +648,7 @@ function DashboardPreview({
                     <input
                       aria-label="Quick link URL"
                       value={link.url}
+                      onClick={(event) => event.stopPropagation()}
                       onChange={(event) =>
                         updateQuickLink(link.id, "url", event.target.value)
                       }
@@ -621,7 +657,10 @@ function DashboardPreview({
                     <button
                       type="button"
                       className="dashboard-icon-action dashboard-quick-link-delete"
-                      onClick={() => removeQuickLink(link.id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        removeQuickLink(link.id);
+                      }}
                       aria-label={`Remove ${link.label || "quick link"}`}
                       title="Remove"
                     >
@@ -673,7 +712,7 @@ function DashboardPreview({
   return (
     <div
       ref={applyGoalCardRef}
-      className="surface-card stat-card dashboard-metric-card dashboard-apply-goal-card dashboard-editable-card"
+      className="surface-card stat-card dashboard-metric-card dashboard-apply-goal-card dashboard-editable-card dashboard-clickable-card"
       role="button"
       tabIndex={0}
       onClick={startEditingApplyGoal}
