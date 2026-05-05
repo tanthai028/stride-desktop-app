@@ -8,6 +8,7 @@ const DEFAULT_SETTINGS = {
   resetVersion: 0,
   libraryViewMode: "grid",
   applyModeScale: 50,
+  applyModeOpacity: 100,
 };
 
 function getSettingsFilePath() {

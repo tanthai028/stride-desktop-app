@@ -4,6 +4,7 @@ import {
   ExternalLink,
   Maximize2,
   Minus,
+  MousePointer2,
   Settings,
   X,
 } from "lucide-react";
@@ -11,6 +12,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   exitApplyModeWindow,
   minimizeWindow,
+  setApplyModeClickThrough,
+  setApplyModeOpacity,
 } from "../../lib/windowControls.js";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -28,8 +31,14 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   const [completedItems, setCompletedItems] = useState([]);
   const [showSettings, setShowSettings] = useState(false);
   const applyModeScale = settings?.applyModeScale ?? 100;
+  const applyModeOpacity = settings?.applyModeOpacity ?? 100;
+  const [isClickThrough, setIsClickThrough] = useState(false);
   const [recentPage, setRecentPage] = useState(0);
   const [isMovingCard, setIsMovingCard] = useState(false);
+
+  useEffect(() => {
+    setApplyModeOpacity(applyModeOpacity);
+  }, [applyModeOpacity]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${16 * (applyModeScale / 50)}px`;
@@ -40,11 +49,47 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
     };
   }, [applyModeScale]);
 
+  useEffect(() => {
+    if (!isClickThrough) {
+      setApplyModeClickThrough(false);
+      return;
+    }
+
+    function handleMouseMove(event) {
+      const shouldReceiveClicks = Boolean(
+        event.target.closest("[data-apply-mode-hitbox='true']"),
+      );
+
+      setApplyModeClickThrough(!shouldReceiveClicks);
+    }
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      setApplyModeClickThrough(false);
+    };
+  }, [isClickThrough]);
+
   function handleScaleChange(event) {
     const nextScale = Number(event.target.value);
 
     updateSetting?.("applyModeScale", nextScale);
     window.windowControls?.setApplyModeScale?.(nextScale);
+  }
+
+  function handleOpacityChange(event) {
+    const nextOpacity = Number(event.target.value);
+
+    updateSetting?.("applyModeOpacity", nextOpacity);
+    setApplyModeOpacity(nextOpacity);
+  }
+
+  function handleClickThroughToggle() {
+    const nextValue = !isClickThrough;
+
+    setIsClickThrough(nextValue);
+    setApplyModeClickThrough(nextValue);
   }
 
   const queueItems = useMemo(
@@ -126,7 +171,10 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   return (
     <section className="apply-mode-screen">
       <div className="apply-mode-panel no-drag">
-        <header className="apply-mode-header drag-region">
+        <header
+          className="apply-mode-header drag-region"
+          data-apply-mode-hitbox="true"
+        >
           <div className="apply-mode-header-left">
             <div className="apply-mode-app-icon no-drag">
               <BriefcaseBusiness size={15} />
@@ -144,7 +192,6 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
               <span>{isApplying ? "Applying" : "Idle"}</span>
             </button>
 
-            <div className="apply-mode-progress-pill">{progressText}</div>
             {skippedCount > 0 && (
               <div className="apply-mode-skipped-pill">
                 Skipped {skippedCount}
@@ -156,6 +203,19 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
             <div className="apply-mode-window-actions">
               <button
                 type="button"
+                className={isClickThrough ? "is-active" : ""}
+                aria-label="Toggle click through"
+                title={
+                  isClickThrough
+                    ? "Click-through is on. Minimize to reset it."
+                    : "Click through"
+                }
+                onClick={handleClickThroughToggle}
+              >
+                <MousePointer2 size={14} />
+              </button>
+              <button
+                type="button"
                 aria-label="Settings"
                 onClick={() => setShowSettings((current) => !current)}
               >
@@ -164,7 +224,11 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
 
               <button
                 type="button"
-                onClick={minimizeWindow}
+                onClick={() => {
+                  setIsClickThrough(false);
+                  setApplyModeClickThrough(false);
+                  minimizeWindow();
+                }}
                 aria-label="Minimize"
               >
                 <Minus size={14} />
@@ -172,7 +236,11 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
 
               <button
                 type="button"
-                onClick={exitApplyModeWindow}
+                onClick={() => {
+                  setIsClickThrough(false);
+                  setApplyModeClickThrough(false);
+                  exitApplyModeWindow();
+                }}
                 aria-label="Back to full app"
               >
                 <Maximize2 size={14} />
@@ -182,7 +250,10 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
         </header>
 
         {showSettings && (
-          <div className="apply-mode-settings-backdrop no-drag">
+          <div
+            className="apply-mode-settings-backdrop no-drag"
+            data-apply-mode-hitbox="true"
+          >
             <section className="apply-mode-settings-modal">
               <header className="apply-mode-settings-header">
                 <h2>Apply Mode Settings</h2>
@@ -212,8 +283,24 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                 />
 
                 <p className="apply-mode-settings-help">
-                  Changes both the Apply Mode window size and font size.
+                  Window size and font size
                 </p>
+
+                <div className="apply-mode-settings-row">
+                  <span>Opacity</span>
+                  <strong>{applyModeOpacity}%</strong>
+                </div>
+
+                <input
+                  type="range"
+                  min="35"
+                  max="100"
+                  step="5"
+                  value={applyModeOpacity}
+                  onChange={handleOpacityChange}
+                />
+
+                <p className="apply-mode-settings-help">Window transparency</p>
               </div>
             </section>
           </div>
@@ -224,7 +311,7 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
             <div className="apply-mode-section-header">
               <div className="apply-mode-section-title">
                 <span>Current job</span>
-                {currentItem?.jobUrl && <ExternalLink size={13} />}
+                <div className="apply-mode-progress-pill">{progressText}</div>
               </div>
 
               <div className="apply-mode-inline-actions">
@@ -255,11 +342,10 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                   type="button"
                   className="apply-mode-current-card"
                   onClick={handleApply}
-                  initial={{ opacity: 0, scale: 0.985 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0, y: 14 }}
                   transition={{ duration: 0.14, ease: "easeOut" }}
-                  type="button"
                 >
                   <span className="apply-mode-current-main">
                     <strong>{currentItem.company || "Unknown Company"}</strong>
@@ -325,9 +411,9 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                     type="button"
                     key={`${visibleRecentItem.id}-${visibleRecentItem.appliedAt}-${recentPage}`}
                     className="apply-mode-completed-item"
-                    exit={{ opacity: 0, scale: 0.985 }}
-                    initial={{ opacity: 0, y: -6, scale: 0.985 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 12 }}
                     transition={{ duration: 0.16, ease: "easeOut" }}
                     onClick={() => openJobUrl(visibleRecentItem)}
                   >

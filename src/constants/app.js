@@ -6,4 +6,6 @@ export const DEFAULT_SETTINGS = {
   hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",
+  applyModeScale: 50,
+  applyModeOpacity: 100,
 };

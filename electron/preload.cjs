@@ -12,6 +12,10 @@ contextBridge.exposeInMainWorld("windowControls", {
   exitApplyMode: () => ipcRenderer.send("window:exit-apply-mode"),
   setApplyModeScale: (scale) =>
     ipcRenderer.send("window:set-apply-mode-scale", scale),
+  setApplyModeOpacity: (opacity) =>
+    ipcRenderer.send("window:set-apply-mode-opacity", opacity),
+  setApplyModeClickThrough: (enabled) =>
+    ipcRenderer.send("window:set-apply-mode-click-through", enabled),
 });
 
 contextBridge.exposeInMainWorld("timerApi", {

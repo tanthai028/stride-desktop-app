@@ -21,3 +21,11 @@ export function openApplyModeWindow() {
 export function exitApplyModeWindow() {
   getWindowControls()?.exitApplyMode?.();
 }
+
+export function setApplyModeOpacity(opacity) {
+  getWindowControls()?.setApplyModeOpacity?.(opacity);
+}
+
+export function setApplyModeClickThrough(enabled) {
+  getWindowControls()?.setApplyModeClickThrough?.(enabled);
+}

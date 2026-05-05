@@ -41,6 +41,28 @@ function getApplyModeWindowSize(scale) {
   };
 }
 
+function clampApplyModeOpacity(opacity) {
+  const numericOpacity = Number(opacity);
+
+  if (!Number.isFinite(numericOpacity)) return 100;
+
+  return Math.min(100, Math.max(35, numericOpacity));
+}
+
+function setApplyModeOpacity(opacity) {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
+
+  applyModeWindow.setOpacity(clampApplyModeOpacity(opacity) / 100);
+}
+
+function setApplyModeClickThrough(enabled) {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
+
+  applyModeWindow.setIgnoreMouseEvents(Boolean(enabled), {
+    forward: true,
+  });
+}
+
 function resizeApplyModeWindow(scale) {
   if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
 
@@ -142,6 +164,8 @@ function createApplyModeWindow() {
     thickFrame: false,
     roundedCorners: false,
     hasShadow: false,
+    alwaysOnTop: true,
+    skipTaskbar: false,
 
     show: false,
     webPreferences: {
@@ -150,6 +174,8 @@ function createApplyModeWindow() {
       nodeIntegration: false,
     },
   });
+
+  setApplyModeOpacity(settings.applyModeOpacity);
 
   if (isDev) {
     applyModeWindow.loadURL("http://localhost:5173?mode=apply");
@@ -165,6 +191,14 @@ function createApplyModeWindow() {
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.hide();
     }
+  });
+
+  applyModeWindow.on("minimize", () => {
+    setApplyModeClickThrough(false);
+  });
+
+  applyModeWindow.on("restore", () => {
+    applyModeWindow.setAlwaysOnTop(true);
   });
 
   applyModeWindow.on("closed", () => {
@@ -316,6 +350,22 @@ function registerWindowEvents() {
     });
 
     resizeApplyModeWindow(safeScale);
+  });
+
+  ipcMain.on("window:set-apply-mode-opacity", (_event, opacity) => {
+    const safeOpacity = clampApplyModeOpacity(opacity);
+
+    const currentSettings = readAppSettings();
+    writeAppSettings({
+      ...currentSettings,
+      applyModeOpacity: safeOpacity,
+    });
+
+    setApplyModeOpacity(safeOpacity);
+  });
+
+  ipcMain.on("window:set-apply-mode-click-through", (_event, enabled) => {
+    setApplyModeClickThrough(enabled);
   });
 }
 
