@@ -26,7 +26,6 @@
   align-items: flex-start;
   gap: var(--space-xs);
   padding-top: 0;
-  margin-top: -0.25rem;
 }
 
 .dashboard-quick-links-actions {
@@ -106,7 +105,7 @@
   font-weight: var(--font-weight-medium);
 
   min-width: 0;
-  height: 1.85rem;
+  height: 3rem;
   padding: 0 0.65rem;
 }
 

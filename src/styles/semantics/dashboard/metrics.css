@@ -104,7 +104,6 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-bottom: var(--space-xs);
 }
 
 .dashboard-timer-header-actions {

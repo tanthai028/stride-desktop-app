@@ -148,6 +148,7 @@ function LibraryPage({ settings, updateSetting }) {
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           isPageReady={isPageReady && hasLoaded}
+          hasLoaded={hasLoaded}
           onItemClick={handleOpenEditModal}
           onClearFilters={clearFilters}
           onAddItem={handleOpenAddModal}

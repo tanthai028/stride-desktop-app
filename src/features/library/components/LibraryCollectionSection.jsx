@@ -33,6 +33,7 @@ function LibraryCollectionSection({
   viewMode,
   onViewModeChange,
   isPageReady,
+  hasLoaded,
   onItemClick,
   onClearFilters,
   onAddItem,
@@ -119,7 +120,7 @@ function LibraryCollectionSection({
       />
 
       <div className="library-collection-content">
-        {hasFilteredItems ? (
+        {!hasLoaded ? null : hasFilteredItems ? (
           isTableView ? (
             <LibraryTable
               items={filteredItems}

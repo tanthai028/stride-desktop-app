@@ -85,7 +85,6 @@
 }
 
 .stat-card-label {
-  margin-top: 0.5rem;
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
 }
