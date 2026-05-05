@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
@@ -12,7 +12,6 @@ import {
 } from "./config/pageRegistry";
 import StartupSplash from "./startup/StartupSplash.jsx";
 import useStartupSequence from "./startup/useStartupSequence.js";
-import { useState } from "react";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
@@ -49,6 +48,8 @@ function App() {
       <ApplyModePanel
         items={libraryStore.items}
         updateItem={libraryStore.updateItem}
+        settings={settings}
+        updateSetting={updateSetting}
       />
     );
   }

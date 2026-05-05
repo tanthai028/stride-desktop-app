@@ -7,6 +7,7 @@ const DEFAULT_SETTINGS = {
   hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",
+  applyModeScale: 100,
 };
 
 function getSettingsFilePath() {

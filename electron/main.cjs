@@ -21,6 +21,35 @@ const isDev = !app.isPackaged;
 let mainWindow = null;
 let applyModeWindow = null;
 
+const APPLY_MODE_BASE_WIDTH = 460;
+const APPLY_MODE_BASE_HEIGHT = 340;
+
+function clampApplyModeScale(scale) {
+  const numericScale = Number(scale);
+
+  if (!Number.isFinite(numericScale)) return 100;
+
+  return Math.min(100, Math.max(50, numericScale));
+}
+
+function getApplyModeWindowSize(scale) {
+  const safeScale = clampApplyModeScale(scale) / 100;
+
+  return {
+    width: Math.round(APPLY_MODE_BASE_WIDTH * safeScale),
+    height: Math.round(APPLY_MODE_BASE_HEIGHT * safeScale),
+  };
+}
+
+function resizeApplyModeWindow(scale) {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
+
+  const { width, height } = getApplyModeWindowSize(scale);
+
+  applyModeWindow.setMinimumSize(width, height);
+  applyModeWindow.setSize(width, height, true);
+}
+
 function getWindowBackgroundColor() {
   const settings = readAppSettings();
   return settings.darkMode ? "#020617" : "#f6f1f8";
@@ -88,8 +117,10 @@ function createApplyModeWindow() {
     return;
   }
 
-  const winWidth = 460;
-  const winHeight = 300;
+  const settings = readAppSettings();
+  const { width: winWidth, height: winHeight } = getApplyModeWindowSize(
+    settings.applyModeScale,
+  );
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
 
@@ -273,6 +304,18 @@ function registerWindowEvents() {
       mainWindow.show();
       mainWindow.focus();
     }
+  });
+
+  ipcMain.on("window:set-apply-mode-scale", (_event, scale) => {
+    const safeScale = clampApplyModeScale(scale);
+
+    const currentSettings = readAppSettings();
+    writeAppSettings({
+      ...currentSettings,
+      applyModeScale: safeScale,
+    });
+
+    resizeApplyModeWindow(safeScale);
   });
 }
 

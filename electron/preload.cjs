@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld("windowControls", {
   close: () => ipcRenderer.send("window:close"),
   openApplyMode: () => ipcRenderer.send("window:open-apply-mode"),
   exitApplyMode: () => ipcRenderer.send("window:exit-apply-mode"),
+  setApplyModeScale: (scale) =>
+    ipcRenderer.send("window:set-apply-mode-scale", scale),
 });
 
 contextBridge.exposeInMainWorld("timerApi", {
