@@ -1,9 +1,9 @@
 export const defaultLibraryStatuses = [
   {
-    value: "wishlist",
-    label: "⭐ Wishlist",
-    rawLabel: "Wishlist",
-    emoji: "⭐",
+    value: "unapplied",
+    label: "📝 Unapplied",
+    rawLabel: "Unapplied",
+    emoji: "📝",
   },
   {
     value: "applied",

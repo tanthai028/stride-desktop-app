@@ -25,7 +25,7 @@ const DEFAULT_LIBRARY_ITEMS = [
     id: "item-default-ge-aerospace",
     company: "GE Aerospace",
     role: "Early Career Software Engineer",
-    status: "Wishlist",
+    status: "Unapplied",
     jobUrl: "https://jobs.gecareers.com/",
     location: "Remote",
     appliedAt: "",

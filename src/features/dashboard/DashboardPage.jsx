@@ -4,7 +4,6 @@ import LibraryFormModal from "../library/components/form/LibraryFormModal.jsx";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
-import useLibraryItems from "../library/hooks/useLibraryItems.js";
 
 function getStartOfToday() {
   const today = new Date();
@@ -33,8 +32,8 @@ function isSameDay(date, targetDate) {
   return normalizedDate.getTime() === targetDate.getTime();
 }
 
-function DashboardPage({ settings, onAction }) {
-  const { items, loadError, addItem } = useLibraryItems(settings.resetVersion);
+function DashboardPage({ onAction, libraryStore }) {
+  const { items, loadError, addItem } = libraryStore;
   const [recentPeriod, setRecentPeriod] = useState("today");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [modalErrorMessage, setModalErrorMessage] = useState("");

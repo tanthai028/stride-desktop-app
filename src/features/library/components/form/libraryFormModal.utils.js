@@ -1,4 +1,4 @@
-export const DEFAULT_STATUS = "Applied";
+export const DEFAULT_STATUS = "Unapplied";
 export const DEFAULT_PRIORITY = "Medium";
 export const INVALID_JOB_URL_MESSAGE =
   "Couldn\u2019t extract job details from this link. Paste a direct job posting URL.";

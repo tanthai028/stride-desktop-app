@@ -1,7 +1,7 @@
 const { LibraryValidationError } = require("./libraryErrors.cjs");
 
 const ALLOWED_STATUSES = new Set([
-  "wishlist",
+  "unapplied",
   "applied",
   "oa",
   "interview",
@@ -11,7 +11,7 @@ const ALLOWED_STATUSES = new Set([
 const ALLOWED_PRIORITIES = new Set(["high", "medium", "low"]);
 const DEFAULT_PRIORITY = "medium";
 
-const DEFAULT_STATUS = "applied";
+const DEFAULT_STATUS = "unapplied";
 
 function normalizeStatusValue(status = "") {
   return String(status).trim().toLowerCase();

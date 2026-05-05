@@ -4,16 +4,14 @@ import PageShell from "../../components/page/PageShell.jsx";
 import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx";
 import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
 import { DEFAULT_LIBRARY_STATUS_FILTER } from "./constants/libraryPageState.js";
-import useLibraryItems from "./hooks/useLibraryItems.js";
 import useLibraryPageState from "./hooks/useLibraryPageState.js";
 import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
-function LibraryPage({ settings, updateSetting }) {
+function LibraryPage({ settings, updateSetting, libraryStore }) {
   const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =
-    useLibraryItems(settings.resetVersion);
-
+    libraryStore;
   const [modalErrorMessage, setModalErrorMessage] = useState("");
 
   const {

@@ -1,7 +1,7 @@
 import { libraryItems as defaultLibraryItems } from "../data/librarySeedData.js";
 import { parseJobUrl } from "./jobUrlParser.js";
 
-const DEFAULT_STATUS = "Applied";
+const DEFAULT_STATUS = "Unapplied";
 
 function hasElectronLibraryApi() {
   return typeof window !== "undefined" && !!window.libraryApi;

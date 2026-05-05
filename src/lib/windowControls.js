@@ -13,3 +13,11 @@ export function toggleMaximizeWindow() {
 export function closeWindow() {
   getWindowControls()?.close?.();
 }
+
+export function openApplyModeWindow() {
+  getWindowControls()?.openApplyMode?.();
+}
+
+export function exitApplyModeWindow() {
+  getWindowControls()?.exitApplyMode?.();
+}

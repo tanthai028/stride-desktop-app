@@ -1,12 +1,26 @@
-import { Sparkles } from "lucide-react";
+import { PanelsTopLeft, Sparkles } from "lucide-react";
 import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
+import { openApplyModeWindow } from "../../lib/windowControls.js";
 
 function AppFrameIcon() {
   return (
     <div className="frame-app-icon no-drag" aria-label="Temporary app icon">
       <Sparkles size={22} />
     </div>
+  );
+}
+
+function ApplyModeButton({ onClick }) {
+  return (
+    <button
+      type="button"
+      className="frame-apply-mode-button no-drag"
+      onClick={onClick}
+    >
+      <PanelsTopLeft size={15} />
+      Apply Mode
+    </button>
   );
 }
 
@@ -46,6 +60,7 @@ function WindowFrame({ sidebar, children }) {
       <FrameHeader>
         <AppFrameIcon />
         <div className="frame-header-spacer" />
+        <ApplyModeButton onClick={openApplyModeWindow} />
         {isElectron() && <WindowControls />}
       </FrameHeader>
 

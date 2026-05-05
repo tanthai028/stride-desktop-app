@@ -1,0 +1,212 @@
+html:has(.apply-mode-screen),
+body:has(.apply-mode-screen),
+body:has(.apply-mode-screen) #root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.apply-mode-screen {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.apply-mode-panel {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  border: 1px solid var(--theme-panel-border);
+  border-radius: 22px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  clip-path: inset(0 round 22px);
+  -electron-corner-smoothing: 100%;
+
+  background: var(--theme-app-shell-bg);
+  color: var(--theme-text-primary);
+
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+}
+
+.apply-mode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--theme-card-border);
+  min-height: 2.75rem;
+}
+
+.apply-mode-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 0;
+  background: transparent;
+  color: var(--theme-text-primary);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.apply-mode-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  opacity: 0.65;
+  animation: apply-mode-pulse 1.25s ease-in-out infinite;
+}
+
+.apply-mode-dot.is-idle {
+  background: #94a3b8;
+}
+
+.apply-mode-dot.is-applying {
+  background: #22c55e;
+}
+
+@keyframes apply-mode-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.95;
+    transform: scale(1.08);
+  }
+}
+
+.apply-mode-window-actions {
+  display: inline-flex;
+  gap: 0.35rem;
+}
+
+.apply-mode-window-actions button,
+.apply-mode-decision-row button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 999px;
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+}
+
+.apply-mode-window-actions button {
+  width: 1.85rem;
+  height: 1.85rem;
+}
+
+.apply-mode-body {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.85rem;
+}
+
+.apply-mode-current-card {
+  position: relative;
+  display: flex;
+  min-height: 5.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 1rem;
+  background: var(--theme-card-bg);
+  color: var(--theme-text-primary);
+  text-align: left;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.apply-mode-current-main {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.apply-mode-current-main strong {
+  font-size: 1.05rem;
+}
+
+.apply-mode-current-main span {
+  color: var(--theme-text-secondary);
+}
+
+.apply-mode-current-hover {
+  opacity: 0;
+  font-weight: 800;
+  color: var(--theme-header-kicker);
+  transition: opacity 160ms ease;
+}
+
+.apply-mode-current-card:hover .apply-mode-current-hover {
+  opacity: 1;
+}
+
+.apply-mode-decision-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.apply-mode-decision-row button {
+  min-height: 2.5rem;
+  font-weight: 700;
+}
+
+.apply-mode-decision-row button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.apply-mode-empty {
+  padding: 1rem;
+  border: 1px dashed var(--theme-card-border);
+  border-radius: 1rem;
+  color: var(--theme-text-secondary);
+}
+
+.apply-mode-completed {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.apply-mode-completed p {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-text-secondary);
+}
+
+.apply-mode-muted {
+  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+}
+
+.apply-mode-completed-item {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 0.85rem;
+  background: var(--theme-card-bg);
+}
+
+.apply-mode-completed-item span {
+  color: var(--theme-text-secondary);
+  font-size: 0.9rem;
+}

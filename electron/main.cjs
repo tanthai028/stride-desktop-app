@@ -18,13 +18,15 @@ const {
 const { parseJobPostingFromUrl } = require("./jobPostingParser.cjs");
 const { serializeLibraryError } = require("./libraryErrors.cjs");
 const isDev = !app.isPackaged;
+let mainWindow = null;
+let applyModeWindow = null;
 
 function getWindowBackgroundColor() {
   const settings = readAppSettings();
   return settings.darkMode ? "#020617" : "#f6f1f8";
 }
 
-function createWindow() {
+function createMainWindow() {
   const winWidth = 1024;
   const winHeight = 820;
 
@@ -55,6 +57,12 @@ function createWindow() {
     },
   });
 
+  mainWindow = win;
+
+  win.on("closed", () => {
+    mainWindow = null;
+  });
+
   Menu.setApplicationMenu(null);
 
   if (isDev) {
@@ -71,6 +79,70 @@ function createWindow() {
         win.webContents.send("app-window-shown");
       }
     }, 120);
+  });
+}
+
+function createApplyModeWindow() {
+  if (applyModeWindow && !applyModeWindow.isDestroyed()) {
+    applyModeWindow.focus();
+    return;
+  }
+
+  const winWidth = 460;
+  const winHeight = 300;
+
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
+  const x = Math.round((width - winWidth) / 2);
+  const y = Math.round((height - winHeight) / 2);
+
+  applyModeWindow = new BrowserWindow({
+    width: winWidth,
+    height: winHeight,
+    minWidth: 380,
+    minHeight: 260,
+    x,
+    y,
+    frame: false,
+    transparent: true,
+    backgroundColor: "#00000000",
+
+    resizable: true,
+    thickFrame: false,
+    roundedCorners: false,
+    hasShadow: false,
+
+    show: false,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.cjs"),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  if (isDev) {
+    applyModeWindow.loadURL("http://localhost:5173?mode=apply");
+  } else {
+    applyModeWindow.loadFile(path.join(__dirname, "../dist/index.html"), {
+      query: { mode: "apply" },
+    });
+  }
+
+  applyModeWindow.once("ready-to-show", () => {
+    applyModeWindow.show();
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.hide();
+    }
+  });
+
+  applyModeWindow.on("closed", () => {
+    applyModeWindow = null;
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
   });
 }
 
@@ -186,15 +258,31 @@ function registerWindowEvents() {
     await shell.openExternal(url);
     return { success: true };
   });
+
+  ipcMain.on("window:open-apply-mode", () => {
+    createApplyModeWindow();
+  });
+
+  ipcMain.on("window:exit-apply-mode", () => {
+    if (applyModeWindow && !applyModeWindow.isDestroyed()) {
+      applyModeWindow.close();
+      return;
+    }
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
 }
 
 app.whenReady().then(() => {
   registerWindowEvents();
-  createWindow();
+  createMainWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+      createMainWindow();
     }
   });
 });

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
+import ApplyModePanel from "../features/apply-mode/ApplyModePanel.jsx";
+import useLibraryItems from "../features/library/hooks/useLibraryItems.js";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
 import {
   APP_PAGES,
@@ -10,11 +12,15 @@ import {
 } from "./config/pageRegistry";
 import StartupSplash from "./startup/StartupSplash.jsx";
 import useStartupSequence from "./startup/useStartupSequence.js";
+import { useState } from "react";
 
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
-
+  const libraryStore = useLibraryItems(settings.resetVersion);
   const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
+
+  const isApplyModeWindow =
+    new URLSearchParams(window.location.search).get("mode") === "apply";
 
   const { showSplash, mountRealApp, isAppReady } = useStartupSequence();
 
@@ -22,8 +28,10 @@ function App() {
     document.documentElement.classList.toggle("theme-dark", settings.darkMode);
     document.body.classList.toggle("theme-dark", settings.darkMode);
 
-    window.appSettings?.updateThemeBackground?.(settings.darkMode);
-  }, [settings.darkMode]);
+    if (!isApplyModeWindow) {
+      window.appSettings?.updateThemeBackground?.(settings.darkMode);
+    }
+  }, [settings.darkMode, isApplyModeWindow]);
 
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
@@ -36,11 +44,21 @@ function App() {
     }
   }
 
+  if (isApplyModeWindow) {
+    return (
+      <ApplyModePanel
+        items={libraryStore.items}
+        updateItem={libraryStore.updateItem}
+      />
+    );
+  }
+
   const activePageContent = getPageComponent(activePage, {
     settings,
     updateSetting,
     resetSettings,
     onAction: handleQuickAction,
+    libraryStore,
   });
 
   const activePageMetadata = getPageMetadata(activePage);
