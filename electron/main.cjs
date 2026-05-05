@@ -21,8 +21,8 @@ const isDev = !app.isPackaged;
 let mainWindow = null;
 let applyModeWindow = null;
 
-const APPLY_MODE_BASE_WIDTH = 460;
-const APPLY_MODE_BASE_HEIGHT = 340;
+const APPLY_MODE_BASE_WIDTH = 350;
+const APPLY_MODE_BASE_HEIGHT = 275;
 
 function clampApplyModeScale(scale) {
   const numericScale = Number(scale);
@@ -33,7 +33,7 @@ function clampApplyModeScale(scale) {
 }
 
 function getApplyModeWindowSize(scale) {
-  const safeScale = clampApplyModeScale(scale) / 100;
+  const safeScale = clampApplyModeScale(scale) / 50;
 
   return {
     width: Math.round(APPLY_MODE_BASE_WIDTH * safeScale),

@@ -1,0 +1,132 @@
+.apply-mode-header {
+  display: flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0.55rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.apply-mode-header-left,
+.apply-mode-header-right {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.apply-mode-app-icon,
+.apply-mode-window-actions button {
+  display: inline-flex;
+  width: 1.65rem;
+  height: 1.65rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.58);
+  color: #cbd5e1;
+}
+
+.apply-mode-app-icon {
+  flex: 0 0 auto;
+  border-radius: 0.55rem;
+  color: #93c5fd;
+}
+
+.apply-mode-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  background: transparent;
+  color: #e5edf8;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.apply-mode-state:disabled {
+  cursor: default;
+}
+
+.apply-mode-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  animation: apply-mode-pulse 1.2s ease-in-out infinite;
+}
+
+.apply-mode-dot.is-idle {
+  background: #94a3b8;
+  box-shadow: 0 0 14px rgba(148, 163, 184, 0.45);
+}
+
+.apply-mode-dot.is-applying {
+  background: #22c55e;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.75);
+}
+
+@keyframes apply-mode-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.apply-mode-progress-pill {
+  display: inline-flex;
+  min-width: 2.4rem;
+  height: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.45rem;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.14);
+  color: #dbeafe;
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.apply-mode-window-actions {
+  display: inline-flex;
+  gap: 0.28rem;
+}
+
+.apply-mode-window-actions button {
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+.apply-mode-window-actions button:hover {
+  border-color: rgba(96, 165, 250, 0.42);
+  background: rgba(59, 130, 246, 0.18);
+  color: #f8fafc;
+  transform: translateY(-1px);
+}
+
+.apply-mode-skipped-pill {
+  display: inline-flex;
+  height: 1.35rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.45rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.12);
+  color: #cbd5e1;
+  font-size: 0.66rem;
+  font-weight: 900;
+}

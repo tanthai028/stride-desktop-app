@@ -74,6 +74,18 @@ function LibraryFormFields({
 
             <div>
               <label className="form-label library-form-label">
+                🚦 Priority
+              </label>
+              <SelectMenu
+                value={formValues.priority ?? "Medium"}
+                onChange={handlePriorityChange}
+                options={PRIORITY_OPTIONS}
+                className="library-form-priority-select"
+              />
+            </div>
+
+            <div>
+              <label className="form-label library-form-label">
                 📍 Location
               </label>
               <input
@@ -83,18 +95,6 @@ function LibraryFormFields({
                   onFieldChange("location", event.target.value)
                 }
                 className="input-base"
-              />
-            </div>
-
-            <div>
-              <label className="form-label library-form-label">
-                🚦 Priority
-              </label>
-              <SelectMenu
-                value={formValues.priority ?? "Medium"}
-                onChange={handlePriorityChange}
-                options={PRIORITY_OPTIONS}
-                className="library-form-priority-select"
               />
             </div>
 
