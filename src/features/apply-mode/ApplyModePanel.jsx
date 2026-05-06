@@ -6,6 +6,9 @@ import {
   Minus,
   MousePointer2,
   Settings,
+  SkipForward,
+  Trash2,
+  Expand,
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -17,6 +20,8 @@ import {
   setApplyModeOpacity,
 } from "../../lib/windowControls.js";
 import { AnimatePresence, motion } from "framer-motion";
+import PageScrollbar from "../../components/page/PageScrollbar.jsx";
+import usePageScrollbar from "../../components/page/usePageScrollbar.js";
 
 function isUnapplied(item) {
   return (
@@ -26,7 +31,13 @@ function isUnapplied(item) {
   );
 }
 
-function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
+function ApplyModePanel({
+  items = [],
+  updateItem,
+  deleteItem,
+  settings,
+  updateSetting,
+}) {
   const [isApplying, setIsApplying] = useState(false);
   const [skippedIds, setSkippedIds] = useState([]);
   const [completedItems, setCompletedItems] = useState([]);
@@ -35,7 +46,20 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   const applyModeOpacity = settings?.applyModeOpacity ?? 100;
   const [isClickThrough, setIsClickThrough] = useState(false);
   const [recentPage, setRecentPage] = useState(0);
+  const [showAppliedRecent, setShowAppliedRecent] = useState(true);
+  const [showSkippedRecent, setShowSkippedRecent] = useState(true);
   const [isMovingCard, setIsMovingCard] = useState(false);
+  const [removedIds, setRemovedIds] = useState([]);
+  const [isRecentExpanded, setIsRecentExpanded] = useState(false);
+  const [canShowFilteredEmpty, setCanShowFilteredEmpty] = useState(false);
+  const {
+    scrollRef: recentScrollRef,
+    scrollMetrics: recentScrollMetrics,
+    isScrollbarVisible: isRecentScrollbarVisible,
+    handleScroll: handleRecentScroll,
+    handlePointerEnter: handleRecentPointerEnter,
+    handlePointerLeave: handleRecentPointerLeave,
+  } = usePageScrollbar();
 
   useEffect(() => {
     setApplyModeOpacity(applyModeOpacity);
@@ -68,6 +92,17 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
     };
   }, [isClickThrough, showSettings]);
 
+  function resetApplySession() {
+    setIsApplying(false);
+    setSkippedIds([]);
+    setCompletedItems([]);
+    setRecentPage(0);
+    setIsRecentExpanded(false);
+    setShowAppliedRecent(true);
+    setShowSkippedRecent(true);
+    setIsMovingCard(false);
+  }
+
   function handleScaleChange(event) {
     const nextScale = Number(event.target.value);
 
@@ -92,10 +127,17 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   const queueItems = useMemo(
     () =>
       items.filter(
-        (item) => isUnapplied(item) && !skippedIds.includes(item.id),
+        (item) =>
+          isUnapplied(item) &&
+          !skippedIds.includes(item.id) &&
+          !removedIds.includes(item.id),
       ),
-    [items, skippedIds],
+    [items, skippedIds, removedIds],
   );
+
+  useEffect(() => {
+    setRecentPage(0);
+  }, [showAppliedRecent, showSkippedRecent]);
 
   const currentItem = queueItems[0] ?? null;
   const totalQueueCount = queueItems.length + completedItems.length;
@@ -105,10 +147,28 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   const skippedCount = completedItems.filter(
     (item) => item.status === "Skipped",
   ).length;
-  const progressText = `${appliedCount}/${totalQueueCount}`;
-  const visibleRecentItem = completedItems[recentPage] ?? null;
-  const canGoPreviousRecent = recentPage > 0;
-  const canGoNextRecent = recentPage < completedItems.length - 1;
+  const completedCount = completedItems.length;
+
+  const progressText =
+    totalQueueCount > 0 ? `${completedCount}/${totalQueueCount}` : "None";
+  const filteredCompletedItems = completedItems.filter((item) => {
+    if (item.status === "Applied") return showAppliedRecent;
+    if (item.status === "Skipped") return showSkippedRecent;
+    return true;
+  });
+
+  const visibleRecentItems = isRecentExpanded
+    ? filteredCompletedItems
+    : filteredCompletedItems.slice(0, 1);
+
+  const shouldShowFilteredEmpty =
+    completedItems.length > 0 && visibleRecentItems.length === 0;
+
+  useEffect(() => {
+    if (!shouldShowFilteredEmpty) {
+      setCanShowFilteredEmpty(false);
+    }
+  }, [shouldShowFilteredEmpty]);
 
   function openJobUrl(item) {
     if (!item?.jobUrl) return;
@@ -165,6 +225,29 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
     }, 140);
   }
 
+  async function handleRemove() {
+    if (!currentItem || isMovingCard) return;
+
+    setIsMovingCard(true);
+    setIsApplying(false);
+
+    const removedId = currentItem.id;
+
+    setRemovedIds((current) => [...current, removedId]);
+
+    try {
+      await deleteItem?.(removedId);
+    } catch (error) {
+      setRemovedIds((current) => current.filter((id) => id !== removedId));
+      console.error("Failed to remove job from apply mode:", error);
+    } finally {
+      window.setTimeout(() => {
+        setRecentPage(0);
+        setIsMovingCard(false);
+      }, 140);
+    }
+  }
+
   return (
     <section className="apply-mode-screen">
       <div className="apply-mode-panel no-drag">
@@ -188,12 +271,6 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
               />
               <span>{isApplying ? "Applying" : "Idle"}</span>
             </button>
-
-            {skippedCount > 0 && (
-              <div className="apply-mode-skipped-pill">
-                Skipped {skippedCount}
-              </div>
-            )}
           </div>
 
           <div className="apply-mode-header-right no-drag">
@@ -201,9 +278,10 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
               <button
                 type="button"
                 aria-label="Settings"
+                title="Settings"
                 onClick={() => setShowSettings((current) => !current)}
               >
-                <Settings size={14} />
+                <Settings size="0.75rem" />
               </button>
               <button
                 type="button"
@@ -211,12 +289,12 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                 aria-label="Toggle click through"
                 title={
                   isClickThrough
-                    ? "Click-through is on. Minimize to reset it."
-                    : "Click through"
+                    ? "Disable click-through"
+                    : "Enable click-through"
                 }
                 onClick={handleClickThroughToggle}
               >
-                <MousePointer2 size={14} />
+                <MousePointer2 size="0.75rem" />
               </button>
 
               <button
@@ -227,20 +305,30 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                   minimizeWindow();
                 }}
                 aria-label="Minimize"
+                title="Minimize"
               >
-                <Minus size={14} />
+                <Minus size="0.75rem" />
               </button>
 
               <button
                 type="button"
                 onClick={() => {
+                  const isFinished =
+                    totalQueueCount > 0 && queueItems.length === 0;
+
                   setIsClickThrough(false);
                   setApplyModeClickThrough(false);
+
+                  if (isFinished || skippedIds.length > 0) {
+                    resetApplySession();
+                  }
+
                   exitApplyModeWindow();
                 }}
                 aria-label="Back to full app"
+                title="Back to full app"
               >
-                <Maximize2 size={14} />
+                <Expand size="0.75rem" />
               </button>
             </div>
           </div>
@@ -260,7 +348,7 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                   aria-label="Close settings"
                   onClick={() => setShowSettings(false)}
                 >
-                  <X size={16} />
+                  <X size="1rem" />
                 </button>
               </header>
 
@@ -303,143 +391,228 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
           </div>
         )}
 
-        <main className="apply-mode-body">
-          <section className="apply-mode-current-section">
-            <div className="apply-mode-section-header">
-              <div className="apply-mode-section-title">
-                <span>Current job</span>
-                <div className="apply-mode-progress-pill">{progressText}</div>
-              </div>
+        <main
+          className={`apply-mode-body ${
+            isRecentExpanded ? "is-recent-expanded" : ""
+          }`}
+        >
+          {!isRecentExpanded && (
+            <section className="apply-mode-current-section">
+              <div className="apply-mode-section-header">
+                <div className="apply-mode-section-title">
+                  <span>Current job</span>
+                  <div className="apply-mode-progress-pill">{progressText}</div>
 
-              <div className="apply-mode-inline-actions">
-                <button
-                  type="button"
-                  onClick={handleDone}
-                  disabled={!currentItem || isMovingCard}
-                >
-                  <Check size={14} />
-                  Done
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSkip}
-                  disabled={!currentItem || isMovingCard}
-                >
-                  <X size={14} />
-                  Skip
-                </button>
-              </div>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {currentItem ? (
-                <motion.button
-                  key={currentItem.id}
-                  type="button"
-                  className="apply-mode-current-card"
-                  onClick={handleApply}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0, y: 14 }}
-                  transition={{ duration: 0.14, ease: "easeOut" }}
-                >
-                  <span className="apply-mode-current-main">
-                    <strong>{currentItem.company || "Unknown Company"}</strong>
-                    <span>{currentItem.role || "Unknown Role"}</span>
-                    <em>{currentItem.location || "\u00A0"}</em>
-                  </span>
-
-                  <span className="apply-mode-current-action">Apply</span>
-                </motion.button>
-              ) : (
-                <div className="apply-mode-empty">
-                  <strong>No unapplied jobs queued.</strong>
-                  <span>Dump job URLs in Library first.</span>
-                  <em>{"\u00A0"}</em>
+                  {skippedCount > 0 && (
+                    <div className="apply-mode-skipped-pill">
+                      <SkipForward size="0.75rem" />
+                      {skippedCount}
+                    </div>
+                  )}
                 </div>
-              )}
-            </AnimatePresence>
-          </section>
+
+                <div className="apply-mode-inline-actions">
+                  <button
+                    type="button"
+                    onClick={handleDone}
+                    disabled={!currentItem || isMovingCard}
+                  >
+                    <Check size="0.75rem" />
+                    Done
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleSkip}
+                    disabled={!currentItem || isMovingCard}
+                    aria-label="Skip"
+                  >
+                    <SkipForward size="0.75rem" />
+                    Skip
+                  </button>
+
+                  <button
+                    type="button"
+                    className="apply-mode-danger-action"
+                    onClick={handleRemove}
+                    disabled={!currentItem || isMovingCard}
+                    aria-label="Remove job"
+                    title="Remove job"
+                  >
+                    <Trash2 size="0.75rem" />
+                  </button>
+                </div>
+              </div>
+
+              <AnimatePresence mode="wait">
+                {currentItem ? (
+                  <motion.button
+                    key={currentItem.id}
+                    type="button"
+                    className="apply-mode-current-card"
+                    onClick={handleApply}
+                    initial={{ opacity: 0, y: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: 18 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                  >
+                    <span className="apply-mode-current-main">
+                      <strong>
+                        {currentItem.company || "Unknown Company"}
+                      </strong>
+                      <span>{currentItem.role || "Unknown Role"}</span>
+                      <em>{currentItem.location || "\u00A0"}</em>
+                    </span>
+
+                    <span className="apply-mode-current-action">Apply</span>
+                  </motion.button>
+                ) : (
+                  <div className="apply-mode-empty">
+                    <strong>No unapplied jobs queued.</strong>
+                    <span>Dump job URLs in Library first.</span>
+                    <em>{"\u00A0"}</em>
+                  </div>
+                )}
+              </AnimatePresence>
+            </section>
+          )}
 
           <section className="apply-mode-completed">
             <div className="apply-mode-section-header">
               <div className="apply-mode-section-title">
                 <span>Just applied</span>
+
+                {isRecentExpanded && (
+                  <div className="apply-mode-progress-pill">
+                    {filteredCompletedItems.length}
+                  </div>
+                )}
               </div>
 
               <div className="apply-mode-inline-actions">
                 <button
                   type="button"
-                  aria-label="Previous applied job"
-                  disabled={!canGoPreviousRecent}
-                  onClick={() =>
-                    setRecentPage((current) => Math.max(0, current - 1))
-                  }
+                  className={`apply-mode-filter-toggle ${
+                    showAppliedRecent ? "is-active" : ""
+                  }`}
+                  onClick={() => setShowAppliedRecent((current) => !current)}
                 >
-                  {"<"}
+                  <span>Applied</span>
+                  <i />
                 </button>
 
                 <button
                   type="button"
-                  aria-label="Next applied job"
-                  disabled={!canGoNextRecent}
-                  onClick={() =>
-                    setRecentPage((current) =>
-                      Math.min(completedItems.length - 1, current + 1),
-                    )
-                  }
+                  className={`apply-mode-filter-toggle ${
+                    showSkippedRecent ? "is-active" : ""
+                  }`}
+                  onClick={() => setShowSkippedRecent((current) => !current)}
                 >
-                  {">"}
+                  <span>Skipped</span>
+                  <i />
+                </button>
+
+                <button
+                  type="button"
+                  aria-label={
+                    isRecentExpanded
+                      ? "Collapse recent jobs"
+                      : "Expand recent jobs"
+                  }
+                  title={isRecentExpanded ? "Collapse" : "Expand"}
+                  disabled={completedItems.length === 0}
+                  onClick={() => setIsRecentExpanded((current) => !current)}
+                >
+                  <Maximize2 size="0.75rem" />
                 </button>
               </div>
             </div>
 
-            <AnimatePresence mode="wait">
-              {completedItems.length === 0 ? (
-                <div className="apply-mode-recent-empty">
-                  <strong>Nothing yet</strong>
-                  <span>Applied or skipped jobs show here.</span>
-                  <em>{"\u00A0"}</em>
-                </div>
-              ) : (
-                visibleRecentItem && (
-                  <motion.button
-                    type="button"
-                    key={`${visibleRecentItem.id}-${visibleRecentItem.appliedAt}-${recentPage}`}
-                    className={`apply-mode-completed-item ${
-                      visibleRecentItem.status === "Applied"
-                        ? "apply-mode-completed-item--applied"
-                        : "apply-mode-completed-item--skipped"
-                    }`}
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 12 }}
-                    transition={{ duration: 0.16, ease: "easeOut" }}
-                    onClick={() => openJobUrl(visibleRecentItem)}
-                  >
-                    <span className="apply-mode-completed-main">
-                      <strong>
-                        {visibleRecentItem.company || "Unknown Company"}
-                      </strong>
-                      <span>{visibleRecentItem.role || "Unknown Role"}</span>
-                      <em>{visibleRecentItem.location || "\u00A0"}</em>
-                    </span>
+            <div className="apply-mode-recent-scroll-shell">
+              <div
+                ref={recentScrollRef}
+                onScroll={handleRecentScroll}
+                onPointerEnter={handleRecentPointerEnter}
+                onPointerLeave={handleRecentPointerLeave}
+                className={`apply-mode-recent-list scrollbar-hide ${
+                  isRecentExpanded ? "is-expanded" : ""
+                }`}
+              >
+                <AnimatePresence
+                  initial={false}
+                  onExitComplete={() => {
+                    if (shouldShowFilteredEmpty) {
+                      setCanShowFilteredEmpty(true);
+                    }
+                  }}
+                >
+                  {completedItems.length === 0 ? (
+                    <div className="apply-mode-recent-empty">
+                      <strong>Nothing yet</strong>
+                      <span>Applied or skipped jobs show here.</span>
+                      <em>{"\u00A0"}</em>
+                    </div>
+                  ) : shouldShowFilteredEmpty ? (
+                    canShowFilteredEmpty ? (
+                      <motion.div
+                        key="nothing-visible"
+                        className="apply-mode-recent-empty"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, transition: { duration: 0 } }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                      >
+                        <strong>Nothing visible</strong>
+                        <span>Turn Applied or Skipped back on.</span>
+                        <em>{"\u00A0"}</em>
+                      </motion.div>
+                    ) : null
+                  ) : (
+                    visibleRecentItems.map((recentItem) => (
+                      <motion.button
+                        type="button"
+                        key={`${recentItem.id}-${recentItem.appliedAt}`}
+                        className={`apply-mode-completed-item ${
+                          recentItem.status === "Applied"
+                            ? "apply-mode-completed-item--applied"
+                            : "apply-mode-completed-item--skipped"
+                        }`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        onClick={() => openJobUrl(recentItem)}
+                      >
+                        <span className="apply-mode-completed-main">
+                          <strong>
+                            {recentItem.company || "Unknown Company"}
+                          </strong>
+                          <span>{recentItem.role || "Unknown Role"}</span>
+                          <em>{recentItem.location || "\u00A0"}</em>
+                        </span>
 
-                    <span
-                      className={`apply-mode-status-pill ${
-                        visibleRecentItem.status === "Skipped"
-                          ? "apply-mode-status-pill--skipped"
-                          : "apply-mode-status-pill--applied"
-                      }`}
-                    >
-                      {visibleRecentItem.status}
-                      <ExternalLink size={12} />
-                    </span>
-                  </motion.button>
-                )
-              )}
-            </AnimatePresence>
+                        <span
+                          className={`apply-mode-status-pill ${
+                            recentItem.status === "Skipped"
+                              ? "apply-mode-status-pill--skipped"
+                              : "apply-mode-status-pill--applied"
+                          }`}
+                        >
+                          {recentItem.status}
+                          <ExternalLink size="0.75rem" />
+                        </span>
+                      </motion.button>
+                    ))
+                  )}
+                </AnimatePresence>
+              </div>
+              <div className="apply-mode-page-scrollbar">
+                <PageScrollbar
+                  isVisible={isRecentScrollbarVisible}
+                  scrollMetrics={recentScrollMetrics}
+                />
+              </div>
+            </div>
           </section>
         </main>
       </div>

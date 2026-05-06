@@ -48,6 +48,7 @@ function App() {
       <ApplyModePanel
         items={libraryStore.items}
         updateItem={libraryStore.updateItem}
+        deleteItem={libraryStore.deleteItem}
         settings={settings}
         updateSetting={updateSetting}
       />

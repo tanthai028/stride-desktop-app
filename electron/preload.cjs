@@ -55,4 +55,13 @@ contextBridge.exposeInMainWorld("libraryApi", {
     ipcRenderer.invoke("library:parse-job-posting-url", url),
   openExternalUrl: (url) =>
     ipcRenderer.invoke("library:open-external-url", url),
+  onItemsChanged: (callback) => {
+    const handler = () => callback();
+
+    ipcRenderer.on("library:items-changed", handler);
+
+    return () => {
+      ipcRenderer.removeListener("library:items-changed", handler);
+    };
+  },
 });

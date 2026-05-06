@@ -27,8 +27,16 @@ let applyModeHitboxes = {
   settingsOpen: false,
 };
 
-const APPLY_MODE_BASE_WIDTH = 325;
+const APPLY_MODE_BASE_WIDTH = 350;
 const APPLY_MODE_BASE_HEIGHT = 265;
+
+function broadcastLibraryItemsChanged() {
+  BrowserWindow.getAllWindows().forEach((win) => {
+    if (!win.isDestroyed()) {
+      win.webContents.send("library:items-changed");
+    }
+  });
+}
 
 function clampApplyModeScale(scale) {
   const numericScale = Number(scale);
@@ -172,6 +180,8 @@ function createMainWindow() {
   win.webContents.once("did-finish-load", () => {
     win.show();
 
+    createApplyModeWindow({ showWhenReady: false });
+
     setTimeout(() => {
       if (!win.isDestroyed()) {
         win.webContents.send("app-window-shown");
@@ -180,7 +190,34 @@ function createMainWindow() {
   });
 }
 
-function createApplyModeWindow() {
+function showApplyModeWindow() {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) {
+    createApplyModeWindow({ showWhenReady: true });
+    return;
+  }
+
+  const settings = readAppSettings();
+  const targetOpacity = clampApplyModeOpacity(settings.applyModeOpacity) / 100;
+
+  setApplyModeClickThrough(false);
+
+  applyModeWindow.setOpacity(0);
+  applyModeWindow.setAlwaysOnTop(true);
+  applyModeWindow.show();
+  applyModeWindow.focus();
+
+  setTimeout(() => {
+    if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
+
+    applyModeWindow.setOpacity(targetOpacity);
+
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.hide();
+    }
+  }, 80);
+}
+
+function createApplyModeWindow({ showWhenReady = false } = {}) {
   if (applyModeWindow && !applyModeWindow.isDestroyed()) {
     applyModeWindow.focus();
     return;
@@ -233,10 +270,8 @@ function createApplyModeWindow() {
   }
 
   applyModeWindow.once("ready-to-show", () => {
-    applyModeWindow.show();
-
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.hide();
+    if (showWhenReady) {
+      showApplyModeWindow();
     }
   });
 
@@ -343,26 +378,38 @@ function registerWindowEvents() {
 
   ipcMain.handle(
     "library:add-item",
-    createIpcHandler(async (_event, formValues) =>
-      createLibraryItem(formValues),
-    ),
+    createIpcHandler(async (_event, formValues) => {
+      const item = await createLibraryItem(formValues);
+      broadcastLibraryItemsChanged();
+      return item;
+    }),
   );
 
   ipcMain.handle(
     "library:update-item",
-    createIpcHandler(async (_event, itemId, formValues) =>
-      updateLibraryItem(itemId, formValues),
-    ),
+    createIpcHandler(async (_event, itemId, formValues) => {
+      const item = await updateLibraryItem(itemId, formValues);
+      broadcastLibraryItemsChanged();
+      return item;
+    }),
   );
 
   ipcMain.handle(
     "library:delete-item",
-    createIpcHandler(async (_event, itemId) => deleteLibraryItem(itemId)),
+    createIpcHandler(async (_event, itemId) => {
+      const result = await deleteLibraryItem(itemId);
+      broadcastLibraryItemsChanged();
+      return result;
+    }),
   );
 
   ipcMain.handle(
     "library:reset-items",
-    createIpcHandler(async () => resetLibraryItems()),
+    createIpcHandler(async () => {
+      const items = await resetLibraryItems();
+      broadcastLibraryItemsChanged();
+      return items;
+    }),
   );
 
   ipcMain.handle("library:parse-job-posting-url", async (_event, url) =>
@@ -379,13 +426,14 @@ function registerWindowEvents() {
   });
 
   ipcMain.on("window:open-apply-mode", () => {
-    createApplyModeWindow();
+    showApplyModeWindow();
   });
 
   ipcMain.on("window:exit-apply-mode", () => {
+    setApplyModeClickThrough(false);
+
     if (applyModeWindow && !applyModeWindow.isDestroyed()) {
-      applyModeWindow.close();
-      return;
+      applyModeWindow.hide();
     }
 
     if (mainWindow && !mainWindow.isDestroyed()) {

@@ -42,6 +42,21 @@ function useLibraryItems(resetVersion = 0) {
     };
   }, [resetVersion]);
 
+  useEffect(() => {
+    const unsubscribe = window.libraryApi?.onItemsChanged?.(async () => {
+      try {
+        const storedItems = await getLibraryItems();
+        setItems(Array.isArray(storedItems) ? storedItems : []);
+      } catch {
+        setItems([]);
+      }
+    });
+
+    return () => {
+      unsubscribe?.();
+    };
+  }, []);
+
   async function addItem(formValues) {
     const newItem = await addLibraryItem(formValues);
     setItems((currentItems) => [newItem, ...currentItems]);
