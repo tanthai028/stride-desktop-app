@@ -29,3 +29,7 @@ export function setApplyModeOpacity(opacity) {
 export function setApplyModeClickThrough(enabled) {
   getWindowControls()?.setApplyModeClickThrough?.(enabled);
 }
+
+export function setApplyModeHitboxes(hitboxes) {
+  getWindowControls()?.setApplyModeHitboxes?.(hitboxes);
+}

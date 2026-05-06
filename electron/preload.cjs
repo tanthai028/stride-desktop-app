@@ -16,6 +16,8 @@ contextBridge.exposeInMainWorld("windowControls", {
     ipcRenderer.send("window:set-apply-mode-opacity", opacity),
   setApplyModeClickThrough: (enabled) =>
     ipcRenderer.send("window:set-apply-mode-click-through", enabled),
+  setApplyModeHitboxes: (hitboxes) =>
+    ipcRenderer.send("window:set-apply-mode-hitboxes", hitboxes),
 });
 
 contextBridge.exposeInMainWorld("timerApi", {

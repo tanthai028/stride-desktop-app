@@ -111,14 +111,14 @@
 
 .apply-mode-current-main strong {
   color: #f8fafc;
-  font-size: 0.86rem;
+  font-size: 0.78rem;
 }
 
 .apply-mode-current-main span,
 .apply-mode-current-main em {
   overflow: hidden;
   color: #94a3b8;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -186,9 +186,30 @@
   cursor: pointer;
 }
 
-.apply-mode-completed-item:hover {
+.apply-mode-completed-item:has(.apply-mode-status-pill--applied) {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.apply-mode-completed-item:has(.apply-mode-status-pill--applied):hover {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(30, 41, 59, 0.62);
+}
+
+.apply-mode-completed-item:has(.apply-mode-status-pill--skipped) {
+  border-color: rgba(96, 165, 250, 0.34);
+}
+
+.apply-mode-completed-item:has(.apply-mode-status-pill--skipped):hover {
   border-color: rgba(96, 165, 250, 0.34);
   background: rgba(30, 41, 59, 0.62);
+}
+
+.apply-mode-completed-item--applied:hover {
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.apply-mode-completed-item--skipped:hover {
+  border-color: rgba(96, 165, 250, 0.34);
 }
 
 .apply-mode-completed-main strong,
@@ -204,11 +225,7 @@
   font-size: 0.78rem;
 }
 
-.apply-mode-completed-main > span {
-  color: #94a3b8;
-  font-size: 0.7rem;
-}
-
+.apply-mode-completed-main > span,
 .apply-mode-completed-main em {
   color: #94a3b8;
   font-size: 0.7rem;
@@ -239,9 +256,9 @@
 }
 
 .apply-mode-status-pill--applied {
-  border: 1px solid rgba(56, 189, 248, 0.32);
-  background: rgba(56, 189, 248, 0.14);
-  color: #bae6fd;
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  background: rgba(34, 197, 94, 0.12);
+  color: #86efac;
 }
 
 .apply-mode-status-pill--skipped {

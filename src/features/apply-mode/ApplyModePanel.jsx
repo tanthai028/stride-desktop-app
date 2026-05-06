@@ -13,6 +13,7 @@ import {
   exitApplyModeWindow,
   minimizeWindow,
   setApplyModeClickThrough,
+  setApplyModeHitboxes,
   setApplyModeOpacity,
 } from "../../lib/windowControls.js";
 import { AnimatePresence, motion } from "framer-motion";
@@ -50,26 +51,22 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
   }, [applyModeScale]);
 
   useEffect(() => {
+    setApplyModeHitboxes({
+      headerHeight: 42,
+      settingsOpen: showSettings,
+    });
+
     if (!isClickThrough) {
       setApplyModeClickThrough(false);
       return;
     }
 
-    function handleMouseMove(event) {
-      const shouldReceiveClicks = Boolean(
-        event.target.closest("[data-apply-mode-hitbox='true']"),
-      );
-
-      setApplyModeClickThrough(!shouldReceiveClicks);
-    }
-
-    window.addEventListener("mousemove", handleMouseMove);
+    setApplyModeClickThrough(true);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
       setApplyModeClickThrough(false);
     };
-  }, [isClickThrough]);
+  }, [isClickThrough, showSettings]);
 
   function handleScaleChange(event) {
     const nextScale = Number(event.target.value);
@@ -203,6 +200,13 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
             <div className="apply-mode-window-actions">
               <button
                 type="button"
+                aria-label="Settings"
+                onClick={() => setShowSettings((current) => !current)}
+              >
+                <Settings size={14} />
+              </button>
+              <button
+                type="button"
                 className={isClickThrough ? "is-active" : ""}
                 aria-label="Toggle click through"
                 title={
@@ -213,13 +217,6 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                 onClick={handleClickThroughToggle}
               >
                 <MousePointer2 size={14} />
-              </button>
-              <button
-                type="button"
-                aria-label="Settings"
-                onClick={() => setShowSettings((current) => !current)}
-              >
-                <Settings size={14} />
               </button>
 
               <button
@@ -410,7 +407,11 @@ function ApplyModePanel({ items = [], updateItem, settings, updateSetting }) {
                   <motion.button
                     type="button"
                     key={`${visibleRecentItem.id}-${visibleRecentItem.appliedAt}-${recentPage}`}
-                    className="apply-mode-completed-item"
+                    className={`apply-mode-completed-item ${
+                      visibleRecentItem.status === "Applied"
+                        ? "apply-mode-completed-item--applied"
+                        : "apply-mode-completed-item--skipped"
+                    }`}
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 12 }}

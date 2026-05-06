@@ -20,9 +20,15 @@ const { serializeLibraryError } = require("./libraryErrors.cjs");
 const isDev = !app.isPackaged;
 let mainWindow = null;
 let applyModeWindow = null;
+let applyModeClickThroughEnabled = false;
+let applyModeClickThroughTimer = null;
+let applyModeHitboxes = {
+  headerHeight: 42,
+  settingsOpen: false,
+};
 
-const APPLY_MODE_BASE_WIDTH = 350;
-const APPLY_MODE_BASE_HEIGHT = 275;
+const APPLY_MODE_BASE_WIDTH = 325;
+const APPLY_MODE_BASE_HEIGHT = 265;
 
 function clampApplyModeScale(scale) {
   const numericScale = Number(scale);
@@ -55,12 +61,53 @@ function setApplyModeOpacity(opacity) {
   applyModeWindow.setOpacity(clampApplyModeOpacity(opacity) / 100);
 }
 
+function isCursorInsideApplyModeHitbox() {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) return false;
+
+  const cursor = screen.getCursorScreenPoint();
+  const bounds = applyModeWindow.getBounds();
+
+  const insideWindow =
+    cursor.x >= bounds.x &&
+    cursor.x <= bounds.x + bounds.width &&
+    cursor.y >= bounds.y &&
+    cursor.y <= bounds.y + bounds.height;
+
+  if (!insideWindow) return false;
+
+  if (applyModeHitboxes.settingsOpen) return true;
+
+  return cursor.y <= bounds.y + applyModeHitboxes.headerHeight;
+}
+
+function syncApplyModeClickThrough() {
+  if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
+
+  const shouldReceiveClicks = isCursorInsideApplyModeHitbox();
+
+  applyModeWindow.setIgnoreMouseEvents(!shouldReceiveClicks, {
+    forward: true,
+  });
+}
+
 function setApplyModeClickThrough(enabled) {
   if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
 
-  applyModeWindow.setIgnoreMouseEvents(Boolean(enabled), {
-    forward: true,
-  });
+  applyModeClickThroughEnabled = Boolean(enabled);
+
+  if (applyModeClickThroughTimer) {
+    clearInterval(applyModeClickThroughTimer);
+    applyModeClickThroughTimer = null;
+  }
+
+  if (!applyModeClickThroughEnabled) {
+    applyModeWindow.setIgnoreMouseEvents(false);
+    return;
+  }
+
+  syncApplyModeClickThrough();
+
+  applyModeClickThroughTimer = setInterval(syncApplyModeClickThrough, 60);
 }
 
 function resizeApplyModeWindow(scale) {
@@ -208,6 +255,13 @@ function createApplyModeWindow() {
       mainWindow.show();
       mainWindow.focus();
     }
+
+    if (applyModeClickThroughTimer) {
+      clearInterval(applyModeClickThroughTimer);
+      applyModeClickThroughTimer = null;
+    }
+
+    applyModeClickThroughEnabled = false;
   });
 }
 
@@ -366,6 +420,17 @@ function registerWindowEvents() {
 
   ipcMain.on("window:set-apply-mode-click-through", (_event, enabled) => {
     setApplyModeClickThrough(enabled);
+  });
+
+  ipcMain.on("window:set-apply-mode-hitboxes", (_event, hitboxes = {}) => {
+    applyModeHitboxes = {
+      ...applyModeHitboxes,
+      ...hitboxes,
+    };
+
+    if (applyModeClickThroughEnabled) {
+      syncApplyModeClickThrough();
+    }
   });
 }
 
