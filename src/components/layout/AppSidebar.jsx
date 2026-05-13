@@ -25,7 +25,19 @@ function AppSidebar({ activePage, onNavigate }) {
               >
                 <div className="sidebar-item-inner">
                   <div className="sidebar-icon">
-                    <Icon size={18} />
+                    {item.iconSrc ? (
+                      <img
+                        src={item.iconSrc}
+                        alt=""
+                        className={
+                          item.id === "dashboard"
+                            ? "sidebar-icon-image sidebar-icon-image--stride"
+                            : "sidebar-icon-image"
+                        }
+                      />
+                    ) : (
+                      <Icon size="1.125rem" />
+                    )}
                   </div>
 
                   <span className="sidebar-label">{item.label}</span>

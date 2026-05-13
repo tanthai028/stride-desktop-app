@@ -3,14 +3,6 @@ import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
 import { openApplyModeWindow } from "../../lib/windowControls.js";
 
-function AppFrameIcon() {
-  return (
-    <div className="frame-app-icon no-drag" aria-label="Stride app icon">
-      <img src="/stride_icon.png" alt="" className="frame-app-icon-image" />
-    </div>
-  );
-}
-
 function ApplyModeButton({ onClick }) {
   return (
     <button
@@ -58,7 +50,6 @@ function WindowFrame({ sidebar, children }) {
   return (
     <FrameShell>
       <FrameHeader>
-        <AppFrameIcon />
         <div className="frame-header-spacer" />
         <ApplyModeButton onClick={openApplyModeWindow} />
         {isElectron() && <WindowControls />}

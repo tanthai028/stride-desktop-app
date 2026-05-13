@@ -44,30 +44,6 @@
   flex: 1;
 }
 
-.frame-app-icon {
-  display: flex;
-  width: 56px;
-  height: 2.4rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--theme-panel-border);
-  border-radius: var(--radius-lg);
-  background: var(--theme-panel-bg);
-  color: var(--theme-header-kicker);
-  box-shadow: var(--theme-panel-shadow);
-  backdrop-filter: var(--theme-panel-backdrop);
-  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
-  margin: 0 0.5rem;
-}
-
-.frame-app-icon-image {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 999px;
-  object-fit: cover;
-  display: block;
-}
-
 .frame-apply-mode-button {
   display: inline-flex;
   height: 2.4rem;
