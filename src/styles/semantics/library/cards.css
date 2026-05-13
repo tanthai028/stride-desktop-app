@@ -125,3 +125,16 @@
   background-color: rgba(var(--theme-library-card-hover-bg), 0.25);
   box-shadow: var(--theme-library-card-hover-shadow);
 }
+
+.library-card-header-actions {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.library-card-content.is-pinned .library-card-title::before {
+  content: "Pinned · ";
+  color: var(--theme-stat-card-sky-label);
+  font-weight: 600;
+}

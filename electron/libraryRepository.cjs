@@ -39,6 +39,7 @@ function ensureLibrarySchema(db) {
       job_url TEXT NOT NULL DEFAULT '',
       location TEXT NOT NULL DEFAULT '',
       priority TEXT NOT NULL DEFAULT 'Medium',
+      pinned INTEGER NOT NULL DEFAULT 0,
       applied_at TEXT NOT NULL DEFAULT '',
       notes TEXT NOT NULL,
       created_at TEXT NOT NULL,
@@ -70,6 +71,13 @@ function ensureLibrarySchema(db) {
       ALTER TABLE library_items
       ADD COLUMN priority TEXT NOT NULL DEFAULT 'Medium'
     `);
+  }
+
+  if (!columns.includes("pinned")) {
+    db.exec(`
+    ALTER TABLE library_items
+    ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0
+  `);
   }
 }
 
@@ -103,6 +111,7 @@ function mapLibraryRow(row) {
     jobUrl: row.jobUrl,
     location: row.location,
     priority: row.priority ?? "Medium",
+    pinned: Boolean(row.pinned),
     appliedAt: row.appliedAt,
     notes: row.notes,
     createdAt: row.createdAt,
@@ -158,12 +167,14 @@ function insertLibraryItemRow(db, item) {
       job_url,
       location,
       priority,
+      pinned,
       applied_at,
       notes,
       created_at,
       updated_at
     )
     VALUES (
+      ?,
       ?,
       ?,
       ?,
@@ -185,6 +196,7 @@ function insertLibraryItemRow(db, item) {
     item.jobUrl ?? "",
     item.location ?? "",
     item.priority ?? "Medium",
+    item.pinned ? 1 : 0,
     item.appliedAt ?? "",
     item.notes,
     item.createdAt,
@@ -262,6 +274,7 @@ function getAllLibraryRows(seedItems = []) {
           job_url AS jobUrl,
           location,
           priority,
+          pinned,
           applied_at AS appliedAt,
           notes,
           created_at AS createdAt,
@@ -300,6 +313,7 @@ function getLibraryRowById(itemId, seedItems = []) {
         job_url AS jobUrl,
         location,
         priority,
+        pinned,
         applied_at AS appliedAt,
         notes,
         created_at AS createdAt,
@@ -360,6 +374,7 @@ function updateLibraryRow(itemId, item, seedItems = []) {
         job_url = ?,
         location = ?,
         priority = ?,
+        pinned = ?,
         applied_at = ?,
         notes = ?,
         created_at = ?,
@@ -374,6 +389,7 @@ function updateLibraryRow(itemId, item, seedItems = []) {
         item.jobUrl ?? "",
         item.location ?? "",
         item.priority ?? "Medium",
+        item.pinned ? 1 : 0,
         item.appliedAt ?? "",
         item.notes,
         item.createdAt,

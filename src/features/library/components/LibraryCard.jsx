@@ -1,4 +1,4 @@
-import { ExternalLink, MapPin } from "lucide-react";
+import { ExternalLink, MapPin, Pin } from "lucide-react";
 import { getStatusMeta } from "../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
@@ -6,12 +6,17 @@ import {
   openLibraryJobUrl,
 } from "../utils/libraryDisplayFormatters.js";
 
-function LibraryCard({ item }) {
+function LibraryCard({ item, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const title = [item.company, item.role].filter(Boolean).join(" — ");
 
+  function handlePinClick(event) {
+    event.stopPropagation();
+    onTogglePinned?.(item);
+  }
+
   return (
-    <div className="library-card-content">
+    <div className={`library-card-content ${item.pinned ? "is-pinned" : ""}`}>
       <div className="library-card-top">
         <div className="library-card-main">
           <div className="library-card-header">
@@ -19,10 +24,28 @@ function LibraryCard({ item }) {
               {title || "Untitled application"}
             </p>
 
-            <span className="library-card-chip">
-              <span>{statusMeta.emoji}</span>
-              <span>{statusMeta.label}</span>
-            </span>
+            <div className="library-card-header-actions">
+              <button
+                type="button"
+                onClick={handlePinClick}
+                className={`library-pin-button ${
+                  item.pinned ? "is-active" : ""
+                }`}
+                aria-label={
+                  item.pinned
+                    ? `Unpin ${item.company || item.role || "application"}`
+                    : `Pin ${item.company || item.role || "application"}`
+                }
+                title={item.pinned ? "Unpin application" : "Pin application"}
+              >
+                <Pin className="library-pin-icon" />
+              </button>
+
+              <span className="library-card-chip">
+                <span>{statusMeta.emoji}</span>
+                <span>{statusMeta.label}</span>
+              </span>
+            </div>
           </div>
 
           <div className="library-card-meta">

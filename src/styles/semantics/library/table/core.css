@@ -9,11 +9,14 @@
   background-color: var(--theme-card-bg);
   color: var(--theme-text-primary);
   container-type: inline-size;
+  display: flex;
+  flex-direction: column;
 }
 
 .library-table-scroll {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  min-height: 0;
   overflow: auto;
 }
 

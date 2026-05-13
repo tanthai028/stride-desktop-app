@@ -1,33 +1,31 @@
+.library-col-pin {
+  width: 58px;
+}
 .library-col-company {
-  width: 18%;
-}
-
-.library-col-role {
-  width: 28%;
-}
-
-.library-col-status {
   width: 16%;
 }
-
-.library-col-location {
-  width: 18%;
+.library-col-role {
+  width: 24%;
 }
-
-.library-col-applied {
+.library-col-status {
+  width: 13%;
+}
+.library-col-priority {
   width: 12%;
 }
-
+.library-col-location {
+  width: 16%;
+}
+.library-col-applied {
+  width: 11%;
+}
 .library-col-open {
   width: 104px;
 }
 
+.library-col-pin.library-table-header-cell,
+.library-col-pin.library-table-cell,
 .library-col-open.library-table-header-cell,
 .library-col-open.library-table-cell {
   text-align: center;
-  padding-right: 1.5rem;
-}
-
-.library-col-open .library-table-link-button {
-  justify-content: center;
 }

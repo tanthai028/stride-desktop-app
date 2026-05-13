@@ -5,7 +5,10 @@ import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx"
 import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
 import { DEFAULT_LIBRARY_STATUS_FILTER } from "./constants/libraryPageState.js";
 import useLibraryPageState from "./hooks/useLibraryPageState.js";
-import { getFilteredAndSortedLibraryItems } from "./utils/libraryItemSelectors.js";
+import {
+  applyTableColumnFilters,
+  getFilteredAndSortedLibraryItems,
+} from "./utils/libraryItemSelectors.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
@@ -33,6 +36,10 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     openAddModal,
     openEditModal,
     closeModal,
+    tableDateScope,
+    setTableDateScope,
+    tableColumnFilters,
+    setTableColumnFilters,
   } = useLibraryPageState(settings.libraryViewMode);
 
   const isTableView = viewMode === "table";
@@ -46,13 +53,29 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     : statusFilterValue;
 
   const filteredItems = useMemo(() => {
-    return getFilteredAndSortedLibraryItems(
+    const baseItems = getFilteredAndSortedLibraryItems(
       items,
       searchValue,
       activeSortValue,
       activeStatusFilterValue,
     );
-  }, [items, searchValue, activeSortValue, activeStatusFilterValue]);
+
+    if (!isTableView) return baseItems;
+
+    return applyTableColumnFilters(
+      baseItems,
+      tableColumnFilters,
+      tableDateScope,
+    );
+  }, [
+    activeSortValue,
+    activeStatusFilterValue,
+    isTableView,
+    items,
+    searchValue,
+    tableColumnFilters,
+    tableDateScope,
+  ]);
 
   useEffect(() => {
     if (settings.libraryViewMode !== viewMode) {
@@ -119,6 +142,11 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     }
   }
 
+  async function handleTogglePinned(item) {
+    if (!item?.id) return;
+    await updateItem(item.id, { pinned: !item.pinned });
+  }
+
   return (
     <motion.div
       initial={{ y: 14 }}
@@ -150,6 +178,11 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
           onItemClick={handleOpenEditModal}
           onClearFilters={clearFilters}
           onAddItem={handleOpenAddModal}
+          tableDateScope={tableDateScope}
+          onTableDateScopeChange={setTableDateScope}
+          tableColumnFilters={tableColumnFilters}
+          onTableColumnFiltersChange={setTableColumnFilters}
+          onTogglePinned={handleTogglePinned}
         />
       </PageShell>
 

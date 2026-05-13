@@ -111,10 +111,96 @@ export function getFilteredAndSortedLibraryItems(
         "desc",
       );
       break;
+    case "priority-asc":
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "priority"),
+        "asc",
+      );
+      break;
+    case "priority-desc":
+      nextItems = sortByText(
+        nextItems,
+        (item) => getSortableText(item, "priority"),
+        "desc",
+      );
+      break;
     default:
       nextItems = sortByAppliedDate(nextItems, "desc");
       break;
   }
 
-  return nextItems;
+  return sortPinnedItemsFirst(nextItems);
+}
+
+function isSameLocalDay(leftDate, rightDate) {
+  return (
+    leftDate.getFullYear() === rightDate.getFullYear() &&
+    leftDate.getMonth() === rightDate.getMonth() &&
+    leftDate.getDate() === rightDate.getDate()
+  );
+}
+
+function isWithinCurrentWeek(date, now = new Date()) {
+  const startOfToday = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+  );
+  const startOfWeek = new Date(startOfToday);
+  startOfWeek.setDate(startOfToday.getDate() - startOfToday.getDay());
+
+  const startOfNextWeek = new Date(startOfWeek);
+  startOfNextWeek.setDate(startOfWeek.getDate() + 7);
+
+  return date >= startOfWeek && date < startOfNextWeek;
+}
+
+function matchesDateScope(item, dateScope) {
+  if (dateScope === "all") return true;
+
+  const timestamp = item._appliedTimestamp ?? 0;
+  if (!timestamp) return false;
+
+  const appliedDate = new Date(timestamp);
+  if (Number.isNaN(appliedDate.getTime())) return false;
+
+  if (dateScope === "week") return isWithinCurrentWeek(appliedDate);
+
+  return isSameLocalDay(appliedDate, new Date());
+}
+
+function matchesTextFilter(value, filterValue) {
+  const normalizedFilter = getNormalizedValue(filterValue);
+  if (!normalizedFilter) return true;
+  return getNormalizedValue(value).includes(normalizedFilter);
+}
+
+function matchesExactFilter(value, filterValue) {
+  const normalizedFilter = getNormalizedValue(filterValue);
+  if (!normalizedFilter || normalizedFilter === "all") return true;
+  return getNormalizedValue(value) === normalizedFilter;
+}
+
+export function sortPinnedItemsFirst(items) {
+  return [...items].sort((a, b) => (a.pinned ? 0 : 1) - (b.pinned ? 0 : 1));
+}
+
+export function applyTableColumnFilters(
+  items,
+  tableColumnFilters = {},
+  tableDateScope = "today",
+) {
+  return items.filter((item) => {
+    if (!matchesDateScope(item, tableDateScope)) return false;
+
+    return (
+      matchesTextFilter(item.company, tableColumnFilters.company) &&
+      matchesTextFilter(item.role, tableColumnFilters.role) &&
+      matchesExactFilter(item.status, tableColumnFilters.status) &&
+      matchesExactFilter(item.priority, tableColumnFilters.priority) &&
+      matchesTextFilter(item.location, tableColumnFilters.location) &&
+      matchesTextFilter(item.appliedAt, tableColumnFilters.appliedAt)
+    );
+  });
 }

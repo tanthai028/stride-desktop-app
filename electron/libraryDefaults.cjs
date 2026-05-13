@@ -20,6 +20,7 @@ const DEFAULT_LIBRARY_ITEMS = [
     createdAt: getDateOffset(3),
     updatedAt: getDateOffset(3),
     priority: "High",
+    pinned: false,
   },
   {
     id: "item-default-ge-aerospace",
@@ -34,6 +35,7 @@ const DEFAULT_LIBRARY_ITEMS = [
     createdAt: getDateOffset(8),
     updatedAt: getDateOffset(8),
     priority: "High",
+    pinned: false,
   },
   {
     id: "item-default-palantir",
@@ -48,6 +50,7 @@ const DEFAULT_LIBRARY_ITEMS = [
     createdAt: getDateOffset(14),
     updatedAt: getDateOffset(10),
     priority: "High",
+    pinned: false,
   },
   {
     id: "item-default-jpmorgan",
@@ -62,6 +65,7 @@ const DEFAULT_LIBRARY_ITEMS = [
     createdAt: getDateOffset(21),
     updatedAt: getDateOffset(5),
     priority: "High",
+    pinned: false,
   },
 ];
 
@@ -87,6 +91,7 @@ function normalizeLibraryItem(item = {}) {
     createdAt: toIsoDateTime(item.createdAt) || nowIso,
     updatedAt: toIsoDateTime(item.updatedAt) || nowIso,
     priority: String(item.priority ?? "Medium").trim() || "Medium",
+    pinned: Boolean(item.pinned),
   };
 }
 

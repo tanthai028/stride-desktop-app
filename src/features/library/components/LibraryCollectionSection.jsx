@@ -37,6 +37,11 @@ function LibraryCollectionSection({
   onItemClick,
   onClearFilters,
   onAddItem,
+  tableDateScope,
+  onTableDateScopeChange,
+  tableColumnFilters,
+  onTableColumnFiltersChange,
+  onTogglePinned,
 }) {
   const hasItems = items.length > 0;
   const hasFilteredItems = filteredItems.length > 0;
@@ -50,7 +55,6 @@ function LibraryCollectionSection({
     if (currentIndex < 0 || options.length === 0) return;
 
     const nextIndex = (currentIndex + 1) % options.length;
-
     onChange(options[nextIndex].value);
   }
 
@@ -128,6 +132,11 @@ function LibraryCollectionSection({
               onItemClick={onItemClick}
               sortValue={tableSortValue}
               onSortChange={onTableSortChange}
+              dateScope={tableDateScope}
+              onDateScopeChange={onTableDateScopeChange}
+              columnFilters={tableColumnFilters}
+              onColumnFiltersChange={onTableColumnFiltersChange}
+              onTogglePinned={onTogglePinned}
             />
           ) : (
             <>
@@ -142,7 +151,12 @@ function LibraryCollectionSection({
                   <ItemGrid
                     items={filteredItems}
                     onItemClick={isPageReady ? onItemClick : undefined}
-                    renderItem={(item) => <LibraryCard item={item} />}
+                    renderItem={(item) => (
+                      <LibraryCard
+                        item={item}
+                        onTogglePinned={onTogglePinned}
+                      />
+                    )}
                   />
                 </div>
               </div>
@@ -160,6 +174,11 @@ function LibraryCollectionSection({
             onItemClick={onItemClick}
             sortValue={tableSortValue}
             onSortChange={onTableSortChange}
+            dateScope={tableDateScope}
+            onDateScopeChange={onTableDateScopeChange}
+            columnFilters={tableColumnFilters}
+            onColumnFiltersChange={onTableColumnFiltersChange}
+            onTogglePinned={onTogglePinned}
             emptyStateTitle={emptyState.title}
             emptyStateDescription={emptyState.description}
             emptyStateAction={emptyState.action}

@@ -59,6 +59,10 @@ function formatPriorityLabel(priority = "") {
   return normalized.charAt(0).toUpperCase() + normalized.slice(1);
 }
 
+function getBooleanValue(value) {
+  return value === true || value === "true" || value === 1 || value === "1";
+}
+
 function validateLibraryFormValues(formValues = {}, options = {}) {
   const company = String(formValues.company ?? "").trim();
   const role = String(formValues.role ?? "").trim();
@@ -142,6 +146,7 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
     jobUrl,
     location,
     priority: formatPriorityLabel(priority),
+    pinned: getBooleanValue(formValues.pinned),
     appliedAt: getNormalizedAppliedAt(formValues.appliedAt),
     notes,
   };

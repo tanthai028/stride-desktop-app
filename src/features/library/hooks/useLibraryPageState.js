@@ -13,6 +13,15 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
   const [statusFilterValue, setStatusFilterValue] = useState(
     DEFAULT_LIBRARY_STATUS_FILTER,
   );
+  const [tableDateScope, setTableDateScope] = useState("today");
+  const [tableColumnFilters, setTableColumnFilters] = useState({
+    company: "",
+    role: "",
+    status: "all",
+    priority: "all",
+    location: "",
+    appliedAt: "",
+  });
   const [viewMode, setViewMode] = useState(initialViewMode);
   const [modalMode, setModalMode] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -22,6 +31,15 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
     setSortValue(DEFAULT_LIBRARY_SORT);
     setStatusFilterValue(DEFAULT_LIBRARY_STATUS_FILTER);
     setTableSortValue(DEFAULT_LIBRARY_SORT);
+    setTableDateScope("today");
+    setTableColumnFilters({
+      company: "",
+      role: "",
+      status: "all",
+      priority: "all",
+      location: "",
+      appliedAt: "",
+    });
   }
 
   function openAddModal() {
@@ -62,6 +80,10 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
     openAddModal,
     openEditModal,
     closeModal,
+    tableDateScope,
+    setTableDateScope,
+    tableColumnFilters,
+    setTableColumnFilters,
   };
 }
 

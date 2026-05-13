@@ -29,25 +29,31 @@ function SortableHeader({
   currentSortValue,
   onSortChange,
   className = "",
+  sortable = true,
 }) {
   const [activeKey, activeDirection] = String(currentSortValue).split("-");
   const isActive = activeKey === columnKey;
   const nextSortValue = getNextSortValue(currentSortValue, columnKey);
 
   function handleClick() {
+    if (!sortable) return;
     onSortChange(nextSortValue);
   }
 
   return (
     <th className={`library-table-header-cell ${className}`}>
-      <button
-        type="button"
-        onClick={handleClick}
-        className={`library-table-sort-button ${isActive ? "is-active" : ""}`}
-      >
-        <span>{label}</span>
-        {renderSortIcon(isActive, activeDirection)}
-      </button>
+      {sortable ? (
+        <button
+          type="button"
+          onClick={handleClick}
+          className={`library-table-sort-button ${isActive ? "is-active" : ""}`}
+        >
+          <span>{label}</span>
+          {renderSortIcon(isActive, activeDirection)}
+        </button>
+      ) : (
+        <span className="library-table-header-label">{label}</span>
+      )}
     </th>
   );
 }
@@ -64,6 +70,7 @@ function LibraryTableHeader({ sortValue, onSortChange }) {
             currentSortValue={sortValue}
             onSortChange={onSortChange}
             className={column.className}
+            sortable={column.sortable !== false}
           />
         ))}
 

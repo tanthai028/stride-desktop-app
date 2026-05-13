@@ -7,7 +7,7 @@
     "dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
     "build": "vite build",
     "preview": "vite preview",
-    "zip": "tar -a -cf ../stride-app.zip src electron public build index.html package.json package-lock.json vite.config.js eslint.config.js",
+    "zip": "tar -a -cf ../stride-app.zip src electron public index.html package.json package-lock.json vite.config.js eslint.config.js",
     "dist": "npm run build && electron-builder --win nsis"
   },
   "dependencies": {

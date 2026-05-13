@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pin } from "lucide-react";
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
@@ -6,15 +6,38 @@ import {
   openLibraryJobUrl,
 } from "../../utils/libraryDisplayFormatters.js";
 
-function LibraryTableRow({ item, isPageReady, onItemClick }) {
+function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const isClickable = isPageReady && onItemClick;
+
+  function handlePinClick(event) {
+    event.stopPropagation();
+    onTogglePinned?.(item);
+  }
 
   return (
     <tr
       onClick={isClickable ? () => onItemClick(item) : undefined}
-      className={`library-table-row ${isClickable ? "is-clickable" : ""}`}
+      className={`library-table-row ${isClickable ? "is-clickable" : ""} ${
+        item.pinned ? "is-pinned" : ""
+      }`}
     >
+      <td className="library-table-cell library-col-pin">
+        <button
+          type="button"
+          onClick={handlePinClick}
+          className={`library-pin-button ${item.pinned ? "is-active" : ""}`}
+          aria-label={
+            item.pinned
+              ? `Unpin ${item.company || item.role || "application"}`
+              : `Pin ${item.company || item.role || "application"}`
+          }
+          title={item.pinned ? "Unpin application" : "Pin application"}
+        >
+          <Pin className="library-pin-icon" />
+        </button>
+      </td>
+
       <td className="library-table-cell library-col-company">
         <span className="library-table-text-truncate">
           {item.company || "-"}
@@ -31,6 +54,12 @@ function LibraryTableRow({ item, isPageReady, onItemClick }) {
           <span className="library-table-text-truncate">
             {statusMeta.label || "-"}
           </span>
+        </span>
+      </td>
+
+      <td className="library-table-cell library-col-priority">
+        <span className="library-table-priority-chip">
+          {item.priority || "Medium"}
         </span>
       </td>
 
@@ -52,7 +81,9 @@ function LibraryTableRow({ item, isPageReady, onItemClick }) {
             type="button"
             onClick={(event) => openLibraryJobUrl(event, item.jobUrl)}
             className="library-table-link-button"
-            aria-label={`Open job post for ${item.company || item.role || "application"}`}
+            aria-label={`Open job post for ${
+              item.company || item.role || "application"
+            }`}
             title="Open job post"
           >
             <ExternalLink className="library-table-link-icon" />
