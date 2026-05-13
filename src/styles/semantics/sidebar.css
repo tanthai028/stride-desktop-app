@@ -106,17 +106,10 @@
   transition: box-shadow var(--motion-slow);
 }
 
-.sidebar-item:hover::after {
-  box-shadow: inset 0 0 0 1px var(--theme-sidebar-item-hover-border);
-}
-
-.sidebar-item.is-active::after {
-  box-shadow: inset 0 0 0 1px var(--theme-sidebar-item-active-border);
-}
-
-.sidebar-item.is-active::before {
-  background: rgba(var(--theme-accent-sky-bg), 0.5);
-  opacity: 1;
+.sidebar-item.is-active {
+  background: var(--theme-sidebar-item-active-bg);
+  color: var(--theme-sidebar-item-active-text);
+  box-shadow: var(--theme-sidebar-item-active-shadow);
 }
 
 .sidebar-item-inner {
