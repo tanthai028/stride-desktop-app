@@ -6,6 +6,7 @@ import SettingsToggleRow from "./components/SettingsToggleRow.jsx";
 import SettingsChoiceRow from "./components/SettingsChoiceRow.jsx";
 import { settingsSections } from "./config/settingsSections.js";
 import ActionButton from "../../components/ui/ActionButton.jsx";
+import ApplicationBackupPanel from "./components/ApplicationBackupPanel.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = {
@@ -36,9 +37,10 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
               headerAction={section.id === "display" ? resetButton : null}
             >
               <div className="settings-page-section-content">
+                {section.id === "data" ? <ApplicationBackupPanel /> : null}
                 {section.items.map((item) => {
                   if (item.type === "choice") {
-                    return (
+                  return (
                       <SettingsChoiceRow
                         key={item.id}
                         title={item.title}

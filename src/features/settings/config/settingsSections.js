@@ -13,6 +13,13 @@ export const settingsSections = [
     ],
   },
   {
+    id: "data",
+    title: "💾 Data",
+    description:
+      "Back up, restore, import, and export your application tracker.",
+    items: [],
+  },
+  {
     id: "sound",
     title: "🔊 Sound",
     description: "Choose the hover sound feel for interactive UI elements.",

@@ -23,6 +23,10 @@
   border-color: transparent;
   background-color: rgba(var(--theme-accent-pink-bg), 0.24);
   color: var(--theme-text-primary);
+  box-shadow: none;
+}
+
+.action-button-pink:hover {
   box-shadow: var(--theme-accent-pink-shadow);
 }
 
@@ -30,6 +34,14 @@
   border-color: transparent;
   background-color: rgba(var(--theme-accent-violet-bg), 0.24);
   color: var(--theme-text-primary);
+  box-shadow: none;
+}
+
+.action-button-pink:hover {
+  box-shadow: var(--theme-accent-pink-shadow);
+}
+
+.action-button-violet:hover {
   box-shadow: var(--theme-accent-violet-shadow);
 }
 
@@ -37,6 +49,10 @@
   border-color: transparent;
   background-color: rgba(var(--theme-accent-sky-bg), 0.24);
   color: var(--theme-text-primary);
+  box-shadow: none;
+}
+
+.action-button-sky:hover {
   box-shadow: var(--theme-accent-sky-shadow);
 }
 

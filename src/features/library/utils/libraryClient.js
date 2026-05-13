@@ -309,3 +309,93 @@ export async function resetLibraryItems() {
   localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
   return normalizedDefaults;
 }
+
+export async function listLibraryBackups() {
+  if (
+    !hasElectronLibraryApi() ||
+    typeof window.libraryApi.listBackups !== "function"
+  ) {
+    return [];
+  }
+
+  return invokeElectronLibraryApi("listBackups");
+}
+
+export async function createLibraryBackup(name = "applications") {
+  if (
+    !hasElectronLibraryApi() ||
+    typeof window.libraryApi.createBackup !== "function"
+  ) {
+    const items = await getLibraryItems();
+
+    const backup = {
+      id: `local-${Date.now()}`,
+      label: `Browser backup (${items.length} apps)`,
+      createdAt: new Date().toISOString(),
+      itemCount: items.length,
+      items,
+    };
+
+    localStorage.setItem(`library-backup-${backup.id}`, JSON.stringify(backup));
+    return backup;
+  }
+
+  return invokeElectronLibraryApi("createBackup", name);
+}
+
+export async function loadLibraryBackup(backupId) {
+  if (
+    hasElectronLibraryApi() &&
+    typeof window.libraryApi.loadBackup === "function"
+  ) {
+    const items = await invokeElectronLibraryApi("loadBackup", backupId);
+    return normalizeLibraryItems(items);
+  }
+
+  const stored = localStorage.getItem(`library-backup-${backupId}`);
+  const parsed = stored ? JSON.parse(stored) : null;
+  const items = normalizeLibraryItems(parsed?.items ?? []);
+
+  localStorage.setItem("library-items", JSON.stringify(items));
+  return items;
+}
+
+export async function deleteLibraryBackup(backupId) {
+  if (
+    hasElectronLibraryApi() &&
+    typeof window.libraryApi.deleteBackup === "function"
+  ) {
+    return invokeElectronLibraryApi("deleteBackup", backupId);
+  }
+
+  localStorage.removeItem(`library-backup-${backupId}`);
+
+  return { deleted: true, id: backupId };
+}
+
+export async function importLibraryBackup() {
+  if (
+    !hasElectronLibraryApi() ||
+    typeof window.libraryApi.importBackup !== "function"
+  ) {
+    return { canceled: true, items: [] };
+  }
+
+  const result = await invokeElectronLibraryApi("importBackup");
+
+  return {
+    ...result,
+    items: normalizeLibraryItems(result?.items ?? []),
+  };
+}
+
+export async function exportLibraryCsv() {
+  if (
+    !hasElectronLibraryApi() ||
+    typeof window.libraryApi.exportCsv !== "function"
+  ) {
+    return { canceled: true, filePath: "", itemCount: 0 };
+  }
+
+  return invokeElectronLibraryApi("exportCsv");
+}

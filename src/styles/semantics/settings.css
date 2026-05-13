@@ -8,7 +8,6 @@
 .settings-page-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2xl);
 }
 
 .settings-page-section {
@@ -85,7 +84,7 @@
 }
 
 .settings-choice-button:hover {
-  transform: var(--motion-lift-y);
+  /* transform: var(--motion-lift-y); */
   background-color: var(--theme-settings-choice-hover-bg);
   border-color: var(--theme-settings-choice-hover-border);
   box-shadow: var(--shadow-control-hover);
@@ -136,7 +135,7 @@
 }
 
 .settings-toggle:hover {
-  transform: var(--motion-lift-y);
+  /* transform: var(--motion-lift-y); */
   background-color: var(--theme-settings-choice-hover-bg);
   border-color: var(--theme-settings-choice-hover-border);
   box-shadow: var(--shadow-control-hover);
@@ -160,7 +159,7 @@
 
 .settings-toggle.is-checked:hover {
   border-color: var(--theme-settings-toggle-on-hover-border);
-  /* background-color: var(--theme-settings-toggle-on-hover-bg); */
+  background-color: var(--theme-settings-toggle-on-hover-bg);
   box-shadow: var(--theme-settings-toggle-on-hover-shadow);
 }
 
@@ -189,4 +188,37 @@
 .settings-card-padded {
   border-radius: var(--radius-md);
   padding: var(--space-md) var(--space-lg);
+}
+
+.applications-backup-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.applications-backup-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.applications-backup-select-row,
+.applications-backup-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.applications-backup-select {
+  min-width: min(100%, 24rem);
+}
+
+.applications-backup-button {
+  flex: none;
+}
+
+.applications-backup-status {
+  color: var(--theme-settings-description);
+  font-size: 0.75rem;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-xs);
 }

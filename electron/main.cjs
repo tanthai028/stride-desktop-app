@@ -17,6 +17,14 @@ const {
 } = require("./libraryService.cjs");
 const { parseJobPostingFromUrl } = require("./jobPostingParser.cjs");
 const { serializeLibraryError } = require("./libraryErrors.cjs");
+const {
+  listApplicationBackups,
+  createApplicationBackup,
+  loadApplicationBackup,
+  deleteApplicationBackup,
+  importApplicationBackup,
+  exportApplicationsAsCsv,
+} = require("./libraryBackupService.cjs");
 const isDev = !app.isPackaged;
 const APP_ICON_PATH = isDev
   ? path.join(__dirname, "../public/stride_icon.png")
@@ -429,6 +437,50 @@ function registerWindowEvents() {
     await shell.openExternal(url);
     return { success: true };
   });
+
+  ipcMain.handle(
+    "library:list-backups",
+    createIpcHandler(async () => listApplicationBackups()),
+  );
+
+  ipcMain.handle(
+    "library:create-backup",
+    createIpcHandler(async (_event, name) => createApplicationBackup(name)),
+  );
+
+  ipcMain.handle(
+    "library:load-backup",
+    createIpcHandler(async (_event, backupId) => {
+      const items = loadApplicationBackup(backupId);
+      broadcastLibraryItemsChanged();
+      return items;
+    }),
+  );
+
+  ipcMain.handle(
+    "library:delete-backup",
+    createIpcHandler(async (_event, backupId) =>
+      deleteApplicationBackup(backupId),
+    ),
+  );
+
+  ipcMain.handle(
+    "library:import-backup",
+    createIpcHandler(async () => {
+      const result = await importApplicationBackup();
+
+      if (!result.canceled) {
+        broadcastLibraryItemsChanged();
+      }
+
+      return result;
+    }),
+  );
+
+  ipcMain.handle(
+    "library:export-csv",
+    createIpcHandler(async () => exportApplicationsAsCsv()),
+  );
 
   ipcMain.on("window:open-apply-mode", () => {
     showApplyModeWindow();

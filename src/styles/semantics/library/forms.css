@@ -69,7 +69,7 @@
 }
 
 .library-form-advanced-toggle-button:hover {
-  transform: var(--motion-lift-y);
+  /* transform: var(--motion-lift-y); */
   background: color-mix(in srgb, var(--theme-card-bg-solid) 92%, transparent);
 }
 

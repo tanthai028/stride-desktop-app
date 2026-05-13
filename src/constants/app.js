@@ -2,7 +2,7 @@ export const APP_NAME = "Stride";
 export const APP_TAGLINE = "Apply with steady momentum.";
 
 export const DEFAULT_SETTINGS = {
-  darkMode: false,
+  darkMode: true,
   hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",

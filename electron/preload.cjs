@@ -64,4 +64,11 @@ contextBridge.exposeInMainWorld("libraryApi", {
       ipcRenderer.removeListener("library:items-changed", handler);
     };
   },
+  listBackups: () => ipcRenderer.invoke("library:list-backups"),
+  createBackup: (name) => ipcRenderer.invoke("library:create-backup", name),
+  loadBackup: (backupId) => ipcRenderer.invoke("library:load-backup", backupId),
+  deleteBackup: (backupId) =>
+    ipcRenderer.invoke("library:delete-backup", backupId),
+  importBackup: () => ipcRenderer.invoke("library:import-backup"),
+  exportCsv: () => ipcRenderer.invoke("library:export-csv"),
 });

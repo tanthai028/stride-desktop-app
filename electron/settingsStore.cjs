@@ -3,7 +3,7 @@ const path = require("path");
 const { app } = require("electron");
 
 const DEFAULT_SETTINGS = {
-  darkMode: false,
+  darkMode: true,
   hoverSoundProfile: "off",
   resetVersion: 0,
   libraryViewMode: "grid",
