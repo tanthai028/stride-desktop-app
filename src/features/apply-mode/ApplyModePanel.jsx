@@ -490,27 +490,35 @@ function ApplyModePanel({
               </div>
 
               <div className="apply-mode-inline-actions">
-                <button
-                  type="button"
-                  className={`apply-mode-filter-toggle ${
-                    showAppliedRecent ? "is-active" : ""
-                  }`}
-                  onClick={() => setShowAppliedRecent((current) => !current)}
-                >
-                  <span>Applied</span>
-                  <i />
-                </button>
+                {isRecentExpanded && (
+                  <>
+                    <button
+                      type="button"
+                      className={`apply-mode-filter-toggle ${
+                        showAppliedRecent ? "is-active" : ""
+                      }`}
+                      onClick={() =>
+                        setShowAppliedRecent((current) => !current)
+                      }
+                    >
+                      <span>Applied</span>
+                      <i />
+                    </button>
 
-                <button
-                  type="button"
-                  className={`apply-mode-filter-toggle ${
-                    showSkippedRecent ? "is-active" : ""
-                  }`}
-                  onClick={() => setShowSkippedRecent((current) => !current)}
-                >
-                  <span>Skipped</span>
-                  <i />
-                </button>
+                    <button
+                      type="button"
+                      className={`apply-mode-filter-toggle ${
+                        showSkippedRecent ? "is-active" : ""
+                      }`}
+                      onClick={() =>
+                        setShowSkippedRecent((current) => !current)
+                      }
+                    >
+                      <span>Skipped</span>
+                      <i />
+                    </button>
+                  </>
+                )}
 
                 <button
                   type="button"

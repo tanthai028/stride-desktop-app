@@ -404,7 +404,7 @@
 
 .apply-mode-page-scrollbar {
   position: absolute;
-  top: 0.25rem;
+  top: -0.25rem;
   right: -0.5rem;
   bottom: 0.25rem;
   pointer-events: none;
