@@ -1,12 +1,12 @@
-import { PanelsTopLeft, Sparkles } from "lucide-react";
+import { PanelsTopLeft } from "lucide-react";
 import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
 import { openApplyModeWindow } from "../../lib/windowControls.js";
 
 function AppFrameIcon() {
   return (
-    <div className="frame-app-icon no-drag" aria-label="Temporary app icon">
-      <Sparkles size={22} />
+    <div className="frame-app-icon no-drag" aria-label="Stride app icon">
+      <img src="/stride_icon.png" alt="" className="frame-app-icon-image" />
     </div>
   );
 }

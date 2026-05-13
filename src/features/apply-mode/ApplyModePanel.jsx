@@ -1,5 +1,4 @@
 import {
-  BriefcaseBusiness,
   Check,
   ExternalLink,
   Maximize2,
@@ -257,7 +256,11 @@ function ApplyModePanel({
         >
           <div className="apply-mode-header-left">
             <div className="apply-mode-app-icon no-drag">
-              <BriefcaseBusiness size={15} />
+              <img
+                src="/stride_icon.png"
+                alt=""
+                className="apply-mode-app-icon-image"
+              />
             </div>
 
             <button

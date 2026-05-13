@@ -73,7 +73,7 @@
 }
 
 .sidebar-item.is-active {
-  background: var(--theme-sidebar-item-active-bg);
+  background: rgba(var(--theme-accent-sky-bg), 0.5);
   border-color: var(--theme-sidebar-item-active-border);
   color: var(--theme-sidebar-item-active-text);
   box-shadow: var(--theme-sidebar-item-active-shadow);

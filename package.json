@@ -1,5 +1,5 @@
 {
-  "name": "my-desktop-app",
+  "name": "stride",
   "private": true,
   "version": "1.0.0",
   "main": "electron/main.cjs",
@@ -7,7 +7,7 @@
     "dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
     "build": "vite build",
     "preview": "vite preview",
-    "zip": "tar -a -cf ../my-app.zip src electron index.html package.json package-lock.json vite.config.js eslint.config.js",
+    "zip": "tar -a -cf ../stride-app.zip src electron public build index.html package.json package-lock.json vite.config.js eslint.config.js",
     "dist": "npm run build && electron-builder --win nsis"
   },
   "dependencies": {
@@ -27,8 +27,8 @@
     "wait-on": "^8.0.0"
   },
   "build": {
-    "appId": "com.tan.myapp",
-    "productName": "My App",
+    "appId": "com.tan.stride",
+    "productName": "Stride",
     "directories": {
       "output": "release"
     },
@@ -38,8 +38,7 @@
       "package.json"
     ],
     "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
+      "target": "nsis"
     },
     "nsis": {
       "oneClick": false,

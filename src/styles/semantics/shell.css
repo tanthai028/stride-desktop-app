@@ -60,6 +60,14 @@
   margin: 0 0.5rem;
 }
 
+.frame-app-icon-image {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+}
+
 .frame-apply-mode-button {
   display: inline-flex;
   height: 2.4rem;
@@ -80,5 +88,5 @@
 }
 
 .frame-apply-mode-button:hover {
-transform: translateY(-1px);
+  transform: translateY(-1px);
 }

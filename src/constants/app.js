@@ -1,5 +1,5 @@
-export const APP_NAME = "My Personal Desktop App";
-export const APP_TAGLINE = "Goodmorning Tan!";
+export const APP_NAME = "Stride";
+export const APP_TAGLINE = "Apply with steady momentum.";
 
 export const DEFAULT_SETTINGS = {
   darkMode: false,

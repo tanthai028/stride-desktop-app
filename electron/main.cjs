@@ -18,6 +18,9 @@ const {
 const { parseJobPostingFromUrl } = require("./jobPostingParser.cjs");
 const { serializeLibraryError } = require("./libraryErrors.cjs");
 const isDev = !app.isPackaged;
+const APP_ICON_PATH = isDev
+  ? path.join(__dirname, "../public/stride_icon.png")
+  : path.join(__dirname, "../dist/stride_icon.png");
 let mainWindow = null;
 let applyModeWindow = null;
 let applyModeClickThroughEnabled = false;
@@ -142,6 +145,7 @@ function createMainWindow() {
   const y = Math.max(20, Math.round((height - winHeight) / 2 - 30));
 
   const win = new BrowserWindow({
+    icon: APP_ICON_PATH,
     height: winHeight,
     width: winWidth,
     minHeight: 900,
@@ -234,6 +238,7 @@ function createApplyModeWindow({ showWhenReady = false } = {}) {
   const y = Math.round((height - winHeight) / 2);
 
   applyModeWindow = new BrowserWindow({
+    icon: APP_ICON_PATH,
     width: winWidth,
     height: winHeight,
     minWidth: 380,
@@ -481,6 +486,8 @@ function registerWindowEvents() {
     }
   });
 }
+
+app.setAppUserModelId("com.tan.stride");
 
 app.whenReady().then(() => {
   registerWindowEvents();
