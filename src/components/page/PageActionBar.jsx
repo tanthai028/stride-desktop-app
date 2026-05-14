@@ -53,6 +53,7 @@ function PageActionBar({
             options={sortOptions}
             className="page-action-bar-select page-action-bar-sort-select"
             onTriggerClick={sortTriggerClick}
+            interactionMode="hover"
           />
         ) : null}
 
@@ -62,6 +63,7 @@ function PageActionBar({
             onChange={onFilterChange}
             options={filterOptions}
             className="page-action-bar-select page-action-bar-filter-select"
+            interactionMode="hover"
           />
         ) : null}
       </div>

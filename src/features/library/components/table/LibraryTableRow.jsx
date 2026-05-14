@@ -1,4 +1,4 @@
-import { ExternalLink, Pin } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
@@ -10,7 +10,16 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const isClickable = isPageReady && onItemClick;
 
-  function handlePinClick(event) {
+  function handleMiddleMouseDown(event) {
+    if (event.button !== 1) return;
+
+    event.preventDefault();
+  }
+
+  function handleMiddleClick(event) {
+    if (event.button !== 1) return;
+
+    event.preventDefault();
     event.stopPropagation();
     onTogglePinned?.(item);
   }
@@ -18,26 +27,17 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   return (
     <tr
       onClick={isClickable ? () => onItemClick(item) : undefined}
+      onMouseDown={handleMiddleMouseDown}
+      onAuxClick={handleMiddleClick}
       className={`library-table-row ${isClickable ? "is-clickable" : ""} ${
         item.pinned ? "is-pinned" : ""
       }`}
+      title={
+        item.pinned
+          ? "Middle-click to unpin"
+          : "Middle-click to pin this application"
+      }
     >
-      <td className="library-table-cell library-col-pin">
-        <button
-          type="button"
-          onClick={handlePinClick}
-          className={`library-pin-button ${item.pinned ? "is-active" : ""}`}
-          aria-label={
-            item.pinned
-              ? `Unpin ${item.company || item.role || "application"}`
-              : `Pin ${item.company || item.role || "application"}`
-          }
-          title={item.pinned ? "Unpin application" : "Pin application"}
-        >
-          <Pin className="library-pin-icon" />
-        </button>
-      </td>
-
       <td className="library-table-cell library-col-company">
         <span className="library-table-text-truncate">
           {item.company || "-"}

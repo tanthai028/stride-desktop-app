@@ -149,7 +149,7 @@ function ApplyModePanel({
   const completedCount = completedItems.length;
 
   const progressText =
-    totalQueueCount > 0 ? `${completedCount}/${totalQueueCount}` : "None";
+    totalQueueCount > 0 ? `${completedCount}/${totalQueueCount}` : "N/A";
   const filteredCompletedItems = completedItems.filter((item) => {
     if (item.status === "Applied") return showAppliedRecent;
     if (item.status === "Skipped") return showSkippedRecent;
@@ -471,8 +471,8 @@ function ApplyModePanel({
                   </motion.button>
                 ) : (
                   <div className="apply-mode-empty">
-                    <strong>No unapplied jobs queued.</strong>
-                    <span>Dump job URLs in Library first.</span>
+                    <strong>No unapplied jobs queued</strong>
+                    <span>Dump job URLs in Library first</span>
                     <em>{"\u00A0"}</em>
                   </div>
                 )}
@@ -560,7 +560,7 @@ function ApplyModePanel({
                   {completedItems.length === 0 ? (
                     <div className="apply-mode-recent-empty">
                       <strong>Nothing yet</strong>
-                      <span>Applied or skipped jobs show here.</span>
+                      <span>Applied or skipped jobs show here</span>
                       <em>{"\u00A0"}</em>
                     </div>
                   ) : shouldShowFilteredEmpty ? (

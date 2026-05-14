@@ -21,7 +21,7 @@
 
 .action-button-pink {
   border-color: transparent;
-  background-color: rgba(var(--theme-accent-pink-bg), 0.24);
+  background-color: rgba(var(--theme-accent-pink-bg), 0.3);
   color: var(--theme-text-primary);
   box-shadow: none;
 }

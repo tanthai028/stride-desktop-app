@@ -130,7 +130,7 @@ export function getFilteredAndSortedLibraryItems(
       break;
   }
 
-  return sortPinnedItemsFirst(nextItems);
+  return nextItems;
 }
 
 function isSameLocalDay(leftDate, rightDate) {
@@ -170,10 +170,29 @@ function matchesDateScope(item, dateScope) {
   return isSameLocalDay(appliedDate, new Date());
 }
 
-function matchesTextFilter(value, filterValue) {
+function matchesPickerFilter(value, filterValue) {
   const normalizedFilter = getNormalizedValue(filterValue);
-  if (!normalizedFilter) return true;
-  return getNormalizedValue(value).includes(normalizedFilter);
+
+  if (!normalizedFilter || normalizedFilter === "all") {
+    return true;
+  }
+
+  return getNormalizedValue(value) === normalizedFilter;
+}
+
+function matchesAppliedDateFilter(item, appliedAtFilter) {
+  if (!appliedAtFilter) return true;
+
+  const timestamp = item._appliedTimestamp ?? 0;
+  if (!timestamp) return false;
+
+  const appliedDate = new Date(timestamp);
+  if (Number.isNaN(appliedDate.getTime())) return false;
+
+  const [year, month, day] = appliedAtFilter.split("-").map(Number);
+  const selectedDate = new Date(year, month - 1, day);
+
+  return isSameLocalDay(appliedDate, selectedDate);
 }
 
 function matchesExactFilter(value, filterValue) {
@@ -189,18 +208,20 @@ export function sortPinnedItemsFirst(items) {
 export function applyTableColumnFilters(
   items,
   tableColumnFilters = {},
-  tableDateScope = "today",
+  tableDateScope = "all",
 ) {
   return items.filter((item) => {
     if (!matchesDateScope(item, tableDateScope)) return false;
+    if (!matchesAppliedDateFilter(item, tableColumnFilters.appliedAt)) {
+      return false;
+    }
 
     return (
-      matchesTextFilter(item.company, tableColumnFilters.company) &&
-      matchesTextFilter(item.role, tableColumnFilters.role) &&
-      matchesExactFilter(item.status, tableColumnFilters.status) &&
-      matchesExactFilter(item.priority, tableColumnFilters.priority) &&
-      matchesTextFilter(item.location, tableColumnFilters.location) &&
-      matchesTextFilter(item.appliedAt, tableColumnFilters.appliedAt)
+      matchesPickerFilter(item.company, tableColumnFilters.company) &&
+      matchesPickerFilter(item.role, tableColumnFilters.role) &&
+      matchesPickerFilter(item.status, tableColumnFilters.status) &&
+      matchesPickerFilter(item.priority, tableColumnFilters.priority) &&
+      matchesPickerFilter(item.location, tableColumnFilters.location)
     );
   });
 }

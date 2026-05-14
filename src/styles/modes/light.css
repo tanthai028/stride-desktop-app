@@ -1,6 +1,6 @@
 :root {
   /* Core surfaces */
-  --theme-panel-bg: rgba(255, 255, 255, 0);
+  --theme-panel-bg: rgba(255, 255, 255, 0.5);
   --theme-panel-border: rgba(226, 232, 240, 0.9);
   --theme-panel-shadow:
     0 18px 48px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.24);

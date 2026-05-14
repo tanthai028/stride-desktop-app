@@ -1,4 +1,5 @@
-import { Check, ExternalLink, Link, Plus, Trash2 } from "lucide-react";
+import { ExternalLink, Link, Plus, Trash2 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import DashboardPagination from "./DashboardPagination.jsx";
 import DashboardTitle from "./DashboardTitle.jsx";
 import { QUICK_LINKS_PER_PAGE } from "./dashboardPreview.constants.js";
@@ -23,19 +24,54 @@ function QuickLinksCard({
     (currentPage - 1) * QUICK_LINKS_PER_PAGE,
     currentPage * QUICK_LINKS_PER_PAGE,
   );
+  const cardRef = useRef(null);
+
+  const stopEditingLinks = () => {
+    onStopEditing();
+
+    if (cardRef.current?.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+
+    cardRef.current?.blur();
+  };
+
+  useEffect(() => {
+    if (!isEditingLinks) return;
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        stopEditingLinks();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isEditingLinks, stopEditingLinks]);
 
   return (
     <div
+      ref={cardRef}
       className="surface-card dashboard-card dashboard-quick-links-card dashboard-clickable-card"
       role="button"
       tabIndex={0}
       onClick={() => {
-        if (!isEditingLinks) onStartEditing();
+        if (isEditingLinks) {
+          stopEditingLinks();
+          return;
+        }
+
+        onStartEditing();
       }}
       onKeyDown={(event) => {
-        if (isEditingLinks) return;
+        if (event.key === "Escape" && isEditingLinks) {
+          event.preventDefault();
+          stopEditingLinks();
+          return;
+        }
 
-        if (event.key === "Enter" || event.key === " ") {
+        if (!isEditingLinks && (event.key === "Enter" || event.key === " ")) {
           event.preventDefault();
           onStartEditing();
         }
@@ -59,19 +95,6 @@ function QuickLinksCard({
               title="Add link"
             >
               <Plus />
-            </button>
-
-            <button
-              type="button"
-              className="dashboard-icon-action"
-              onClick={(event) => {
-                event.stopPropagation();
-                onStopEditing();
-              }}
-              aria-label="Done editing quick links"
-              title="Done"
-            >
-              <Check />
             </button>
           </div>
         ) : null}

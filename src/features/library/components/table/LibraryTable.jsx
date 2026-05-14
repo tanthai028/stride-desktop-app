@@ -1,7 +1,6 @@
 import PageScrollbar from "../../../../components/page/PageScrollbar.jsx";
 import EmptyState from "../../../../components/page/EmptyState.jsx";
 import usePageScrollbar from "../../../../components/page/usePageScrollbar.js";
-import LibraryTableFilters from "./LibraryTableFilters.jsx";
 import LibraryTableHeader from "./LibraryTableHeader.jsx";
 import LibraryTableRow from "./LibraryTableRow.jsx";
 
@@ -11,10 +10,6 @@ function LibraryTable({
   onItemClick,
   sortValue,
   onSortChange,
-  dateScope,
-  onDateScopeChange,
-  columnFilters,
-  onColumnFiltersChange,
   onTogglePinned,
   emptyStateTitle = "",
   emptyStateDescription = "",
@@ -33,13 +28,6 @@ function LibraryTable({
 
   return (
     <div className="library-table-shell">
-      <LibraryTableFilters
-        dateScope={dateScope}
-        onDateScopeChange={onDateScopeChange}
-        columnFilters={columnFilters}
-        onColumnFiltersChange={onColumnFiltersChange}
-      />
-
       {hasItems ? (
         <>
           <div

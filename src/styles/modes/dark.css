@@ -8,8 +8,8 @@
   --theme-panel-backdrop: blur(22px) saturate(135%);
   --theme-panel-backdrop-webkit: blur(22px) saturate(135%);
 
-  --theme-card-bg: rgba(15, 23, 42, 0);
-  --theme-card-bg-solid: rgba(15, 23, 42, 0.96);
+  --theme-card-bg: rgba(15, 23, 42, 0.3);
+  --theme-card-bg-solid: rgba(15, 23, 42, 0.5);
   --theme-card-border: rgba(255, 255, 255, 0.06);
   --theme-card-backdrop: none;
   --theme-card-backdrop-webkit: none;
@@ -26,20 +26,25 @@
   --theme-app-shell-bg:
     radial-gradient(
       circle at top left,
-      rgba(30, 41, 59, 0.72),
-      transparent 30%
+      rgba(124, 58, 237, 0.28),
+      transparent 32%
     ),
     radial-gradient(
       circle at top right,
-      rgba(99, 102, 241, 0.2),
+      rgba(34, 211, 238, 0.24),
       transparent 34%
     ),
     radial-gradient(
-      circle at bottom left,
-      rgba(14, 116, 144, 0.16),
-      transparent 28%
+      circle at 48% 58%,
+      rgba(59, 130, 246, 0.18),
+      transparent 30%
     ),
-    linear-gradient(160deg, #020617, #08101f 42%, #0f172a 100%);
+    radial-gradient(
+      circle at bottom left,
+      rgba(14, 165, 233, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(160deg, #030617, #0b1028 45%, #111827 100%);
 
   --theme-sidebar-bg: rgba(15, 23, 42, 0);
   --theme-sidebar-border: rgba(255, 255, 255, 0.06);
@@ -100,7 +105,7 @@
   --theme-page-action-select-border: 1px solid var(--theme-card-border);
   --theme-library-view-select-border: 1px solid var(--theme-card-border);
 
-  --theme-select-trigger-bg: rgba(30, 41, 59, 0.82);
+  --theme-select-trigger-bg: rgba(30, 41, 59, 0.5);
   --theme-select-trigger-border: none;
   --theme-select-trigger-text: var(--theme-text-primary);
   --theme-select-trigger-backkdrop-webkit: none;
@@ -208,7 +213,7 @@
   --theme-startup-description: var(--theme-text-descriptions);
 
   /* Settings */
-  --theme-settings-card-bg: rgba(15, 23, 42, 0);
+  --theme-settings-card-bg: rgba(15, 23, 42, 0.3);
   --theme-settings-card-border: rgba(51, 65, 85, 0.92);
   --theme-settings-card-shadow:
     0 14px 34px rgba(2, 6, 23, 0.26), 0 4px 12px rgba(2, 6, 23, 0.14);

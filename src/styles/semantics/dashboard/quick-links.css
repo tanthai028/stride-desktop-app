@@ -6,6 +6,7 @@
   display: flex;
   min-height: 0;
   flex-direction: column;
+  padding-right: var(--space-md);
 }
 
 .dashboard-quick-links-header {
@@ -85,7 +86,7 @@
 }
 
 .dashboard-quick-links-edit-header {
-  padding: 0 2.15rem 0 0.25rem;
+  padding: 0 0.25rem;
   color: var(--theme-text-secondary);
   font-size: 0.65rem;
   font-weight: var(--font-weight-medium);

@@ -60,6 +60,14 @@
   background-color: rgba(var(--theme-library-card-hover-bg), 0.25);
 }
 
+.library-table-row.is-pinned {
+  background-color: color-mix(in srgb, #facc15 18%, var(--theme-card-bg-solid));
+}
+
+.library-table-row.is-clickable.is-pinned:hover {
+  background-color: color-mix(in srgb, #facc15 26%, var(--theme-card-bg-solid));
+}
+
 .library-table-cell {
   padding: 0.75rem 1rem;
   vertical-align: middle;

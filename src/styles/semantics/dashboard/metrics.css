@@ -180,7 +180,6 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--theme-text-secondary);
-  margin-left: 0.25rem;
 }
 
 .dashboard-timer-icon-button svg {

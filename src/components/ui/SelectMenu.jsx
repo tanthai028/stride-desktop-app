@@ -11,6 +11,7 @@ function SelectMenu({
   placeholder = "Status",
   className = "",
   onTriggerClick,
+  interactionMode = "click",
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
@@ -22,6 +23,7 @@ function SelectMenu({
   const shouldWaitForRehoverRef = useRef(false);
   const didLeaveAfterSelectRef = useRef(false);
 
+  const isHoverMode = interactionMode === "hover";
   const selectedOption = options.find((option) => option.value === value);
   const SelectedIcon = selectedOption?.icon ?? null;
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
@@ -89,9 +91,7 @@ function SelectMenu({
   }
 
   function openMenu() {
-    if (isOpen && !isClosing) {
-      return;
-    }
+    if (isOpen && !isClosing) return;
 
     clearCloseTimeout();
     setIsClosing(false);
@@ -103,9 +103,7 @@ function SelectMenu({
   }
 
   function closeMenu() {
-    if (!isOpen && !isPanelMounted) {
-      return;
-    }
+    if (!isOpen && !isPanelMounted) return;
 
     clearCloseTimeout();
 
@@ -117,6 +115,14 @@ function SelectMenu({
       setIsPanelMounted(false);
       closeTimeoutRef.current = null;
     }, PANEL_EXIT_DURATION_MS);
+  }
+
+  function toggleMenu() {
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   }
 
   function handleSelect(nextValue, { closeMenuOnSelect = true } = {}) {
@@ -131,33 +137,33 @@ function SelectMenu({
   }
 
   function handleTriggerClick() {
-    if (onTriggerClick) {
-      onTriggerClick(value);
+    if (isHoverMode) {
+      if (onTriggerClick) {
+        onTriggerClick(value);
+        return;
+      }
+
+      const topOption = options[0];
+      if (!topOption) return;
+
+      handleSelect(topOption.value, { closeMenuOnSelect: false });
       return;
     }
 
-    const topOption = options[0];
-
-    if (!topOption) {
-      return;
-    }
-
-    handleSelect(topOption.value, { closeMenuOnSelect: false });
+    toggleMenu();
   }
 
   function tryOpenFromHover() {
+    if (!isHoverMode) return;
+
     if (shouldWaitForRehoverRef.current) {
-      if (!didLeaveAfterSelectRef.current) {
-        return;
-      }
+      if (!didLeaveAfterSelectRef.current) return;
 
       shouldWaitForRehoverRef.current = false;
       didLeaveAfterSelectRef.current = false;
     }
 
-    if (!isOpen) {
-      openMenu();
-    }
+    if (!isOpen) openMenu();
   }
 
   function handleMouseEnter() {
@@ -165,6 +171,8 @@ function SelectMenu({
   }
 
   function handleMouseLeave() {
+    if (!isHoverMode) return;
+
     if (shouldWaitForRehoverRef.current) {
       didLeaveAfterSelectRef.current = true;
     }
@@ -214,7 +222,9 @@ function SelectMenu({
           <div className="select-menu-hover-bridge" aria-hidden="true" />
 
           <div
-            className={`select-menu-panel ${isOpen ? "is-entering" : ""} ${isClosing ? "is-exiting" : ""}`.trim()}
+            className={`select-menu-panel ${isOpen ? "is-entering" : ""} ${
+              isClosing ? "is-exiting" : ""
+            }`.trim()}
           >
             <div role="listbox" className="select-menu-options">
               {options.map((option) => {
@@ -226,7 +236,9 @@ function SelectMenu({
                     key={option.value}
                     type="button"
                     onClick={() => handleSelect(option.value)}
-                    className={`select-menu-option ${isSelected ? "is-selected" : ""}`}
+                    className={`select-menu-option ${
+                      isSelected ? "is-selected" : ""
+                    }`}
                     role="option"
                     aria-selected={isSelected}
                     {...hoverFeedbackHandlers}
@@ -237,6 +249,7 @@ function SelectMenu({
                         className="select-menu-option-icon"
                       />
                     ) : null}
+
                     <span className="select-menu-option-label">
                       {option.label}
                     </span>

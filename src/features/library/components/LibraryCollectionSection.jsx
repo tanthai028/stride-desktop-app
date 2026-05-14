@@ -13,6 +13,7 @@ import LibraryCollectionEmptyState, {
   LibraryCollectionInlineEmptyState,
 } from "./LibraryCollectionEmptyState.jsx";
 import LibraryTable from "./table/LibraryTable.jsx";
+import LibraryTableFilters from "./table/LibraryTableFilters.jsx";
 
 const libraryViewOptions = [
   { value: "grid", label: "Card Grid", icon: LayoutGrid },
@@ -102,13 +103,26 @@ function LibraryCollectionSection({
       <PageActionBar
         className={actionBarClassName}
         extraControls={
-          <SelectMenu
-            value={viewMode}
-            onChange={onViewModeChange}
-            options={libraryViewOptions}
-            className="library-view-mode-select library-view-mode-select-icon-only"
-            onTriggerClick={handleViewModeTriggerClick}
-          />
+          <>
+            <SelectMenu
+              value={viewMode}
+              onChange={onViewModeChange}
+              options={libraryViewOptions}
+              className="library-view-mode-select library-view-mode-select-icon-only"
+              onTriggerClick={handleViewModeTriggerClick}
+              interactionMode="hover"
+            />
+
+            {isTableView ? (
+              <LibraryTableFilters
+                items={items}
+                dateScope={tableDateScope}
+                onDateScopeChange={onTableDateScopeChange}
+                columnFilters={tableColumnFilters}
+                onColumnFiltersChange={onTableColumnFiltersChange}
+              />
+            ) : null}
+          </>
         }
         searchValue={searchValue}
         onSearchChange={onSearchChange}

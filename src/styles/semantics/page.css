@@ -155,10 +155,5 @@
 .page-action-bar-filter-select .select-menu-trigger,
 .page-action-bar-sort-select .select-menu-trigger {
   border: var(--theme-page-action-select-border);
-  background-color: transparent;
-}
-
-.page-action-bar-filter-select .select-menu-trigger:active,
-.page-action-bar-sort-select .select-menu-trigger:active {
-  border: none;
+  background-color: var(--theme-card-bg);
 }

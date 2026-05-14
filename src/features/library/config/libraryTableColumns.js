@@ -1,10 +1,4 @@
 export const libraryTableColumns = [
-  {
-    label: "Pin",
-    columnKey: "pinned",
-    className: "library-col-pin",
-    sortable: false,
-  },
   { label: "Company", columnKey: "company", className: "library-col-company" },
   { label: "Role", columnKey: "role", className: "library-col-role" },
   { label: "Status", columnKey: "status", className: "library-col-status" },

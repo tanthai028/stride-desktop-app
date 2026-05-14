@@ -16,7 +16,6 @@
   gap: 0.4rem;
 }
 
-.apply-mode-app-icon,
 .apply-mode-window-actions button {
   display: inline-flex;
   width: 1.65rem;
@@ -26,6 +25,20 @@
   border: 1px solid rgba(226, 232, 240, 0.24);
   background: rgba(30, 41, 59, 0.82);
   color: #f8fafc;
+}
+
+.apply-mode-app-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apply-mode-app-icon-image {
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
 }
 
 .apply-mode-app-icon {
