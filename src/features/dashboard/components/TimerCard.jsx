@@ -3,7 +3,7 @@ import DashboardTitle from "./DashboardTitle.jsx";
 import {
   formatTimerDurationLabel,
   formatTimerSeconds,
-} from "./dashboardPreview.utils.js";
+} from "../utils/dashboardPreview.utils.js";
 
 function TimerCard({
   timerCardRef,

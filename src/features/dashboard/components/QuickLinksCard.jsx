@@ -2,12 +2,15 @@ import { ExternalLink, Link, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
 import DashboardPagination from "./DashboardPagination.jsx";
 import DashboardTitle from "./DashboardTitle.jsx";
-import { QUICK_LINKS_PER_PAGE } from "./dashboardPreview.constants.js";
-import { getFaviconUrl, openDashboardLink } from "./dashboardPreview.utils.js";
+import {
+  getFaviconUrl,
+  openDashboardLink,
+} from "../utils/dashboardPreview.utils.js";
 
 function QuickLinksCard({
   quickLinks,
   currentPage,
+  quickLinksPerPage,
   isEditingLinks,
   onAddLink,
   onUpdateLink,
@@ -15,14 +18,15 @@ function QuickLinksCard({
   onPageChange,
   onStartEditing,
   onStopEditing,
+  quickLinksListRef,
 }) {
   const totalPages = Math.max(
     1,
-    Math.ceil(quickLinks.length / QUICK_LINKS_PER_PAGE),
+    Math.ceil(quickLinks.length / quickLinksPerPage),
   );
   const visibleLinks = quickLinks.slice(
-    (currentPage - 1) * QUICK_LINKS_PER_PAGE,
-    currentPage * QUICK_LINKS_PER_PAGE,
+    (currentPage - 1) * quickLinksPerPage,
+    currentPage * quickLinksPerPage,
   );
   const cardRef = useRef(null);
 
@@ -100,7 +104,7 @@ function QuickLinksCard({
         ) : null}
       </div>
 
-      <div className="dashboard-quick-links-list">
+      <div ref={quickLinksListRef} className="dashboard-quick-links-list">
         {isEditingLinks ? (
           <div className="dashboard-quick-links-edit-header" aria-hidden="true">
             <span>Name</span>
@@ -119,6 +123,9 @@ function QuickLinksCard({
                   <input
                     aria-label="Quick link label"
                     value={link.label}
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoCapitalize="off"
                     onClick={(event) => event.stopPropagation()}
                     onChange={(event) =>
                       onUpdateLink(link.id, "label", event.target.value)
@@ -128,6 +135,9 @@ function QuickLinksCard({
                   <input
                     aria-label="Quick link URL"
                     value={link.url}
+                    spellCheck={false}
+                    autoCorrect="off"
+                    autoCapitalize="off"
                     onClick={(event) => event.stopPropagation()}
                     onChange={(event) =>
                       onUpdateLink(link.id, "url", event.target.value)

@@ -4,6 +4,7 @@ import LibraryFormModal from "../library/components/form/LibraryFormModal.jsx";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
+import NewGradFeedCard from "./components/NewGradFeedCard.jsx";
 
 function getStartOfToday() {
   const today = new Date();
@@ -125,25 +126,28 @@ function DashboardPage({ onAction, libraryStore }) {
           <div className="dashboard-overview-grid">
             <div className="dashboard-overview-left">
               <div className="dashboard-top-card-grid">
-                <DashboardPreview variant="timer" />
-
                 <DashboardPreview
                   variant="applyGoal"
                   todayApplicationCount={dashboardData.todayCount}
                 />
+                <DashboardPreview variant="timer" />
               </div>
 
               <DashboardPreview variant="quickLinks" />
             </div>
 
-            <DashboardPreview
-              variant="recentApplications"
-              recentItems={dashboardData.recentItems}
-              recentPeriod={recentPeriod}
-              onRecentPeriodClick={cycleRecentPeriod}
-              onRecentApplicationsClick={() => onAction("library")}
-              onAddApplicationClick={handleOpenAddModal}
-            />
+            <div className="dashboard-feed-column">
+              <NewGradFeedCard />
+
+              <DashboardPreview
+                variant="recentApplications"
+                recentItems={dashboardData.recentItems}
+                recentPeriod={recentPeriod}
+                onRecentPeriodClick={cycleRecentPeriod}
+                onRecentApplicationsClick={() => onAction("library")}
+                onAddApplicationClick={handleOpenAddModal}
+              />
+            </div>
           </div>
         </PageSection>
       </PageShell>

@@ -4,7 +4,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  padding: var(--space-2xl);
+  padding: var(--space-xl);
 }
 
 .page-shell-header {
@@ -31,7 +31,6 @@
 
 .page-shell-body {
   position: relative;
-  /* margin-top: var(--space-2xl); */
   min-height: 0;
   flex: 1;
 }

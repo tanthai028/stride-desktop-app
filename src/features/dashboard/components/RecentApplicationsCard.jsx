@@ -3,7 +3,11 @@ import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayForm
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
 import DashboardPagination from "./DashboardPagination.jsx";
 import DashboardTitle from "./DashboardTitle.jsx";
-import { openDashboardLink } from "./dashboardPreview.utils.js";
+import { openDashboardLink } from "../utils/dashboardPreview.utils.js";
+import {
+  getCompanyIconUrl,
+  handleCompanyIconFallback,
+} from "../utils/companyIcon.utils.js";
 
 function RecentApplicationsCard({
   recentItems,
@@ -15,6 +19,7 @@ function RecentApplicationsCard({
   onRecentApplicationsClick,
   onAddApplicationClick,
   onPageChange,
+  recentCardRef,
 }) {
   const periodLabel = recentPeriod === "today" ? "Today" : "This Week";
   const totalPages = Math.max(
@@ -28,6 +33,7 @@ function RecentApplicationsCard({
 
   return (
     <div
+      ref={recentCardRef}
       className="surface-card dashboard-card dashboard-recent-card dashboard-clickable-card"
       role="button"
       tabIndex={0}
@@ -76,8 +82,20 @@ function RecentApplicationsCard({
                 disabled={!item.jobUrl}
               >
                 <p className="dashboard-recent-title">
-                  {item.company || "Untitled Company"} ·{" "}
-                  {item.role || "Untitled Role"}
+                  <img
+                    className="dashboard-company-icon"
+                    src={getCompanyIconUrl(item.company)}
+                    onError={(event) =>
+                      handleCompanyIconFallback(event, item.jobUrl)
+                    }
+                    alt=""
+                    loading="lazy"
+                  />
+
+                  <span className="dashboard-recent-title-text">
+                    {item.company || "Untitled Company"} ·{" "}
+                    {item.role || "Untitled Role"}
+                  </span>
                 </p>
 
                 <div className="dashboard-recent-meta">

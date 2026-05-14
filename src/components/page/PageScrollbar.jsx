@@ -1,7 +1,7 @@
 function PageScrollbar({ isVisible, scrollMetrics }) {
   return (
     <div
-      className={`pointer-events-none absolute bottom-1 -right-4 top-1 w-2.5 transition-opacity duration-300 ease-out ${
+      className={`pointer-events-none absolute bottom-1 -right-3 top-1 w-2.5 transition-opacity duration-300 ease-out ${
         scrollMetrics.isScrollable && isVisible ? "opacity-100" : "opacity-0"
       }`}
     >

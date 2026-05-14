@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   playTimerAlarm,
   primeUiFeedbackAudio,
@@ -16,12 +16,12 @@ import {
   QUICK_LINKS_STORAGE_KEY,
   RECENT_APP_ROW_HEIGHT,
   TIMER_STORAGE_KEY,
-} from "./dashboardPreview.constants.js";
+} from "../constants/dashboardPreview.constants.js";
 import {
   getSavedApplyGoalTarget,
   getSavedQuickLinks,
   getSavedTimerMinutes,
-} from "./dashboardPreview.utils.js";
+} from "../utils/dashboardPreview.utils.js";
 
 function DashboardPreview({
   variant = "applyGoal",
@@ -63,6 +63,8 @@ function DashboardPreview({
   const timerCardRef = useRef(null);
   const timerMinutesInputRef = useRef(null);
   const timerSecondsInputRef = useRef(null);
+  const quickLinksListRef = useRef(null);
+  const recentCardRef = useRef(null);
 
   const timerTotalSeconds = Math.max(1, Math.round(timerMinutes * 60));
   const applyGoalProgress = Math.min(
@@ -73,6 +75,8 @@ function DashboardPreview({
     100,
     Math.round((timerSeconds / timerTotalSeconds) * 100),
   );
+  const [quickLinksPerPage, setQuickLinksPerPage] =
+    useState(QUICK_LINKS_PER_PAGE);
 
   useEffect(() => {
     localStorage.setItem(APPLY_GOAL_STORAGE_KEY, String(applyGoalTarget));
@@ -162,27 +166,42 @@ function DashboardPreview({
     };
   }, [isEditingTimer, isEditingApplyGoal]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const listElement = recentListRef.current;
-    if (!listElement) return undefined;
+    const cardElement = recentCardRef.current;
+
+    if (!listElement || !cardElement) return undefined;
+
+    let animationFrameId = 0;
 
     const updateRecentAppsPerPage = () => {
-      const availableHeight = listElement.clientHeight;
-      const nextPerPage = Math.max(
-        1,
-        Math.floor(availableHeight / RECENT_APP_ROW_HEIGHT),
-      );
+      window.cancelAnimationFrame(animationFrameId);
 
-      setRecentAppsPerPage(nextPerPage);
+      animationFrameId = window.requestAnimationFrame(() => {
+        const availableHeight = listElement.clientHeight;
+
+        const nextPerPage = Math.max(
+          1,
+          Math.floor(availableHeight / RECENT_APP_ROW_HEIGHT),
+        );
+
+        setRecentAppsPerPage((currentPerPage) =>
+          currentPerPage === nextPerPage ? currentPerPage : nextPerPage,
+        );
+      });
     };
 
     updateRecentAppsPerPage();
 
     const resizeObserver = new ResizeObserver(updateRecentAppsPerPage);
+    resizeObserver.observe(cardElement);
     resizeObserver.observe(listElement);
 
-    return () => resizeObserver.disconnect();
-  }, [variant]);
+    return () => {
+      window.cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+    };
+  }, [variant, recentItems.length]);
 
   useEffect(() => {
     setRecentPage(1);
@@ -191,11 +210,33 @@ function DashboardPreview({
   useEffect(() => {
     const totalPages = Math.max(
       1,
-      Math.ceil(quickLinks.length / QUICK_LINKS_PER_PAGE),
+      Math.ceil(quickLinks.length / quickLinksPerPage),
     );
 
     setQuickLinksPage((page) => Math.min(page, totalPages));
-  }, [quickLinks.length]);
+  }, [quickLinks.length, quickLinksPerPage]);
+
+  useEffect(() => {
+    const listElement = quickLinksListRef.current;
+    if (!listElement) return undefined;
+
+    const updateQuickLinksPerPage = () => {
+      const itemHeight = isEditingLinks ? 112 : 56;
+      const headerHeight = isEditingLinks ? 22 : 0;
+      const availableHeight = listElement.clientHeight - headerHeight;
+
+      const nextPerPage = Math.max(1, Math.floor(availableHeight / itemHeight));
+
+      setQuickLinksPerPage(nextPerPage);
+    };
+
+    updateQuickLinksPerPage();
+
+    const resizeObserver = new ResizeObserver(updateQuickLinksPerPage);
+    resizeObserver.observe(listElement);
+
+    return () => resizeObserver.disconnect();
+  }, [variant, isEditingLinks]);
 
   const updateQuickLink = (linkId, field, value) => {
     setQuickLinks((links) =>
@@ -216,7 +257,7 @@ function DashboardPreview({
         },
       ];
 
-      setQuickLinksPage(Math.ceil(nextLinks.length / QUICK_LINKS_PER_PAGE));
+      setQuickLinksPage(Math.ceil(nextLinks.length / quickLinksPerPage));
       return nextLinks;
     });
 
@@ -320,6 +361,7 @@ function DashboardPreview({
   if (variant === "recentApplications") {
     return (
       <RecentApplicationsCard
+        recentCardRef={recentCardRef}
         recentItems={recentItems}
         recentPeriod={recentPeriod}
         recentPage={recentPage}
@@ -338,6 +380,8 @@ function DashboardPreview({
       <QuickLinksCard
         quickLinks={quickLinks}
         currentPage={quickLinksPage}
+        quickLinksPerPage={quickLinksPerPage}
+        quickLinksListRef={quickLinksListRef}
         isEditingLinks={isEditingLinks}
         onAddLink={addQuickLink}
         onUpdateLink={updateQuickLink}

@@ -1,0 +1,157 @@
+.dashboard-new-grad-feed-card {
+  display: flex;
+  min-height: 0;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+}
+
+.dashboard-new-grad-feed-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.dashboard-new-grad-feed-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-new-grad-feed-source-chip,
+.dashboard-new-grad-feed-date {
+  flex-shrink: 0;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+}
+
+.dashboard-new-grad-feed-source-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-new-grad-feed-refresh-button {
+  display: inline-flex;
+  width: 2.15rem;
+  height: 2.15rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-secondary);
+  cursor: pointer;
+}
+
+.dashboard-new-grad-feed-refresh-button:hover {
+  background: var(--theme-sidebar-item-hover-bg);
+  color: var(--theme-text-primary);
+}
+
+.dashboard-new-grad-feed-refresh-button svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.dashboard-new-grad-feed-list {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.dashboard-new-grad-feed-item {
+  display: flex;
+  width: 100%;
+  height: 3.5rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 0.45rem 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dashboard-new-grad-feed-item:hover {
+  background: transparent;
+}
+
+.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-title-line {
+  color: var(--theme-text-primary);
+}
+
+.dashboard-new-grad-feed-main {
+  min-width: 0;
+}
+
+.dashboard-new-grad-feed-title-line,
+.dashboard-new-grad-feed-location {
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-new-grad-feed-title-line {
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dashboard-new-grad-feed-location {
+  margin-top: 0.12rem;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-new-grad-feed-side {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-new-grad-feed-date {
+  padding: 0.2rem 0.5rem;
+  font-weight: var(--font-weight-semibold);
+}
+
+.dashboard-new-grad-feed-side svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--theme-text-muted);
+}
+
+.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-side svg {
+  color: var(--theme-text-primary);
+}
+
+.dashboard-new-grad-feed-pagination-slot {
+  display: flex;
+  min-height: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.dashboard-new-grad-feed-pagination-slot .dashboard-pagination {
+  margin-top: 0;
+}

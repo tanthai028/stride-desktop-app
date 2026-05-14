@@ -5,7 +5,7 @@ import {
   DEFAULT_TIMER_MINUTES,
   QUICK_LINKS_STORAGE_KEY,
   TIMER_STORAGE_KEY,
-} from "./dashboardPreview.constants.js";
+} from "../constants/dashboardPreview.constants.js";
 
 export function getSavedApplyGoalTarget() {
   const savedTarget = Number(localStorage.getItem(APPLY_GOAL_STORAGE_KEY));
