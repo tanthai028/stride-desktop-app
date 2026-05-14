@@ -9,6 +9,7 @@ import {
   applyTableColumnFilters,
   getFilteredAndSortedLibraryItems,
 } from "./utils/libraryItemSelectors.js";
+import { extractJobId } from "./utils/libraryDisplayFormatters.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
@@ -53,8 +54,13 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     : statusFilterValue;
 
   const filteredItems = useMemo(() => {
-    const pinnedItems = items.filter((item) => item.pinned);
-    const unpinnedItems = items.filter((item) => !item.pinned);
+    const displayItems = items.map((item) => ({
+      ...item,
+      jobId: extractJobId(item.jobUrl),
+    }));
+
+    const pinnedItems = displayItems.filter((item) => item.pinned);
+    const unpinnedItems = displayItems.filter((item) => !item.pinned);
 
     const filteredUnpinnedItems = getFilteredAndSortedLibraryItems(
       unpinnedItems,
@@ -62,10 +68,6 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
       activeSortValue,
       activeStatusFilterValue,
     );
-
-    if (!isTableView) {
-      return [...pinnedItems, ...filteredUnpinnedItems];
-    }
 
     return [
       ...pinnedItems,
@@ -78,7 +80,6 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
   }, [
     activeSortValue,
     activeStatusFilterValue,
-    isTableView,
     items,
     searchValue,
     tableColumnFilters,

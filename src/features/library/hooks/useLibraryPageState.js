@@ -15,11 +15,11 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
   );
   const [tableDateScope, setTableDateScope] = useState("all");
   const [tableColumnFilters, setTableColumnFilters] = useState({
-    company: "all",
-    role: "all",
-    status: "all",
-    priority: "all",
-    location: "all",
+    company: ["all"],
+    role: ["all"],
+    status: ["all"],
+    priority: ["all"],
+    location: ["all"],
     appliedAt: "",
   });
   const [viewMode, setViewMode] = useState(initialViewMode);
@@ -27,13 +27,17 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
   const [selectedItem, setSelectedItem] = useState(null);
 
   function clearFilters() {
+    setSearchValue("");
+    setSortValue(DEFAULT_LIBRARY_SORT);
+    setTableSortValue(DEFAULT_LIBRARY_SORT);
+    setStatusFilterValue(DEFAULT_LIBRARY_STATUS_FILTER);
     setTableDateScope("all");
     setTableColumnFilters({
-      company: "all",
-      role: "all",
-      status: "all",
-      priority: "all",
-      location: "all",
+      company: ["all"],
+      role: ["all"],
+      status: ["all"],
+      priority: ["all"],
+      location: ["all"],
       appliedAt: "",
     });
   }

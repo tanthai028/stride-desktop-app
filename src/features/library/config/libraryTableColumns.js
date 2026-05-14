@@ -13,8 +13,19 @@ export const libraryTableColumns = [
     className: "library-col-location",
   },
   {
+    label: "Added",
+    columnKey: "createdAt",
+    className: "library-col-added",
+  },
+  {
     label: "Applied",
     columnKey: "appliedAt",
     className: "library-col-applied",
+  },
+  {
+    label: "Job ID",
+    columnKey: "jobId",
+    className: "library-col-job-id",
+    sortable: false,
   },
 ];

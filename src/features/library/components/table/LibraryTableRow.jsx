@@ -1,4 +1,3 @@
-import { ExternalLink } from "lucide-react";
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
@@ -24,9 +23,22 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
     onTogglePinned?.(item);
   }
 
+  function handleRowClick() {
+    if (!isClickable) return;
+    openLibraryJobUrl({ stopPropagation: () => {} }, item.jobUrl);
+  }
+
+  function handleContextMenu(event) {
+    event.preventDefault();
+
+    if (!isClickable) return;
+    onItemClick(item);
+  }
+
   return (
     <tr
-      onClick={isClickable ? () => onItemClick(item) : undefined}
+      onClick={handleRowClick}
+      onContextMenu={handleContextMenu}
       onMouseDown={handleMiddleMouseDown}
       onAuxClick={handleMiddleClick}
       className={`library-table-row ${isClickable ? "is-clickable" : ""} ${
@@ -69,29 +81,20 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
         </span>
       </td>
 
+      <td className="library-table-cell library-col-added">
+        <span className="library-table-text-nowrap">
+          {formatLibraryAppliedDate(item.createdAt)}
+        </span>
+      </td>
+
       <td className="library-table-cell library-col-applied">
         <span className="library-table-text-nowrap">
           {formatLibraryAppliedDate(item.appliedAt)}
         </span>
       </td>
 
-      <td className="library-table-cell library-col-open">
-        {item.jobUrl ? (
-          <button
-            type="button"
-            onClick={(event) => openLibraryJobUrl(event, item.jobUrl)}
-            className="library-table-link-button"
-            aria-label={`Open job post for ${
-              item.company || item.role || "application"
-            }`}
-            title="Open job post"
-          >
-            <ExternalLink className="library-table-link-icon" />
-            <span className="library-open-text">Open</span>
-          </button>
-        ) : (
-          "-"
-        )}
+      <td className="library-table-cell library-col-job-id">
+        <span className="library-table-text-truncate">{item.jobId || "-"}</span>
       </td>
     </tr>
   );

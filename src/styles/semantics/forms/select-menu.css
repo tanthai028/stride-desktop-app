@@ -202,3 +202,21 @@
   flex: 1;
   text-align: left;
 }
+
+.select-menu-checkbox {
+  display: inline-flex;
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-select-trigger-border);
+  border-radius: 0.25rem;
+  color: var(--theme-select-option-selected-text);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.select-menu-checkbox.is-checked {
+  border-color: var(--theme-select-option-selected-text);
+  background-color: var(--theme-select-option-selected-bg);
+}

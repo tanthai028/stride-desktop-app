@@ -99,6 +99,36 @@ export function formatLibraryAppliedDate(
   });
 }
 
+export function extractJobId(jobUrl = "") {
+  const trimmedUrl = String(jobUrl).trim();
+
+  if (!trimmedUrl) return "";
+
+  try {
+    const parsedUrl = new URL(trimmedUrl);
+
+    const queryJobId =
+      parsedUrl.searchParams.get("jobId") ||
+      parsedUrl.searchParams.get("job_id") ||
+      parsedUrl.searchParams.get("gh_jid") ||
+      parsedUrl.searchParams.get("lever-source");
+
+    if (queryJobId) return queryJobId;
+
+    const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+    const lastNumericPart = [...pathParts]
+      .reverse()
+      .find((part) => /^\d{4,}$/.test(part));
+
+    return lastNumericPart || pathParts.at(-1) || "";
+  } catch {
+    const match = trimmedUrl.match(
+      /(?:jobs?|postings?|positions?)\/([^/?#]+)/i,
+    );
+    return match?.[1] || "";
+  }
+}
+
 export function openLibraryJobUrl(event, jobUrl) {
   event.stopPropagation();
 

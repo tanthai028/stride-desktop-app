@@ -9,7 +9,8 @@
   --theme-panel-backdrop-webkit: blur(22px) saturate(135%);
 
   --theme-card-bg: rgba(15, 23, 42, 0.3);
-  --theme-card-bg-solid: rgba(15, 23, 42, 0.5);
+  --theme-card-bg-semi-solid: rgba(15, 23, 42, 0.5);
+  --theme-card-bg-solid: rgba(15, 23, 42, 1);
   --theme-card-border: rgba(255, 255, 255, 0.06);
   --theme-card-backdrop: none;
   --theme-card-backdrop-webkit: none;

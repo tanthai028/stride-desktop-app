@@ -92,7 +92,6 @@
 }
 
 .library-card-link {
-  margin-top: auto;
   display: inline-flex;
   width: fit-content;
   align-items: center;
@@ -147,7 +146,25 @@
 }
 
 .library-card-content.is-pinned .library-card-title::before {
-  content: "Pinned · ";
+  content: "⭐ ";
   color: var(--theme-stat-card-sky-label);
   font-weight: 600;
+}
+
+.library-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.library-card-job-id {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: 500;
+  opacity: 0.72;
 }

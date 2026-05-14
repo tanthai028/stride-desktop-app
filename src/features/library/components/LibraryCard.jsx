@@ -52,16 +52,22 @@ function LibraryCard({ item }) {
         {item.notes || "No notes yet."}
       </p>
 
-      {item.jobUrl ? (
-        <button
-          type="button"
-          onClick={(event) => openLibraryJobUrl(event, item.jobUrl)}
-          className="library-card-link"
-        >
-          <ExternalLink className="library-card-link-icon" />
-          <span>Open job post</span>
-        </button>
-      ) : null}
+      <div className="library-card-footer">
+        {item.jobUrl ? (
+          <button
+            type="button"
+            onClick={(event) => openLibraryJobUrl(event, item.jobUrl)}
+            className="library-card-link"
+          >
+            <ExternalLink className="library-card-link-icon" />
+            <span>Open job post</span>
+          </button>
+        ) : null}
+
+        {item.jobId ? (
+          <span className="library-card-job-id">ID: {item.jobId}</span>
+        ) : null}
+      </div>
     </div>
   );
 }

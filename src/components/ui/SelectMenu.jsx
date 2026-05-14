@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 
@@ -12,6 +12,7 @@ function SelectMenu({
   className = "",
   onTriggerClick,
   interactionMode = "click",
+  closeMenuOnSelect = true,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
@@ -23,8 +24,20 @@ function SelectMenu({
   const shouldWaitForRehoverRef = useRef(false);
   const didLeaveAfterSelectRef = useRef(false);
 
+  const isMultiSelect = Array.isArray(value);
   const isHoverMode = interactionMode === "hover";
-  const selectedOption = options.find((option) => option.value === value);
+  const selectedValues = Array.isArray(value) ? value : [value];
+
+  const selectedOptions = options.filter((option) =>
+    selectedValues.includes(option.value),
+  );
+
+  const selectedOption = selectedOptions[0];
+
+  const selectedLabel =
+    Array.isArray(value) && selectedOptions.length > 1
+      ? `${selectedOptions.length} selected`
+      : selectedOption?.label;
   const SelectedIcon = selectedOption?.icon ?? null;
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
@@ -125,10 +138,37 @@ function SelectMenu({
     }
   }
 
-  function handleSelect(nextValue, { closeMenuOnSelect = true } = {}) {
+  function handleSelect(nextValue, options = {}) {
+    const shouldCloseMenu = options.closeMenuOnSelect ?? closeMenuOnSelect;
+
+    if (Array.isArray(value)) {
+      const isAllOption = nextValue === "all";
+
+      if (isAllOption) {
+        onChange(["all"]);
+      } else {
+        const withoutAll = selectedValues.filter(
+          (itemValue) => itemValue !== "all",
+        );
+
+        const nextValues = withoutAll.includes(nextValue)
+          ? withoutAll.filter((itemValue) => itemValue !== nextValue)
+          : [...withoutAll, nextValue];
+
+        onChange(nextValues.length > 0 ? nextValues : ["all"]);
+      }
+
+      if (shouldCloseMenu) {
+        closeMenu();
+        triggerRef.current?.blur();
+      }
+
+      return;
+    }
+
     onChange(nextValue);
 
-    if (closeMenuOnSelect) {
+    if (shouldCloseMenu) {
       shouldWaitForRehoverRef.current = true;
       didLeaveAfterSelectRef.current = false;
       closeMenu();
@@ -208,7 +248,7 @@ function SelectMenu({
         ) : null}
 
         <span className="select-menu-label">
-          {selectedOption ? selectedOption.label : placeholder}
+          {selectedLabel || placeholder}
         </span>
 
         <ChevronDown
@@ -228,7 +268,7 @@ function SelectMenu({
           >
             <div role="listbox" className="select-menu-options">
               {options.map((option) => {
-                const isSelected = option.value === value;
+                const isSelected = selectedValues.includes(option.value);
                 const OptionIcon = option.icon ?? null;
 
                 return (
@@ -243,6 +283,17 @@ function SelectMenu({
                     aria-selected={isSelected}
                     {...hoverFeedbackHandlers}
                   >
+                    {isMultiSelect ? (
+                      <span
+                        className={`select-menu-checkbox ${
+                          isSelected ? "is-checked" : ""
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {isSelected ? <Check size={12} /> : null}
+                      </span>
+                    ) : null}
+
                     {OptionIcon ? (
                       <OptionIcon
                         size={16}

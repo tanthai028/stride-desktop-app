@@ -171,13 +171,25 @@ function matchesDateScope(item, dateScope) {
 }
 
 function matchesPickerFilter(value, filterValue) {
+  const normalizedValue = getNormalizedValue(value);
+
+  if (Array.isArray(filterValue)) {
+    const normalizedFilters = filterValue.map(getNormalizedValue);
+
+    if (normalizedFilters.length === 0 || normalizedFilters.includes("all")) {
+      return true;
+    }
+
+    return normalizedFilters.includes(normalizedValue);
+  }
+
   const normalizedFilter = getNormalizedValue(filterValue);
 
   if (!normalizedFilter || normalizedFilter === "all") {
     return true;
   }
 
-  return getNormalizedValue(value) === normalizedFilter;
+  return normalizedValue === normalizedFilter;
 }
 
 function matchesAppliedDateFilter(item, appliedAtFilter) {

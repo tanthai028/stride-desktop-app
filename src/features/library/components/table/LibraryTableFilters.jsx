@@ -24,11 +24,11 @@ const TABLE_PRIORITY_FILTER_OPTIONS = [
 ];
 
 const EMPTY_COLUMN_FILTERS = {
-  company: "all",
-  role: "all",
-  status: "all",
-  priority: "all",
-  location: "all",
+  company: ["all"],
+  role: ["all"],
+  status: ["all"],
+  priority: ["all"],
+  location: ["all"],
   appliedAt: "",
 };
 
@@ -49,7 +49,14 @@ function getActiveFilterCount(columnFilters, dateScope) {
   let count = dateScope !== "all" ? 1 : 0;
 
   Object.entries(columnFilters).forEach(([key, value]) => {
-    if (value !== EMPTY_COLUMN_FILTERS[key]) count += 1;
+    if (key === "appliedAt") {
+      if (value) count += 1;
+      return;
+    }
+
+    if (Array.isArray(value) && !value.includes("all")) {
+      count += 1;
+    }
   });
 
   return count;
@@ -190,6 +197,7 @@ function LibraryTableFilters({
                 onChange={(value) => updateFilter("status", value)}
                 options={TABLE_STATUS_FILTER_OPTIONS}
                 className="library-table-filter-select"
+                closeMenuOnSelect={false}
               />
             </label>
 
@@ -200,6 +208,7 @@ function LibraryTableFilters({
                 onChange={(value) => updateFilter("priority", value)}
                 options={TABLE_PRIORITY_FILTER_OPTIONS}
                 className="library-table-filter-select"
+                closeMenuOnSelect={false}
               />
             </label>
 
@@ -210,6 +219,7 @@ function LibraryTableFilters({
                 onChange={(value) => updateFilter("company", value)}
                 options={companyOptions}
                 className="library-table-filter-select"
+                closeMenuOnSelect={false}
               />
             </label>
 
@@ -220,6 +230,7 @@ function LibraryTableFilters({
                 onChange={(value) => updateFilter("role", value)}
                 options={roleOptions}
                 className="library-table-filter-select"
+                closeMenuOnSelect={false}
               />
             </label>
 
@@ -230,6 +241,7 @@ function LibraryTableFilters({
                 onChange={(value) => updateFilter("location", value)}
                 options={locationOptions}
                 className="library-table-filter-select"
+                closeMenuOnSelect={false}
               />
             </label>
           </div>

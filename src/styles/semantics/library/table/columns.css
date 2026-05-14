@@ -1,32 +1,28 @@
 .library-col-company {
-  width: 18%;
+  width: 16%;
 }
 
 .library-col-role {
-  width: 25%;
+  width: 23%;
 }
 
 .library-col-status {
-  width: 13%;
-}
-
-.library-col-priority {
   width: 12%;
 }
 
+.library-col-priority {
+  width: 10%;
+}
+
 .library-col-location {
-  width: 17%;
+  width: 14%;
 }
 
+.library-col-added,
 .library-col-applied {
-  width: 11%;
+  width: 10%;
 }
 
-.library-col-open {
-  width: 104px;
-}
-
-.library-col-open.library-table-header-cell,
-.library-col-open.library-table-cell {
-  text-align: center;
+.library-col-job-id {
+  width: 15%;
 }

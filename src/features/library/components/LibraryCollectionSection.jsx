@@ -6,8 +6,6 @@ import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
-import { libraryStatusFilterOptions } from "../constants/filterOptions.js";
-import { librarySortOptions } from "../constants/sortOptions.js";
 import LibraryCard from "./LibraryCard.jsx";
 import LibraryCollectionEmptyState, {
   LibraryCollectionInlineEmptyState,
@@ -63,10 +61,6 @@ function LibraryCollectionSection({
     cycleOption(viewMode, libraryViewOptions, onViewModeChange);
   }
 
-  function handleSortTriggerClick() {
-    cycleOption(sortValue, librarySortOptions, onSortChange);
-  }
-
   const actionBarClassName = isTableView
     ? "library-collection-action-bar-table"
     : "library-collection-action-bar-grid";
@@ -113,26 +107,17 @@ function LibraryCollectionSection({
               interactionMode="hover"
             />
 
-            {isTableView ? (
-              <LibraryTableFilters
-                items={items}
-                dateScope={tableDateScope}
-                onDateScopeChange={onTableDateScopeChange}
-                columnFilters={tableColumnFilters}
-                onColumnFiltersChange={onTableColumnFiltersChange}
-              />
-            ) : null}
+            <LibraryTableFilters
+              items={items}
+              dateScope={tableDateScope}
+              onDateScopeChange={onTableDateScopeChange}
+              columnFilters={tableColumnFilters}
+              onColumnFiltersChange={onTableColumnFiltersChange}
+            />
           </>
         }
         searchValue={searchValue}
         onSearchChange={onSearchChange}
-        sortValue={isTableView ? "" : sortValue}
-        onSortChange={isTableView ? undefined : onSortChange}
-        sortOptions={isTableView ? [] : librarySortOptions}
-        sortTriggerClick={handleSortTriggerClick}
-        filterValue={statusFilterValue}
-        onFilterChange={onStatusFilterChange}
-        filterOptions={isTableView ? [] : libraryStatusFilterOptions}
         searchPlaceholder="Search company, role, notes, location..."
         showSearch
       />

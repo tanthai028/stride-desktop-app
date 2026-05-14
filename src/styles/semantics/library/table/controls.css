@@ -140,10 +140,10 @@
   top: calc(100% + 0.5rem);
   right: 0;
   z-index: 40;
-  width: min(430px, calc(100vw - 2rem));
-  padding: 0.65rem;
+  width: 22rem;
+  padding: 0.5rem 1rem 0.75rem 0.75rem;
   border: 1px solid var(--theme-select-panel-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   background-color: var(--theme-select-panel-bg);
   box-shadow: var(--theme-select-panel-shadow);
   backdrop-filter: var(
@@ -250,6 +250,12 @@
   z-index: 45;
   max-height: 14rem;
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.library-table-filter-select .select-menu-panel::-webkit-scrollbar {
+  display: none;
 }
 
 .library-table-filter-reset-button {

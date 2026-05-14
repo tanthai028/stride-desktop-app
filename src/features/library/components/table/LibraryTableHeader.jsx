@@ -73,11 +73,6 @@ function LibraryTableHeader({ sortValue, onSortChange }) {
             sortable={column.sortable !== false}
           />
         ))}
-
-        <th className="library-table-header-cell library-col-open">
-          <span className="library-open-label-full">Job Post</span>
-          <span className="library-open-label-compact">Open</span>
-        </th>
       </tr>
     </thead>
   );
