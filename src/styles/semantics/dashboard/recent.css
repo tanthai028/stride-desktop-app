@@ -14,7 +14,7 @@
 .dashboard-recent-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  align-items: start;
   gap: var(--space-md);
 }
 
@@ -38,11 +38,13 @@
 }
 
 .dashboard-recent-period-button {
-  padding: 0.35rem 0.7rem;
+  display: inline-flex;
+  height: 1.55rem;
+  align-items: flex-start;
+  padding: 0 0.55rem;
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
-
 .dashboard-recent-period-button:hover {
   background: var(--theme-sidebar-item-hover-bg);
   color: var(--theme-text-primary);
@@ -61,6 +63,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
+  gap: var(--space-sm);
 }
 
 .dashboard-recent-item {

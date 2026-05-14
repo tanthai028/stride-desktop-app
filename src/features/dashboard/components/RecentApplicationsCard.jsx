@@ -113,7 +113,7 @@ function RecentApplicationsCard({
           })
         ) : (
           <p className="stat-card-description text-sm">
-            No applications listed for {periodLabel.toLowerCase()}.
+            No applications listed for {periodLabel.toLowerCase()}
           </p>
         )}
       </div>

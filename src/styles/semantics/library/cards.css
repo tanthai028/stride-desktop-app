@@ -120,6 +120,19 @@
   color: var(--theme-text-primary);
 }
 
+.library-grid-card.is-pinned {
+  background-color: color-mix(in srgb, #facc15 18%, var(--theme-card-bg-solid));
+}
+
+.library-grid-card.is-pinned:hover {
+  border-color: color-mix(
+    in srgb,
+    #facc15 42%,
+    var(--theme-library-card-hover-border)
+  );
+  background-color: color-mix(in srgb, #facc15 26%, var(--theme-card-bg-solid));
+}
+
 .library-grid-card:hover {
   border-color: var(--theme-library-card-hover-border);
   background-color: rgba(var(--theme-library-card-hover-bg), 0.25);

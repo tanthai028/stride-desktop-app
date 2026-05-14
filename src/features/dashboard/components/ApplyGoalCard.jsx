@@ -14,6 +14,7 @@ function ApplyGoalCard({
   onConfirmEdit,
   onCancelEdit,
 }) {
+  const isApplyGoalDone = todayApplicationCount >= applyGoalTarget;
   return (
     <div
       ref={applyGoalCardRef}
@@ -63,7 +64,9 @@ function ApplyGoalCard({
           </h2>
         ) : (
           <h2 className="stat-card-title dashboard-metric-value">
-            {todayApplicationCount}/{applyGoalTarget}
+            {isApplyGoalDone
+              ? "Done! 🎉"
+              : `${todayApplicationCount}/${applyGoalTarget}`}
           </h2>
         )}
 

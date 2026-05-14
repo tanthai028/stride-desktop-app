@@ -37,7 +37,10 @@ function assertMaxLength(fieldName, value, maxLength) {
   }
 }
 
-function getNormalizedAppliedAt(value) {
+function getNormalizedAppliedAt(value, status) {
+  if (status !== "applied") {
+    return "";
+  }
   if (!value) {
     return new Date().toISOString();
   }
@@ -147,7 +150,7 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
     location,
     priority: formatPriorityLabel(priority),
     pinned: getBooleanValue(formValues.pinned),
-    appliedAt: getNormalizedAppliedAt(formValues.appliedAt),
+    appliedAt: getNormalizedAppliedAt(formValues.appliedAt, status),
     notes,
   };
 }

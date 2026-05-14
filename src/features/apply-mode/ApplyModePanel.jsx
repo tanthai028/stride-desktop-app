@@ -30,6 +30,14 @@ function isUnapplied(item) {
   );
 }
 
+function isApplied(item) {
+  return (
+    String(item?.status ?? "")
+      .trim()
+      .toLowerCase() === "applied"
+  );
+}
+
 function ApplyModePanel({
   items = [],
   updateItem,
@@ -133,6 +141,22 @@ function ApplyModePanel({
       ),
     [items, skippedIds, removedIds],
   );
+
+  useEffect(() => {
+    setCompletedItems((currentCompletedItems) =>
+      currentCompletedItems.filter((completedItem) => {
+        const liveItem = items.find((item) => item.id === completedItem.id);
+
+        if (!liveItem) return false;
+
+        if (completedItem.status === "Applied") {
+          return isApplied(liveItem);
+        }
+
+        return true;
+      }),
+    );
+  }, [items]);
 
   useEffect(() => {
     setRecentPage(0);

@@ -165,12 +165,8 @@ function LibraryCollectionSection({
                   <ItemGrid
                     items={filteredItems}
                     onItemClick={isPageReady ? onItemClick : undefined}
-                    renderItem={(item) => (
-                      <LibraryCard
-                        item={item}
-                        onTogglePinned={onTogglePinned}
-                      />
-                    )}
+                    onItemMiddleClick={onTogglePinned}
+                    renderItem={(item) => <LibraryCard item={item} />}
                   />
                 </div>
               </div>

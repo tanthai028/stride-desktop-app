@@ -35,7 +35,7 @@ export function createEmptyForm() {
     jobUrl: "",
     location: "",
     priority: DEFAULT_PRIORITY,
-    appliedAt: getTodayDateInputValue(),
+    appliedAt: "",
     notes: "",
   };
 }
@@ -61,9 +61,12 @@ export function buildFormPayload(formValues) {
     jobUrl: formValues.jobUrl.trim(),
     location: formValues.location.trim(),
     priority: (formValues.priority || DEFAULT_PRIORITY).trim(),
-    appliedAt: formValues.appliedAt
-      ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
-      : new Date().toISOString(),
+    appliedAt:
+      (formValues.status || DEFAULT_STATUS).trim().toLowerCase() === "applied"
+        ? formValues.appliedAt
+          ? new Date(`${formValues.appliedAt}T12:00:00`).toISOString()
+          : new Date().toISOString()
+        : "",
     notes: formValues.notes.trim(),
   };
 }

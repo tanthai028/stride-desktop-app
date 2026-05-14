@@ -5,6 +5,7 @@ import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
 import NewGradFeedCard from "./components/NewGradFeedCard.jsx";
+import { normalizeStatusValue } from "../library/constants/libraryStatuses.js";
 
 function getStartOfToday() {
   const today = new Date();
@@ -27,6 +28,10 @@ function getAppliedDate(item) {
     : null;
 }
 
+function isActuallyApplied(item) {
+  return normalizeStatusValue(item?.status) === "applied";
+}
+
 function isSameDay(date, targetDate) {
   const normalizedDate = new Date(date);
   normalizedDate.setHours(0, 0, 0, 0);
@@ -44,14 +49,17 @@ function DashboardPage({ onAction, libraryStore }) {
     const weekStart = getWeekStart(new Date());
 
     const todayCount = items.filter((item) => {
+      if (!isActuallyApplied(item)) return false;
+
       const appliedDate = getAppliedDate(item);
       return appliedDate ? isSameDay(appliedDate, today) : false;
     }).length;
 
     const recentItems = [...items]
       .filter((item) => {
-        const appliedDate = getAppliedDate(item);
+        if (!isActuallyApplied(item)) return false;
 
+        const appliedDate = getAppliedDate(item);
         if (!appliedDate) return false;
 
         return recentPeriod === "today"

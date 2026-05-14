@@ -53,15 +53,6 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     : statusFilterValue;
 
   const filteredItems = useMemo(() => {
-    if (!isTableView) {
-      return getFilteredAndSortedLibraryItems(
-        items,
-        searchValue,
-        activeSortValue,
-        activeStatusFilterValue,
-      );
-    }
-
     const pinnedItems = items.filter((item) => item.pinned);
     const unpinnedItems = items.filter((item) => !item.pinned);
 
@@ -71,6 +62,10 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
       activeSortValue,
       activeStatusFilterValue,
     );
+
+    if (!isTableView) {
+      return [...pinnedItems, ...filteredUnpinnedItems];
+    }
 
     return [
       ...pinnedItems,
