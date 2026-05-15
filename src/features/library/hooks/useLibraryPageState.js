@@ -4,15 +4,16 @@ import {
   DEFAULT_LIBRARY_STATUS_FILTER,
   DEFAULT_LIBRARY_VIEW_MODE,
 } from "../constants/libraryPageState.js";
+import { EMPTY_TABLE_COLUMN_FILTERS } from "../constants/tableFilterOptions.js";
 
 function getDefaultTableColumnFilters() {
   return {
-    company: ["all"],
-    role: ["all"],
-    status: ["all"],
-    priority: ["all"],
-    location: ["all"],
-    appliedAt: "",
+    ...EMPTY_TABLE_COLUMN_FILTERS,
+    company: [...EMPTY_TABLE_COLUMN_FILTERS.company],
+    role: [...EMPTY_TABLE_COLUMN_FILTERS.role],
+    status: [...EMPTY_TABLE_COLUMN_FILTERS.status],
+    priority: [...EMPTY_TABLE_COLUMN_FILTERS.priority],
+    location: [...EMPTY_TABLE_COLUMN_FILTERS.location],
   };
 }
 

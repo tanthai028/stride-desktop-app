@@ -1,36 +1,23 @@
 import { Filter, RotateCcw, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import SelectMenu from "../../../../components/ui/SelectMenu.jsx";
-import { PRIORITY_OPTIONS } from "../../constants/libraryPriorities.js";
-import { getLibraryStatusOptions } from "../../constants/libraryStatuses.js";
+import {
+  EMPTY_TABLE_COLUMN_FILTERS,
+  TABLE_DATE_SCOPE_OPTIONS,
+  TABLE_PRIORITY_FILTER_OPTIONS,
+  TABLE_STATUS_FILTER_OPTIONS,
+} from "../../constants/tableFilterOptions.js";
 
-const TABLE_DATE_SCOPE_OPTIONS = [
-  { value: "today", label: "Today" },
-  { value: "week", label: "This Week" },
-  { value: "all", label: "All" },
-];
-
-const TABLE_STATUS_FILTER_OPTIONS = [
-  { value: "all", label: "All Status" },
-  ...getLibraryStatusOptions().map((option) => ({
-    value: option.value,
-    label: option.rawLabel ?? option.label,
-  })),
-];
-
-const TABLE_PRIORITY_FILTER_OPTIONS = [
-  { value: "all", label: "All Priority" },
-  ...PRIORITY_OPTIONS,
-];
-
-const EMPTY_COLUMN_FILTERS = {
-  company: ["all"],
-  role: ["all"],
-  status: ["all"],
-  priority: ["all"],
-  location: ["all"],
-  appliedAt: "",
-};
+function getEmptyColumnFilters() {
+  return {
+    ...EMPTY_TABLE_COLUMN_FILTERS,
+    company: [...EMPTY_TABLE_COLUMN_FILTERS.company],
+    role: [...EMPTY_TABLE_COLUMN_FILTERS.role],
+    status: [...EMPTY_TABLE_COLUMN_FILTERS.status],
+    priority: [...EMPTY_TABLE_COLUMN_FILTERS.priority],
+    location: [...EMPTY_TABLE_COLUMN_FILTERS.location],
+  };
+}
 
 function getUniqueOptions(items, key, fallbackLabel) {
   const uniqueValues = [
@@ -117,7 +104,7 @@ function LibraryTableFilters({
 
   function clearFilters() {
     onDateScopeChange("all");
-    onColumnFiltersChange(EMPTY_COLUMN_FILTERS);
+    onColumnFiltersChange(getEmptyColumnFilters());
   }
 
   return (
