@@ -5,6 +5,17 @@ import {
   DEFAULT_LIBRARY_VIEW_MODE,
 } from "../constants/libraryPageState.js";
 
+function getDefaultTableColumnFilters() {
+  return {
+    company: ["all"],
+    role: ["all"],
+    status: ["all"],
+    priority: ["all"],
+    location: ["all"],
+    appliedAt: "",
+  };
+}
+
 function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
   const [isPageReady, setIsPageReady] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -14,17 +25,11 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
     DEFAULT_LIBRARY_STATUS_FILTER,
   );
   const [tableDateScope, setTableDateScope] = useState("all");
-  const [tableColumnFilters, setTableColumnFilters] = useState({
-    company: ["all"],
-    role: ["all"],
-    status: ["all"],
-    priority: ["all"],
-    location: ["all"],
-    appliedAt: "",
-  });
+  const [tableColumnFilters, setTableColumnFilters] = useState(
+    getDefaultTableColumnFilters,
+  );
   const [viewMode, setViewMode] = useState(initialViewMode);
-  const [modalMode, setModalMode] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   function clearFilters() {
     setSearchValue("");
@@ -32,33 +37,16 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
     setTableSortValue(DEFAULT_LIBRARY_SORT);
     setStatusFilterValue(DEFAULT_LIBRARY_STATUS_FILTER);
     setTableDateScope("all");
-    setTableColumnFilters({
-      company: ["all"],
-      role: ["all"],
-      status: ["all"],
-      priority: ["all"],
-      location: ["all"],
-      appliedAt: "",
-    });
+    setTableColumnFilters(getDefaultTableColumnFilters());
   }
 
   function openAddModal() {
     if (!isPageReady) return;
-
-    setSelectedItem(null);
-    setModalMode("add");
+    setIsAddModalOpen(true);
   }
 
-  function openEditModal(item) {
-    if (!isPageReady) return;
-
-    setSelectedItem(item);
-    setModalMode("edit");
-  }
-
-  function closeModal() {
-    setSelectedItem(null);
-    setModalMode(null);
+  function closeAddModal() {
+    setIsAddModalOpen(false);
   }
 
   return {
@@ -74,12 +62,10 @@ function useLibraryPageState(initialViewMode = DEFAULT_LIBRARY_VIEW_MODE) {
     setStatusFilterValue,
     viewMode,
     setViewMode,
-    modalMode,
-    selectedItem,
+    isAddModalOpen,
     clearFilters,
     openAddModal,
-    openEditModal,
-    closeModal,
+    closeAddModal,
     tableDateScope,
     setTableDateScope,
     tableColumnFilters,

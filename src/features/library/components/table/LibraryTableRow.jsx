@@ -2,7 +2,6 @@ import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
   formatLibraryLocation,
-  openLibraryJobUrl,
 } from "../../utils/libraryDisplayFormatters.js";
 
 function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
@@ -11,7 +10,6 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
 
   function handleMiddleMouseDown(event) {
     if (event.button !== 1) return;
-
     event.preventDefault();
   }
 
@@ -25,20 +23,12 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
 
   function handleRowClick() {
     if (!isClickable) return;
-    openLibraryJobUrl({ stopPropagation: () => {} }, item.jobUrl);
-  }
-
-  function handleContextMenu(event) {
-    event.preventDefault();
-
-    if (!isClickable) return;
     onItemClick(item);
   }
 
   return (
     <tr
       onClick={handleRowClick}
-      onContextMenu={handleContextMenu}
       onMouseDown={handleMiddleMouseDown}
       onAuxClick={handleMiddleClick}
       className={`library-table-row ${isClickable ? "is-clickable" : ""} ${

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import WindowFrame from "../components/layout/WindowFrame.jsx";
 import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
 import ApplyModePanel from "../features/apply-mode/ApplyModePanel.jsx";
 import useLibraryItems from "../features/library/hooks/useLibraryItems.js";
+import { extractJobId } from "../features/library/utils/libraryDisplayFormatters.js";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
 import {
   APP_PAGES,
@@ -17,11 +18,17 @@ function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
   const libraryStore = useLibraryItems(settings.resetVersion);
   const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
+  const [activeJobId, setActiveJobId] = useState(null);
 
   const isApplyModeWindow =
     new URLSearchParams(window.location.search).get("mode") === "apply";
 
   const { showSplash, mountRealApp, isAppReady } = useStartupSequence();
+
+  const activeJob = useMemo(
+    () => libraryStore.items.find((item) => item.id === activeJobId) ?? null,
+    [activeJobId, libraryStore.items],
+  );
 
   useEffect(() => {
     document.documentElement.classList.toggle("theme-dark", settings.darkMode);
@@ -32,14 +39,27 @@ function App() {
     }
   }, [settings.darkMode, isApplyModeWindow]);
 
+  function handleNavigate(pageName) {
+    setActivePage(pageName);
+
+    if (pageName !== APP_PAGES.jobDetails) {
+      setActiveJobId(null);
+    }
+  }
+
+  function handleOpenJobPage(item) {
+    setActiveJobId(item.id);
+    setActivePage(APP_PAGES.jobDetails);
+  }
+
   function handleQuickAction(actionId) {
     if (actionId === "settings") {
-      setActivePage(APP_PAGES.settings);
+      handleNavigate(APP_PAGES.settings);
       return;
     }
 
     if (actionId === "library") {
-      setActivePage(APP_PAGES.library);
+      handleNavigate(APP_PAGES.library);
     }
   }
 
@@ -61,9 +81,26 @@ function App() {
     resetSettings,
     onAction: handleQuickAction,
     libraryStore,
+    activeJob,
+    onOpenJobPage: handleOpenJobPage,
+    onBackToLibrary: () => handleNavigate(APP_PAGES.library),
   });
 
-  const activePageMetadata = getPageMetadata(activePage);
+  const baseMetadata = getPageMetadata(activePage);
+
+  const activePageMetadata =
+    activePage === APP_PAGES.jobDetails && activeJob
+      ? {
+          eyebrow: "📄 Job Page",
+          title: [activeJob.company, activeJob.role]
+            .filter(Boolean)
+            .join(" — "),
+          description: [
+            activeJob.location || "No location",
+            `Job ID: ${extractJobId(activeJob.jobUrl) || activeJob.id}`,
+          ].join(" · "),
+        }
+      : baseMetadata;
 
   if (showSplash && !mountRealApp) {
     return <StartupSplash />;
@@ -84,7 +121,7 @@ function App() {
       <div className={appStartupClassName}>
         <WindowFrame
           sidebar={
-            <AppSidebar activePage={activePage} onNavigate={setActivePage} />
+            <AppSidebar activePage={activePage} onNavigate={handleNavigate} />
           }
         >
           <AppHeader

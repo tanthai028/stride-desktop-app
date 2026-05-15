@@ -1,7 +1,7 @@
 export const DEFAULT_STATUS = "Unapplied";
 export const DEFAULT_PRIORITY = "Medium";
 export const INVALID_JOB_URL_MESSAGE =
-  "Couldn\u2019t extract job details from this link. Paste a direct job posting URL.";
+  "Couldn’t extract job details from this link. Paste a direct job posting URL.";
 
 function toDateInputValue(date) {
   const year = date.getFullYear();
@@ -37,6 +37,10 @@ export function createEmptyForm() {
     priority: DEFAULT_PRIORITY,
     appliedAt: "",
     notes: "",
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   };
 }
 
@@ -50,6 +54,10 @@ export function createEditFormValues(item) {
     priority: item?.priority ?? DEFAULT_PRIORITY,
     appliedAt: formatDateInputValue(item?.appliedAt),
     notes: item?.notes ?? "",
+    jobDescription: item?.jobDescription ?? "",
+    requirements: item?.requirements ?? "",
+    contactInfo: item?.contactInfo ?? "",
+    nextSteps: item?.nextSteps ?? "",
   };
 }
 
@@ -68,6 +76,10 @@ export function buildFormPayload(formValues) {
           : new Date().toISOString()
         : "",
     notes: formValues.notes.trim(),
+    jobDescription: formValues.jobDescription.trim(),
+    requirements: formValues.requirements.trim(),
+    contactInfo: formValues.contactInfo.trim(),
+    nextSteps: formValues.nextSteps.trim(),
   };
 }
 
@@ -90,13 +102,8 @@ export function isAtsPlatformName(value = "") {
 }
 
 export function canAutofillParsedJob(extracted) {
-  if (!extracted || extracted.error) {
-    return false;
-  }
+  const company = String(extracted?.company ?? "").trim();
+  const role = String(extracted?.role ?? "").trim();
 
-  const company = String(extracted.company ?? "").trim();
-  const role = String(extracted.role ?? "").trim();
-  const location = String(extracted.location ?? "").trim();
-
-  return Boolean(company && role && location);
+  return Boolean(company && role);
 }

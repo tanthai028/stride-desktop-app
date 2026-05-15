@@ -10,7 +10,6 @@ const ALLOWED_STATUSES = new Set([
 ]);
 const ALLOWED_PRIORITIES = new Set(["high", "medium", "low"]);
 const DEFAULT_PRIORITY = "medium";
-
 const DEFAULT_STATUS = "unapplied";
 
 function normalizeStatusValue(status = "") {
@@ -78,6 +77,10 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
     String(formValues.priority ?? "")
       .trim()
       .toLowerCase() || DEFAULT_PRIORITY;
+  const jobDescription = String(formValues.jobDescription ?? "").trim();
+  const requirements = String(formValues.requirements ?? "").trim();
+  const contactInfo = String(formValues.contactInfo ?? "").trim();
+  const nextSteps = String(formValues.nextSteps ?? "").trim();
 
   if (!ALLOWED_STATUSES.has(status)) {
     throw new LibraryValidationError("Status is invalid.", {
@@ -141,6 +144,10 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
   assertMaxLength("Job URL", jobUrl, 500);
   assertMaxLength("Location", location, 120);
   assertMaxLength("Notes", notes, 3000);
+  assertMaxLength("Job description", jobDescription, 12000);
+  assertMaxLength("Requirements", requirements, 8000);
+  assertMaxLength("Contact info", contactInfo, 3000);
+  assertMaxLength("Next steps", nextSteps, 3000);
 
   return {
     company,
@@ -152,6 +159,10 @@ function validateLibraryFormValues(formValues = {}, options = {}) {
     pinned: getBooleanValue(formValues.pinned),
     appliedAt: getNormalizedAppliedAt(formValues.appliedAt, status),
     notes,
+    jobDescription,
+    requirements,
+    contactInfo,
+    nextSteps,
   };
 }
 

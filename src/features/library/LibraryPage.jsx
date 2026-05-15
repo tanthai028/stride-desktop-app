@@ -13,9 +13,8 @@ import { extractJobId } from "./utils/libraryDisplayFormatters.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
-function LibraryPage({ settings, updateSetting, libraryStore }) {
-  const { items, hasLoaded, loadError, addItem, updateItem, deleteItem } =
-    libraryStore;
+function LibraryPage({ settings, updateSetting, libraryStore, onOpenJobPage }) {
+  const { items, hasLoaded, loadError, addItem, updateItem } = libraryStore;
   const [modalErrorMessage, setModalErrorMessage] = useState("");
 
   const {
@@ -31,12 +30,10 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     setStatusFilterValue,
     viewMode,
     setViewMode,
-    modalMode,
-    selectedItem,
+    isAddModalOpen,
     clearFilters,
     openAddModal,
-    openEditModal,
-    closeModal,
+    closeAddModal,
     tableDateScope,
     setTableDateScope,
     tableColumnFilters,
@@ -44,10 +41,6 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
   } = useLibraryPageState(settings.libraryViewMode);
 
   const isTableView = viewMode === "table";
-  const isModalOpen = modalMode === "add" || modalMode === "edit";
-  const modalSubmitHandler =
-    modalMode === "edit" ? handleUpdateItem : handleAddItem;
-
   const activeSortValue = isTableView ? tableSortValue : sortValue;
   const activeStatusFilterValue = isTableView
     ? DEFAULT_LIBRARY_STATUS_FILTER
@@ -105,14 +98,9 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
     openAddModal();
   }
 
-  function handleOpenEditModal(item) {
+  function handleCloseAddModal() {
     clearModalError();
-    openEditModal(item);
-  }
-
-  function handleCloseModal() {
-    clearModalError();
-    closeModal();
+    closeAddModal();
   }
 
   async function handleAddItem(formValues) {
@@ -123,29 +111,7 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
 
     try {
       await addItem(formValues);
-      handleCloseModal();
-    } catch (error) {
-      setModalErrorMessage(getErrorMessage(error));
-    }
-  }
-
-  async function handleUpdateItem(formValues) {
-    if (!selectedItem) return;
-
-    try {
-      await updateItem(selectedItem.id, formValues);
-      handleCloseModal();
-    } catch (error) {
-      setModalErrorMessage(getErrorMessage(error));
-    }
-  }
-
-  async function handleDeleteItem() {
-    if (!selectedItem) return;
-
-    try {
-      await deleteItem(selectedItem.id);
-      handleCloseModal();
+      handleCloseAddModal();
     } catch (error) {
       setModalErrorMessage(getErrorMessage(error));
     }
@@ -184,7 +150,7 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
           onViewModeChange={setViewMode}
           isPageReady={isPageReady && hasLoaded}
           hasLoaded={hasLoaded}
-          onItemClick={handleOpenEditModal}
+          onItemClick={onOpenJobPage}
           onClearFilters={clearFilters}
           onAddItem={handleOpenAddModal}
           tableDateScope={tableDateScope}
@@ -196,14 +162,14 @@ function LibraryPage({ settings, updateSetting, libraryStore }) {
       </PageShell>
 
       <LibraryFormModal
-        isOpen={isModalOpen}
-        mode={modalMode}
-        item={selectedItem}
+        isOpen={isAddModalOpen}
+        mode="add"
+        item={null}
         errorMessage={modalErrorMessage}
         onClearError={clearModalError}
-        onClose={handleCloseModal}
-        onSubmit={modalSubmitHandler}
-        onDelete={handleDeleteItem}
+        onClose={handleCloseAddModal}
+        onSubmit={handleAddItem}
+        onDelete={undefined}
       />
     </motion.div>
   );

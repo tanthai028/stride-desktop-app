@@ -43,7 +43,11 @@ function ensureLibrarySchema(db) {
       applied_at TEXT NOT NULL DEFAULT '',
       notes TEXT NOT NULL,
       created_at TEXT NOT NULL,
-      updated_at TEXT NOT NULL
+      updated_at TEXT NOT NULL,
+      job_description TEXT NOT NULL DEFAULT '',
+      requirements TEXT NOT NULL DEFAULT '',
+      contact_info TEXT NOT NULL DEFAULT '',
+      next_steps TEXT NOT NULL DEFAULT ''
     );
 
     CREATE TABLE IF NOT EXISTS library_metadata (
@@ -75,23 +79,47 @@ function ensureLibrarySchema(db) {
 
   if (!columns.includes("pinned")) {
     db.exec(`
-    ALTER TABLE library_items
-    ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0
-  `);
+      ALTER TABLE library_items
+      ADD COLUMN pinned INTEGER NOT NULL DEFAULT 0
+    `);
+  }
+
+  if (!columns.includes("job_description")) {
+    db.exec(`
+      ALTER TABLE library_items
+      ADD COLUMN job_description TEXT NOT NULL DEFAULT ''
+    `);
+  }
+
+  if (!columns.includes("requirements")) {
+    db.exec(`
+      ALTER TABLE library_items
+      ADD COLUMN requirements TEXT NOT NULL DEFAULT ''
+    `);
+  }
+
+  if (!columns.includes("contact_info")) {
+    db.exec(`
+      ALTER TABLE library_items
+      ADD COLUMN contact_info TEXT NOT NULL DEFAULT ''
+    `);
+  }
+
+  if (!columns.includes("next_steps")) {
+    db.exec(`
+      ALTER TABLE library_items
+      ADD COLUMN next_steps TEXT NOT NULL DEFAULT ''
+    `);
   }
 }
 
 function getDatabase() {
-  if (database) {
-    return database;
-  }
+  if (database) return database;
 
   try {
     ensureDatabaseDirectory();
-
     database = new DatabaseSync(getLibraryDatabasePath());
     ensureLibrarySchema(database);
-
     return database;
   } catch (error) {
     throw new LibraryStorageError("Failed to open library database.", {
@@ -116,20 +144,21 @@ function mapLibraryRow(row) {
     notes: row.notes,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
+    jobDescription: row.jobDescription ?? "",
+    requirements: row.requirements ?? "",
+    contactInfo: row.contactInfo ?? "",
+    nextSteps: row.nextSteps ?? "",
   };
 }
 
 function readLegacyLibraryItems() {
   const legacyFilePath = getLegacyLibraryFilePath();
 
-  if (!fs.existsSync(legacyFilePath)) {
-    return null;
-  }
+  if (!fs.existsSync(legacyFilePath)) return null;
 
   try {
     const rawValue = fs.readFileSync(legacyFilePath, "utf8");
     const parsedValue = JSON.parse(rawValue);
-
     return Array.isArray(parsedValue) ? parsedValue : [];
   } catch (error) {
     throw new LibraryStorageError("Legacy library data file is corrupted.", {
@@ -171,22 +200,13 @@ function insertLibraryItemRow(db, item) {
       applied_at,
       notes,
       created_at,
-      updated_at
+      updated_at,
+      job_description,
+      requirements,
+      contact_info,
+      next_steps
     )
-    VALUES (
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?,
-      ?
-    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
   ).run(
     item.id,
@@ -198,9 +218,13 @@ function insertLibraryItemRow(db, item) {
     item.priority ?? "Medium",
     item.pinned ? 1 : 0,
     item.appliedAt ?? "",
-    item.notes,
+    item.notes ?? "",
     item.createdAt,
     item.updatedAt,
+    item.jobDescription ?? "",
+    item.requirements ?? "",
+    item.contactInfo ?? "",
+    item.nextSteps ?? "",
   );
 }
 
@@ -208,16 +232,13 @@ function ensureLibraryRows(seedItems = []) {
   try {
     const db = getDatabase();
     const row = db.prepare("SELECT COUNT(*) AS count FROM library_items").get();
-    const itemCount = row?.count ?? 0;
 
-    if (itemCount > 0) {
+    if ((row?.count ?? 0) > 0) {
       markLibrarySeeded(db);
       return;
     }
 
-    if (hasLibraryBeenSeeded(db)) {
-      return;
-    }
+    if (hasLibraryBeenSeeded(db)) return;
 
     const legacyItems = readLegacyLibraryItems();
     const sourceItems =
@@ -241,20 +262,40 @@ function ensureLibraryRows(seedItems = []) {
       db.exec("COMMIT");
     } catch (error) {
       db.exec("ROLLBACK");
-
       throw new LibraryStorageError("Failed to seed library database.", {
         cause: error.message,
       });
     }
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to initialize library database.", {
       cause: error.message,
     });
   }
+}
+
+function getLibrarySelectSql() {
+  return `
+    SELECT
+      id,
+      company,
+      role,
+      status,
+      job_url AS jobUrl,
+      location,
+      priority,
+      pinned,
+      applied_at AS appliedAt,
+      notes,
+      created_at AS createdAt,
+      updated_at AS updatedAt,
+      job_description AS jobDescription,
+      requirements,
+      contact_info AS contactInfo,
+      next_steps AS nextSteps
+    FROM library_items
+  `;
 }
 
 function getAllLibraryRows(seedItems = []) {
@@ -266,29 +307,14 @@ function getAllLibraryRows(seedItems = []) {
     return db
       .prepare(
         `
-        SELECT
-          id,
-          company,
-          role,
-          status,
-          job_url AS jobUrl,
-          location,
-          priority,
-          pinned,
-          applied_at AS appliedAt,
-          notes,
-          created_at AS createdAt,
-          updated_at AS updatedAt
-        FROM library_items
+        ${getLibrarySelectSql()}
         ORDER BY datetime(created_at) DESC, datetime(updated_at) DESC
       `,
       )
       .all()
       .map(mapLibraryRow);
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to read library data.", {
       cause: error.message,
@@ -305,31 +331,16 @@ function getLibraryRowById(itemId, seedItems = []) {
     const row = db
       .prepare(
         `
-      SELECT
-        id,
-        company,
-        role,
-        status,
-        job_url AS jobUrl,
-        location,
-        priority,
-        pinned,
-        applied_at AS appliedAt,
-        notes,
-        created_at AS createdAt,
-        updated_at AS updatedAt
-      FROM library_items
-      WHERE id = ?
-      LIMIT 1
-    `,
+        ${getLibrarySelectSql()}
+        WHERE id = ?
+        LIMIT 1
+      `,
       )
       .get(itemId);
 
     return mapLibraryRow(row);
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to read library item.", {
       cause: error.message,
@@ -347,9 +358,7 @@ function insertLibraryRow(item, seedItems = []) {
 
     return item;
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to create library item.", {
       cause: error.message,
@@ -366,21 +375,25 @@ function updateLibraryRow(itemId, item, seedItems = []) {
     const result = db
       .prepare(
         `
-      UPDATE library_items
-      SET
-        company = ?,
-        role = ?,
-        status = ?,
-        job_url = ?,
-        location = ?,
-        priority = ?,
-        pinned = ?,
-        applied_at = ?,
-        notes = ?,
-        created_at = ?,
-        updated_at = ?
-      WHERE id = ?
-    `,
+        UPDATE library_items
+        SET
+          company = ?,
+          role = ?,
+          status = ?,
+          job_url = ?,
+          location = ?,
+          priority = ?,
+          pinned = ?,
+          applied_at = ?,
+          notes = ?,
+          created_at = ?,
+          updated_at = ?,
+          job_description = ?,
+          requirements = ?,
+          contact_info = ?,
+          next_steps = ?
+        WHERE id = ?
+      `,
       )
       .run(
         item.company,
@@ -391,17 +404,19 @@ function updateLibraryRow(itemId, item, seedItems = []) {
         item.priority ?? "Medium",
         item.pinned ? 1 : 0,
         item.appliedAt ?? "",
-        item.notes,
+        item.notes ?? "",
         item.createdAt,
         item.updatedAt,
+        item.jobDescription ?? "",
+        item.requirements ?? "",
+        item.contactInfo ?? "",
+        item.nextSteps ?? "",
         itemId,
       );
 
     return result.changes > 0;
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to update library item.", {
       cause: error.message,
@@ -422,9 +437,7 @@ function deleteLibraryRow(itemId, seedItems = []) {
 
     return result.changes > 0;
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to delete library item.", {
       cause: error.message,
@@ -458,9 +471,7 @@ function replaceLibraryRows(items, seedItems = []) {
       });
     }
   } catch (error) {
-    if (error.code === "STORAGE_ERROR") {
-      throw error;
-    }
+    if (error.code === "STORAGE_ERROR") throw error;
 
     throw new LibraryStorageError("Failed to reset library data.", {
       cause: error.message,

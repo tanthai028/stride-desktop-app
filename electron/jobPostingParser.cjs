@@ -133,9 +133,7 @@ function getMetaContent(html, attributeName, attributeValue) {
 
   for (const pattern of patterns) {
     const match = html.match(pattern);
-    if (match?.[1]) {
-      return cleanText(match[1]);
-    }
+    if (match?.[1]) return cleanText(match[1]);
   }
 
   return "";
@@ -161,12 +159,7 @@ function extractJsonLdObjects(html = "") {
 
     try {
       const parsed = JSON.parse(raw);
-
-      if (Array.isArray(parsed)) {
-        objects.push(...parsed);
-      } else {
-        objects.push(parsed);
-      }
+      Array.isArray(parsed) ? objects.push(...parsed) : objects.push(parsed);
     } catch {
       // Ignore invalid JSON-LD blobs.
     }
@@ -177,9 +170,7 @@ function extractJsonLdObjects(html = "") {
 
 function firstNonEmpty(...values) {
   for (const value of values) {
-    if (typeof value === "string" && value.trim()) {
-      return value.trim();
-    }
+    if (typeof value === "string" && value.trim()) return value.trim();
   }
 
   return "";
@@ -187,7 +178,6 @@ function firstNonEmpty(...values) {
 
 function normalizeLocationFromJsonLd(jobPosting) {
   const jobLocation = jobPosting?.jobLocation;
-
   if (!jobLocation) return "";
 
   const locations = Array.isArray(jobLocation) ? jobLocation : [jobLocation];
@@ -202,9 +192,7 @@ function normalizeLocationFromJsonLd(jobPosting) {
       .map((part) => cleanText(part || ""))
       .filter(Boolean);
 
-    if (parts.length) {
-      return parts.join(", ");
-    }
+    if (parts.length) return parts.join(", ");
   }
 
   return "";
@@ -216,6 +204,7 @@ function extractJobPostingFromJsonLd(html = "") {
   for (const item of jsonLdObjects) {
     const typeValue = item?.["@type"];
     const typeList = Array.isArray(typeValue) ? typeValue : [typeValue];
+
     const isJobPosting = typeList.some(
       (entry) => String(entry || "").toLowerCase() === "jobposting",
     );
@@ -234,6 +223,21 @@ function extractJobPostingFromJsonLd(html = "") {
       employmentType: Array.isArray(item?.employmentType)
         ? item.employmentType.join(", ")
         : cleanText(item?.employmentType || ""),
+      jobDescription: cleanText(item?.description || ""),
+      requirements: cleanText(
+        [
+          item?.qualifications,
+          item?.responsibilities,
+          item?.skills,
+          item?.experienceRequirements,
+          item?.educationRequirements,
+        ]
+          .flat()
+          .filter(Boolean)
+          .join("\n"),
+      ),
+      contactInfo: cleanText(item?.hiringOrganization?.email || ""),
+      nextSteps: "",
     };
   }
 
@@ -242,13 +246,15 @@ function extractJobPostingFromJsonLd(html = "") {
     company: "",
     location: "",
     employmentType: "",
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   };
 }
 
 function parseTitleParts(title = "") {
-  if (!title) {
-    return { role: "", company: "" };
-  }
+  if (!title) return { role: "", company: "" };
 
   const separators = [" | ", " - ", " — ", " @ ", " at "];
 
@@ -294,33 +300,19 @@ function parseCompanyFromUrl(urlString = "") {
     const provider = getProviderInfo(url.hostname);
     const segments = url.pathname.split("/").filter(Boolean);
 
-    if (provider === "ashby") {
-      return normalizeCompany(segments[0] || "");
-    }
-
-    if (provider === "lever") {
-      return normalizeCompany(segments[0] || "");
-    }
-
-    if (provider === "greenhouse") {
+    if (
+      ["ashby", "lever", "greenhouse", "smartrecruiters"].includes(provider)
+    ) {
       return normalizeCompany(segments[0] || "");
     }
 
     if (provider === "workday") {
       const hostParts = url.hostname.replace(/^www\./, "").split(".");
-      if (hostParts.length >= 3) {
-        return normalizeCompany(hostParts[0]);
-      }
-    }
-
-    if (provider === "smartrecruiters") {
-      return normalizeCompany(segments[0] || "");
+      if (hostParts.length >= 3) return normalizeCompany(hostParts[0]);
     }
 
     const hostParts = url.hostname.replace(/^www\./, "").split(".");
-    if (hostParts.length >= 3) {
-      return normalizeCompany(hostParts[0]);
-    }
+    if (hostParts.length >= 3) return normalizeCompany(hostParts[0]);
 
     return "";
   } catch {
@@ -403,6 +395,10 @@ function extractFromHtml(html = "") {
         : titleText
           ? "html-title"
           : "",
+    jobDescription: jsonLd.jobDescription || metaDescription || "",
+    requirements: jsonLd.requirements || "",
+    contactInfo: jsonLd.contactInfo || "",
+    nextSteps: "",
   };
 }
 
@@ -449,6 +445,11 @@ async function parseJobPostingFromUrl(urlValue = "") {
       location: "",
       employmentType: "",
       source: "empty",
+      isAtsUrl: false,
+      jobDescription: "",
+      requirements: "",
+      contactInfo: "",
+      nextSteps: "",
     };
   }
 
@@ -458,6 +459,11 @@ async function parseJobPostingFromUrl(urlValue = "") {
     location: "",
     employmentType: "",
     source: "url-fallback",
+    isAtsUrl: isAtsUrl(trimmedUrl),
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   };
 
   try {
@@ -473,13 +479,15 @@ async function parseJobPostingFromUrl(urlValue = "") {
         fallback.employmentType,
       ),
       source: htmlResult.source || fallback.source,
-      isAtsUrl: isAtsUrl(trimmedUrl),
+      isAtsUrl: fallback.isAtsUrl,
+      jobDescription: htmlResult.jobDescription || fallback.jobDescription,
+      requirements: htmlResult.requirements || fallback.requirements,
+      contactInfo: htmlResult.contactInfo || fallback.contactInfo,
+      nextSteps: htmlResult.nextSteps || fallback.nextSteps,
     };
   } catch (error) {
     return {
       ...fallback,
-      source: "url-fallback",
-      isAtsUrl: isAtsUrl(trimmedUrl),
       error: error?.message || "Failed to fetch job posting HTML.",
     };
   }

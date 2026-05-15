@@ -1,10 +1,12 @@
 import DashboardPage from "../../features/dashboard/DashboardPage.jsx";
 import LibraryPage from "../../features/library/LibraryPage.jsx";
+import JobDetailsPage from "../../features/library/pages/JobDetailsPage.jsx";
 import SettingsPage from "../../features/settings/SettingsPage.jsx";
 
 export const APP_PAGES = {
   dashboard: "dashboard",
   library: "library",
+  jobDetails: "jobDetails",
   settings: "settings",
 };
 
@@ -17,6 +19,11 @@ export const PAGE_METADATA = {
   [APP_PAGES.library]: {
     eyebrow: "📚 Application Tracker",
     title: "Job Application Library",
+    description: "",
+  },
+  [APP_PAGES.jobDetails]: {
+    eyebrow: "📄 Job Page",
+    title: "Job Details",
     description: "",
   },
   [APP_PAGES.settings]: {
@@ -37,6 +44,10 @@ export function getPageComponent(pageName, pageProps) {
 
   if (pageName === APP_PAGES.library) {
     return <LibraryPage {...pageProps} />;
+  }
+
+  if (pageName === APP_PAGES.jobDetails) {
+    return <JobDetailsPage {...pageProps} />;
   }
 
   return <DashboardPage {...pageProps} />;

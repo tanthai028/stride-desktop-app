@@ -64,6 +64,10 @@ function normalizeLibraryItem(item = {}) {
     toIsoDateTime(item.appliedAt ?? item.createdAt ?? "") || nowIso;
   const createdAt = toIsoDateTime(item.createdAt) || appliedAt || nowIso;
   const updatedAt = toIsoDateTime(item.updatedAt) || nowIso;
+  const jobDescription = String(item.jobDescription ?? "").trim();
+  const requirements = String(item.requirements ?? "").trim();
+  const contactInfo = String(item.contactInfo ?? "").trim();
+  const nextSteps = String(item.nextSteps ?? "").trim();
 
   let nextCompany = company;
   let nextRole = role;
@@ -91,6 +95,10 @@ function normalizeLibraryItem(item = {}) {
     notes,
     createdAt,
     updatedAt,
+    jobDescription,
+    requirements,
+    contactInfo,
+    nextSteps,
   });
 }
 
@@ -180,11 +188,14 @@ function normalizeParsedJobData(parsed = {}) {
     notes: String(parsed.notes ?? "").trim(),
     source: String(parsed.source ?? "").trim(),
     employmentType: String(parsed.employmentType ?? "").trim(),
+    jobDescription: String(parsed.jobDescription ?? "").trim(),
+    requirements: String(parsed.requirements ?? "").trim(),
+    contactInfo: String(parsed.contactInfo ?? "").trim(),
+    nextSteps: String(parsed.nextSteps ?? "").trim(),
     isAtsUrl: Boolean(parsed.isAtsUrl),
     error: String(parsed.error ?? "").trim(),
   };
 }
-
 export async function parseLibraryJobUrl(url) {
   const trimmedUrl = String(url ?? "").trim();
 

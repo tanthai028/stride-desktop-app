@@ -87,6 +87,24 @@ export function useLibraryFormModal({
     setShowAdvanced((current) => !current);
   }
 
+  function mergeParsedJob(prev, nextJobUrl, extracted) {
+    const shouldReplaceCompany =
+      !prev.company.trim() || isAtsPlatformName(prev.company);
+    const shouldReplaceRole = !prev.role.trim() || isUuidLike(prev.role);
+
+    return {
+      ...prev,
+      jobUrl: nextJobUrl,
+      company: shouldReplaceCompany ? extracted.company : prev.company,
+      role: shouldReplaceRole ? extracted.role : prev.role,
+      location: prev.location.trim() ? prev.location : extracted.location,
+      jobDescription: prev.jobDescription || extracted.jobDescription,
+      requirements: prev.requirements || extracted.requirements,
+      contactInfo: prev.contactInfo || extracted.contactInfo,
+      nextSteps: prev.nextSteps || extracted.nextSteps,
+    };
+  }
+
   async function applyParsedJobUrl(nextJobUrl) {
     const extracted = await parseLibraryJobUrl(nextJobUrl);
 
@@ -94,19 +112,7 @@ export function useLibraryFormModal({
       return extracted;
     }
 
-    setFormValues((prev) => {
-      const shouldReplaceCompany =
-        !prev.company.trim() || isAtsPlatformName(prev.company);
-      const shouldReplaceRole = !prev.role.trim() || isUuidLike(prev.role);
-
-      return {
-        ...prev,
-        jobUrl: nextJobUrl,
-        company: shouldReplaceCompany ? extracted.company : prev.company,
-        role: shouldReplaceRole ? extracted.role : prev.role,
-        location: prev.location.trim() ? prev.location : extracted.location,
-      };
-    });
+    setFormValues((prev) => mergeParsedJob(prev, nextJobUrl, extracted));
 
     return extracted;
   }
@@ -121,16 +127,13 @@ export function useLibraryFormModal({
       jobUrl: nextJobUrl,
     }));
 
-    const extracted = await parseLibraryJobUrl(nextJobUrl);
+    const extracted = await applyParsedJobUrl(nextJobUrl);
 
     if (!canAutofillParsedJob(extracted)) {
       onSubmit?.({
         __clientValidationError: INVALID_JOB_URL_MESSAGE,
       });
-      return;
     }
-
-    await applyParsedJobUrl(nextJobUrl);
   }
 
   async function handleAddSubmit(payload) {
@@ -141,19 +144,14 @@ export function useLibraryFormModal({
       return;
     }
 
-    let nextCompany = payload.company;
-    let nextRole = payload.role;
-    let nextLocation = payload.location;
+    const extracted = await parseLibraryJobUrl(payload.jobUrl);
 
-    if (!nextCompany || !nextRole) {
-      const extracted = await parseLibraryJobUrl(payload.jobUrl);
-
-      if (canAutofillParsedJob(extracted)) {
-        nextCompany = extracted.company.trim();
-        nextRole = extracted.role.trim();
-        nextLocation = nextLocation || extracted.location.trim();
-      }
-    }
+    const nextCompany =
+      payload.company ||
+      (canAutofillParsedJob(extracted) ? extracted.company : "");
+    const nextRole =
+      payload.role || (canAutofillParsedJob(extracted) ? extracted.role : "");
+    const nextLocation = payload.location || extracted?.location || "";
 
     if (!nextCompany || !nextRole) {
       onSubmit?.({
@@ -170,6 +168,11 @@ export function useLibraryFormModal({
         company: nextCompany,
         role: nextRole,
         location: nextLocation,
+        jobDescription:
+          payload.jobDescription || extracted?.jobDescription || "",
+        requirements: payload.requirements || extracted?.requirements || "",
+        contactInfo: payload.contactInfo || extracted?.contactInfo || "",
+        nextSteps: payload.nextSteps || extracted?.nextSteps || "",
       });
 
       resetAddForm();
@@ -185,9 +188,7 @@ export function useLibraryFormModal({
   async function handleSubmit(event) {
     event.preventDefault();
 
-    if (isSubmitting) {
-      return;
-    }
+    if (isSubmitting) return;
 
     clearError();
 
