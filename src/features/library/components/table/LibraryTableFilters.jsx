@@ -155,15 +155,6 @@ function LibraryTableFilters({
                 <RotateCcw className="library-table-filter-small-icon" />
                 <span>Reset</span>
               </button>
-
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="library-table-filter-icon-button"
-                aria-label="Close filters"
-              >
-                <X className="library-table-filter-small-icon" />
-              </button>
             </div>
           </div>
 

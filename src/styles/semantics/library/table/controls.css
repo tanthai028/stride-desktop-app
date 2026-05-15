@@ -179,23 +179,6 @@
   gap: 0.35rem;
 }
 
-.library-table-filter-icon-button {
-  display: inline-flex;
-  width: 1.8rem;
-  height: 1.8rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-pill);
-  color: var(--theme-text-muted);
-  background-color: var(--theme-card-bg-solid);
-}
-
-.library-table-filter-icon-button:hover {
-  color: var(--theme-text-strong);
-  background-color: var(--theme-select-trigger-hover-bg);
-}
-
 .library-table-filter-small-icon {
   width: 0.82rem;
   height: 0.82rem;
