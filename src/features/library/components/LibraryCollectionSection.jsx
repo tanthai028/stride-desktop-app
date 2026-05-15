@@ -1,34 +1,23 @@
-import { Plus, LayoutGrid, Rows3 } from "lucide-react";
+import { Plus } from "lucide-react";
 import PageSection from "../../../components/page/PageSection.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
-import ItemGrid from "../../../components/page/ItemGrid.jsx";
-import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
-import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
-import SelectMenu from "../../../components/ui/SelectMenu.jsx";
-import LibraryCard from "./LibraryCard.jsx";
+import { LIBRARY_VIEW_OPTIONS } from "../constants/libraryViewOptions.js";
 import LibraryCollectionEmptyState, {
   LibraryCollectionInlineEmptyState,
 } from "./LibraryCollectionEmptyState.jsx";
+import LibraryGrid from "./LibraryGrid.jsx";
 import LibraryTable from "./table/LibraryTable.jsx";
 import LibraryTableFilters from "./table/LibraryTableFilters.jsx";
-
-const libraryViewOptions = [
-  { value: "grid", label: "Card Grid", icon: LayoutGrid },
-  { value: "table", label: "Table List", icon: Rows3 },
-];
+import LibraryViewModeSelect from "./LibraryViewModeSelect.jsx";
 
 function LibraryCollectionSection({
   items,
   filteredItems,
   searchValue,
   onSearchChange,
-  sortValue,
-  onSortChange,
   tableSortValue,
   onTableSortChange,
-  statusFilterValue,
-  onStatusFilterChange,
   viewMode,
   onViewModeChange,
   isPageReady,
@@ -46,21 +35,6 @@ function LibraryCollectionSection({
   const hasFilteredItems = filteredItems.length > 0;
   const isTableView = viewMode === "table";
 
-  function cycleOption(currentValue, options, onChange) {
-    const currentIndex = options.findIndex(
-      (option) => option.value === currentValue,
-    );
-
-    if (currentIndex < 0 || options.length === 0) return;
-
-    const nextIndex = (currentIndex + 1) % options.length;
-    onChange(options[nextIndex].value);
-  }
-
-  function handleViewModeTriggerClick() {
-    cycleOption(viewMode, libraryViewOptions, onViewModeChange);
-  }
-
   const actionBarClassName = isTableView
     ? "library-collection-action-bar-table"
     : "library-collection-action-bar-grid";
@@ -73,15 +47,6 @@ function LibraryCollectionSection({
     onAddItem,
     isTableView,
   });
-
-  const {
-    scrollRef,
-    scrollMetrics,
-    isScrollbarVisible,
-    handleScroll,
-    handlePointerEnter,
-    handlePointerLeave,
-  } = usePageScrollbar();
 
   return (
     <PageSection
@@ -98,13 +63,10 @@ function LibraryCollectionSection({
         className={actionBarClassName}
         extraControls={
           <>
-            <SelectMenu
+            <LibraryViewModeSelect
               value={viewMode}
               onChange={onViewModeChange}
-              options={libraryViewOptions}
-              className="library-view-mode-select library-view-mode-select-icon-only"
-              onTriggerClick={handleViewModeTriggerClick}
-              interactionMode="hover"
+              options={LIBRARY_VIEW_OPTIONS}
             />
 
             <LibraryTableFilters
@@ -131,36 +93,15 @@ function LibraryCollectionSection({
               onItemClick={onItemClick}
               sortValue={tableSortValue}
               onSortChange={onTableSortChange}
-              dateScope={tableDateScope}
-              onDateScopeChange={onTableDateScopeChange}
-              columnFilters={tableColumnFilters}
-              onColumnFiltersChange={onTableColumnFiltersChange}
               onTogglePinned={onTogglePinned}
             />
           ) : (
-            <>
-              <div
-                ref={scrollRef}
-                onScroll={handleScroll}
-                onPointerEnter={handlePointerEnter}
-                onPointerLeave={handlePointerLeave}
-                className="library-grid-scroll-area scrollbar-hide"
-              >
-                <div className="library-grid-scroll-inner">
-                  <ItemGrid
-                    items={filteredItems}
-                    onItemClick={isPageReady ? onItemClick : undefined}
-                    onItemMiddleClick={onTogglePinned}
-                    renderItem={(item) => <LibraryCard item={item} />}
-                  />
-                </div>
-              </div>
-
-              <PageScrollbar
-                isVisible={isScrollbarVisible}
-                scrollMetrics={scrollMetrics}
-              />
-            </>
+            <LibraryGrid
+              items={filteredItems}
+              isPageReady={isPageReady}
+              onItemClick={onItemClick}
+              onTogglePinned={onTogglePinned}
+            />
           )
         ) : emptyState.renderAsTableEmptyState ? (
           <LibraryTable
@@ -169,10 +110,6 @@ function LibraryCollectionSection({
             onItemClick={onItemClick}
             sortValue={tableSortValue}
             onSortChange={onTableSortChange}
-            dateScope={tableDateScope}
-            onDateScopeChange={onTableDateScopeChange}
-            columnFilters={tableColumnFilters}
-            onColumnFiltersChange={onTableColumnFiltersChange}
             onTogglePinned={onTogglePinned}
             emptyStateTitle={emptyState.title}
             emptyStateDescription={emptyState.description}

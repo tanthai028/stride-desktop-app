@@ -12,7 +12,7 @@
 @import "./semantics/library/index.css";
 @import "./semantics/window-controls.css";
 @import "./semantics/effects.css";
-@import "./semantics/apply-mode.css";
+@import "./semantics/apply-mode/index.css";
 
 @import "./modes/light.css";
 @import "./modes/dark.css";

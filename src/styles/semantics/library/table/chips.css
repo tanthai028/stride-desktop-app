@@ -1,0 +1,25 @@
+.library-table-status-chip,
+.library-table-priority-chip {
+  display: inline-flex;
+  max-width: 100%;
+  min-width: 0;
+  align-items: center;
+  overflow: hidden;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+
+.library-table-status-chip {
+  gap: var(--space-xs);
+  color: var(--theme-text-secondary);
+  background-color: color-mix(
+    in srgb,
+    var(--theme-card-bg-semi-solid) 86%,
+    transparent
+  );
+}

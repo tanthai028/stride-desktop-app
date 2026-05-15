@@ -1,0 +1,43 @@
+.dashboard-clickable-card {
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.dashboard-clickable-card:hover {
+  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  box-shadow: var(--theme-card-hover-shadow);
+}
+
+.dashboard-clickable-card:focus-visible,
+.dashboard-metric-card--button:focus-visible,
+.dashboard-recent-card:focus-visible {
+  outline: 2px solid var(--theme-focus-ring, rgba(125, 92, 255, 0.45));
+  outline-offset: 3px;
+}
+
+.dashboard-icon-action {
+  display: inline-flex;
+  width: 1.85rem;
+  height: 1.85rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-sm);
+  background: var(--theme-card-bg-solid);
+  color: var(--theme-text-primary);
+  cursor: pointer;
+}
+
+.dashboard-icon-action:hover {
+  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  background: var(--theme-sidebar-item-hover-bg);
+}
+
+.dashboard-icon-action svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}

@@ -21,6 +21,10 @@ const DEFAULT_LIBRARY_ITEMS = [
     updatedAt: getDateOffset(3),
     priority: "High",
     pinned: false,
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   },
   {
     id: "item-default-ge-aerospace",
@@ -36,6 +40,10 @@ const DEFAULT_LIBRARY_ITEMS = [
     updatedAt: getDateOffset(8),
     priority: "High",
     pinned: false,
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   },
   {
     id: "item-default-palantir",
@@ -51,6 +59,10 @@ const DEFAULT_LIBRARY_ITEMS = [
     updatedAt: getDateOffset(10),
     priority: "High",
     pinned: false,
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   },
   {
     id: "item-default-jpmorgan",
@@ -66,6 +78,10 @@ const DEFAULT_LIBRARY_ITEMS = [
     updatedAt: getDateOffset(5),
     priority: "High",
     pinned: false,
+    jobDescription: "",
+    requirements: "",
+    contactInfo: "",
+    nextSteps: "",
   },
 ];
 
@@ -92,6 +108,10 @@ function normalizeLibraryItem(item = {}) {
     updatedAt: toIsoDateTime(item.updatedAt) || nowIso,
     priority: String(item.priority ?? "Medium").trim() || "Medium",
     pinned: Boolean(item.pinned),
+    jobDescription: String(item.jobDescription ?? "").trim(),
+    requirements: String(item.requirements ?? "").trim(),
+    contactInfo: String(item.contactInfo ?? "").trim(),
+    nextSteps: String(item.nextSteps ?? "").trim(),
   };
 }
 

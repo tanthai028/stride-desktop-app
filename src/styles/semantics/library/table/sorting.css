@@ -1,0 +1,32 @@
+.library-table-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    opacity 120ms ease,
+    color 120ms ease;
+}
+
+.library-table-sort-button:hover,
+.library-table-sort-button.is-active {
+  opacity: 1;
+}
+
+.library-table-sort-button.is-active {
+  color: var(--theme-stat-card-sky-label);
+}
+
+.library-table-sort-icon {
+  flex-shrink: 0;
+  width: 0.9rem;
+  height: 0.9rem;
+}

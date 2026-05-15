@@ -1,0 +1,109 @@
+.dashboard-card,
+.dashboard-metric-card,
+.dashboard-quick-link-button,
+.dashboard-icon-action,
+.dashboard-quick-link-row input {
+  font-family: inherit;
+}
+
+.dashboard-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.dashboard-card-title {
+  position: relative;
+  width: 100%;
+  margin-bottom: 0;
+  padding-bottom: var(--space-sm);
+  color: var(--theme-stat-description);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.dashboard-card-title::after,
+.dashboard-metric-card .stat-card-label::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(var(--theme-accent-sky-bg), 0.38),
+    rgba(var(--theme-accent-violet-bg), 0.22),
+    transparent
+  );
+  content: "";
+}
+
+.dashboard-title-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.dashboard-title-icon {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  stroke-width: 2.15;
+}
+
+.stat-card {
+  padding: 1.25rem;
+  border: 1px solid var(--theme-card-border);
+  border-radius: 28px;
+  background: var(--stat-card-bg, var(--theme-card-bg));
+  box-shadow: var(--stat-card-shadow, none);
+  color: var(--theme-text-primary);
+}
+
+.stat-card[data-tone="pink"] {
+  --stat-card-bg: rgba(var(--theme-accent-pink-bg), 0.25);
+}
+
+.stat-card[data-tone="violet"] {
+  --stat-card-bg: rgba(var(--theme-accent-violet-bg), 0.25);
+}
+
+.stat-card[data-tone="sky"] {
+  --stat-card-bg: rgba(var(--theme-accent-sky-bg), 0.25);
+}
+
+.stat-card-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.stat-card-title {
+  color: var(--theme-stat-title);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.stat-card-description {
+  color: var(--theme-stat-description);
+  font-size: var(--font-size-sm);
+}
+
+.stat-card-label--pink {
+  color: var(--theme-stat-card-pink-label);
+}
+
+.stat-card-label--violet {
+  color: var(--theme-stat-card-violet-label);
+}
+
+.stat-card-label--sky {
+  color: var(--theme-stat-card-sky-label);
+}

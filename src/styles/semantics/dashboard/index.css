@@ -1,6 +1,10 @@
 @import "./layout.css";
-@import "./cards.css";
-@import "./metrics.css";
+@import "./card-base.css";
+@import "./card-actions.css";
+@import "./pagination.css";
+@import "./progress.css";
+@import "./metric-cards.css";
+@import "./timer.css";
 @import "./apply-goal.css";
 @import "./recent.css";
 @import "./quick-links.css";

@@ -37,10 +37,6 @@
   box-shadow: none;
 }
 
-.action-button-pink:hover {
-  box-shadow: var(--theme-accent-pink-shadow);
-}
-
 .action-button-violet:hover {
   box-shadow: var(--theme-accent-violet-shadow);
 }

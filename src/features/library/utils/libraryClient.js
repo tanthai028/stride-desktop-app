@@ -1,111 +1,17 @@
 import { libraryItems as defaultLibraryItems } from "../data/librarySeedData.js";
 import { parseJobUrl } from "./jobUrlParser.js";
+import {
+  createLibraryItemId,
+  DEFAULT_STATUS,
+  normalizeLibraryItem,
+  normalizeLibraryItems,
+} from "./libraryItemNormalizers.js";
 
-const DEFAULT_STATUS = "Unapplied";
+const LIBRARY_STORAGE_KEY = "library-items";
+const BACKUP_STORAGE_KEY_PREFIX = "library-backup-";
 
 function hasElectronLibraryApi() {
   return typeof window !== "undefined" && !!window.libraryApi;
-}
-
-function createItemId() {
-  return `item-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
-
-function toIsoDateTime(value) {
-  if (!value) return "";
-
-  const parsedDate = new Date(value);
-  return Number.isNaN(parsedDate.getTime()) ? "" : parsedDate.toISOString();
-}
-
-function normalizeText(value = "") {
-  return String(value).trim().toLowerCase();
-}
-
-function getAppliedTimestamp(value) {
-  const parsedDate = value ? new Date(value).getTime() : NaN;
-  return Number.isNaN(parsedDate) ? 0 : parsedDate;
-}
-
-function buildSearchText(fields = []) {
-  return fields
-    .map((value) => normalizeText(value))
-    .filter(Boolean)
-    .join(" ");
-}
-
-function addDerivedLibraryFields(item) {
-  return {
-    ...item,
-    _searchText: buildSearchText([
-      item.company,
-      item.role,
-      item.status,
-      item.location,
-      item.notes,
-      item.jobUrl,
-      item.priority,
-    ]),
-    _appliedTimestamp: getAppliedTimestamp(item.appliedAt),
-    _statusNormalized: normalizeText(item.status),
-  };
-}
-
-function normalizeLibraryItem(item = {}) {
-  const nowIso = new Date().toISOString();
-  const company = (item.company ?? "").trim();
-  const role = (item.role ?? "").trim();
-  const status =
-    (item.status ?? item.tag ?? DEFAULT_STATUS).trim() || DEFAULT_STATUS;
-  const jobUrl = (item.jobUrl ?? "").trim();
-  const location = (item.location ?? "").trim();
-  const notes = (item.notes ?? item.description ?? "").trim();
-  const appliedAt =
-    toIsoDateTime(item.appliedAt ?? item.createdAt ?? "") || nowIso;
-  const createdAt = toIsoDateTime(item.createdAt) || appliedAt || nowIso;
-  const updatedAt = toIsoDateTime(item.updatedAt) || nowIso;
-  const jobDescription = String(item.jobDescription ?? "").trim();
-  const requirements = String(item.requirements ?? "").trim();
-  const contactInfo = String(item.contactInfo ?? "").trim();
-  const nextSteps = String(item.nextSteps ?? "").trim();
-
-  let nextCompany = company;
-  let nextRole = role;
-
-  if (!nextCompany && item.title) {
-    const titleParts = String(item.title)
-      .split(" - ")
-      .map((part) => part.trim())
-      .filter(Boolean);
-
-    nextCompany = titleParts[0] ?? "";
-    nextRole = nextRole || titleParts.slice(1).join(" - ");
-  }
-
-  return addDerivedLibraryFields({
-    id: item.id || createItemId(),
-    company: nextCompany,
-    role: nextRole,
-    status,
-    jobUrl,
-    location,
-    priority: String(item.priority ?? "Medium").trim() || "Medium",
-    pinned: Boolean(item.pinned),
-    appliedAt,
-    notes,
-    createdAt,
-    updatedAt,
-    jobDescription,
-    requirements,
-    contactInfo,
-    nextSteps,
-  });
-}
-
-function normalizeLibraryItems(items) {
-  return Array.isArray(items)
-    ? items.map((item) => normalizeLibraryItem(item))
-    : defaultLibraryItems.map((item) => normalizeLibraryItem(item));
 }
 
 function getLibraryErrorMessage(errorPayload) {
@@ -153,6 +59,18 @@ async function invokeElectronLibraryApi(methodName, ...args) {
   }
 }
 
+function getStoredLibraryItems() {
+  return localStorage.getItem(LIBRARY_STORAGE_KEY);
+}
+
+function storeLibraryItems(items) {
+  localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(items));
+}
+
+function getNormalizedDefaultItems() {
+  return normalizeLibraryItems(defaultLibraryItems);
+}
+
 function formatLocation(value = "") {
   const trimmed = String(value).trim();
 
@@ -196,6 +114,7 @@ function normalizeParsedJobData(parsed = {}) {
     error: String(parsed.error ?? "").trim(),
   };
 }
+
 export async function parseLibraryJobUrl(url) {
   const trimmedUrl = String(url ?? "").trim();
 
@@ -227,22 +146,22 @@ export async function getLibraryItems() {
     return normalizeLibraryItems(items);
   }
 
-  const stored = localStorage.getItem("library-items");
+  const stored = getStoredLibraryItems();
 
   if (!stored) {
-    const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);
-    localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
+    const normalizedDefaults = getNormalizedDefaultItems();
+    storeLibraryItems(normalizedDefaults);
     return normalizedDefaults;
   }
 
   try {
     const parsedItems = JSON.parse(stored);
     const normalizedItems = normalizeLibraryItems(parsedItems);
-    localStorage.setItem("library-items", JSON.stringify(normalizedItems));
+    storeLibraryItems(normalizedItems);
     return normalizedItems;
   } catch {
-    const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);
-    localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
+    const normalizedDefaults = getNormalizedDefaultItems();
+    storeLibraryItems(normalizedDefaults);
     return normalizedDefaults;
   }
 }
@@ -257,7 +176,7 @@ export async function addLibraryItem(formValues) {
   const timestamp = new Date().toISOString();
 
   const newItem = normalizeLibraryItem({
-    id: createItemId(),
+    id: createLibraryItemId(),
     status: DEFAULT_STATUS,
     appliedAt: timestamp,
     ...formValues,
@@ -266,7 +185,7 @@ export async function addLibraryItem(formValues) {
   });
 
   const nextItems = [newItem, ...currentItems];
-  localStorage.setItem("library-items", JSON.stringify(nextItems));
+  storeLibraryItems(nextItems);
 
   return newItem;
 }
@@ -293,7 +212,7 @@ export async function updateLibraryItem(itemId, formValues) {
       : item,
   );
 
-  localStorage.setItem("library-items", JSON.stringify(nextItems));
+  storeLibraryItems(nextItems);
 
   return nextItems.find((item) => item.id === itemId) ?? null;
 }
@@ -306,20 +225,20 @@ export async function deleteLibraryItem(itemId) {
   const currentItems = await getLibraryItems();
   const nextItems = currentItems.filter((item) => item.id !== itemId);
 
-  localStorage.setItem("library-items", JSON.stringify(nextItems));
+  storeLibraryItems(nextItems);
 
   return { success: true };
 }
 
 export async function resetLibraryItems() {
-  const normalizedDefaults = normalizeLibraryItems(defaultLibraryItems);
+  const normalizedDefaults = getNormalizedDefaultItems();
 
   if (hasElectronLibraryApi()) {
     const resetItems = await invokeElectronLibraryApi("resetItems");
     return normalizeLibraryItems(resetItems);
   }
 
-  localStorage.setItem("library-items", JSON.stringify(normalizedDefaults));
+  storeLibraryItems(normalizedDefaults);
   return normalizedDefaults;
 }
 
@@ -349,7 +268,10 @@ export async function createLibraryBackup(name = "applications") {
       items,
     };
 
-    localStorage.setItem(`library-backup-${backup.id}`, JSON.stringify(backup));
+    localStorage.setItem(
+      `${BACKUP_STORAGE_KEY_PREFIX}${backup.id}`,
+      JSON.stringify(backup),
+    );
     return backup;
   }
 
@@ -365,11 +287,13 @@ export async function loadLibraryBackup(backupId) {
     return normalizeLibraryItems(items);
   }
 
-  const stored = localStorage.getItem(`library-backup-${backupId}`);
+  const stored = localStorage.getItem(
+    `${BACKUP_STORAGE_KEY_PREFIX}${backupId}`,
+  );
   const parsed = stored ? JSON.parse(stored) : null;
   const items = normalizeLibraryItems(parsed?.items ?? []);
 
-  localStorage.setItem("library-items", JSON.stringify(items));
+  storeLibraryItems(items);
   return items;
 }
 
@@ -381,7 +305,7 @@ export async function deleteLibraryBackup(backupId) {
     return invokeElectronLibraryApi("deleteBackup", backupId);
   }
 
-  localStorage.removeItem(`library-backup-${backupId}`);
+  localStorage.removeItem(`${BACKUP_STORAGE_KEY_PREFIX}${backupId}`);
 
   return { deleted: true, id: backupId };
 }

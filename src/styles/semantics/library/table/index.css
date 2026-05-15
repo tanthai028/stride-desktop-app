@@ -1,4 +1,6 @@
 @import "./core.css";
-@import "./controls.css";
+@import "./sorting.css";
+@import "./filters.css";
+@import "./chips.css";
 @import "./columns.css";
 @import "./responsive.css";

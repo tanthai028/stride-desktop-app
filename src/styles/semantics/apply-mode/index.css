@@ -1,4 +1,6 @@
 @import "./shell.css";
 @import "./header.css";
-@import "./content.css";
+@import "./shared.css";
+@import "./current-job.css";
+@import "./completed-jobs.css";
 @import "./settings-modal.css";

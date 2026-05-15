@@ -46,19 +46,6 @@
   pointer-events: auto;
 }
 
-.dashboard-icon-action {
-  display: inline-flex;
-  width: 1.85rem;
-  height: 1.85rem;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-sm);
-  background: var(--theme-card-bg-solid);
-  color: var(--theme-text-primary);
-  cursor: pointer;
-}
-
 .dashboard-icon-action svg {
   width: 0.95rem;
   height: 0.95rem;
