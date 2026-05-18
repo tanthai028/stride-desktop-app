@@ -1,9 +1,18 @@
-import { Expand, Minus, MousePointer2, Settings } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Clock3, Expand, Minus, MousePointer2, Settings } from "lucide-react";
+
 import {
   exitApplyModeWindow,
   minimizeWindow,
   setApplyModeClickThrough,
 } from "../../../lib/windowControls.js";
+
+function formatElapsedTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
 
 function ApplyModeHeader({
   isApplying,
@@ -16,6 +25,17 @@ function ApplyModeHeader({
   skippedIds,
   resetApplySession,
 }) {
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(true);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setElapsedSeconds((current) => (isTimerRunning ? current + 1 : current));
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [isTimerRunning]);
+
   function handleMinimize() {
     setIsClickThrough(false);
     setApplyModeClickThrough(false);
@@ -28,6 +48,10 @@ function ApplyModeHeader({
 
     setIsClickThrough(false);
     setApplyModeClickThrough(false);
+
+    // reset timer when returning back
+    setElapsedSeconds(0);
+    setIsTimerRunning(true);
 
     if (isFinished || skippedIds.length > 0) {
       resetApplySession();
@@ -70,6 +94,17 @@ function ApplyModeHeader({
           />
           <span>{isApplying ? "Applying" : "Idle"}</span>
         </button>
+
+        <button
+          type="button"
+          className={`apply-mode-timer no-drag ${
+            !isTimerRunning ? "is-paused" : ""
+          }`}
+          onClick={() => setIsTimerRunning((current) => !current)}
+        >
+          <Clock3 size="0.72rem" />
+          <span>{formatElapsedTime(elapsedSeconds)}</span>
+        </button>
       </div>
 
       <div className="apply-mode-header-right no-drag">
@@ -86,30 +121,16 @@ function ApplyModeHeader({
           <button
             type="button"
             className={isClickThrough ? "is-active" : ""}
-            aria-label="Toggle click through"
-            title={
-              isClickThrough ? "Disable click-through" : "Enable click-through"
-            }
             onClick={handleClickThroughToggle}
           >
             <MousePointer2 size="0.75rem" />
           </button>
 
-          <button
-            type="button"
-            onClick={handleMinimize}
-            aria-label="Minimize"
-            title="Minimize"
-          >
+          <button type="button" onClick={handleMinimize}>
             <Minus size="0.75rem" />
           </button>
 
-          <button
-            type="button"
-            onClick={handleExit}
-            aria-label="Back to full app"
-            title="Back to full app"
-          >
+          <button type="button" onClick={handleExit}>
             <Expand size="0.75rem" />
           </button>
         </div>
