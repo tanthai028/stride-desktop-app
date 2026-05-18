@@ -124,3 +124,41 @@
   white-space: nowrap;
 }
 
+.app-header-brand.is-job-header {
+  padding: 0;
+}
+
+.app-header-job-brand {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-md);
+  border: 0;
+  background: transparent;
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.app-header-job-brand:disabled {
+  cursor: default;
+}
+
+.app-header-job-open-icon {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: var(--theme-text-muted);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--motion-fast),
+    transform var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.app-header-job-brand:hover .app-header-job-open-icon {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--theme-text-primary);
+}

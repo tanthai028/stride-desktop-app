@@ -31,6 +31,18 @@ button {
   user-select: none;
 }
 
+.job-detail-card-body,
+.job-detail-card-body p,
+.job-detail-card-body span,
+.job-detail-card-body li {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.job-detail-card-body {
+  -webkit-app-region: no-drag;
+}
+
 .drag-region {
   -webkit-app-region: drag;
   user-select: none;

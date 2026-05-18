@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import PageShell from "../../components/page/PageShell.jsx";
-import LibraryCollectionSection from "./components/LibraryCollectionSection.jsx";
-import LibraryFormModal from "./components/form/LibraryFormModal.jsx";
-import { DEFAULT_LIBRARY_STATUS_FILTER } from "./constants/libraryPageState.js";
-import useLibraryPageState from "./hooks/useLibraryPageState.js";
+import PageShell from "../../../components/page/PageShell.jsx";
+import LibraryCollectionSection from "../components/LibraryCollectionSection.jsx";
+import LibraryFormModal from "../components/form/LibraryFormModal.jsx";
+import { DEFAULT_LIBRARY_STATUS_FILTER } from "../constants/libraryPageState.js";
+import useLibraryPageState from "../hooks/useLibraryPageState.js";
 import {
   applyTableColumnFilters,
   getFilteredAndSortedLibraryItems,
-} from "./utils/libraryItemSelectors.js";
-import { extractJobId } from "./utils/libraryDisplayFormatters.js";
+} from "../utils/libraryItemSelectors.js";
+import { extractJobId } from "../utils/libraryDisplayFormatters.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 

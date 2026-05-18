@@ -1,3 +1,7 @@
+const {
+  extractJobContentFromHtml,
+  convertHtmlToReadableText,
+} = require("./contentExtractor.cjs");
 const { extractJobPostingFromJsonLd } = require("./jsonLdExtractor.cjs");
 const { cleanText, firstNonEmpty } = require("./normalizers.cjs");
 
@@ -55,15 +59,26 @@ function parseTitleParts(title = "") {
   };
 }
 
-function extractLocationFromDescription(description = "") {
-  const match = description.match(
-    /\b(remote|hybrid|onsite|on-site|[A-Z][a-zA-Z]+,\s?[A-Z]{2})\b/i,
+function extractLocationFromText(text = "") {
+  const match = text.match(
+    /\b(remote|hybrid|onsite|on-site|[A-Z][a-zA-Z .'-]+,\s?[A-Z]{2})\b/i,
   );
 
-  return match?.[0] || "";
+  return cleanText(match?.[0] || "");
+}
+
+function extractEmploymentTypeFromText(text = "") {
+  const match = text.match(
+    /\b(full[-\s]?time|part[-\s]?time|contract|temporary|internship|co-op)\b/i,
+  );
+
+  return cleanText(match?.[0] || "");
 }
 
 function extractFromHtml(html = "") {
+  const pageText = convertHtmlToReadableText(html);
+  const pageContent = extractJobContentFromHtml(html);
+
   const metaTitle =
     getMetaContent(html, "property", "og:title") ||
     getMetaContent(html, "name", "twitter:title");
@@ -81,18 +96,22 @@ function extractFromHtml(html = "") {
     company: firstNonEmpty(jsonLd.company, titleParts.company),
     location: firstNonEmpty(
       jsonLd.location,
-      extractLocationFromDescription(metaDescription),
+      extractLocationFromText(metaDescription),
+      extractLocationFromText(pageText),
     ),
-    employmentType: firstNonEmpty(jsonLd.employmentType),
+    employmentType: firstNonEmpty(
+      jsonLd.employmentType,
+      extractEmploymentTypeFromText(pageText),
+    ),
     source:
       jsonLd.role || jsonLd.company
         ? "html-jsonld"
         : titleText
           ? "html-title"
           : "",
-    jobDescription: jsonLd.jobDescription || metaDescription || "",
-    requirements: jsonLd.requirements || "",
-    contactInfo: jsonLd.contactInfo || "",
+    jobDescription: "",
+    requirements: "",
+    contactInfo: firstNonEmpty(jsonLd.contactInfo, pageContent.contactInfo),
     nextSteps: "",
   };
 }

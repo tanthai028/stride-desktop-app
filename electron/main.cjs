@@ -20,6 +20,7 @@ const { serializeLibraryError } = require("./libraryErrors.cjs");
 const {
   listApplicationBackups,
   createApplicationBackup,
+  overwriteApplicationBackup,
   loadApplicationBackup,
   deleteApplicationBackup,
   importApplicationBackup,
@@ -446,6 +447,13 @@ function registerWindowEvents() {
   ipcMain.handle(
     "library:create-backup",
     createIpcHandler(async (_event, name) => createApplicationBackup(name)),
+  );
+
+  ipcMain.handle(
+    "library:overwrite-backup",
+    createIpcHandler(async (_event, backupId) =>
+      overwriteApplicationBackup(backupId),
+    ),
   );
 
   ipcMain.handle(

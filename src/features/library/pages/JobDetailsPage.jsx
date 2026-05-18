@@ -1,132 +1,260 @@
-import { ArrowLeft, ExternalLink } from "lucide-react";
-import ActionButton from "../../../components/ui/ActionButton.jsx";
+import { motion } from "framer-motion";
+import {
+  Archive,
+  Calendar,
+  Check,
+  Circle,
+  Flag,
+  Hash,
+  Mail,
+  Tag,
+  Trash2,
+} from "lucide-react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
+import EditableJobDetailCard from "../components/job-details/EditableJobDetailCard.jsx";
+import JobDetailTextBlock from "../components/job-details/JobDetailTextBlock.jsx";
 import {
   extractJobId,
-  openLibraryJobUrl,
+  formatLibraryAppliedDate,
 } from "../utils/libraryDisplayFormatters.js";
 
-function DetailBlock({ title, children }) {
-  return (
-    <section className="job-detail-block">
-      <h2 className="job-detail-block-title">{title}</h2>
-      <div className="job-detail-block-body">{children}</div>
-    </section>
-  );
-}
+const JOURNEY_STEPS = [
+  { value: "applied", label: "Applied" },
+  { value: "oa", label: "Screen" },
+  { value: "interview", label: "Technical" },
+  { value: "final", label: "Final Round" },
+  { value: "offer", label: "Offer" },
+];
 
 function EmptyText({ children }) {
   return <p className="job-detail-empty">{children}</p>;
 }
 
-function JobDetailsPage({ activeJob, onBackToLibrary }) {
+function getPriorityClass(priority = "medium") {
+  return `job-detail-priority-pill is-${String(priority).toLowerCase()}`;
+}
+
+function getJourneyIndex(status = "") {
+  const normalized = String(status).toLowerCase();
+
+  if (!normalized || normalized === "unapplied" || normalized === "none") {
+    return -1;
+  }
+
+  if (normalized === "applied") return 0;
+  if (normalized === "oa") return 1;
+  if (normalized === "interview") return 2;
+  if (normalized === "final") return 3;
+  if (normalized === "offer") return 4;
+
+  return -1;
+}
+
+function JobJourney({ status }) {
+  const activeIndex = getJourneyIndex(status);
+
+  return (
+    <section className="job-detail-journey-card">
+      <p className="job-detail-eyebrow">Application Journey</p>
+
+      <div className="job-detail-journey-steps">
+        {JOURNEY_STEPS.map((step, index) => {
+          const isDone = index < activeIndex;
+          const isActive = index === activeIndex;
+
+          return (
+            <div
+              key={step.value}
+              className={[
+                "job-detail-journey-step",
+                isDone ? "is-done" : "",
+                isActive ? "is-active" : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
+              <span className="job-detail-journey-dot">
+                {isDone ? <Check size={13} /> : <Circle size={9} />}
+              </span>
+              <span>{step.label}</span>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function JobMetadataCard({ activeJob, appliedDate, jobId }) {
+  return (
+    <JobDetailTextBlock title="Metadata">
+      <dl className="job-detail-meta-list">
+        <div>
+          <dt>
+            <Calendar size={14} />
+            Applied Date
+          </dt>
+          <dd>{appliedDate}</dd>
+        </div>
+
+        <div>
+          <dt>
+            <Tag size={14} />
+            Status
+          </dt>
+          <dd>
+            <span className="job-detail-status-pill">
+              {activeJob.status || "unapplied"}
+            </span>
+          </dd>
+        </div>
+
+        <div>
+          <dt>
+            <Flag size={14} />
+            Priority
+          </dt>
+          <dd>
+            <span className={getPriorityClass(activeJob.priority)}>
+              {activeJob.priority || "Medium"}
+            </span>
+          </dd>
+        </div>
+
+        <div>
+          <dt>
+            <Hash size={14} />
+            Job ID
+          </dt>
+          <dd>{jobId}</dd>
+        </div>
+      </dl>
+    </JobDetailTextBlock>
+  );
+}
+
+function JobDangerActions({ onArchive, onDelete }) {
+  return (
+    <div className="job-detail-danger-actions">
+      <button
+        className="job-detail-archive-button"
+        type="button"
+        onClick={onArchive}
+      >
+        <Archive size={14} />
+        Archive
+      </button>
+
+      <button
+        className="job-detail-delete-button"
+        type="button"
+        onClick={onDelete}
+      >
+        <Trash2 size={14} />
+        Delete
+      </button>
+    </div>
+  );
+}
+
+function JobDetailsPage({ activeJob, libraryStore, onBackToLibrary }) {
   if (!activeJob) {
     return (
-      <PageShell>
-        <PageSection
-          title="Job not found"
-          description="This application no longer exists."
-          headerAction={
-            <ActionButton onClick={onBackToLibrary} tone="slate" withIcon>
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back</span>
-            </ActionButton>
-          }
-        >
-          <EmptyText>Go back to the library and select another job.</EmptyText>
+      <PageShell scrollable={false}>
+        <PageSection>
+          <JobDetailTextBlock title="Job not found">
+            <EmptyText>
+              Go back to the library and select another job.
+            </EmptyText>
+          </JobDetailTextBlock>
         </PageSection>
       </PageShell>
     );
   }
 
-  const jobId = extractJobId(activeJob.jobUrl) || activeJob.id;
+  const extractedJobId = extractJobId(activeJob.jobUrl);
+  const numericJobId = extractedJobId?.match(/\d+/)?.[0];
+  const jobId = numericJobId || "N/A";
+
+  const appliedDate = formatLibraryAppliedDate(activeJob.appliedAt, {
+    fallback: "Not applied yet",
+    year: "numeric",
+  });
+
+  async function updateJob(changes) {
+    await libraryStore.updateItem(activeJob.id, {
+      ...activeJob,
+      ...changes,
+    });
+  }
+
+  async function handleDeleteApplication() {
+    const shouldDelete = window.confirm(
+      "Delete this application? This cannot be undone.",
+    );
+
+    if (!shouldDelete) return;
+
+    await libraryStore.deleteItem(activeJob.id);
+    onBackToLibrary?.();
+  }
+
+  async function handleTemporaryArchive() {
+    await updateJob({ pinned: false });
+    onBackToLibrary?.();
+  }
 
   return (
-    <PageShell>
-      <PageSection
-        title="Application Details"
-        description="Parsed job info, requirements, contact info, and follow-up plan."
-        headerAction={
-          <div className="job-detail-actions">
-            <ActionButton onClick={onBackToLibrary} tone="slate" withIcon>
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back</span>
-            </ActionButton>
+    <PageShell scrollable={false}>
+      <PageSection>
+        <motion.div
+          className="job-detail-shell"
+          initial={{ y: 14, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.35 }}
+        >
+          <JobJourney status={activeJob.status} />
 
-            {activeJob.jobUrl ? (
-              <ActionButton
-                onClick={(event) => openLibraryJobUrl(event, activeJob.jobUrl)}
-                tone="pink"
-                withIcon
-              >
-                <ExternalLink className="h-4 w-4" />
-                <span>Open Post</span>
-              </ActionButton>
-            ) : null}
+          <div className="job-detail-layout">
+            <main className="job-detail-main-column">
+              <EditableJobDetailCard
+                title="Notes"
+                value={activeJob.notes}
+                placeholder={`# Follow-up plan\n\n- Tailor resume\n- Apply\n- Follow up in 1 week`}
+                emptyText="Click here to add notes"
+                onSave={(notes) => updateJob({ notes })}
+              />
+            </main>
+
+            <aside className="job-detail-side-column">
+              <EditableJobDetailCard
+                title="Contact Info"
+                value={activeJob.contactInfo}
+                placeholder="Recruiter name, email, LinkedIn, or follow-up notes"
+                emptyText={
+                  <span className="job-detail-contact-empty">
+                    <Mail size={16} />
+                    No recruiter or contact email found
+                  </span>
+                }
+                multiline={false}
+                onSave={(contactInfo) => updateJob({ contactInfo })}
+              />
+
+              <JobMetadataCard
+                activeJob={activeJob}
+                appliedDate={appliedDate}
+                jobId={jobId}
+              />
+
+              <JobDangerActions
+                onArchive={handleTemporaryArchive}
+                onDelete={handleDeleteApplication}
+              />
+            </aside>
           </div>
-        }
-      >
-        <div className="job-detail-grid">
-          <DetailBlock title="Job Description">
-            {activeJob.jobDescription ? (
-              <p>{activeJob.jobDescription}</p>
-            ) : (
-              <EmptyText>No parsed job description yet.</EmptyText>
-            )}
-          </DetailBlock>
-
-          <DetailBlock title="Requirements">
-            {activeJob.requirements ? (
-              <p>{activeJob.requirements}</p>
-            ) : (
-              <EmptyText>No parsed requirements yet.</EmptyText>
-            )}
-          </DetailBlock>
-
-          <DetailBlock title="Contact Info">
-            {activeJob.contactInfo ? (
-              <p>{activeJob.contactInfo}</p>
-            ) : (
-              <EmptyText>No recruiter or contact info found.</EmptyText>
-            )}
-          </DetailBlock>
-
-          <DetailBlock title="Next Steps / Follow-up">
-            {activeJob.nextSteps ? (
-              <p>{activeJob.nextSteps}</p>
-            ) : (
-              <EmptyText>
-                Add follow-up notes later: recruiter message, OA deadline,
-                interview prep, or resume version.
-              </EmptyText>
-            )}
-          </DetailBlock>
-
-          <DetailBlock title="Metadata">
-            <dl className="job-detail-meta-list">
-              <div>
-                <dt>Status</dt>
-                <dd>{activeJob.status || "-"}</dd>
-              </div>
-
-              <div>
-                <dt>Priority</dt>
-                <dd>{activeJob.priority || "Medium"}</dd>
-              </div>
-
-              <div>
-                <dt>Location</dt>
-                <dd>{activeJob.location || "-"}</dd>
-              </div>
-
-              <div>
-                <dt>Job ID</dt>
-                <dd>{jobId}</dd>
-              </div>
-            </dl>
-          </DetailBlock>
-        </div>
+        </motion.div>
       </PageSection>
     </PageShell>
   );

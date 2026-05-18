@@ -9,6 +9,8 @@ import {
   importLibraryBackup,
   listLibraryBackups,
   loadLibraryBackup,
+  overwriteLibraryBackup,
+  parseMissingLibraryJobDetails,
 } from "../../library/utils/libraryClient.js";
 
 function ApplicationBackupPanel() {
@@ -113,10 +115,24 @@ function ApplicationBackupPanel() {
       return;
     }
 
+    const backupId = selectedBackupId;
+
     runBackupAction(
-      () => loadLibraryBackup(selectedBackupId),
-      (items) => `Loaded ${items.length} applications from backup.`,
-      selectedBackupId,
+      async () => {
+        const items = await loadLibraryBackup(backupId);
+        const parsed = await parseMissingLibraryJobDetails();
+
+        if (parsed.updated > 0) {
+          await overwriteLibraryBackup(backupId);
+        }
+
+        return { items, parsed };
+      },
+      ({ items, parsed }) =>
+        parsed.updated > 0
+          ? `Loaded ${items.length} applications. Parsed ${parsed.updated} missing job details and updated this backup.`
+          : `Loaded ${items.length} applications. No missing job details found.`,
+      backupId,
     );
   }
 

@@ -1,3 +1,4 @@
+const { extractJobContentFromHtml } = require("./contentExtractor.cjs");
 const { cleanText } = require("./normalizers.cjs");
 
 function extractJsonLdObjects(html = "") {
@@ -21,7 +22,15 @@ function extractJsonLdObjects(html = "") {
     }
   }
 
-  return objects;
+  return objects.flatMap(flattenJsonLdObject);
+}
+
+function flattenJsonLdObject(item) {
+  if (!item || typeof item !== "object") return [];
+
+  const graphItems = Array.isArray(item["@graph"]) ? item["@graph"] : [];
+
+  return [item, ...graphItems];
 }
 
 function normalizeLocationFromJsonLd(jobPosting) {
@@ -30,21 +39,41 @@ function normalizeLocationFromJsonLd(jobPosting) {
 
   const locations = Array.isArray(jobLocation) ? jobLocation : [jobLocation];
 
-  for (const location of locations) {
-    const address = location?.address ?? location;
+  const normalizedLocations = locations
+    .map((location) => {
+      const address = location?.address ?? location;
 
-    const parts = [
-      address?.addressLocality,
-      address?.addressRegion,
-      address?.addressCountry,
-    ]
-      .map((part) => cleanText(part || ""))
-      .filter(Boolean);
+      const parts = [
+        address?.addressLocality,
+        address?.addressRegion,
+        address?.addressCountry,
+      ]
+        .map((part) => cleanText(part || ""))
+        .filter(Boolean);
 
-    if (parts.length) return parts.join(", ");
+      return parts.join(", ");
+    })
+    .filter(Boolean);
+
+  if (normalizedLocations.length > 1) {
+    return `${normalizedLocations.length} locations`;
   }
 
-  return "";
+  return normalizedLocations[0] || "";
+}
+
+function normalizeEmploymentType(value) {
+  const values = Array.isArray(value) ? value : [value];
+
+  return values
+    .map((entry) =>
+      cleanText(entry || "")
+        .replace(/_/g, " ")
+        .toLowerCase()
+        .replace(/\b\w/g, (letter) => letter.toUpperCase()),
+    )
+    .filter(Boolean)
+    .join(", ");
 }
 
 function getJobPostingType(item) {
@@ -58,8 +87,22 @@ function isJobPosting(item) {
   );
 }
 
+function extractExplicitContactInfo(item) {
+  return cleanText(
+    [
+      item?.hiringOrganization?.email,
+      item?.directApply,
+      item?.applicationContact?.email,
+    ]
+      .flat()
+      .filter(Boolean)
+      .join("\n"),
+  );
+}
+
 function extractJobPostingFromJsonLd(html = "") {
   const jsonLdObjects = extractJsonLdObjects(html);
+  const pageContent = extractJobContentFromHtml(html);
 
   for (const item of jsonLdObjects) {
     if (!isJobPosting(item)) continue;
@@ -73,23 +116,10 @@ function extractJobPostingFromJsonLd(html = "") {
           "",
       ),
       location: normalizeLocationFromJsonLd(item),
-      employmentType: Array.isArray(item?.employmentType)
-        ? item.employmentType.join(", ")
-        : cleanText(item?.employmentType || ""),
-      jobDescription: cleanText(item?.description || ""),
-      requirements: cleanText(
-        [
-          item?.qualifications,
-          item?.responsibilities,
-          item?.skills,
-          item?.experienceRequirements,
-          item?.educationRequirements,
-        ]
-          .flat()
-          .filter(Boolean)
-          .join("\n"),
-      ),
-      contactInfo: cleanText(item?.hiringOrganization?.email || ""),
+      employmentType: normalizeEmploymentType(item?.employmentType),
+      jobDescription: "",
+      requirements: "",
+      contactInfo: extractExplicitContactInfo(item) || pageContent.contactInfo,
       nextSteps: "",
     };
   }
@@ -101,7 +131,7 @@ function extractJobPostingFromJsonLd(html = "") {
     employmentType: "",
     jobDescription: "",
     requirements: "",
-    contactInfo: "",
+    contactInfo: pageContent.contactInfo,
     nextSteps: "",
   };
 }

@@ -84,7 +84,7 @@
   --theme-accent-selection-bg-emphasized: rgba(244, 114, 182, 0.22);
 
   --theme-action-button-default-bg: rgba(30, 41, 59, 0.88);
-  --theme-action-button-default-border: rgba(71, 85, 105, 0.9);
+  --theme-action-button-default-border: transparent;
   --theme-action-button-default-text: var(--theme-text-primary);
 
   /* Header */

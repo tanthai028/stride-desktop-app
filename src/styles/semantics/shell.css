@@ -66,3 +66,49 @@
 .frame-apply-mode-button:hover {
   transform: translateY(-1px);
 }
+
+.frame-navigation {
+  display: flex;
+  width: 72px;
+  height: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+
+  border: 1px solid var(--theme-panel-border);
+  border-radius: 999px;
+
+  background: var(--theme-panel-bg);
+  box-shadow: var(--theme-panel-shadow);
+
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+}
+
+.frame-nav-button {
+  display: grid;
+  width: 50%;
+  height: 100%;
+  place-items: center;
+
+  border: 0;
+  background: transparent;
+
+  color: var(--theme-text-muted);
+  cursor: pointer;
+
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.frame-nav-button:not(:disabled):hover {
+  background: var(--theme-surface-muted);
+  color: var(--theme-text-primary);
+}
+
+.frame-nav-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

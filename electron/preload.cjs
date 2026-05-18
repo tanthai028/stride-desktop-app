@@ -66,6 +66,8 @@ contextBridge.exposeInMainWorld("libraryApi", {
   },
   listBackups: () => ipcRenderer.invoke("library:list-backups"),
   createBackup: (name) => ipcRenderer.invoke("library:create-backup", name),
+  overwriteBackup: (backupId) =>
+    ipcRenderer.invoke("library:overwrite-backup", backupId),
   loadBackup: (backupId) => ipcRenderer.invoke("library:load-backup", backupId),
   deleteBackup: (backupId) =>
     ipcRenderer.invoke("library:delete-backup", backupId),

@@ -140,6 +140,67 @@ export async function parseLibraryJobUrl(url) {
   return normalizeParsedJobData(parseJobUrl(trimmedUrl));
 }
 
+function hasMissingParsedJobDetails(item = {}) {
+  return (
+    item.jobUrl?.trim() &&
+    (!item.jobDescription?.trim() || !item.requirements?.trim())
+  );
+}
+
+function mergeParsedDetailsIntoItem(item, parsed) {
+  return {
+    ...item,
+    company: item.company || parsed.company,
+    role: item.role || parsed.role,
+    location: item.location || parsed.location,
+    jobDescription: item.jobDescription || parsed.jobDescription,
+    requirements: item.requirements || parsed.requirements,
+    contactInfo: item.contactInfo || parsed.contactInfo,
+    nextSteps: item.nextSteps || parsed.nextSteps,
+  };
+}
+
+export async function parseMissingLibraryJobDetails() {
+  const items = await getLibraryItems();
+  const targetItems = items.filter(hasMissingParsedJobDetails);
+
+  let updated = 0;
+  let failed = 0;
+
+  for (const item of targetItems) {
+    try {
+      const parsed = await parseLibraryJobUrl(item.jobUrl);
+
+      const hasUsefulParsedData =
+        parsed.jobDescription ||
+        parsed.requirements ||
+        parsed.company ||
+        parsed.role ||
+        parsed.location;
+
+      if (!hasUsefulParsedData) {
+        failed += 1;
+        continue;
+      }
+
+      await updateLibraryItem(
+        item.id,
+        mergeParsedDetailsIntoItem(item, parsed),
+      );
+      updated += 1;
+    } catch {
+      failed += 1;
+    }
+  }
+
+  return {
+    updated,
+    failed,
+    skipped: items.length - targetItems.length,
+    total: items.length,
+  };
+}
+
 export async function getLibraryItems() {
   if (hasElectronLibraryApi()) {
     const items = await invokeElectronLibraryApi("getItems");
@@ -276,6 +337,17 @@ export async function createLibraryBackup(name = "applications") {
   }
 
   return invokeElectronLibraryApi("createBackup", name);
+}
+
+export async function overwriteLibraryBackup(backupId) {
+  if (
+    !hasElectronLibraryApi() ||
+    typeof window.libraryApi.overwriteBackup !== "function"
+  ) {
+    return null;
+  }
+
+  return invokeElectronLibraryApi("overwriteBackup", backupId);
 }
 
 export async function loadLibraryBackup(backupId) {

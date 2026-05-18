@@ -166,3 +166,9 @@
 .apply-mode-header .no-drag {
   -webkit-app-region: no-drag;
 }
+
+.app-header-job-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}

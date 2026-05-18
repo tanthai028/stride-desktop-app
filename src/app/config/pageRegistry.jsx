@@ -1,5 +1,5 @@
 import DashboardPage from "../../features/dashboard/DashboardPage.jsx";
-import LibraryPage from "../../features/library/LibraryPage.jsx";
+import LibraryPage from "../../features/library/pages/LibraryPage.jsx";
 import JobDetailsPage from "../../features/library/pages/JobDetailsPage.jsx";
 import SettingsPage from "../../features/settings/SettingsPage.jsx";
 

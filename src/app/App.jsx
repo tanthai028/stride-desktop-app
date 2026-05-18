@@ -99,6 +99,7 @@ function App() {
             activeJob.location || "No location",
             `Job ID: ${extractJobId(activeJob.jobUrl) || activeJob.id}`,
           ].join(" · "),
+          jobHeader: activeJob,
         }
       : baseMetadata;
 
@@ -120,6 +121,11 @@ function App() {
 
       <div className={appStartupClassName}>
         <WindowFrame
+          navigation={{
+            canGoBack: activePage === APP_PAGES.jobDetails,
+            canGoForward: false,
+            onGoBack: () => handleNavigate(APP_PAGES.library),
+          }}
           sidebar={
             <AppSidebar activePage={activePage} onNavigate={handleNavigate} />
           }
@@ -128,6 +134,7 @@ function App() {
             eyebrow={activePageMetadata.eyebrow}
             title={activePageMetadata.title}
             description={activePageMetadata.description}
+            jobHeader={activePageMetadata.jobHeader}
           />
 
           {activePageContent}

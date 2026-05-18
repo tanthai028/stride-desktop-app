@@ -1,4 +1,4 @@
-import { PanelsTopLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, PanelsTopLeft } from "lucide-react";
 import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
 import { openApplyModeWindow } from "../../lib/windowControls.js";
@@ -13,6 +13,32 @@ function ApplyModeButton({ onClick }) {
       <PanelsTopLeft size={15} />
       Apply Mode
     </button>
+  );
+}
+
+function FrameNavigation({ navigation }) {
+  return (
+    <div className="frame-navigation no-drag">
+      <button
+        type="button"
+        className="frame-nav-button"
+        disabled={!navigation?.canGoBack}
+        onClick={navigation?.onGoBack}
+        aria-label="Go back"
+      >
+        <ChevronLeft size={17} />
+      </button>
+
+      <button
+        type="button"
+        className="frame-nav-button"
+        disabled={!navigation?.canGoForward}
+        onClick={navigation?.onGoForward}
+        aria-label="Go forward"
+      >
+        <ChevronRight size={17} />
+      </button>
+    </div>
   );
 }
 
@@ -46,10 +72,11 @@ function FrameShell({ children }) {
   );
 }
 
-function WindowFrame({ sidebar, children }) {
+function WindowFrame({ sidebar, children, navigation }) {
   return (
     <FrameShell>
       <FrameHeader>
+        <FrameNavigation navigation={navigation} />
         <div className="frame-header-spacer" />
         <ApplyModeButton onClick={openApplyModeWindow} />
         {isElectron() && <WindowControls />}

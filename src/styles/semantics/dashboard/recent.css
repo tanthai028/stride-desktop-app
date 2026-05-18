@@ -1,15 +1,21 @@
 /* ================================
-   Recent applications
+   Recent applications card
 ================================ */
 
 .dashboard-recent-card {
   position: relative;
   display: flex;
+  height: 100%;
   min-height: 0;
   flex-direction: column;
   align-self: stretch;
+  overflow: hidden;
   text-align: left;
 }
+
+/* ================================
+   Header
+================================ */
 
 .dashboard-recent-header {
   display: grid;
@@ -45,6 +51,7 @@
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
+
 .dashboard-recent-period-button:hover {
   background: var(--theme-sidebar-item-hover-bg);
   color: var(--theme-text-primary);
@@ -57,13 +64,17 @@
   font-weight: var(--font-weight-medium);
 }
 
+/* ================================
+   List
+================================ */
+
 .dashboard-recent-list {
   display: flex;
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  overflow: hidden;
   gap: var(--space-sm);
+  overflow: hidden;
 }
 
 .dashboard-recent-item {
@@ -98,21 +109,9 @@
   opacity: 0.75;
 }
 
-.dashboard-recent-title,
-.dashboard-recent-location {
-  min-width: 0;
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.dashboard-company-icon {
-  width: 1rem;
-  height: 1rem;
-  border-radius: 999px;
-  flex-shrink: 0;
-}
+/* ================================
+   Item content
+================================ */
 
 .dashboard-recent-title,
 .dashboard-new-grad-feed-title-line {
@@ -121,17 +120,29 @@
   gap: 0.45rem;
 }
 
+.dashboard-recent-title {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--theme-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboard-company-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+}
+
 .dashboard-recent-title-text,
 .dashboard-new-grad-feed-title-text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.dashboard-recent-title {
-  color: var(--theme-text-secondary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
 }
 
 .dashboard-recent-meta {
@@ -149,11 +160,23 @@
   font-weight: var(--font-weight-medium);
 }
 
+.dashboard-recent-location {
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .dashboard-recent-right {
   flex-shrink: 0;
   text-align: right;
   white-space: nowrap;
 }
+
+/* ================================
+   Pagination
+================================ */
 
 .dashboard-recent-pagination-slot {
   display: flex;
@@ -166,6 +189,10 @@
 .dashboard-recent-pagination-slot .dashboard-pagination {
   margin-top: 0;
 }
+
+/* ================================
+   Add button
+================================ */
 
 .dashboard-recent-add-button {
   position: absolute;
@@ -208,9 +235,4 @@
 .dashboard-recent-add-button svg {
   width: 1rem;
   height: 1rem;
-}
-
-.dashboard-recent-card {
-  height: 100%;
-  overflow: hidden;
 }

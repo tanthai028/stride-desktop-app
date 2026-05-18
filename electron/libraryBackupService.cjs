@@ -259,6 +259,42 @@ function createApplicationBackup(name) {
   }
 }
 
+function overwriteApplicationBackup(backupId) {
+  try {
+    ensureBackupDirectory();
+
+    const filePath = getBackupFilePath(backupId);
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error("Backup file does not exist.");
+    }
+
+    const existingRawValue = fs.readFileSync(filePath, "utf8");
+    const existingPayload = JSON.parse(existingRawValue);
+    const items = readLibraryItems();
+
+    const payload = {
+      ...buildBackupPayload(items),
+      exportedAt: existingPayload?.exportedAt ?? new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    fs.writeFileSync(filePath, JSON.stringify(payload, null, 2), "utf8");
+
+    return {
+      id: backupId,
+      label: `${backupId} (${payload.items.length} apps)`,
+      createdAt: payload.exportedAt,
+      updatedAt: payload.updatedAt,
+      itemCount: payload.items.length,
+    };
+  } catch (error) {
+    throw new LibraryStorageError("Failed to overwrite application backup.", {
+      cause: error.message,
+    });
+  }
+}
+
 function loadApplicationBackup(backupId) {
   try {
     const filePath = getBackupFilePath(backupId);
@@ -354,6 +390,7 @@ async function exportApplicationsAsCsv() {
 module.exports = {
   listApplicationBackups,
   createApplicationBackup,
+  overwriteApplicationBackup,
   loadApplicationBackup,
   deleteApplicationBackup,
   importApplicationBackup,

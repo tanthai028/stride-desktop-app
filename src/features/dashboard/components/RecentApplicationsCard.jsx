@@ -1,13 +1,14 @@
 import { ListChecks, Plus } from "lucide-react";
-import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
-import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
 import DashboardPagination from "./DashboardPagination.jsx";
 import DashboardTitle from "./DashboardTitle.jsx";
-import { openDashboardLink } from "../utils/dashboardPreview.utils.js";
-import {
-  getCompanyIconUrl,
-  handleCompanyIconFallback,
-} from "../utils/companyIcon.utils.js";
+import RecentApplicationItem from "./RecentApplicationItem.jsx";
+
+function getVisibleRecentItems(recentItems, recentPage, recentAppsPerPage) {
+  const startIndex = (recentPage - 1) * recentAppsPerPage;
+  const endIndex = recentPage * recentAppsPerPage;
+
+  return recentItems.slice(startIndex, endIndex);
+}
 
 function RecentApplicationsCard({
   recentItems,
@@ -26,9 +27,10 @@ function RecentApplicationsCard({
     1,
     Math.ceil(recentItems.length / recentAppsPerPage),
   );
-  const visibleItems = recentItems.slice(
-    (recentPage - 1) * recentAppsPerPage,
-    recentPage * recentAppsPerPage,
+  const visibleItems = getVisibleRecentItems(
+    recentItems,
+    recentPage,
+    recentAppsPerPage,
   );
 
   return (
@@ -67,50 +69,9 @@ function RecentApplicationsCard({
 
       <div ref={recentListRef} className="dashboard-recent-list">
         {recentItems.length > 0 ? (
-          visibleItems.map((item) => {
-            const statusMeta = getStatusMeta(item.status);
-
-            return (
-              <button
-                key={item.id}
-                type="button"
-                className="dashboard-recent-item"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  openDashboardLink(item.jobUrl);
-                }}
-                disabled={!item.jobUrl}
-              >
-                <p className="dashboard-recent-title">
-                  <img
-                    className="dashboard-company-icon"
-                    src={getCompanyIconUrl(item.company)}
-                    onError={(event) =>
-                      handleCompanyIconFallback(event, item.jobUrl)
-                    }
-                    alt=""
-                    loading="lazy"
-                  />
-
-                  <span className="dashboard-recent-title-text">
-                    {item.company || "Untitled Company"} ·{" "}
-                    {item.role || "Untitled Role"}
-                  </span>
-                </p>
-
-                <div className="dashboard-recent-meta">
-                  <span className="dashboard-recent-location">
-                    {item.location || "Unknown"}
-                  </span>
-
-                  <span className="dashboard-recent-right">
-                    {statusMeta.displayLabel || statusMeta.label} -{" "}
-                    {formatLibraryAppliedDate(item.appliedAt)}
-                  </span>
-                </div>
-              </button>
-            );
-          })
+          visibleItems.map((item) => (
+            <RecentApplicationItem key={item.id} item={item} />
+          ))
         ) : (
           <p className="stat-card-description text-sm">
             No applications listed for {periodLabel.toLowerCase()}
