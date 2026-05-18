@@ -31,15 +31,6 @@ The project started as a simple tracker and gradually evolved into a more struct
 
 ---
 
-## How to Run it (WIP)
-
-```bash
-npm install
-npm run dev
-```
-
----
-
 # Why I Built It
 
 A lot of job trackers focus only on storing data. I realized my actual problem was behavioral
