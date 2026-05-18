@@ -11,6 +11,7 @@ function LibraryGrid({ items, isPageReady, onItemClick, onTogglePinned }) {
     handleScroll,
     handlePointerEnter,
     handlePointerLeave,
+    handleScrollbarPointerDown,
   } = usePageScrollbar();
 
   return (
@@ -35,6 +36,7 @@ function LibraryGrid({ items, isPageReady, onItemClick, onTogglePinned }) {
       <PageScrollbar
         isVisible={isScrollbarVisible}
         scrollMetrics={scrollMetrics}
+        onPointerDown={handleScrollbarPointerDown}
       />
     </>
   );

@@ -1,5 +1,9 @@
 import { Check, SkipForward, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  getCompanyIconUrl,
+  handleCompanyIconFallback,
+} from "../../dashboard/utils/companyIcon.utils.js";
 
 function CurrentJobSection({
   currentItem,
@@ -72,7 +76,20 @@ function CurrentJobSection({
             transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <span className="apply-mode-current-main">
-              <strong>{currentItem.company || "Unknown Company"}</strong>
+              <span className="apply-mode-company-row">
+                <img
+                  className="apply-mode-company-icon"
+                  src={getCompanyIconUrl(currentItem.company)}
+                  alt=""
+                  loading="lazy"
+                  onError={(event) =>
+                    handleCompanyIconFallback(event, currentItem.jobUrl)
+                  }
+                />
+
+                <strong>{currentItem.company || "Unknown Company"}</strong>
+              </span>
+
               <span>{currentItem.role || "Unknown Role"}</span>
               <em>{currentItem.location || "\u00A0"}</em>
             </span>

@@ -206,3 +206,9 @@
 .apply-mode-page-scrollbar > * {
   right: 0 !important;
 }
+
+.apply-mode-company-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

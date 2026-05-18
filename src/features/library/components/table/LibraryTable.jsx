@@ -22,6 +22,7 @@ function LibraryTable({
     handleScroll,
     handlePointerEnter,
     handlePointerLeave,
+    handleScrollbarPointerDown,
   } = usePageScrollbar();
 
   const hasItems = items.length > 0;
@@ -60,6 +61,7 @@ function LibraryTable({
           <PageScrollbar
             isVisible={isScrollbarVisible}
             scrollMetrics={scrollMetrics}
+            onPointerDown={handleScrollbarPointerDown}
           />
         </>
       ) : (

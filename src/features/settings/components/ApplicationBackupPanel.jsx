@@ -1,4 +1,4 @@
-import { Download, FileDown, FileUp, Save, Trash2 } from "lucide-react";
+import { FileDown, FileUp, Save, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
@@ -9,13 +9,15 @@ import {
   importLibraryBackup,
   listLibraryBackups,
   loadLibraryBackup,
-  overwriteLibraryBackup,
-  parseMissingLibraryJobDetails,
 } from "../../library/utils/libraryClient.js";
+
+const SELECTED_BACKUP_STORAGE_KEY = "stride:selected-application-backup-id";
 
 function ApplicationBackupPanel() {
   const [backups, setBackups] = useState([]);
-  const [selectedBackupId, setSelectedBackupId] = useState("");
+  const [selectedBackupId, setSelectedBackupId] = useState(
+    () => localStorage.getItem(SELECTED_BACKUP_STORAGE_KEY) || "",
+  );
   const [statusMessage, setStatusMessage] = useState("");
   const [isBusy, setIsBusy] = useState(false);
 
@@ -41,14 +43,16 @@ function ApplicationBackupPanel() {
 
       setBackups(safeBackups);
 
-      const preferredBackupExists = safeBackups.some(
-        (backup) => backup.id === preferredBackupId,
+      const backupIdToKeep = preferredBackupId || selectedBackupId;
+
+      const backupToKeepExists = safeBackups.some(
+        (backup) => backup.id === backupIdToKeep,
       );
 
-      if (preferredBackupExists) {
-        setSelectedBackupId(preferredBackupId);
+      if (backupToKeepExists) {
+        updateSelectedBackupId(backupIdToKeep);
       } else {
-        setSelectedBackupId(safeBackups[0]?.id ?? "");
+        updateSelectedBackupId(safeBackups[0]?.id ?? "");
       }
 
       return safeBackups;
@@ -109,29 +113,26 @@ function ApplicationBackupPanel() {
     }
   }
 
-  function handleLoadBackup() {
-    if (!selectedBackupId) {
-      setStatusMessage("Pick a backup first.");
+  function updateSelectedBackupId(backupId) {
+    setSelectedBackupId(backupId);
+
+    if (backupId) {
+      localStorage.setItem(SELECTED_BACKUP_STORAGE_KEY, backupId);
+    } else {
+      localStorage.removeItem(SELECTED_BACKUP_STORAGE_KEY);
+    }
+  }
+
+  function handleBackupSelection(backupId) {
+    updateSelectedBackupId(backupId);
+
+    if (!backupId || isBusy) {
       return;
     }
 
-    const backupId = selectedBackupId;
-
     runBackupAction(
-      async () => {
-        const items = await loadLibraryBackup(backupId);
-        const parsed = await parseMissingLibraryJobDetails();
-
-        if (parsed.updated > 0) {
-          await overwriteLibraryBackup(backupId);
-        }
-
-        return { items, parsed };
-      },
-      ({ items, parsed }) =>
-        parsed.updated > 0
-          ? `Loaded ${items.length} applications. Parsed ${parsed.updated} missing job details and updated this backup.`
-          : `Loaded ${items.length} applications. No missing job details found.`,
+      () => loadLibraryBackup(backupId),
+      (items) => `Loaded ${items.length} applications.`,
       backupId,
     );
   }
@@ -188,22 +189,11 @@ function ApplicationBackupPanel() {
           <div className="applications-backup-select-row">
             <SelectMenu
               value={selectedBackupId}
-              onChange={setSelectedBackupId}
+              onChange={handleBackupSelection}
               options={backupOptions}
               placeholder="Select backup"
               className="applications-backup-select"
             />
-
-            <ActionButton
-              onClick={handleLoadBackup}
-              tone="violet"
-              withIcon
-              className="applications-backup-button"
-              disabled={isBusy}
-            >
-              <Download size={16} className="shrink-0" />
-              <span>Load</span>
-            </ActionButton>
 
             <ActionButton
               onClick={handleDeleteBackup}

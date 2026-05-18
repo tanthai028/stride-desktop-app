@@ -168,3 +168,16 @@
   font-weight: 500;
   opacity: 0.72;
 }
+
+.library-card-company-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex: 0 0 auto;
+
+  object-fit: contain;
+
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

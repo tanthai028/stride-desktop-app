@@ -2,7 +2,6 @@
   display: flex;
   width: 100%;
   min-height: unset;
-  align-items: center;
   justify-content: space-between;
   gap: 0.55rem;
   padding: 0.5rem 0.62rem;
@@ -76,4 +75,22 @@
 .apply-mode-current-card:hover .apply-mode-current-action {
   opacity: 1;
   transform: translateX(0);
+}
+
+.apply-mode-company-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: 0 0 auto;
+
+  object-fit: contain;
+
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.apply-mode-company-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

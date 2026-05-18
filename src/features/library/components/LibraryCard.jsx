@@ -1,4 +1,8 @@
 import { ExternalLink, MapPin } from "lucide-react";
+import {
+  getCompanyIconUrl,
+  handleCompanyIconFallback,
+} from "../../dashboard/utils/companyIcon.utils.js";
 import { getStatusMeta } from "../constants/libraryStatuses.js";
 import {
   formatLibraryAppliedDate,
@@ -9,10 +13,19 @@ import {
 function LibraryCard({ item }) {
   const statusMeta = getStatusMeta(item.status);
   const title = [item.company, item.role].filter(Boolean).join(" — ");
+  const companyIconUrl = getCompanyIconUrl(item.company);
 
   return (
     <div className={`library-card-content ${item.pinned ? "is-pinned" : ""}`}>
       <div className="library-card-top">
+        <img
+          className="library-card-company-icon"
+          src={companyIconUrl}
+          alt=""
+          loading="lazy"
+          onError={(event) => handleCompanyIconFallback(event, item.jobUrl)}
+        />
+
         <div className="library-card-main">
           <div className="library-card-header">
             <p className="library-card-title">

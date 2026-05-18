@@ -9,6 +9,7 @@ function PageShell({ children, scrollable = true }) {
     handleScroll,
     handlePointerEnter,
     handlePointerLeave,
+    handleScrollbarPointerDown,
   } = usePageScrollbar();
 
   return (
@@ -29,6 +30,7 @@ function PageShell({ children, scrollable = true }) {
             <PageScrollbar
               isVisible={isScrollbarVisible}
               scrollMetrics={scrollMetrics}
+              onPointerDown={handleScrollbarPointerDown}
             />
           </>
         ) : (

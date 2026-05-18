@@ -17,8 +17,17 @@ import useStartupSequence from "./startup/useStartupSequence.js";
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
   const libraryStore = useLibraryItems(settings.resetVersion);
-  const [activePage, setActivePage] = useState(APP_PAGES.dashboard);
-  const [activeJobId, setActiveJobId] = useState(null);
+  const [navigationState, setNavigationState] = useState({
+    current: {
+      page: APP_PAGES.dashboard,
+      jobId: null,
+    },
+    back: [],
+    forward: [],
+  });
+
+  const activePage = navigationState.current.page;
+  const activeJobId = navigationState.current.jobId;
 
   const isApplyModeWindow =
     new URLSearchParams(window.location.search).get("mode") === "apply";
@@ -39,17 +48,73 @@ function App() {
     }
   }, [settings.darkMode, isApplyModeWindow]);
 
-  function handleNavigate(pageName) {
-    setActivePage(pageName);
+  function normalizeEntry(entry) {
+    return {
+      page: entry.page,
+      jobId: entry.page === APP_PAGES.jobDetails ? entry.jobId : null,
+    };
+  }
 
-    if (pageName !== APP_PAGES.jobDetails) {
-      setActiveJobId(null);
-    }
+  function areSameEntry(left, right) {
+    return left.page === right.page && left.jobId === right.jobId;
+  }
+
+  function pushNavigation(nextEntry) {
+    const normalizedNextEntry = normalizeEntry(nextEntry);
+
+    setNavigationState((state) => {
+      if (areSameEntry(state.current, normalizedNextEntry)) {
+        return state;
+      }
+
+      return {
+        current: normalizedNextEntry,
+        back: [...state.back, state.current],
+        forward: [],
+      };
+    });
+  }
+
+  function handleNavigate(pageName) {
+    pushNavigation({
+      page: pageName,
+      jobId: null,
+    });
   }
 
   function handleOpenJobPage(item) {
-    setActiveJobId(item.id);
-    setActivePage(APP_PAGES.jobDetails);
+    pushNavigation({
+      page: APP_PAGES.jobDetails,
+      jobId: item.id,
+    });
+  }
+
+  function handleGoBack() {
+    setNavigationState((state) => {
+      if (state.back.length === 0) return state;
+
+      const previousEntry = state.back[state.back.length - 1];
+
+      return {
+        current: previousEntry,
+        back: state.back.slice(0, -1),
+        forward: [state.current, ...state.forward],
+      };
+    });
+  }
+
+  function handleGoForward() {
+    setNavigationState((state) => {
+      if (state.forward.length === 0) return state;
+
+      const nextEntry = state.forward[0];
+
+      return {
+        current: nextEntry,
+        back: [...state.back, state.current],
+        forward: state.forward.slice(1),
+      };
+    });
   }
 
   function handleQuickAction(actionId) {
@@ -122,9 +187,10 @@ function App() {
       <div className={appStartupClassName}>
         <WindowFrame
           navigation={{
-            canGoBack: activePage === APP_PAGES.jobDetails,
-            canGoForward: false,
-            onGoBack: () => handleNavigate(APP_PAGES.library),
+            canGoBack: navigationState.back.length > 0,
+            canGoForward: navigationState.forward.length > 0,
+            onGoBack: handleGoBack,
+            onGoForward: handleGoForward,
           }}
           sidebar={
             <AppSidebar activePage={activePage} onNavigate={handleNavigate} />

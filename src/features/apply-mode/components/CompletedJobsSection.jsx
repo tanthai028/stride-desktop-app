@@ -1,5 +1,9 @@
 import { ExternalLink, Maximize2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import {
+  getCompanyIconUrl,
+  handleCompanyIconFallback,
+} from "../../dashboard/utils/companyIcon.utils.js";
 import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
 import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 
@@ -25,6 +29,7 @@ function CompletedJobsSection({
     handleScroll,
     handlePointerEnter,
     handlePointerLeave,
+    handleScrollbarPointerDown,
   } = usePageScrollbar();
 
   return (
@@ -137,7 +142,20 @@ function CompletedJobsSection({
                   onClick={() => openJobUrl(recentItem)}
                 >
                   <span className="apply-mode-completed-main">
-                    <strong>{recentItem.company || "Unknown Company"}</strong>
+                    <span className="apply-mode-company-row">
+                      <img
+                        className="apply-mode-company-icon"
+                        src={getCompanyIconUrl(recentItem.company)}
+                        alt=""
+                        loading="lazy"
+                        onError={(event) =>
+                          handleCompanyIconFallback(event, recentItem.jobUrl)
+                        }
+                      />
+
+                      <strong>{recentItem.company || "Unknown Company"}</strong>
+                    </span>
+
                     <span>{recentItem.role || "Unknown Role"}</span>
                     <em>{recentItem.location || "\u00A0"}</em>
                   </span>
@@ -162,6 +180,7 @@ function CompletedJobsSection({
           <PageScrollbar
             isVisible={isScrollbarVisible}
             scrollMetrics={scrollMetrics}
+            onPointerDown={handleScrollbarPointerDown}
           />
         </div>
       </div>

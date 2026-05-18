@@ -17,6 +17,13 @@ function usePageScrollbar() {
   const frameRef = useRef(null);
   const isPointerInsideRef = useRef(false);
 
+  const dragStateRef = useRef({
+    isDragging: false,
+    pointerId: null,
+    thumbOffsetY: 0,
+    trackRect: null,
+  });
+
   const latestMetricsRef = useRef({
     isScrollable: false,
     thumbHeight: 0,
@@ -44,7 +51,7 @@ function usePageScrollbar() {
     clearHideTimer();
 
     hideTimerRef.current = window.setTimeout(() => {
-      if (!isPointerInsideRef.current) {
+      if (!isPointerInsideRef.current && !dragStateRef.current.isDragging) {
         setIsScrollbarVisible(false);
       }
     }, SCROLLBAR_HIDE_DELAY_MS);
@@ -129,6 +136,65 @@ function usePageScrollbar() {
     [cancelScheduledFrame, runScrollMeasurement],
   );
 
+  const scrollToThumbPosition = useCallback(
+    (clientY, trackRect, thumbOffsetY) => {
+      const element = scrollRef.current;
+      const metrics = latestMetricsRef.current;
+
+      if (!element || !metrics.isScrollable || !trackRect) return;
+
+      const maxThumbTop = Math.max(1, trackRect.height - metrics.thumbHeight);
+      const maxScrollTop = Math.max(
+        1,
+        element.scrollHeight - element.clientHeight,
+      );
+
+      const nextThumbTop = Math.min(
+        maxThumbTop,
+        Math.max(0, clientY - trackRect.top - thumbOffsetY),
+      );
+
+      element.scrollTop = (nextThumbTop / maxThumbTop) * maxScrollTop;
+      scheduleScrollMeasurement({ reveal: true, hideAfterReveal: false });
+    },
+    [scheduleScrollMeasurement],
+  );
+
+  const handleScrollbarPointerDown = useCallback(
+    (event) => {
+      const element = scrollRef.current;
+      const metrics = latestMetricsRef.current;
+
+      if (!element || !metrics.isScrollable || event.button !== 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const trackRect = event.currentTarget.getBoundingClientRect();
+      const clickedThumb = event.target.closest(
+        "[data-page-scrollbar-thumb='true']",
+      );
+      const thumbOffsetY = clickedThumb
+        ? event.clientY - trackRect.top - metrics.thumbTop
+        : metrics.thumbHeight / 2;
+
+      dragStateRef.current = {
+        isDragging: true,
+        pointerId: event.pointerId,
+        thumbOffsetY,
+        trackRect,
+      };
+
+      isPointerInsideRef.current = true;
+      clearHideTimer();
+      setIsScrollbarVisible(true);
+
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+      scrollToThumbPosition(event.clientY, trackRect, thumbOffsetY);
+    },
+    [clearHideTimer, scrollToThumbPosition],
+  );
+
   const handleScroll = useCallback(() => {
     scheduleScrollMeasurement({
       reveal: true,
@@ -149,6 +215,50 @@ function usePageScrollbar() {
 
     scheduleHide();
   }, [scheduleHide]);
+
+  useEffect(() => {
+    function handlePointerMove(event) {
+      const dragState = dragStateRef.current;
+
+      if (!dragState.isDragging || event.pointerId !== dragState.pointerId)
+        return;
+
+      event.preventDefault();
+      scrollToThumbPosition(
+        event.clientY,
+        dragState.trackRect,
+        dragState.thumbOffsetY,
+      );
+    }
+
+    function handlePointerUp(event) {
+      const dragState = dragStateRef.current;
+
+      if (!dragState.isDragging || event.pointerId !== dragState.pointerId)
+        return;
+
+      dragStateRef.current = {
+        isDragging: false,
+        pointerId: null,
+        thumbOffsetY: 0,
+        trackRect: null,
+      };
+
+      if (!isPointerInsideRef.current) {
+        scheduleHide();
+      }
+    }
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerUp);
+    };
+  }, [scheduleHide, scrollToThumbPosition]);
 
   useEffect(() => {
     scheduleScrollMeasurement();
@@ -173,6 +283,7 @@ function usePageScrollbar() {
     handleScroll,
     handlePointerEnter,
     handlePointerLeave,
+    handleScrollbarPointerDown,
   };
 }
 
