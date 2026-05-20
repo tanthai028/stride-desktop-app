@@ -145,7 +145,7 @@ function getWindowBackgroundColor() {
 }
 
 function createMainWindow() {
-  const winWidth = 1024;
+  const winWidth = 760;
   const winHeight = 820;
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;

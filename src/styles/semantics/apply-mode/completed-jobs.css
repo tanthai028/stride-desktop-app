@@ -200,7 +200,15 @@
   top: -0.25rem;
   right: -0.5rem;
   bottom: 0.25rem;
+
+  opacity: 0;
   pointer-events: none;
+
+  transition: opacity 160ms ease;
+}
+
+.apply-mode-recent-list:has(:nth-child(7)) ~ .apply-mode-page-scrollbar {
+  opacity: 1;
 }
 
 .apply-mode-page-scrollbar > * {
