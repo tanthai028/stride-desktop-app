@@ -130,3 +130,79 @@
   font-size: 0.72rem;
   font-style: normal;
 }
+
+.apply-mode-exit-content {
+  gap: 0.55rem;
+}
+
+.apply-mode-exit-message {
+  text-align: center;
+}
+
+.apply-mode-exit-actions {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.apply-mode-exit-actions button {
+  display: flex;
+  width: 100%;
+  min-height: 2.1rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+
+  padding: 0.55rem 0.7rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 0.72rem;
+
+  background: rgba(30, 41, 59, 0.78);
+
+  color: #e5edf8;
+  cursor: pointer;
+}
+
+.apply-mode-exit-actions button span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: inherit;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.apply-mode-exit-modal .apply-mode-settings-content {
+  padding: 0.5rem 1rem 1rem;
+}
+
+.apply-mode-exit-actions button {
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.apply-mode-exit-actions button:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: rgba(99, 102, 241, 0.45);
+}
+
+.apply-mode-exit-actions button:active {
+  transform: translateY(0);
+}
+
+.apply-mode-exit-actions button:first-child:hover {
+  background: rgba(22, 101, 52, 0.38);
+  border-color: rgba(34, 197, 94, 0.45);
+}
+
+.apply-mode-exit-actions button:nth-child(2):hover {
+  background: rgba(127, 29, 29, 0.38);
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.apply-mode-exit-actions button:last-child:hover {
+  background: rgba(30, 64, 175, 0.38);
+  border-color: rgba(96, 165, 250, 0.45);
+}

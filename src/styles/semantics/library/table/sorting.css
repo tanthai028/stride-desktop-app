@@ -1,11 +1,12 @@
 .library-table-sort-button {
   display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
   min-width: 0;
   max-width: 100%;
+  align-items: center;
+  gap: 0.35rem;
   padding: 0;
   border: 0;
+  overflow: hidden;
   color: inherit;
   background: transparent;
   font: inherit;
@@ -26,7 +27,16 @@
 }
 
 .library-table-sort-icon {
-  flex-shrink: 0;
   width: 0.9rem;
   height: 0.9rem;
+  flex: 0 0 auto;
+}
+
+.library-table-sort-label,
+.library-table-header-label {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -218,6 +218,9 @@ function showApplyModeWindow() {
   applyModeWindow.setAlwaysOnTop(true);
   applyModeWindow.show();
   applyModeWindow.focus();
+  applyModeWindow.show();
+  applyModeWindow.focus();
+  applyModeWindow.webContents.send("apply-mode-window-shown");
 
   setTimeout(() => {
     if (!applyModeWindow || applyModeWindow.isDestroyed()) return;
@@ -291,10 +294,12 @@ function createApplyModeWindow({ showWhenReady = false } = {}) {
 
   applyModeWindow.on("minimize", () => {
     setApplyModeClickThrough(false);
+    applyModeWindow.webContents.send("apply-mode-window-hidden");
   });
 
   applyModeWindow.on("restore", () => {
     applyModeWindow.setAlwaysOnTop(true);
+    applyModeWindow.webContents.send("apply-mode-window-shown");
   });
 
   applyModeWindow.on("closed", () => {
@@ -498,6 +503,7 @@ function registerWindowEvents() {
     setApplyModeClickThrough(false);
 
     if (applyModeWindow && !applyModeWindow.isDestroyed()) {
+      applyModeWindow.webContents.send("apply-mode-window-hidden");
       applyModeWindow.hide();
     }
 

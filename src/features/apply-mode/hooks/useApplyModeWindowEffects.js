@@ -10,10 +10,13 @@ function useApplyModeWindowEffects({
   applyModeOpacity,
   isClickThrough,
   showSettings,
+  showExitDialog,
 }) {
+  const isModalOpen = showSettings || showExitDialog;
+
   useEffect(() => {
-    setApplyModeOpacity(applyModeOpacity);
-  }, [applyModeOpacity]);
+    setApplyModeOpacity(isModalOpen ? 100 : applyModeOpacity);
+  }, [applyModeOpacity, isModalOpen]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${16 * (applyModeScale / 50)}px`;
@@ -27,10 +30,10 @@ function useApplyModeWindowEffects({
   useEffect(() => {
     setApplyModeHitboxes({
       headerHeight: 42,
-      settingsOpen: showSettings,
+      settingsOpen: isModalOpen,
     });
 
-    if (!isClickThrough) {
+    if (!isClickThrough || isModalOpen) {
       setApplyModeClickThrough(false);
       return undefined;
     }
@@ -40,7 +43,7 @@ function useApplyModeWindowEffects({
     return () => {
       setApplyModeClickThrough(false);
     };
-  }, [isClickThrough, showSettings]);
+  }, [isClickThrough, isModalOpen]);
 }
 
 export default useApplyModeWindowEffects;

@@ -1,5 +1,6 @@
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
+  extractJobId,
   formatLibraryAppliedDate,
   formatLibraryLocation,
 } from "../../utils/libraryDisplayFormatters.js";
@@ -7,6 +8,8 @@ import {
 function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const isClickable = isPageReady && onItemClick;
+  const displayJobId =
+    extractJobId(item.jobUrl) || extractJobId(item.jobId) || "N/A";
 
   function handleMiddleMouseDown(event) {
     if (event.button !== 1) return;
@@ -84,7 +87,7 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
       </td>
 
       <td className="library-table-cell library-col-job-id">
-        <span className="library-table-text-truncate">{item.jobId || "-"}</span>
+        <span className="library-table-text-truncate">{displayJobId}</span>
       </td>
     </tr>
   );

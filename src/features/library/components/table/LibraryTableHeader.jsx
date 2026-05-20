@@ -47,12 +47,15 @@ function SortableHeader({
           type="button"
           onClick={handleClick}
           className={`library-table-sort-button ${isActive ? "is-active" : ""}`}
+          title={label}
         >
-          <span>{label}</span>
           {renderSortIcon(isActive, activeDirection)}
+          <span className="library-table-sort-label">{label}</span>
         </button>
       ) : (
-        <span className="library-table-header-label">{label}</span>
+        <span className="library-table-header-label" title={label}>
+          {label}
+        </span>
       )}
     </th>
   );

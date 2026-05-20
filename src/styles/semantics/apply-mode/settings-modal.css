@@ -12,7 +12,7 @@
 }
 
 .apply-mode-settings-modal {
-  width: min(92vw, 18rem);
+  width: 14rem;
   max-height: min(78vh, 20rem);
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.22);
@@ -27,12 +27,16 @@
   box-shadow: 0 18px 55px rgba(0, 0, 0, 0.55);
 }
 
+.apply-mode-settings-modal.apply-mode-exit-modal {
+  width: min(80vw, 12rem);
+}
+
 .apply-mode-settings-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.65rem;
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 0.75rem;
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
 }
 

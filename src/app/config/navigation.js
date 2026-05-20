@@ -1,4 +1,4 @@
-import { BookOpen, Settings } from "lucide-react";
+import { BookOpen, History, Settings } from "lucide-react";
 
 export const navigationItems = [
   {
@@ -10,6 +10,11 @@ export const navigationItems = [
     id: "library",
     label: "Applications",
     icon: BookOpen,
+  },
+  {
+    id: "sessions",
+    label: "Sessions",
+    icon: History,
   },
   {
     id: "settings",

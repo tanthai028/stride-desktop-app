@@ -104,28 +104,54 @@ export function extractJobId(jobUrl = "") {
 
   if (!trimmedUrl) return "";
 
+  function getNumericJobId(value = "") {
+    const decodedValue = decodeURIComponent(String(value));
+
+    // R-50406 → 50406
+    const rIdMatch = decodedValue.match(
+      /(?:^|[_-])R[-_]?(\d{3,})(?:$|[/?#&_-])/i,
+    );
+
+    if (rIdMatch) {
+      return rIdMatch[1];
+    }
+
+    // last numeric sequence only
+    // ex: job-12345 → 12345
+    const numericMatch = decodedValue.match(/(\d{4,})(?!.*\d)/);
+
+    if (numericMatch) {
+      return numericMatch[1];
+    }
+
+    return "";
+  }
+
   try {
     const parsedUrl = new URL(trimmedUrl);
 
     const queryJobId =
       parsedUrl.searchParams.get("jobId") ||
       parsedUrl.searchParams.get("job_id") ||
-      parsedUrl.searchParams.get("gh_jid") ||
-      parsedUrl.searchParams.get("lever-source");
+      parsedUrl.searchParams.get("gh_jid");
 
-    if (queryJobId) return queryJobId;
+    if (queryJobId) {
+      return getNumericJobId(queryJobId);
+    }
 
     const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
-    const lastNumericPart = [...pathParts]
-      .reverse()
-      .find((part) => /^\d{4,}$/.test(part));
 
-    return lastNumericPart || pathParts.at(-1) || "";
+    for (let i = pathParts.length - 1; i >= 0; i--) {
+      const foundId = getNumericJobId(pathParts[i]);
+
+      if (foundId) {
+        return foundId;
+      }
+    }
+
+    return "";
   } catch {
-    const match = trimmedUrl.match(
-      /(?:jobs?|postings?|positions?)\/([^/?#]+)/i,
-    );
-    return match?.[1] || "";
+    return getNumericJobId(trimmedUrl);
   }
 }
 

@@ -19,6 +19,22 @@ function sortByAppliedDate(items, direction = "desc") {
   return direction === "desc" ? sortedItems.reverse() : sortedItems;
 }
 
+function sortByCreatedDate(items, direction = "desc") {
+  const sortedItems = [...items].sort((leftItem, rightItem) => {
+    const leftTime = leftItem.createdAt
+      ? new Date(leftItem.createdAt).getTime()
+      : 0;
+
+    const rightTime = rightItem.createdAt
+      ? new Date(rightItem.createdAt).getTime()
+      : 0;
+
+    return leftTime - rightTime;
+  });
+
+  return direction === "desc" ? sortedItems.reverse() : sortedItems;
+}
+
 function getSortableText(item, key) {
   return getNormalizedValue(item[key]);
 }
@@ -54,6 +70,12 @@ export function getFilteredAndSortedLibraryItems(
       break;
     case "appliedAt-desc":
       nextItems = sortByAppliedDate(nextItems, "desc");
+      break;
+    case "createdAt-asc":
+      nextItems = sortByCreatedDate(nextItems, "asc");
+      break;
+    case "createdAt-desc":
+      nextItems = sortByCreatedDate(nextItems, "desc");
       break;
     case "company-asc":
       nextItems = sortByText(

@@ -18,6 +18,24 @@ contextBridge.exposeInMainWorld("windowControls", {
     ipcRenderer.send("window:set-apply-mode-click-through", enabled),
   setApplyModeHitboxes: (hitboxes) =>
     ipcRenderer.send("window:set-apply-mode-hitboxes", hitboxes),
+  onApplyModeShown: (callback) => {
+    const handler = () => callback();
+
+    ipcRenderer.on("apply-mode-window-shown", handler);
+
+    return () => {
+      ipcRenderer.removeListener("apply-mode-window-shown", handler);
+    };
+  },
+  onApplyModeHidden: (callback) => {
+    const handler = () => callback();
+
+    ipcRenderer.on("apply-mode-window-hidden", handler);
+
+    return () => {
+      ipcRenderer.removeListener("apply-mode-window-hidden", handler);
+    };
+  },
 });
 
 contextBridge.exposeInMainWorld("timerApi", {

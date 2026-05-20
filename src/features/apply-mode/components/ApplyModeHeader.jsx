@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
 import { Clock3, Expand, Minus, MousePointer2, Settings } from "lucide-react";
 
 import {
-  exitApplyModeWindow,
   minimizeWindow,
   setApplyModeClickThrough,
 } from "../../../lib/windowControls.js";
@@ -21,43 +19,15 @@ function ApplyModeHeader({
   setIsClickThrough,
   onApply,
   onToggleSettings,
-  queueItems,
-  skippedIds,
-  resetApplySession,
+  elapsedSeconds,
+  isTimerRunning,
+  onToggleTimer,
+  onExitRequest,
 }) {
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [isTimerRunning, setIsTimerRunning] = useState(true);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setElapsedSeconds((current) => (isTimerRunning ? current + 1 : current));
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, [isTimerRunning]);
-
   function handleMinimize() {
     setIsClickThrough(false);
     setApplyModeClickThrough(false);
     minimizeWindow();
-  }
-
-  function handleExit() {
-    const totalQueueCount = queueItems.length + skippedIds.length;
-    const isFinished = totalQueueCount > 0 && queueItems.length === 0;
-
-    setIsClickThrough(false);
-    setApplyModeClickThrough(false);
-
-    // reset timer when returning back
-    setElapsedSeconds(0);
-    setIsTimerRunning(true);
-
-    if (isFinished || skippedIds.length > 0) {
-      resetApplySession();
-    }
-
-    exitApplyModeWindow();
   }
 
   function handleClickThroughToggle() {
@@ -100,7 +70,7 @@ function ApplyModeHeader({
           className={`apply-mode-timer no-drag ${
             !isTimerRunning ? "is-paused" : ""
           }`}
-          onClick={() => setIsTimerRunning((current) => !current)}
+          onClick={onToggleTimer}
         >
           <Clock3 size="0.72rem" />
           <span>{formatElapsedTime(elapsedSeconds)}</span>
@@ -130,7 +100,7 @@ function ApplyModeHeader({
             <Minus size="0.75rem" />
           </button>
 
-          <button type="button" onClick={handleExit}>
+          <button type="button" onClick={onExitRequest}>
             <Expand size="0.75rem" />
           </button>
         </div>

@@ -8,6 +8,7 @@
 @import "./semantics/modals.css";
 @import "./semantics/dashboard/index.css";
 @import "./semantics/settings.css";
+@import "./semantics/sessions.css";
 @import "./semantics/startup.css";
 @import "./semantics/library/index.css";
 @import "./semantics/window-controls.css";

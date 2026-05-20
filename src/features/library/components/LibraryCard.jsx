@@ -77,9 +77,7 @@ function LibraryCard({ item }) {
           </button>
         ) : null}
 
-        {item.jobId ? (
-          <span className="library-card-job-id">ID: {item.jobId}</span>
-        ) : null}
+        <span className="library-card-job-id">ID: {item.jobId || "N/A"}</span>
       </div>
     </div>
   );
