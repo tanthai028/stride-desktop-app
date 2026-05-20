@@ -3,7 +3,7 @@ function PageScrollbar({ isVisible, scrollMetrics, onPointerDown }) {
 
   return (
     <div
-      className={`absolute bottom-1 -right-3 top-1 w-2.5 transition-opacity duration-300 ease-out ${
+      className={`absolute bottom-1 -right-2.25 top-1 w-2.5 transition-opacity duration-300 ease-out ${
         isInteractive
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"

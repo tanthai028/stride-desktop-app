@@ -9,11 +9,11 @@ import { openLibraryJobUrl } from "../../features/library/utils/libraryDisplayFo
 function AppHeaderBrand({ eyebrow, title, description }) {
   return (
     <div className="app-header-brand-copy">
-      <p className="app-header-kicker text-sm font-medium tracking-wide">
+      <p className="app-header-kicker text-xs font-medium tracking-wide">
         {eyebrow}
       </p>
 
-      <h1 className="app-header-title text-3xl font-semibold">{title}</h1>
+      <h1 className="app-header-title text-xl font-semibold">{title}</h1>
 
       {description ? (
         <p className="app-header-description">{description}</p>
@@ -45,13 +45,13 @@ function JobHeaderBrand({ job }) {
       </div>
 
       <div className="app-header-brand-copy">
-        <p className="app-header-kicker text-sm font-medium tracking-wide">
+        <p className="app-header-kicker text-xs font-medium tracking-wide">
           {[job.company || "Unknown company", job.location]
             .filter(Boolean)
             .join(" @ ")}
         </p>
 
-        <h1 className="app-header-title text-3xl font-semibold">
+        <h1 className="app-header-title text-xl font-semibold">
           {job.role || "Untitled Role"}
         </h1>
       </div>

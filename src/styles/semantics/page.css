@@ -4,7 +4,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  padding: var(--space-xl);
+  padding: var(--space-lg);
 }
 
 .page-shell-header {
@@ -60,7 +60,7 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  margin-bottom: var(--space-2xl);
+  margin-bottom: var(--space-lg);
 }
 
 .page-section-header {

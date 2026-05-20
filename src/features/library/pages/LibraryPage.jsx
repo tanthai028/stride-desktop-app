@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import LibraryCollectionSection from "../components/LibraryCollectionSection.jsx";
 import LibraryFormModal from "../components/form/LibraryFormModal.jsx";
@@ -13,7 +13,13 @@ import { extractJobId } from "../utils/libraryDisplayFormatters.js";
 
 const FALLBACK_MODAL_ERROR = "Something went wrong. Please try again.";
 
-function LibraryPage({ settings, updateSetting, libraryStore, onOpenJobPage }) {
+function LibraryPage({
+  settings,
+  updateSetting,
+  libraryStore,
+  onOpenJobPage,
+  onHeaderDescriptionChange,
+}) {
   const { items, hasLoaded, loadError, addItem, updateItem } = libraryStore;
   const [modalErrorMessage, setModalErrorMessage] = useState("");
 
@@ -84,6 +90,16 @@ function LibraryPage({ settings, updateSetting, libraryStore, onOpenJobPage }) {
       updateSetting("libraryViewMode", viewMode);
     }
   }, [settings.libraryViewMode, updateSetting, viewMode]);
+
+  useLayoutEffect(() => {
+    onHeaderDescriptionChange?.(`Tracked applications ${filteredItems.length}`);
+  }, [filteredItems.length, onHeaderDescriptionChange]);
+
+  useEffect(() => {
+    return () => {
+      onHeaderDescriptionChange?.(null);
+    };
+  }, [onHeaderDescriptionChange]);
 
   function clearModalError() {
     setModalErrorMessage("");

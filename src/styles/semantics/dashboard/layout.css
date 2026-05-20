@@ -7,7 +7,7 @@
   width: 100%;
   min-height: 0;
   flex: 1;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 1fr);
+  grid-template-columns: 350px minmax(0, 1fr);
   align-items: stretch;
   gap: var(--space-lg);
 }
@@ -45,51 +45,6 @@
   min-height: 0;
   grid-template-rows: minmax(0, 3fr) minmax(0, 3fr);
   gap: var(--space-lg);
-}
-
-@media (max-width: 950px) {
-  .dashboard-overview-grid {
-    align-items: stretch;
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
-  }
-
-  .dashboard-overview-left {
-    display: grid;
-    min-width: 0;
-    min-height: 0;
-    height: 100%;
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: var(--space-lg);
-  }
-
-  .dashboard-quick-links-card {
-    height: 100%;
-    align-self: stretch;
-  }
-
-  .dashboard-top-card-grid {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: stretch;
-    gap: var(--space-lg);
-    padding: 0;
-  }
-
-  .dashboard-top-card-grid .dashboard-metric-card,
-  .dashboard-top-card-grid .dashboard-apply-goal-card {
-    height: 100%;
-  }
-
-  .dashboard-quick-links-card,
-  .dashboard-recent-card,
-  .dashboard-new-grad-feed-card {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-  }
-
-  .dashboard-recent-card {
-    height: 100%;
-  }
 }
 
 @media (max-width: 750px) {

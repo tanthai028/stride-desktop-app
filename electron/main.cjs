@@ -145,7 +145,7 @@ function getWindowBackgroundColor() {
 }
 
 function createMainWindow() {
-  const winWidth = 760;
+  const winWidth = 950;
   const winHeight = 820;
 
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
@@ -157,8 +157,8 @@ function createMainWindow() {
     icon: APP_ICON_PATH,
     height: winHeight,
     width: winWidth,
-    minHeight: 900,
-    minWidth: 600,
+    minHeight: 700,
+    minWidth: 500,
     x,
     y,
     frame: false,

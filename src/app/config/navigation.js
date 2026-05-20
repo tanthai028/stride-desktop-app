@@ -13,7 +13,7 @@ export const navigationItems = [
   },
   {
     id: "sessions",
-    label: "Sessions",
+    label: "History",
     icon: History,
   },
   {

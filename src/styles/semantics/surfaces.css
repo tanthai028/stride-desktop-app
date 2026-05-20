@@ -27,20 +27,20 @@
 
   --transition-link: opacity var(--motion-fast), color var(--motion-fast);
 
-  --radius-xl: 36px;
-  --radius-lg: 28px;
-  --radius-md: 1rem;
-  --radius-sm: 0.75rem;
-  --radius-sidebar-item: 24px;
+  --radius-xl: 22px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+  --radius-sidebar-item: 12px;
   --radius-pill: 9999px;
 
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 0.75rem;
-  --space-lg: 1rem;
-  --space-xl: 1.25rem;
-  --space-2xl: 1.5rem;
-  --space-3xl: 2rem;
+  --space-lg: 0.875rem;
+  --space-xl: 1.125rem;
+  --space-2xl: 1.25rem;
+  --space-3xl: 1.625rem;
 }
 
 .surface-card {
@@ -66,7 +66,7 @@
 }
 
 .empty-state-card {
-  padding: var(--space-3xl);
+  padding: var(--space-xl) var(--space-2xl);
   border: 1px dashed var(--theme-empty-border);
   background-color: var(--theme-empty-bg);
   backdrop-filter: var(--theme-empty-backdrop);
@@ -74,8 +74,8 @@
 }
 
 .page-card {
-  padding: 1.5rem;
-  border-radius: 30px;
+  padding: var(--space-xl);
+  border-radius: var(--radius-xl);
   transform: translateZ(0);
   transition: var(--transition-control);
   will-change: transform;

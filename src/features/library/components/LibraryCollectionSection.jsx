@@ -49,26 +49,18 @@ function LibraryCollectionSection({
   });
 
   return (
-    <PageSection
-      title="All Applications"
-      description={`Tracked Applications: ${items.length}`}
-      headerAction={
-        <ActionButton onClick={onAddItem} tone="pink" withIcon>
-          <Plus className="h-4 w-4" />
-          <span>Application</span>
-        </ActionButton>
-      }
-    >
+    <PageSection>
       <PageActionBar
         className={actionBarClassName}
         extraControls={
+          <LibraryViewModeSelect
+            value={viewMode}
+            onChange={onViewModeChange}
+            options={LIBRARY_VIEW_OPTIONS}
+          />
+        }
+        rowEndAction={
           <>
-            <LibraryViewModeSelect
-              value={viewMode}
-              onChange={onViewModeChange}
-              options={LIBRARY_VIEW_OPTIONS}
-            />
-
             <LibraryTableFilters
               items={items}
               dateScope={tableDateScope}
@@ -76,6 +68,9 @@ function LibraryCollectionSection({
               columnFilters={tableColumnFilters}
               onColumnFiltersChange={onTableColumnFiltersChange}
             />
+            <ActionButton onClick={onAddItem} tone="pink" withIcon>
+              <Plus className="h-4 w-4" />
+            </ActionButton>
           </>
         }
         searchValue={searchValue}

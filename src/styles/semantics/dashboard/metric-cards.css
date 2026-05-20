@@ -34,7 +34,7 @@
   align-items: center;
   margin: 0;
   color: var(--theme-stat-title);
-  font-size: var(--font-size-display-sm);
+  font-size: var(--font-size-xl);
   font-weight: var(--font-weight-semibold);
   font-variant-numeric: tabular-nums;
   line-height: 1;

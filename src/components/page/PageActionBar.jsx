@@ -10,6 +10,7 @@ function PageActionBar({
   onFilterChange,
   filterOptions = [],
   extraControls = null,
+  rowEndAction = null,
   primaryAction,
   searchPlaceholder = "Search...",
   showSearch = true,
@@ -66,6 +67,8 @@ function PageActionBar({
             interactionMode="hover"
           />
         ) : null}
+
+        {rowEndAction}
       </div>
 
       {primaryAction ? (

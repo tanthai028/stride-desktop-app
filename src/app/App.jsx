@@ -17,6 +17,8 @@ import useStartupSequence from "./startup/useStartupSequence.js";
 function App() {
   const { settings, updateSetting, resetSettings } = useSettings();
   const libraryStore = useLibraryItems(settings.resetVersion);
+  const [headerDescriptionOverride, setHeaderDescriptionOverride] =
+    useState(null);
   const [navigationState, setNavigationState] = useState({
     current: {
       page: APP_PAGES.dashboard,
@@ -149,6 +151,7 @@ function App() {
     activeJob,
     onOpenJobPage: handleOpenJobPage,
     onBackToLibrary: () => handleNavigate(APP_PAGES.library),
+    onHeaderDescriptionChange: setHeaderDescriptionOverride,
   });
 
   const baseMetadata = getPageMetadata(activePage);
@@ -199,7 +202,7 @@ function App() {
           <AppHeader
             eyebrow={activePageMetadata.eyebrow}
             title={activePageMetadata.title}
-            description={activePageMetadata.description}
+            description={headerDescriptionOverride ?? activePageMetadata.description}
             jobHeader={activePageMetadata.jobHeader}
           />
 

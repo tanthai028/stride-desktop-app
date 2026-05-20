@@ -16,11 +16,11 @@ export const PAGE_METADATA = {
   [APP_PAGES.dashboard]: {
     eyebrow: "🏠 Dashboard",
     title: "Dashboard Overview",
-    description: "",
+    description: "Last Updated",
   },
   [APP_PAGES.library]: {
-    eyebrow: "📚 Application Tracker",
-    title: "Job Application Library",
+    eyebrow: "📚 Application Library",
+    title: "Applications",
     description: "",
   },
   [APP_PAGES.jobDetails]: {
@@ -29,9 +29,9 @@ export const PAGE_METADATA = {
     description: "",
   },
   [APP_PAGES.sessions]: {
-    eyebrow: "⏱️ Sessions",
-    title: "Application Sessions",
-    description: "Track each Apply Mode run.",
+    eyebrow: "📋 History",
+    title: "Application History",
+    description: "A record of every Apply Mode session",
   },
   [APP_PAGES.settings]: {
     eyebrow: "⚙️ Settings",
