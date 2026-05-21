@@ -20,36 +20,54 @@
 }
 
 .action-button-pink {
-  border-color: transparent;
-  background-color: rgba(var(--theme-accent-pink-bg), 0.3);
+  border-color: rgba(var(--theme-accent-pink-bg), 0.4);
+  background-color: rgba(var(--theme-accent-pink-bg), 0.12);
   color: var(--theme-text-primary);
-  box-shadow: none;
+  box-shadow: var(--shadow-control);
 }
 
 .action-button-pink:hover {
+  border-color: rgba(var(--theme-accent-pink-bg), 0.6);
+  background-color: rgba(var(--theme-accent-pink-bg), 0.2);
   box-shadow: var(--theme-accent-pink-shadow);
 }
 
+.action-button-pink:active {
+  box-shadow: var(--shadow-pressed);
+}
+
 .action-button-violet {
-  border-color: transparent;
-  background-color: rgba(var(--theme-accent-violet-bg), 0.24);
+  border-color: rgba(var(--theme-accent-violet-bg), 0.4);
+  background-color: rgba(var(--theme-accent-violet-bg), 0.1);
   color: var(--theme-text-primary);
-  box-shadow: none;
+  box-shadow: var(--shadow-control);
 }
 
 .action-button-violet:hover {
+  border-color: rgba(var(--theme-accent-violet-bg), 0.6);
+  background-color: rgba(var(--theme-accent-violet-bg), 0.18);
   box-shadow: var(--theme-accent-violet-shadow);
 }
 
+.action-button-violet:active {
+  box-shadow: var(--shadow-pressed);
+}
+
 .action-button-sky {
-  border-color: transparent;
-  background-color: rgba(var(--theme-accent-sky-bg), 0.24);
+  border-color: rgba(var(--theme-accent-sky-bg), 0.4);
+  background-color: rgba(var(--theme-accent-sky-bg), 0.1);
   color: var(--theme-text-primary);
-  box-shadow: none;
+  box-shadow: var(--shadow-control);
 }
 
 .action-button-sky:hover {
+  border-color: rgba(var(--theme-accent-sky-bg), 0.6);
+  background-color: rgba(var(--theme-accent-sky-bg), 0.18);
   box-shadow: var(--theme-accent-sky-shadow);
+}
+
+.action-button-sky:active {
+  box-shadow: var(--shadow-pressed);
 }
 
 .modal-secondary-button {

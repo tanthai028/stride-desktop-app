@@ -13,7 +13,7 @@ function AppHeaderBrand({ eyebrow, title, description }) {
         {eyebrow}
       </p>
 
-      <h1 className="app-header-title text-xl font-semibold">{title}</h1>
+      <h1 className="app-header-title font-semibold">{title}</h1>
 
       {description ? (
         <p className="app-header-description">{description}</p>
@@ -51,7 +51,7 @@ function JobHeaderBrand({ job }) {
             .join(" @ ")}
         </p>
 
-        <h1 className="app-header-title text-xl font-semibold">
+        <h1 className="app-header-title font-semibold">
           {job.role || "Untitled Role"}
         </h1>
       </div>

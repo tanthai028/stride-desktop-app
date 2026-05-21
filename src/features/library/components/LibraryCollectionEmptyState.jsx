@@ -1,7 +1,7 @@
 import EmptyState from "../../../components/page/EmptyState.jsx";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 
-function LibraryCollectionEmptyState({
+export function getLibraryCollectionEmptyState({
   hasItems,
   searchValue,
   onSearchChange,
@@ -52,4 +52,3 @@ export function LibraryCollectionInlineEmptyState({
   );
 }
 
-export default LibraryCollectionEmptyState;

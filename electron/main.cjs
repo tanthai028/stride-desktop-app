@@ -158,7 +158,7 @@ function createMainWindow() {
     height: winHeight,
     width: winWidth,
     minHeight: 700,
-    minWidth: 500,
+    minWidth: 575,
     x,
     y,
     frame: false,

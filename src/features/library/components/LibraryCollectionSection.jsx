@@ -3,7 +3,8 @@ import PageSection from "../../../components/page/PageSection.jsx";
 import PageActionBar from "../../../components/page/PageActionBar.jsx";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import { LIBRARY_VIEW_OPTIONS } from "../constants/libraryViewOptions.js";
-import LibraryCollectionEmptyState, {
+import {
+  getLibraryCollectionEmptyState,
   LibraryCollectionInlineEmptyState,
 } from "./LibraryCollectionEmptyState.jsx";
 import LibraryGrid from "./LibraryGrid.jsx";
@@ -39,7 +40,7 @@ function LibraryCollectionSection({
     ? "library-collection-action-bar-table"
     : "library-collection-action-bar-grid";
 
-  const emptyState = LibraryCollectionEmptyState({
+  const emptyState = getLibraryCollectionEmptyState({
     hasItems,
     searchValue,
     onSearchChange,
@@ -69,7 +70,8 @@ function LibraryCollectionSection({
               onColumnFiltersChange={onTableColumnFiltersChange}
             />
             <ActionButton onClick={onAddItem} tone="pink" withIcon>
-              <Plus className="h-4 w-4" />
+              <Plus size={15} />
+              Add
             </ActionButton>
           </>
         }

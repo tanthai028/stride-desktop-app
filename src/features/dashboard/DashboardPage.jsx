@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import LibraryFormModal from "../library/components/form/LibraryFormModal.jsx";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
@@ -38,11 +38,58 @@ function isSameDay(date, targetDate) {
   return normalizedDate.getTime() === targetDate.getTime();
 }
 
-function DashboardPage({ onAction, libraryStore }) {
+function formatLastUpdatedLabel(items) {
+  if (!items || items.length === 0) return null;
+
+  let latestDate = null;
+
+  for (const item of items) {
+    const candidateDateStr = item.updatedAt || item.createdAt;
+    if (!candidateDateStr) continue;
+    const d = new Date(candidateDateStr);
+    if (!Number.isNaN(d.getTime()) && (!latestDate || d > latestDate)) {
+      latestDate = d;
+    }
+  }
+
+  if (!latestDate) return null;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const itemDay = new Date(latestDate);
+  itemDay.setHours(0, 0, 0, 0);
+
+  if (itemDay.getTime() === today.getTime()) return "Last Updated: Today";
+  if (itemDay.getTime() === yesterday.getTime()) return "Last Updated: Yesterday";
+
+  return `Last Updated: ${latestDate.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  })}`;
+}
+
+function DashboardPage({ onAction, libraryStore, onHeaderDescriptionChange }) {
   const { items, loadError, addItem } = libraryStore;
   const [recentPeriod, setRecentPeriod] = useState("today");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [modalErrorMessage, setModalErrorMessage] = useState("");
+
+  const lastUpdatedDescription = useMemo(
+    () => formatLastUpdatedLabel(items),
+    [items],
+  );
+
+  useLayoutEffect(() => {
+    onHeaderDescriptionChange?.(lastUpdatedDescription);
+  }, [lastUpdatedDescription, onHeaderDescriptionChange]);
+
+  useEffect(() => {
+    return () => {
+      onHeaderDescriptionChange?.(null);
+    };
+  }, []);
 
   const dashboardData = useMemo(() => {
     const today = getStartOfToday();
@@ -121,11 +168,7 @@ function DashboardPage({ onAction, libraryStore }) {
       transition={{ duration: 0.45 }}
       className="flex min-h-0 flex-1 flex-col"
     >
-      <PageShell
-        eyebrow="🏠 Dashboard"
-        title="Overview"
-        description="Track today's application push, quick links, and recent activity."
-      >
+      <PageShell>
         {loadError ? (
           <div className="library-form-error">{loadError}</div>
         ) : null}

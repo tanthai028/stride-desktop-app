@@ -92,7 +92,9 @@ function LibraryPage({
   }, [settings.libraryViewMode, updateSetting, viewMode]);
 
   useLayoutEffect(() => {
-    onHeaderDescriptionChange?.(`Tracked applications ${filteredItems.length}`);
+    onHeaderDescriptionChange?.(
+      `Tracked applications: ${filteredItems.length}`,
+    );
   }, [filteredItems.length, onHeaderDescriptionChange]);
 
   useEffect(() => {

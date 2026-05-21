@@ -14,8 +14,8 @@ export const APP_PAGES = {
 
 export const PAGE_METADATA = {
   [APP_PAGES.dashboard]: {
-    eyebrow: "🏠 Dashboard",
-    title: "Dashboard Overview",
+    eyebrow: "🏠 Home Page",
+    title: "Dashboard",
     description: "Last Updated",
   },
   [APP_PAGES.library]: {
