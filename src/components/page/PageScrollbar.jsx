@@ -1,21 +1,18 @@
-function PageScrollbar({ isVisible, scrollMetrics, onPointerDown }) {
+function PageScrollbar({ isVisible, scrollMetrics, onPointerDown, insetRight = "-0.5rem" }) {
   const isInteractive = scrollMetrics.isScrollable && isVisible;
 
   return (
     <div
-      className={`absolute bottom-1 -right-2 top-1 w-2.5 transition-opacity duration-300 ease-out ${
-        isInteractive
-          ? "opacity-100 pointer-events-auto"
-          : "opacity-0 pointer-events-none"
-      }`}
+      style={{ right: insetRight }}
+      className={`page-scrollbar${isInteractive ? " is-interactive" : ""}`}
       onPointerDown={onPointerDown}
       role="presentation"
     >
-      <div className="absolute inset-y-0 right-0 w-1.5 rounded-full bg-black/5" />
+      <div className="page-scrollbar-track" />
 
       <div
         data-page-scrollbar-thumb="true"
-        className="absolute right-0 w-1.5 cursor-grab rounded-full bg-slate-400/70 shadow-[0_0_0_1px_rgba(255,255,255,0.18)] transition-[transform,height] duration-300 ease-out active:cursor-grabbing"
+        className="page-scrollbar-thumb"
         style={{
           height: `${scrollMetrics.thumbHeight}px`,
           transform: `translateY(${scrollMetrics.thumbTop}px)`,

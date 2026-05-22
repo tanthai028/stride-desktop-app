@@ -231,12 +231,12 @@
 }
 
 .job-detail-markdown-preview h3 {
-  font-size: 1.1rem;
+  font-size: var(--font-size-lg-plus);
   font-weight: 850;
 }
 
 .job-detail-markdown-preview h4 {
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   font-weight: 800;
 }
 

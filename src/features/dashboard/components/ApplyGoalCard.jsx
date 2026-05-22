@@ -31,7 +31,7 @@ function ApplyGoalCard({
     >
       <div className="dashboard-metric-content">
         <div className="dashboard-apply-goal-header">
-          <p className="stat-card-label stat-card-label--sky">
+          <p className="stat-card-label">
             <DashboardTitle icon={Target}>Daily Goal</DashboardTitle>
           </p>
         </div>

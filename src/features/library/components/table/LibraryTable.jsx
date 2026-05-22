@@ -61,6 +61,7 @@ function LibraryTable({
           <PageScrollbar
             isVisible={isScrollbarVisible}
             scrollMetrics={scrollMetrics}
+            insetRight="0"
             onPointerDown={handleScrollbarPointerDown}
           />
         </>

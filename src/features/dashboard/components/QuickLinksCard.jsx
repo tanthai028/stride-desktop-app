@@ -1,6 +1,5 @@
-import { ExternalLink, Link, Plus, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Link, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
-import DashboardPagination from "./DashboardPagination.jsx";
 import DashboardTitle from "./DashboardTitle.jsx";
 import {
   getFaviconUrl,
@@ -86,8 +85,38 @@ function QuickLinksCard({
           <DashboardTitle icon={Link}>Quick Links</DashboardTitle>
         </p>
 
-        {isEditingLinks ? (
-          <div className="dashboard-quick-links-actions">
+        <div className="dashboard-quick-links-actions">
+          {totalPages > 1 && (
+            <>
+              <button
+                type="button"
+                className="dashboard-icon-action"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onPageChange(Math.max(1, currentPage - 1));
+                }}
+                disabled={currentPage === 1}
+                aria-label="Previous page"
+              >
+                <ChevronLeft />
+              </button>
+
+              <button
+                type="button"
+                className="dashboard-icon-action"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onPageChange(Math.min(totalPages, currentPage + 1));
+                }}
+                disabled={currentPage === totalPages}
+                aria-label="Next page"
+              >
+                <ChevronRight />
+              </button>
+            </>
+          )}
+
+          {isEditingLinks && (
             <button
               type="button"
               className="dashboard-icon-action"
@@ -100,19 +129,11 @@ function QuickLinksCard({
             >
               <Plus />
             </button>
-          </div>
-        ) : null}
+          )}
+        </div>
       </div>
 
       <div ref={quickLinksListRef} className="dashboard-quick-links-list">
-        {isEditingLinks ? (
-          <div className="dashboard-quick-links-edit-header" aria-hidden="true">
-            <span>Name</span>
-            <span>Link</span>
-            <span />
-          </div>
-        ) : null}
-
         {visibleLinks.map((link) => {
           const faviconUrl = getFaviconUrl(link.url);
 
@@ -122,6 +143,7 @@ function QuickLinksCard({
                 <>
                   <input
                     aria-label="Quick link label"
+                    placeholder="Name"
                     value={link.label}
                     spellCheck={false}
                     autoCorrect="off"
@@ -134,6 +156,7 @@ function QuickLinksCard({
 
                   <input
                     aria-label="Quick link URL"
+                    placeholder="https://example.com"
                     value={link.url}
                     spellCheck={false}
                     autoCorrect="off"
@@ -199,11 +222,6 @@ function QuickLinksCard({
         })}
       </div>
 
-      <DashboardPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={onPageChange}
-      />
     </div>
   );
 }

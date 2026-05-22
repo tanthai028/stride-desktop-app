@@ -30,7 +30,7 @@
   top: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-xs);
   padding: var(--space-lg) var(--space-xl);
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-xl);
@@ -40,7 +40,7 @@
 .ah-summary-eyebrow {
   margin: 0;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -50,14 +50,15 @@
 
 .ah-summary-hero {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-xs);
 }
 
 .ah-summary-hero-value {
   display: block;
   color: var(--theme-text-secondary);
-  font-size: 2rem;
+  font-size: var(--font-size-display-sm);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -67,7 +68,7 @@
 .ah-summary-hero-label {
   display: block;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
 }
 
 /* Apply rate */
@@ -86,14 +87,14 @@
 
 .ah-rate-value {
   color: var(--theme-text-secondary);
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-lg);
   font-weight: 700;
   line-height: 1;
 }
 
 .ah-rate-label {
   color: var(--theme-text-muted);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
 }
 
 .ah-rate-track {
@@ -127,8 +128,9 @@
 
 .ah-mini-stat {
   display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .ah-mini-stat-head {
@@ -147,7 +149,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--theme-text-primary);
-  font-size: 1rem;
+  font-size: var(--font-size-md);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -155,9 +157,8 @@
 .ah-mini-lbl {
   display: block;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   line-height: 1.2;
-  padding-left: 1.15rem;
 }
 
 /* Activity heatmap */
@@ -171,7 +172,7 @@
 .ah-heatmap-label {
   margin: 0;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -216,7 +217,7 @@
   align-items: center;
   gap: 3px;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
 }
 
 .ah-heatmap-legend span {
@@ -268,14 +269,14 @@
 .ah-history-title {
   margin: 0;
   color: var(--theme-section-title);
-  font-size: 1rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
 }
 
 .ah-history-sub {
   margin: 0.2rem 0 0;
   color: var(--theme-text-muted);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
 }
 
 /* ── Filter tabs ────────────────────────────────────────── */
@@ -391,7 +392,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--theme-text-primary);
-  font-size: 1rem;
+  font-size: var(--font-size-sm);
   font-weight: 600;
 }
 
@@ -656,7 +657,7 @@
 
 /* ── Responsive ─────────────────────────────────────────── */
 
-@media (max-width: 860px) {
+@media (max-width: 800px) {
   .ah-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
@@ -671,7 +672,6 @@
   .ah-summary {
     align-self: stretch;
     position: static;
-    padding: var(--space-sm) var(--space-lg);
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: var(--space-lg);
@@ -689,11 +689,6 @@
     grid-column: 1;
     grid-row: 2;
     align-self: center;
-  }
-
-  /* Smaller hero number to keep the card compact */
-  .ah-summary-hero-value {
-    font-size: 1.5rem;
   }
 
   /* Mini-grid: spans eyebrow + hero rows, right-aligned */
@@ -739,6 +734,39 @@
   .ah-heatmap {
     grid-template-columns: repeat(14, 1fr);
     gap: 3px;
+  }
+
+  /* Summary font scale-down */
+  .ah-summary-eyebrow {
+    font-size: var(--font-size-xs);
+  }
+
+  .ah-summary-hero-value {
+    font-size: var(--font-size-xl);
+  }
+
+  .ah-summary-hero-label {
+    font-size: var(--font-size-sm);
+  }
+
+  .ah-rate-value {
+    font-size: var(--font-size-sm);
+  }
+
+  .ah-rate-label {
+    font-size: var(--font-size-sm);
+  }
+
+  .ah-mini-val {
+    font-size: var(--font-size-sm);
+  }
+
+  .ah-mini-lbl {
+    font-size: var(--font-size-xs);
+  }
+
+  .ah-heatmap-legend {
+    font-size: var(--font-size-xs);
   }
 }
 

@@ -26,36 +26,57 @@
   flex-shrink: 0;
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-pill);
-  background: var(--theme-card-bg-semi-solid);
-  color: var(--theme-text-secondary);
+  background: transparent;
+  color: var(--theme-text-muted);
   font-size: var(--font-size-xs);
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .dashboard-new-grad-feed-source-chip {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.55rem;
-  font-weight: var(--font-weight-medium);
+  padding: 0.22rem 0.55rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--motion-fast),
+    background-color var(--motion-fast),
+    color var(--motion-fast),
+    transform var(--motion-fast);
+}
+
+.dashboard-new-grad-feed-source-chip:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.1);
+  color: #7dd3fc;
+}
+
+.dashboard-new-grad-feed-source-chip:active {
+  transform: scale(0.96);
 }
 
 .dashboard-new-grad-feed-refresh-button {
   display: inline-flex;
-  width: 2rem;
-  height: 1.55rem;
+  width: 1.75rem;
+  height: 1.75rem;
   align-items: center;
   justify-content: center;
-  padding: 0 0.55rem;
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-pill);
-  background: var(--theme-card-bg-semi-solid);
-  color: var(--theme-text-secondary);
+  background: transparent;
+  color: var(--theme-text-muted);
   cursor: pointer;
+  transition:
+    border-color var(--motion-fast),
+    background-color var(--motion-fast),
+    color var(--motion-fast);
 }
 
 .dashboard-new-grad-feed-refresh-button:hover {
-  background: var(--theme-sidebar-item-hover-bg);
-  color: var(--theme-text-primary);
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.1);
+  color: #7dd3fc;
 }
 
 .dashboard-new-grad-feed-refresh-button svg {
@@ -69,7 +90,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  gap: var(--space-sm);
+  gap: 0.6rem;
 }
 
 .dashboard-new-grad-feed-item {
@@ -80,22 +101,42 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding: 0.45rem 0;
-  border: 0;
-  border-radius: var(--radius-md);
+  padding: 0 0.85rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.72rem;
+  background: rgba(15, 23, 42, 0.42);
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 140ms ease;
+}
+
+.dashboard-new-grad-feed-item:hover {
+  border-color: rgba(56, 189, 248, 0.32);
+  background: rgba(30, 41, 59, 0.62);
+}
+
+.dashboard-new-grad-feed-item:active {
+  transform: scale(0.97);
+}
+
+.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-title-line {
+  color: var(--theme-text-primary);
+}
+
+.dashboard-new-grad-feed-item-link {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-md);
+  border: none;
   background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-}
-
-.dashboard-new-grad-feed-item:hover {
-  background: transparent;
-}
-
-.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-title-line {
-  color: var(--theme-text-primary);
+  padding: 0;
 }
 
 .dashboard-new-grad-feed-main {
@@ -112,6 +153,9 @@
 }
 
 .dashboard-new-grad-feed-title-line {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   color: var(--theme-text-secondary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
@@ -128,22 +172,63 @@
   display: inline-flex;
   flex-shrink: 0;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
 }
 
 .dashboard-new-grad-feed-date {
-  padding: 0.2rem 0.5rem;
-  font-weight: var(--font-weight-semibold);
+  padding: 0.18rem 0.45rem;
+  border-color: rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.07);
+  color: #fcd34d;
+  font-weight: 600;
 }
 
-.dashboard-new-grad-feed-side svg {
-  width: 0.9rem;
-  height: 0.9rem;
+.dashboard-new-grad-feed-save-btn {
+  display: inline-flex;
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--theme-card-border);
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--theme-text-muted);
+  cursor: pointer;
+  opacity: 0.85;
+  transition:
+    opacity 150ms ease,
+    color 150ms ease,
+    background-color 150ms ease,
+    border-color 150ms ease;
 }
 
-.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-side svg {
-  color: var(--theme-text-primary);
+.dashboard-new-grad-feed-save-btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  pointer-events: none;
+}
+
+.dashboard-new-grad-feed-save-btn:hover {
+  opacity: 1;
+  color: #7dd3fc;
+  border-color: rgba(56, 189, 248, 0.4);
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+.dashboard-new-grad-feed-save-btn.is-saved {
+  opacity: 1;
+  border-color: rgba(134, 239, 172, 0.3);
+  background-color: rgba(134, 239, 172, 0.08);
+  color: #86efac;
+  cursor: default;
+}
+
+.dashboard-new-grad-feed-save-btn.is-saved:hover {
+  border-color: rgba(134, 239, 172, 0.3);
+  background-color: rgba(134, 239, 172, 0.08);
+  color: #86efac;
 }
 
 .dashboard-new-grad-feed-pagination-slot {

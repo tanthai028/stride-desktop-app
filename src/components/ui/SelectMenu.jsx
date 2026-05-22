@@ -138,8 +138,8 @@ function SelectMenu({
     }
   }
 
-  function handleSelect(nextValue, options = {}) {
-    const shouldCloseMenu = options.closeMenuOnSelect ?? closeMenuOnSelect;
+  function handleSelect(nextValue, config = {}) {
+    const shouldCloseMenu = config.closeMenuOnSelect ?? closeMenuOnSelect;
 
     if (Array.isArray(value)) {
       const isAllOption = nextValue === "all";

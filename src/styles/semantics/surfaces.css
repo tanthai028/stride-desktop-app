@@ -81,9 +81,9 @@
   will-change: transform;
 }
 
-.page-card:hover {
+/* .page-card:hover {
   transform: var(--motion-lift-card);
-}
+} */
 
 .page-card:active {
   transform: var(--motion-press-scale);

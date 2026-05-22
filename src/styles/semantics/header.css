@@ -26,11 +26,12 @@
 .app-header-kicker {
   color: var(--theme-header-kicker);
   line-height: 1.4;
+  font-size: var(--font-size-sm);
 }
 
 .app-header-title {
   color: var(--theme-header-title);
-  font-size: 1.5rem;
+  font-size: var(--font-size-display-sm);
   line-height: 1.2;
   margin-top: 0.05rem;
 }
@@ -38,13 +39,13 @@
 .app-header-description {
   margin-top: 0.15rem;
   color: var(--theme-text-muted);
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   line-height: 1.4;
 }
 
 .header-clock-card {
   flex-shrink: 0;
-  padding: 0.6rem 1rem;
+  padding: 1rem 1.25rem;
   border-radius: var(--radius-xl);
   text-align: right;
   border: 1px solid var(--theme-panel-border);
@@ -77,6 +78,8 @@
 
 .header-clock-icon {
   flex-shrink: 0;
+  height: 1.75rem;
+  width: 1.75rem;
   stroke-width: 1.9;
 }
 
@@ -91,10 +94,16 @@
 }
 
 .header-clock-time {
+  font-size: var(--font-size-display-xs);
+  font-weight: 600;
+  line-height: 1;
   color: var(--theme-header-clock-text);
 }
 
 .header-clock-date {
+  margin-top: 0.5rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
   color: var(--theme-header-clock-subtext);
 }
 
@@ -137,20 +146,6 @@
 
 .app-header-brand.is-job-header {
   padding: 0;
-}
-
-@media (max-width: 860px) {
-  .app-header-brand {
-    padding: 0.45rem 1rem;
-  }
-
-  .app-header-title {
-    font-size: 1.375rem;
-  }
-
-  .app-header-description {
-    display: none;
-  }
 }
 
 .app-header-job-brand {

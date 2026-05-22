@@ -30,7 +30,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.125rem;
+  font-size: var(--font-size-lg);
   font-weight: 600;
   color: var(--theme-library-card-title, var(--theme-text-secondary));
 }
@@ -42,7 +42,7 @@
   gap: var(--space-xs);
   border-radius: var(--radius-pill);
   padding: 0.25rem 0.75rem 0.25rem 0.5rem;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 500;
   color: var(--theme-library-chip-text, var(--theme-text-secondary));
   background-color: var(--theme-library-chip-bg, rgba(244, 114, 182, 0.08));
@@ -54,7 +54,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-md);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   opacity: 0.8;
 }
 
@@ -86,7 +86,7 @@
 
 .library-card-description {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   line-height: 1.5rem;
   color: var(--theme-library-card-description, var(--theme-text-descriptions));
 }
@@ -96,7 +96,7 @@
   width: fit-content;
   align-items: center;
   gap: var(--space-sm);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -164,7 +164,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 0.8rem;
+  font-size: var(--font-size-2xs);
   font-weight: 500;
   opacity: 0.72;
 }

@@ -28,3 +28,4 @@ export const EMPTY_TABLE_COLUMN_FILTERS = {
   location: ["all"],
   appliedAt: "",
 };
+

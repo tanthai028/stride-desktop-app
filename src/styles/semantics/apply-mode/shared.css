@@ -28,7 +28,7 @@
   align-items: center;
   gap: 0.25rem;
   color: #f8fafc;
-  font-size: 0.68rem;
+  font-size: var(--font-size-3xs);
   font-weight: 900;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -54,7 +54,7 @@
   border-radius: 999px;
   background: rgba(15, 23, 42, 0.58);
   color: #cbd5e1;
-  font-size: 0.68rem;
+  font-size: var(--font-size-3xs);
   font-weight: 900;
   cursor: pointer;
   transition:
@@ -118,7 +118,7 @@
 .apply-mode-empty strong,
 .apply-mode-recent-empty strong {
   color: #e5edf8;
-  font-size: 0.8rem;
+  font-size: var(--font-size-2xs);
 }
 
 .apply-mode-empty span,
@@ -127,7 +127,7 @@
 .apply-mode-recent-empty em,
 .apply-mode-muted {
   color: #94a3b8;
-  font-size: 0.72rem;
+  font-size: var(--font-size-3xs);
   font-style: normal;
 }
 
@@ -168,7 +168,7 @@
   justify-content: center;
 
   color: inherit;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   font-weight: 900;
 }
 

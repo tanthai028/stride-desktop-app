@@ -4,6 +4,7 @@ import AppHeader from "../components/layout/AppHeader.jsx";
 import AppSidebar from "../components/layout/AppSidebar.jsx";
 import ApplyModePanel from "../features/apply-mode/ApplyModePanel.jsx";
 import useLibraryItems from "../features/library/hooks/useLibraryItems.js";
+import { isUnapplied } from "../features/apply-mode/utils/applyModeItemStatus.js";
 import { extractJobId } from "../features/library/utils/libraryDisplayFormatters.js";
 import { useSettings } from "../features/settings/hooks/useSettings.js";
 import {
@@ -39,6 +40,11 @@ function App() {
   const activeJob = useMemo(
     () => libraryStore.items.find((item) => item.id === activeJobId) ?? null,
     [activeJobId, libraryStore.items],
+  );
+
+  const unappliedCount = useMemo(
+    () => libraryStore.items.filter(isUnapplied).length,
+    [libraryStore.items],
   );
 
   useEffect(() => {
@@ -196,7 +202,11 @@ function App() {
             onGoForward: handleGoForward,
           }}
           sidebar={
-            <AppSidebar activePage={activePage} onNavigate={handleNavigate} />
+            <AppSidebar
+              activePage={activePage}
+              onNavigate={handleNavigate}
+              unappliedCount={unappliedCount}
+            />
           }
         >
           <AppHeader

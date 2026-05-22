@@ -1,8 +1,12 @@
+import { PictureInPicture2 } from "lucide-react";
 import { navigationItems } from "../../app/config/navigation.js";
 import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
+import { openApplyModeWindow } from "../../lib/windowControls.js";
 
-function AppSidebar({ activePage, onNavigate }) {
+function AppSidebar({ activePage, onNavigate, unappliedCount = 0 }) {
   const hoverFeedbackHandlers = getHoverFeedbackHandlers();
+  const hasUnapplied = unappliedCount > 0;
+  const displayCount = unappliedCount > 99 ? "99+" : String(unappliedCount);
 
   return (
     <div className="sidebar-rail">
@@ -45,6 +49,35 @@ function AppSidebar({ activePage, onNavigate }) {
               </button>
             );
           })}
+
+          <div className="sidebar-apply-mode-divider" />
+
+          <button
+            type="button"
+            className={`sidebar-apply-mode-item ${hasUnapplied ? "has-unapplied" : ""}`}
+            onClick={openApplyModeWindow}
+            {...hoverFeedbackHandlers}
+          >
+            <div className="sidebar-item-inner">
+              <div className="sidebar-icon">
+                <PictureInPicture2 size="1.125rem" />
+                <span className="sidebar-apply-mode-pulse" />
+              </div>
+              <span className="sidebar-label">
+                <span className="sidebar-apply-mode-label-text">
+                  Apply Mode
+                </span>
+                {hasUnapplied && (
+                  <span
+                    className="sidebar-apply-mode-count"
+                    aria-label={`${unappliedCount} unapplied`}
+                  >
+                    {displayCount}
+                  </span>
+                )}
+              </span>
+            </div>
+          </button>
         </div>
       </aside>
     </div>

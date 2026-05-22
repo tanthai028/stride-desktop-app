@@ -21,14 +21,16 @@ function DashboardPreview({
 
   const applyGoal = useApplyGoal(todayApplicationCount);
   const timer = useDashboardTimer();
-  const quickLinks = useQuickLinks({ variant, isEditingLinks });
+  const quickLinks = useQuickLinks({ isEditingLinks });
   const recentApps = useRecentAppsPagination({ variant, recentItems });
 
-  useEffect(() => {
-    if (!timer.isEditingTimer && !applyGoal.isEditingApplyGoal) {
-      return undefined;
-    }
+  const isEditingAny = timer.isEditingTimer || applyGoal.isEditingApplyGoal;
 
+  useEffect(() => {
+    if (!isEditingAny) return undefined;
+
+    // Refs and setter-based functions are stable across renders, so closing
+    // over the current timer/applyGoal objects is safe here.
     function handlePointerDown(event) {
       if (
         timer.isEditingTimer &&
@@ -52,7 +54,8 @@ function DashboardPreview({
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
     };
-  }, [timer, applyGoal]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditingAny]);
 
   if (variant === "timer") {
     return (

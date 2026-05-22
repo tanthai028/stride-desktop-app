@@ -261,16 +261,20 @@ function usePageScrollbar() {
   }, [scheduleHide, scrollToThumbPosition]);
 
   useEffect(() => {
+    const element = scrollRef.current;
+
     scheduleScrollMeasurement();
 
-    function handleResize() {
-      scheduleScrollMeasurement();
-    }
+    if (!element) return;
 
-    window.addEventListener("resize", handleResize);
+    const observer = new ResizeObserver(() => {
+      scheduleScrollMeasurement();
+    });
+
+    observer.observe(element);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      observer.disconnect();
       clearHideTimer();
       cancelScheduledFrame();
     };

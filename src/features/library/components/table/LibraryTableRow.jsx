@@ -1,6 +1,5 @@
 import { getStatusMeta } from "../../constants/libraryStatuses.js";
 import {
-  extractJobId,
   formatLibraryAppliedDate,
   formatLibraryLocation,
 } from "../../utils/libraryDisplayFormatters.js";
@@ -8,8 +7,7 @@ import {
 function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const isClickable = isPageReady && onItemClick;
-  const displayJobId =
-    extractJobId(item.jobUrl) || extractJobId(item.jobId) || "N/A";
+  const displayJobId = item.jobId || "N/A";
 
   function handleMiddleMouseDown(event) {
     if (event.button !== 1) return;

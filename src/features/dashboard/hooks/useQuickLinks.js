@@ -5,11 +5,10 @@ import {
 } from "../constants/dashboardPreview.constants.js";
 import { getSavedQuickLinks } from "../utils/dashboardPreview.utils.js";
 
-function useQuickLinks({ variant, isEditingLinks }) {
+function useQuickLinks({ isEditingLinks }) {
   const [quickLinks, setQuickLinks] = useState(getSavedQuickLinks);
   const [quickLinksPage, setQuickLinksPage] = useState(1);
-  const [quickLinksPerPage, setQuickLinksPerPage] =
-    useState(QUICK_LINKS_PER_PAGE);
+  const quickLinksPerPage = QUICK_LINKS_PER_PAGE;
 
   const quickLinksListRef = useRef(null);
 
@@ -20,32 +19,11 @@ function useQuickLinks({ variant, isEditingLinks }) {
   useEffect(() => {
     const totalPages = Math.max(
       1,
-      Math.ceil(quickLinks.length / quickLinksPerPage),
+      Math.ceil(quickLinks.length / QUICK_LINKS_PER_PAGE),
     );
 
     setQuickLinksPage((page) => Math.min(page, totalPages));
-  }, [quickLinks.length, quickLinksPerPage]);
-
-  useEffect(() => {
-    const listElement = quickLinksListRef.current;
-    if (!listElement) return undefined;
-
-    function updateQuickLinksPerPage() {
-      const itemHeight = isEditingLinks ? 112 : 56;
-      const headerHeight = isEditingLinks ? 22 : 0;
-      const availableHeight = listElement.clientHeight - headerHeight;
-      const nextPerPage = Math.max(1, Math.floor(availableHeight / itemHeight));
-
-      setQuickLinksPerPage(nextPerPage);
-    }
-
-    updateQuickLinksPerPage();
-
-    const resizeObserver = new ResizeObserver(updateQuickLinksPerPage);
-    resizeObserver.observe(listElement);
-
-    return () => resizeObserver.disconnect();
-  }, [variant, isEditingLinks]);
+  }, [quickLinks.length]);
 
   function updateQuickLink(linkId, field, value) {
     setQuickLinks((links) =>
@@ -66,7 +44,7 @@ function useQuickLinks({ variant, isEditingLinks }) {
         },
       ];
 
-      setQuickLinksPage(Math.ceil(nextLinks.length / quickLinksPerPage));
+      setQuickLinksPage(Math.ceil(nextLinks.length / QUICK_LINKS_PER_PAGE));
       return nextLinks;
     });
   }

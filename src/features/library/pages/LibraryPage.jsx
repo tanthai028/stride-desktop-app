@@ -142,10 +142,11 @@ function LibraryPage({
 
   return (
     <motion.div
-      initial={{ y: 14 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.45 }}
+      initial={{ y: 14, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
       className="flex min-h-0 flex-1 flex-col"
+      style={{ willChange: "opacity, transform", isolation: "isolate" }}
       onAnimationComplete={() => setIsPageReady(true)}
     >
       <PageShell scrollable={false}>
@@ -158,12 +159,8 @@ function LibraryPage({
           filteredItems={filteredItems}
           searchValue={searchValue}
           onSearchChange={setSearchValue}
-          sortValue={sortValue}
-          onSortChange={setSortValue}
           tableSortValue={tableSortValue}
           onTableSortChange={setTableSortValue}
-          statusFilterValue={statusFilterValue}
-          onStatusFilterChange={setStatusFilterValue}
           viewMode={viewMode}
           onViewModeChange={setViewMode}
           isPageReady={isPageReady && hasLoaded}

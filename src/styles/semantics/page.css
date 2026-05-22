@@ -4,7 +4,7 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  padding: var(--space-lg);
+  padding: var(--space-xl);
 }
 
 .page-shell-header {
@@ -73,6 +73,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-md);
+  margin-top: 0.25rem;
 }
 
 .page-section-header-main {
@@ -155,4 +156,58 @@
 .page-action-bar-sort-select .select-menu-trigger {
   border: var(--theme-page-action-select-border);
   background-color: var(--theme-card-bg);
+}
+
+/* ── Page Scrollbar ─────────────────────────────────────── */
+
+.page-scrollbar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}
+
+.page-scrollbar.is-interactive {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.page-scrollbar-track {
+  position: absolute;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  right: -0.25rem;
+  width: 0.25rem;
+  border-radius: 9999px;
+  background-color: rgba(148, 163, 184, 0.2);
+  transition: width 200ms ease-out;
+}
+
+.page-scrollbar-thumb {
+  position: absolute;
+  right: -0.25rem;
+  width: 0.25rem;
+  border-radius: 9999px;
+  cursor: grab;
+  background-color: rgba(148, 163, 184, 0.55);
+  transition:
+    transform 150ms ease-out,
+    height 150ms ease-out,
+    width 200ms ease-out;
+}
+
+.page-scrollbar-thumb:active {
+  cursor: grabbing;
+}
+
+.page-scrollbar:hover .page-scrollbar-track {
+  width: 0.375rem;
+}
+
+.page-scrollbar:hover .page-scrollbar-thumb {
+  width: 0.375rem;
+  background-color: rgba(148, 163, 184, 0.75);
 }

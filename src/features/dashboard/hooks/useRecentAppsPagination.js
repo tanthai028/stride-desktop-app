@@ -48,11 +48,23 @@ function useRecentAppsPagination({ variant, recentItems }) {
       window.cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
     };
-  }, [variant, recentItems.length]);
+  }, [variant]);
 
+  // Reset to page 1 when the items list changes (new data).
   useEffect(() => {
     setRecentPage(1);
-  }, [recentItems.length, recentAppsPerPage]);
+  }, [recentItems.length]);
+
+  // On resize, only clamp to the last valid page — don't reset to 1.
+  useEffect(() => {
+    setRecentPage((page) => {
+      const totalPages = Math.max(
+        1,
+        Math.ceil(recentItems.length / recentAppsPerPage),
+      );
+      return page > totalPages ? totalPages : page;
+    });
+  }, [recentAppsPerPage, recentItems.length]);
 
   return {
     recentPage,

@@ -34,8 +34,8 @@
 
 .dashboard-timer-duration-text {
   margin-top: auto;
-  color: var(--theme-text-secondary);
-  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
 }
 

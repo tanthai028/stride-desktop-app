@@ -291,11 +291,18 @@
   --theme-sidebar-hover-bg: #ffffff;
 
   /* Typography */
+  /* Scale (ascending): 5xs · 4xs · 3xs · xs · 2xs · sm · md · lg-plus · lg · xl · display-xs · display-sm */
+  --font-size-5xs: 0.56rem;
+  --font-size-4xs: 0.64rem;
+  --font-size-3xs: 0.72rem;
   --font-size-xs: 0.75rem;
+  --font-size-2xs: 0.8rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
+  --font-size-lg-plus: 1.1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.375rem;
+  --font-size-display-xs: 1.5rem;
   --font-size-display-sm: 1.65rem;
 
   --font-weight-regular: 400;

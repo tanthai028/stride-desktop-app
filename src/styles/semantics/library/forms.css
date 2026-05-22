@@ -7,7 +7,7 @@
 .library-form-label {
   display: block;
   margin-bottom: 0.5rem;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
 }
 
@@ -39,14 +39,14 @@
 
 .library-form-advanced-toggle-title {
   margin: 0;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   color: var(--theme-text-secondary);
 }
 
 .library-form-advanced-toggle-description {
   margin: 0;
-  font-size: 0.75rem;
+  font-size: var(--font-size-xs);
   color: var(--theme-text-descriptions);
 }
 
@@ -58,7 +58,7 @@
   background: transparent;
   color: var(--theme-text-primary);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   transition:
     transform var(--motion-fast),
@@ -184,6 +184,6 @@
   border: 1px solid var(--theme-error-border);
   background-color: var(--theme-error-bg);
   padding: var(--space-md) var(--space-lg);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   color: var(--theme-error-text);
 }

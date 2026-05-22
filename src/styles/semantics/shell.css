@@ -44,29 +44,6 @@
   flex: 1;
 }
 
-.frame-apply-mode-button {
-  display: inline-flex;
-  height: 2.4rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  padding: 0 0.85rem;
-  border: 1px solid var(--theme-panel-border);
-  border-radius: 8px;
-  background: var(--theme-panel-bg);
-  color: var(--theme-text-primary);
-  font-size: 0.8rem;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: var(--theme-panel-shadow);
-  backdrop-filter: var(--theme-panel-backdrop);
-  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
-}
-
-.frame-apply-mode-button:hover {
-  transform: translateY(-1px);
-}
-
 .frame-navigation {
   display: flex;
   width: 72px;

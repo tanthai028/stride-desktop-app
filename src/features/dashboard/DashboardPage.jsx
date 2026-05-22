@@ -1,23 +1,16 @@
 import { motion } from "framer-motion";
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import LibraryFormModal from "../library/components/form/LibraryFormModal.jsx";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
 import DashboardPreview from "./components/DashboardPreview.jsx";
 import NewGradFeedCard from "./components/NewGradFeedCard.jsx";
+import SessionSummaryCard from "./components/SessionSummaryCard.jsx";
 import { normalizeStatusValue } from "../library/constants/libraryStatuses.js";
 
 function getStartOfToday() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return today;
-}
-
-function getWeekStart(date) {
-  const weekStart = new Date(date);
-  weekStart.setHours(0, 0, 0, 0);
-  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-  return weekStart;
 }
 
 function getAppliedDate(item) {
@@ -70,11 +63,8 @@ function formatLastUpdatedLabel(items) {
   })}`;
 }
 
-function DashboardPage({ onAction, libraryStore, onHeaderDescriptionChange }) {
-  const { items, loadError, addItem } = libraryStore;
-  const [recentPeriod, setRecentPeriod] = useState("today");
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [modalErrorMessage, setModalErrorMessage] = useState("");
+function DashboardPage({ libraryStore, onHeaderDescriptionChange }) {
+  const { items, loadError } = libraryStore;
 
   const lastUpdatedDescription = useMemo(
     () => formatLastUpdatedLabel(items),
@@ -91,82 +81,22 @@ function DashboardPage({ onAction, libraryStore, onHeaderDescriptionChange }) {
     };
   }, []);
 
-  const dashboardData = useMemo(() => {
+  const todayCount = useMemo(() => {
     const today = getStartOfToday();
-    const weekStart = getWeekStart(new Date());
-
-    const todayCount = items.filter((item) => {
+    return items.filter((item) => {
       if (!isActuallyApplied(item)) return false;
-
       const appliedDate = getAppliedDate(item);
       return appliedDate ? isSameDay(appliedDate, today) : false;
     }).length;
-
-    const recentItems = [...items]
-      .filter((item) => {
-        if (!isActuallyApplied(item)) return false;
-
-        const appliedDate = getAppliedDate(item);
-        if (!appliedDate) return false;
-
-        return recentPeriod === "today"
-          ? isSameDay(appliedDate, today)
-          : appliedDate >= weekStart;
-      })
-      .sort((firstItem, secondItem) => {
-        const firstDate = getAppliedDate(firstItem)?.getTime() ?? 0;
-        const secondDate = getAppliedDate(secondItem)?.getTime() ?? 0;
-        return secondDate - firstDate;
-      });
-
-    return {
-      todayCount,
-      recentItems,
-    };
-  }, [items, recentPeriod]);
-
-  function cycleRecentPeriod() {
-    setRecentPeriod((currentPeriod) =>
-      currentPeriod === "today" ? "week" : "today",
-    );
-  }
-
-  function clearModalError() {
-    setModalErrorMessage("");
-  }
-
-  function handleOpenAddModal() {
-    clearModalError();
-    setIsAddModalOpen(true);
-  }
-
-  function handleCloseAddModal() {
-    clearModalError();
-    setIsAddModalOpen(false);
-  }
-
-  async function handleAddItem(formValues) {
-    if (formValues?.__clientValidationError) {
-      setModalErrorMessage(formValues.__clientValidationError);
-      return;
-    }
-
-    try {
-      await addItem(formValues);
-      handleCloseAddModal();
-    } catch (error) {
-      setModalErrorMessage(
-        error?.message || "Something went wrong. Please try again.",
-      );
-    }
-  }
+  }, [items]);
 
   return (
     <motion.div
-      initial={{ y: 14 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.45 }}
+      initial={{ y: 14, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
       className="flex min-h-0 flex-1 flex-col"
+      style={{ willChange: "opacity, transform", isolation: "isolate" }}
     >
       <PageShell>
         {loadError ? (
@@ -179,39 +109,25 @@ function DashboardPage({ onAction, libraryStore, onHeaderDescriptionChange }) {
               <div className="dashboard-top-card-grid">
                 <DashboardPreview
                   variant="applyGoal"
-                  todayApplicationCount={dashboardData.todayCount}
+                  todayApplicationCount={todayCount}
                 />
                 <DashboardPreview variant="timer" />
               </div>
+
+              <SessionSummaryCard />
 
               <DashboardPreview variant="quickLinks" />
             </div>
 
             <div className="dashboard-feed-column">
-              <NewGradFeedCard />
-
-              <DashboardPreview
-                variant="recentApplications"
-                recentItems={dashboardData.recentItems}
-                recentPeriod={recentPeriod}
-                onRecentPeriodClick={cycleRecentPeriod}
-                onRecentApplicationsClick={() => onAction("library")}
-                onAddApplicationClick={handleOpenAddModal}
+              <NewGradFeedCard
+                libraryItems={items}
+                onSaveJob={libraryStore.addItem}
               />
             </div>
           </div>
         </PageSection>
       </PageShell>
-      <LibraryFormModal
-        isOpen={isAddModalOpen}
-        mode="add"
-        item={null}
-        errorMessage={modalErrorMessage}
-        onClearError={clearModalError}
-        onClose={handleCloseAddModal}
-        onSubmit={handleAddItem}
-        onDelete={undefined}
-      />
     </motion.div>
   );
 }

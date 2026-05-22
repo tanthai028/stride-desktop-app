@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { formatLibraryAppliedDate } from "../../library/utils/libraryDisplayFormatters.js";
 import { getStatusMeta } from "../../library/constants/libraryStatuses.js";
 import { openDashboardLink } from "../utils/dashboardPreview.utils.js";
@@ -19,30 +20,36 @@ function RecentApplicationItem({ item }) {
       }}
       disabled={!item.jobUrl}
     >
-      <p className="dashboard-recent-title">
-        <img
-          className="dashboard-company-icon"
-          src={getCompanyIconUrl(item.company)}
-          onError={(event) => handleCompanyIconFallback(event, item.jobUrl)}
-          alt=""
-          loading="lazy"
-        />
-
-        <span className="dashboard-recent-title-text">
-          {item.company || "Untitled Company"} · {item.role || "Untitled Role"}
+      <span className="dashboard-recent-main">
+        <span className="dashboard-recent-company-row">
+          <img
+            className="dashboard-company-icon"
+            src={getCompanyIconUrl(item.company)}
+            onError={(event) => handleCompanyIconFallback(event, item.jobUrl)}
+            alt=""
+            loading="lazy"
+          />
+          <strong className="dashboard-recent-company-name">
+            {item.company || "Untitled Company"}
+          </strong>
         </span>
-      </p>
-
-      <div className="dashboard-recent-meta">
-        <span className="dashboard-recent-location">
-          {item.location || "Unknown"}
+        <span className="dashboard-recent-role-text">
+          {item.role || "Untitled Role"}
         </span>
+        <em className="dashboard-recent-location-em">
+          {item.location || " "}
+        </em>
+      </span>
 
-        <span className="dashboard-recent-right">
-          {statusMeta.displayLabel || statusMeta.label} -{" "}
+      <span className="dashboard-recent-side">
+        <span className="dashboard-recent-date-text">
           {formatLibraryAppliedDate(item.appliedAt)}
         </span>
-      </div>
+        <span className="dashboard-recent-status-chip">
+          {statusMeta.displayLabel || statusMeta.label}
+          <ExternalLink />
+        </span>
+      </span>
     </button>
   );
 }

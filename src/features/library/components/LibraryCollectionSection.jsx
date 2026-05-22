@@ -69,7 +69,7 @@ function LibraryCollectionSection({
               columnFilters={tableColumnFilters}
               onColumnFiltersChange={onTableColumnFiltersChange}
             />
-            <ActionButton onClick={onAddItem} tone="pink" withIcon>
+            <ActionButton onClick={onAddItem} withIcon>
               <Plus size={15} />
               Add
             </ActionButton>

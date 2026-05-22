@@ -43,7 +43,7 @@
 .apply-mode-settings-header h2 {
   margin: 0;
   color: #f8fafc;
-  font-size: 0.85rem;
+  font-size: var(--font-size-sm);
   font-weight: 900;
 }
 
@@ -76,7 +76,7 @@
   align-items: center;
   justify-content: space-between;
   color: #cbd5e1;
-  font-size: 0.76rem;
+  font-size: var(--font-size-xs);
   font-weight: 800;
 }
 
@@ -92,6 +92,6 @@
 .apply-mode-settings-help {
   margin: 0;
   color: #94a3b8;
-  font-size: 0.7rem;
+  font-size: var(--font-size-3xs);
   line-height: 1.32;
 }

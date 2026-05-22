@@ -14,9 +14,14 @@
 }
 
 .action-button-default {
-  border-color: var(--theme-action-button-default-border);
-  background-color: var(--theme-action-button-default-bg);
+  border-color: var(--theme-card-border);
+  background-color: var(--theme-card-bg);
   color: var(--theme-action-button-default-text);
+}
+
+.action-button-default:hover {
+  background-color: var(--theme-select-trigger-hover-bg);
+  box-shadow: var(--shadow-control-hover);
 }
 
 .action-button-pink {

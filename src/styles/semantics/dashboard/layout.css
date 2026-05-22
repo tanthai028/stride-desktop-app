@@ -7,17 +7,18 @@
   width: 100%;
   min-height: 0;
   flex: 1;
-  grid-template-columns: 350px minmax(0, 1fr);
+  grid-template-columns: 325px minmax(0, 1fr);
   align-items: stretch;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 .dashboard-overview-left {
   display: grid;
   min-width: 0;
   min-height: 0;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: var(--space-lg);
+  align-self: start;
+  grid-template-rows: auto auto auto;
+  gap: var(--space-md);
 }
 
 .dashboard-top-card-grid,
@@ -25,7 +26,7 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
-  gap: var(--space-xl);
+  gap: var(--space-md);
 }
 
 .dashboard-top-card-grid .dashboard-summary-grid {
@@ -43,8 +44,57 @@
   display: grid;
   min-width: 0;
   min-height: 0;
-  grid-template-rows: minmax(0, 3fr) minmax(0, 3fr);
-  gap: var(--space-lg);
+  grid-template-rows: minmax(0, 1fr);
+  gap: var(--space-md);
+}
+
+/* ── Session summary card (dashboard variant) ─────────────── */
+
+.ah-summary--dashboard {
+  position: static;
+  align-self: auto;
+  padding: var(--space-sm) var(--space-md);
+  gap: var(--space-2xs, 0.25rem);
+}
+
+.ah-summary--dashboard .ah-summary-eyebrow {
+  font-size: var(--font-size-3xs, 0.625rem);
+  margin-bottom: var(--space-xs);
+}
+
+.ah-summary--dashboard .ah-summary-hero-value {
+  font-size: var(--font-size-xl);
+}
+
+.ah-summary--dashboard .ah-summary-hero-label {
+  font-size: var(--font-size-sm);
+}
+
+.ah-summary--dashboard .ah-rate-value {
+  font-size: var(--font-size-md);
+}
+
+.ah-summary--dashboard .ah-mini-grid {
+  gap: var(--space-xs);
+}
+
+.ah-summary--dashboard .ah-heatmap-section {
+  gap: var(--space-xs);
+}
+
+.ah-summary--dashboard .ah-summary-hero {
+  flex-direction: row;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.ah-summary--dashboard .ah-heatmap {
+  grid-template-columns: repeat(14, 1fr);
+  gap: 3px;
+}
+
+.ah-summary--dashboard .ah-heatmap-label {
+  font-size: var(--font-size-3xs, 0.625rem);
 }
 
 @media (max-width: 750px) {

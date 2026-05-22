@@ -12,7 +12,7 @@
 
 .progress-stat-track--sky,
 .dashboard-status-chart-track {
-  background-color: var(--theme-progress-track-sky);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .progress-stat-bar--pink {
@@ -23,24 +23,34 @@
   background-color: var(--theme-progress-bar-violet);
 }
 
-.progress-stat-bar--sky,
-.dashboard-status-chart-fill--sky {
+.progress-stat-bar--sky {
   background-color: var(--theme-progress-bar-sky);
 }
 
 .dashboard-status-chart-track {
-  height: 0.75rem;
+  height: 5px;
   overflow: hidden;
   border-radius: 999px;
 }
 
-.dashboard-status-chart-fill {
-  height: 100%;
-  min-width: 0.4rem;
-  border-radius: inherit;
-  transition: width 220ms ease;
+@keyframes track-fill-reveal {
+  from {
+    clip-path: inset(0 100% 0 0 round 999px);
+  }
+  to {
+    clip-path: inset(0 0% 0 0 round 999px);
+  }
 }
 
+.dashboard-status-chart-fill {
+  height: 100%;
+  min-width: 0.25rem;
+  border-radius: inherit;
+  animation: track-fill-reveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+  transition: width 300ms ease;
+}
+
+.dashboard-status-chart-fill--sky,
 .dashboard-status-chart-fill--violet {
-  background-color: var(--theme-progress-bar-violet);
+  background: linear-gradient(90deg, #fb923c 0%, #f472b6 55%, #a78bfa 100%);
 }

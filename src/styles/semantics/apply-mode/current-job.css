@@ -45,14 +45,14 @@
 
 .apply-mode-current-main strong {
   color: #f8fafc;
-  font-size: 0.78rem;
+  font-size: var(--font-size-2xs);
 }
 
 .apply-mode-current-main span,
 .apply-mode-current-main em {
   overflow: hidden;
   color: #94a3b8;
-  font-size: 0.7rem;
+  font-size: var(--font-size-3xs);
   font-style: normal;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -70,7 +70,7 @@
   border-radius: 999px;
   background: rgba(34, 197, 94, 0.12);
   color: #86efac;
-  font-size: 0.64rem;
+  font-size: var(--font-size-4xs);
   font-weight: 900;
   line-height: 1;
   opacity: 0;

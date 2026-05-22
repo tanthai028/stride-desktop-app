@@ -3,9 +3,14 @@
 ================================ */
 
 .dashboard-quick-links-card {
+  --dashboard-quick-links-card-height: 13rem;
+
   display: flex;
-  min-height: 0;
+  height: var(--dashboard-quick-links-card-height);
+  min-height: var(--dashboard-quick-links-card-height);
+  max-height: var(--dashboard-quick-links-card-height);
   flex-direction: column;
+  gap: var(--space-sm);
   padding-right: var(--space-md);
 }
 
@@ -17,33 +22,19 @@
 }
 
 .dashboard-quick-links-header .dashboard-card-title {
+  display: flex;
+  align-items: center;
+  min-height: 1.75rem;
   width: auto;
   min-width: 0;
+  padding-bottom: 0;
 }
 
 .dashboard-quick-links-actions {
   display: flex;
   flex-shrink: 0;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-xs);
-  padding-top: 0;
-}
-
-.dashboard-quick-links-actions {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(0.25rem) scale(0.96);
-  transition:
-    opacity 160ms ease,
-    transform 160ms ease;
-}
-
-.dashboard-quick-links-card:hover .dashboard-quick-links-actions,
-.dashboard-quick-links-card:focus-within .dashboard-quick-links-actions,
-.dashboard-quick-links-card:has(.dashboard-quick-links-edit-header)
-  .dashboard-quick-links-actions {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 .dashboard-icon-action svg {
@@ -56,7 +47,8 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 0.3rem;
+  overflow: hidden;
 }
 
 .dashboard-quick-link-row {
@@ -76,7 +68,7 @@
 .dashboard-quick-links-edit-header {
   padding: 0 0.25rem;
   color: var(--theme-text-secondary);
-  font-size: 0.65rem;
+  font-size: var(--font-size-4xs);
   font-weight: var(--font-weight-medium);
   line-height: 1;
   letter-spacing: 0.04em;
@@ -86,29 +78,28 @@
 
 .dashboard-quick-link-row input {
   width: 100%;
+  min-width: 0;
+  height: 2.6rem;
+  padding: 0 0.65rem;
   border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-sm);
-  background: var(--theme-card-bg-solid);
+  border-radius: 0.72rem;
+  background: rgba(15, 23, 42, 0.42);
   color: var(--theme-text-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
-
-  min-width: 0;
-  height: 3rem;
-  padding: 0 0.65rem;
 }
 
 .dashboard-quick-link-button {
   display: flex;
   width: 100%;
-  height: 3rem;
+  height: 2.6rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding: 0 0.75rem;
-  border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-md);
-  background: var(--theme-card-bg-semi-solid);
+  padding: 0 0.65rem;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.72rem;
+  background: rgba(15, 23, 42, 0.42);
   color: var(--theme-text-primary);
   text-align: left;
 }
@@ -152,9 +143,9 @@
 
 .dashboard-quick-link-button {
   transition:
-    transform 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease;
+    border-color 150ms ease,
+    background-color 150ms ease,
+    transform 140ms ease;
 }
 
 .dashboard-quick-link-row input:focus,
@@ -165,53 +156,15 @@
 }
 
 .dashboard-quick-link-button:hover {
-  transform: translateY(-1px);
-  border-color: var(--theme-card-border-hover, var(--theme-card-border));
+  border-color: rgba(56, 189, 248, 0.32);
+  background: rgba(30, 41, 59, 0.62);
 }
 
-@media (min-width: 750px) and (max-width: 950px) {
-  .dashboard-quick-links-edit-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-  }
+.dashboard-quick-link-button:active {
+  transform: scale(0.97);
+}
 
-  .dashboard-quick-links-edit-header span:first-child {
-    grid-column: 1;
-  }
-
-  .dashboard-quick-links-edit-header span:nth-child(2) {
-    display: none;
-  }
-
-  .dashboard-quick-links-edit-header span:first-child::before {
-    content: "Name / Link";
-  }
-
-  .dashboard-quick-links-edit-header span:first-child {
-    font-size: 0;
-  }
-
-  .dashboard-quick-links-edit-header span:first-child::before {
-    font-size: 0.65rem;
-  }
-
-  .dashboard-quick-link-row:has(input) {
-    width: 100%;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
-
-  .dashboard-quick-link-row:has(input) input {
-    min-width: 0;
-  }
-
-  .dashboard-quick-link-row:has(input) input:first-child,
-  .dashboard-quick-link-row:has(input) input:nth-child(2) {
-    grid-column: 1;
-  }
-
-  .dashboard-quick-link-delete {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: flex-start;
-  }
+.dashboard-quick-links-actions .dashboard-icon-action:disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }

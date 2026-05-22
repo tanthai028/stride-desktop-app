@@ -40,7 +40,7 @@ function TimerCard({
     >
       <div className="dashboard-metric-content">
         <div className="dashboard-timer-header">
-          <p className="stat-card-label stat-card-label--violet">
+          <p className="stat-card-label">
             <DashboardTitle icon={Clock3}>Timer</DashboardTitle>
           </p>
         </div>

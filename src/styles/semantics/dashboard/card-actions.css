@@ -1,15 +1,5 @@
 .dashboard-clickable-card {
   cursor: pointer;
-  transition:
-    transform 160ms ease,
-    border-color 160ms ease,
-    background-color 160ms ease,
-    box-shadow 160ms ease;
-}
-
-.dashboard-clickable-card:hover {
-  border-color: var(--theme-card-border-hover, var(--theme-card-border));
-  box-shadow: var(--theme-card-hover-shadow);
 }
 
 .dashboard-clickable-card:focus-visible,
@@ -21,23 +11,28 @@
 
 .dashboard-icon-action {
   display: inline-flex;
-  width: 1.85rem;
-  height: 1.85rem;
+  width: 1.75rem;
+  height: 1.75rem;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-sm);
-  background: var(--theme-card-bg-solid);
-  color: var(--theme-text-primary);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--theme-text-muted);
   cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    border-color var(--motion-fast),
+    color var(--motion-fast);
 }
 
 .dashboard-icon-action:hover {
-  border-color: var(--theme-card-border-hover, var(--theme-card-border));
-  background: var(--theme-sidebar-item-hover-bg);
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.1);
+  color: #7dd3fc;
 }
 
 .dashboard-icon-action svg {
-  width: 0.95rem;
-  height: 0.95rem;
+  width: 0.9rem;
+  height: 0.9rem;
 }

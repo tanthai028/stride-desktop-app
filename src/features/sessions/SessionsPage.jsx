@@ -269,6 +269,8 @@ function ApplicationHistoryPage() {
               <span className="ah-summary-hero-label">Applications Sent</span>
             </div>
 
+            <div className="ah-summary-rule" />
+
             <div className="ah-rate">
               <div className="ah-rate-row">
                 <span className="ah-rate-value">{applyRate}%</span>

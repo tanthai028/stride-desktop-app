@@ -1,20 +1,20 @@
 .dashboard-metric-card {
   position: relative;
   display: flex;
-  min-height: 7rem;
+  min-height: 5.5rem;
   flex-direction: column;
   overflow: hidden;
   isolation: isolate;
   padding: var(--space-lg);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 }
 
 .dashboard-metric-card .stat-card-label {
-  position: relative;
   width: 100%;
-  padding-bottom: var(--space-sm);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .dashboard-metric-content {
@@ -29,14 +29,15 @@
 .dashboard-metric-value {
   display: inline-flex;
   width: fit-content;
-  height: 2.45rem;
+  height: 2rem;
   box-sizing: border-box;
   align-items: center;
   margin: 0;
   color: var(--theme-stat-title);
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
@@ -46,7 +47,8 @@
 
 .dashboard-metric-description {
   margin: auto 0;
-  font-size: var(--font-size-sm);
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
 }
 

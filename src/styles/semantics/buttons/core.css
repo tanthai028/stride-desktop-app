@@ -15,18 +15,11 @@
   cursor: pointer;
   transform: translateZ(0);
 
-  font-size: 0.875rem;
+  font-size: var(--font-size-2xs);
   font-weight: 500;
   line-height: 1.25rem;
 
   transition: var(--transition-button);
-}
-
-.action-button:hover,
-.modal-secondary-button:hover,
-.library-action-delete:hover,
-.library-action-submit:hover {
-  /* transform: scale(1.05); */
 }
 
 .action-button:active,

@@ -18,7 +18,7 @@
   color: var(--theme-select-trigger-text);
   background-color: var(--theme-select-trigger-bg);
   box-shadow: var(--shadow-control);
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   font-weight: 500;
   transition: var(--transition-control);
 }
@@ -83,7 +83,7 @@
   color: var(--theme-select-option-text);
   background-color: transparent;
   font: inherit;
-  font-size: 0.875rem;
+  font-size: var(--font-size-sm);
   text-align: left;
   transition: var(--transition-control);
 }

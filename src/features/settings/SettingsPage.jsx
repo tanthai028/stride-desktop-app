@@ -10,9 +10,10 @@ import ApplicationBackupPanel from "./components/ApplicationBackupPanel.jsx";
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = {
-    initial: { y: 14 },
-    animate: { y: 0 },
-    transition: { duration: 0.45 },
+    initial: { y: 14, opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    transition: { duration: 0.45, ease: "easeOut" },
+    style: { willChange: "opacity, transform", isolation: "isolate" },
   };
 
   const resetButton = (

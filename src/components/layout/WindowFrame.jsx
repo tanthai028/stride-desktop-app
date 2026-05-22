@@ -1,20 +1,6 @@
-import { ChevronLeft, ChevronRight, PanelsTopLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import WindowControls from "../ui/WindowControls.jsx";
 import { isElectron } from "../../lib/isElectron.js";
-import { openApplyModeWindow } from "../../lib/windowControls.js";
-
-function ApplyModeButton({ onClick }) {
-  return (
-    <button
-      type="button"
-      className="frame-apply-mode-button no-drag"
-      onClick={onClick}
-    >
-      <PanelsTopLeft size={15} />
-      Apply Mode
-    </button>
-  );
-}
 
 function FrameNavigation({ navigation }) {
   return (
@@ -78,7 +64,6 @@ function WindowFrame({ sidebar, children, navigation }) {
       <FrameHeader>
         <FrameNavigation navigation={navigation} />
         <div className="frame-header-spacer" />
-        <ApplyModeButton onClick={openApplyModeWindow} />
         {isElectron() && <WindowControls />}
       </FrameHeader>
 
