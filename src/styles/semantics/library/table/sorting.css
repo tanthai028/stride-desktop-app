@@ -10,7 +10,7 @@
   color: inherit;
   background: transparent;
   font: inherit;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   cursor: pointer;
   transition:
     opacity 120ms ease,

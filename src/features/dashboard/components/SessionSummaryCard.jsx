@@ -21,8 +21,20 @@ function ActivityGrid({ data }) {
   );
 }
 
-function SessionSummaryCard() {
+function SessionSummaryCard({ onOpen }) {
   const sessions = useMemo(() => getApplicationSessions(), []);
+
+  function handleClick() {
+    onOpen?.();
+  }
+
+  function handleKeyDown(event) {
+    if (!onOpen) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onOpen();
+    }
+  }
 
   const totals = useMemo(
     () =>
@@ -52,10 +64,17 @@ function SessionSummaryCard() {
 
   return (
     <motion.aside
-      className="ah-summary ah-summary--dashboard"
+      className={`ah-summary ah-summary--dashboard${
+        onOpen ? " ah-summary--clickable" : ""
+      }`}
       initial={{ opacity: 0, x: -8 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.38, delay: 0.05 }}
+      role={onOpen ? "button" : undefined}
+      tabIndex={onOpen ? 0 : undefined}
+      onClick={onOpen ? handleClick : undefined}
+      onKeyDown={onOpen ? handleKeyDown : undefined}
+      aria-label={onOpen ? "Open application history" : undefined}
     >
       <p className="ah-summary-eyebrow">Overview</p>
 

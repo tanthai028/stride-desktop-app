@@ -1,28 +1,23 @@
 .library-col-company {
-  width: 16%;
+  width: 22%;
 }
 
 .library-col-role {
-  width: 23%;
+  width: 30%;
 }
 
 .library-col-status {
-  width: 12%;
-}
-
-.library-col-priority {
-  width: 10%;
-}
-
-.library-col-location {
   width: 14%;
 }
 
-.library-col-added,
-.library-col-applied {
-  width: 10%;
+.library-col-priority {
+  width: 11%;
 }
 
-.library-col-job-id {
-  width: 15%;
+.library-col-location {
+  width: 13%;
+}
+
+.library-col-applied {
+  width: 10%;
 }

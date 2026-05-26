@@ -1,4 +1,4 @@
-import { Check, SkipForward, Trash2 } from "lucide-react";
+import { Check, SkipBack, SkipForward, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   getCompanyIconUrl,
@@ -10,16 +10,18 @@ function CurrentJobSection({
   progressText,
   skippedCount,
   isMovingCard,
+  canGoBack,
   onApply,
   onDone,
   onSkip,
+  onUnskip,
   onRemove,
 }) {
   return (
     <section className="apply-mode-current-section">
       <div className="apply-mode-section-header">
         <div className="apply-mode-section-title">
-          <span>Current job</span>
+          <span>Job Queue</span>
           <div className="apply-mode-progress-pill">{progressText}</div>
 
           {skippedCount > 0 ? (
@@ -48,6 +50,16 @@ function CurrentJobSection({
           >
             <SkipForward size="0.75rem" />
             Skip
+          </button>
+
+          <button
+            type="button"
+            onClick={onUnskip}
+            disabled={!canGoBack}
+            aria-label="Go back to previous skipped job"
+            title="Go back"
+          >
+            <SkipBack size="0.75rem" />
           </button>
 
           <button

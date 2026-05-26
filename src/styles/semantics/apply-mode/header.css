@@ -54,17 +54,11 @@
   justify-content: center;
   gap: 0.4rem;
   padding: 0 0.2rem;
-  border: 0;
   background: transparent;
   color: #e5edf8;
   font-size: var(--font-size-2xs);
   font-weight: 800;
   line-height: 1;
-  cursor: pointer;
-}
-
-.apply-mode-state:disabled {
-  cursor: default;
 }
 
 .apply-mode-dot {

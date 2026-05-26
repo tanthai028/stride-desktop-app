@@ -29,6 +29,10 @@
 .dashboard-icon-action:hover {
   border-color: rgba(56, 189, 248, 0.4);
   background: rgba(56, 189, 248, 0.1);
+  color: #0284c7;
+}
+
+.theme-dark .dashboard-icon-action:hover {
   color: #7dd3fc;
 }
 

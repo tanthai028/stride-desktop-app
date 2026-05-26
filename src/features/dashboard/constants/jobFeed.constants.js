@@ -22,26 +22,43 @@ export const ATS_COMPANY_BOARDS = {
     { slug: "squarespace", name: "Squarespace" },
     { slug: "gusto", name: "Gusto" },
     { slug: "duolingo", name: "Duolingo" },
+    { slug: "airtable", name: "Airtable" },
+    { slug: "dropbox", name: "Dropbox" },
+    { slug: "brex", name: "Brex" },
+    { slug: "roblox", name: "Roblox" },
+    { slug: "hubspot", name: "HubSpot" },
+    { slug: "databricks", name: "Databricks" },
+    { slug: "twilio", name: "Twilio" },
+    { slug: "okta", name: "Okta" },
+    { slug: "affirm", name: "Affirm" },
+    { slug: "chime", name: "Chime" },
+    { slug: "cockroachlabs", name: "Cockroach Labs" },
+    { slug: "carta", name: "Carta" },
+    { slug: "amplitude", name: "Amplitude" },
+    { slug: "braze", name: "Braze" },
+    { slug: "pagerduty", name: "PagerDuty" },
+    { slug: "rubrik", name: "Rubrik" },
+    { slug: "toast", name: "Toast" },
+    { slug: "faire", name: "Faire" },
+    { slug: "elastic", name: "Elastic" },
+    { slug: "marqeta", name: "Marqeta" },
+    { slug: "block", name: "Block" },
   ],
   lever: [
-    { slug: "netflix", name: "Netflix" },
-    { slug: "spotify", name: "Spotify" },
     { slug: "kraken", name: "Kraken" },
     { slug: "palantir", name: "Palantir" },
   ],
   ashby: [
-    { slug: "linear", name: "Linear" },
     { slug: "vercel", name: "Vercel" },
     { slug: "supabase", name: "Supabase" },
-    { slug: "posthog", name: "PostHog" },
-    { slug: "neon", name: "Neon" },
-    { slug: "modal", name: "Modal" },
-    { slug: "warp", name: "Warp" },
-    { slug: "raycast", name: "Raycast" },
     { slug: "perplexity", name: "Perplexity" },
-    { slug: "mintlify", name: "Mintlify" },
-    { slug: "browserbase", name: "Browserbase" },
-    { slug: "langchain", name: "LangChain" },
+    { slug: "ramp", name: "Ramp" },
+    { slug: "replit", name: "Replit" },
+    { slug: "notion", name: "Notion" },
+    { slug: "watershed", name: "Watershed" },
+    { slug: "render", name: "Render" },
+    { slug: "workos", name: "WorkOS" },
+    { slug: "clerk", name: "Clerk" },
   ],
 };
 
@@ -50,10 +67,13 @@ export const ATS_COMPANY_BOARDS = {
 export const NEW_GRAD_TITLE_SIGNALS = [
   "new grad",
   "new graduate",
+  "recent grad",
+  "recent graduate",
   "entry level",
   "entry-level",
   "early career",
   "early-career",
+  "early in career",
   "graduate program",
   "graduate",
   "university hire",
@@ -65,8 +85,11 @@ export const NEW_GRAD_TITLE_SIGNALS = [
   "associate engineer",
   "associate software",
   "software engineer i",
+  "software engineer 1",
   "swe i",
+  "swe 1",
   "engineer i",
+  "engineer 1",
 ];
 
 // Title must contain at least one SWE-flavoured signal (third clause).
@@ -76,7 +99,12 @@ export const SWE_TITLE_SIGNALS = [
   "software engineering",
   "software developer",
   "software development",
+  "software development engineer",
   "swe",
+  "sde",
+  // Bare "engineer" catches "Graduate Engineer", "New Grad Engineer", etc.
+  // Safe here since all boards are tech companies.
+  "engineer",
   // Specializations explicit in the original query
   "backend engineer",
   "backend engineering",
@@ -114,6 +142,12 @@ export const SWE_TITLE_SIGNALS = [
   "mobile engineer",
   "ios engineer",
   "android engineer",
+  // ML / AI / Data roles increasingly appear in new-grad postings
+  "data engineer",
+  "ml engineer",
+  "machine learning engineer",
+  "research engineer",
+  "ai engineer",
 ];
 
 // Title must NOT contain any of these (the trailing `-flag` clauses).
@@ -138,6 +172,14 @@ export const NEGATIVE_TITLE_SIGNALS = [
   "directors",
   "architect",
   "master",
+  // Mid/senior level indicators — roman numerals and digits after a role title
+  "ii",
+  "iii",
+  "iv",
+  // Support / non-SWE roles that slip through bare "engineer" signal
+  "support",
+  "cafe",
+  "it systems",
 ];
 
 // US state and territory codes — strong "this is a US location" signal
@@ -201,7 +243,7 @@ export const FOREIGN_LOCATION_HINTS = [
   "emea", "apac", "latam",
 ];
 
-export const ATS_MAX_RESULTS = 30;
+export const ATS_MAX_RESULTS = 75;
 
 // When true, filter to US-only locations. If the strict US filter yields
 // zero results, the fetcher automatically falls back to showing all
@@ -216,7 +258,7 @@ export const ATS_MAX_AGE_DAYS = 120;
 // Cache the filtered result in localStorage so source-switches and
 // app relaunches are instant. The refresh button bypasses this.
 export const ATS_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-export const ATS_CACHE_STORAGE_KEY = "stride.atsFeed.v6";
+export const ATS_CACHE_STORAGE_KEY = "stride.atsFeed.v16";
 
 // Persist which feed source was last active so it survives reloads.
 export const FEED_SOURCE_STORAGE_KEY = "stride.feedSource.v1";

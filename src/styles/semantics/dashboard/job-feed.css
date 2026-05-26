@@ -7,82 +7,119 @@
   text-align: left;
 }
 
-.dashboard-new-grad-feed-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-md);
-}
+/* ── Header ─────────────────────────────── */
 
-.dashboard-new-grad-feed-title {
+.dashboard-new-grad-feed-header {
   display: flex;
-  min-width: 0;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
 }
 
-.dashboard-new-grad-feed-source-chip,
-.dashboard-new-grad-feed-date {
-  flex-shrink: 0;
+/* ── Source tabs ────────────────────────── */
+
+.feed-source-tabs {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
   border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--theme-text-muted);
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  white-space: nowrap;
+  border-radius: var(--radius-md);
+  background: rgba(241, 245, 249, 0.6);
 }
 
-.dashboard-new-grad-feed-source-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.22rem 0.55rem;
+.feed-source-tab {
+  flex: 1;
+  height: 1.8rem;
+  border: none;
+  border-right: 1px solid var(--theme-card-border);
+  background: transparent;
+  color: var(--theme-text-muted);
   font-family: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
   cursor: pointer;
   transition:
-    border-color var(--motion-fast),
     background-color var(--motion-fast),
     color var(--motion-fast),
-    transform var(--motion-fast);
+    box-shadow var(--motion-fast);
 }
 
-.dashboard-new-grad-feed-source-chip:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  background: rgba(56, 189, 248, 0.1);
-  color: #7dd3fc;
+.feed-source-tab:last-child {
+  border-right: none;
 }
 
-.dashboard-new-grad-feed-source-chip:active {
-  transform: scale(0.96);
+.feed-source-tab:hover:not(.is-active) {
+  background: rgba(56, 189, 248, 0.06);
+  color: var(--theme-text-secondary);
 }
 
-.dashboard-new-grad-feed-refresh-button {
+.feed-source-tab.is-active {
+  background: linear-gradient(
+    to bottom,
+    rgba(56, 189, 248, 0.18),
+    rgba(56, 189, 248, 0.08)
+  );
+  color: #0284c7;
+  box-shadow: inset 0 1px 0 rgba(56, 189, 248, 0.25);
+}
+
+/* ── Separator between tabs and list ────── */
+
+.dashboard-new-grad-feed-header {
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--theme-card-border);
+  margin-bottom: 0.1rem;
+}
+
+/* ── Refresh button ─────────────────────── */
+
+.feed-refresh-btn {
   display: inline-flex;
-  width: 1.75rem;
-  height: 1.75rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  padding: 0;
   border: 1px solid var(--theme-card-border);
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--theme-text-muted);
   cursor: pointer;
   transition:
-    border-color var(--motion-fast),
-    background-color var(--motion-fast),
-    color var(--motion-fast);
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease;
 }
 
-.dashboard-new-grad-feed-refresh-button:hover {
-  border-color: rgba(56, 189, 248, 0.4);
-  background: rgba(56, 189, 248, 0.1);
-  color: #7dd3fc;
+.feed-refresh-btn:hover:not(:disabled) {
+  color: var(--theme-text-secondary);
+  border-color: rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.07);
 }
 
-.dashboard-new-grad-feed-refresh-button svg {
-  width: 0.95rem;
-  height: 0.95rem;
+.feed-refresh-btn:disabled {
+  cursor: default;
+  opacity: 0.5;
 }
+
+.feed-refresh-btn svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  pointer-events: none;
+}
+
+@keyframes feed-spin {
+  to { transform: rotate(360deg); }
+}
+
+.feed-refresh-btn.is-loading svg {
+  animation: feed-spin 0.75s linear infinite;
+}
+
+/* ── Job list ───────────────────────────── */
 
 .dashboard-new-grad-feed-list {
   display: flex;
@@ -90,21 +127,23 @@
   flex: 1;
   flex-direction: column;
   overflow: hidden;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
+
+/* ── Job item ───────────────────────────── */
 
 .dashboard-new-grad-feed-item {
   display: flex;
   width: 100%;
-  height: 3.5rem;
+  height: 3.6rem;
   flex: 0 0 auto;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding: 0 0.85rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 0 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
   border-radius: 0.72rem;
-  background: rgba(15, 23, 42, 0.42);
+  background: rgba(255, 255, 255, 0.45);
   transition:
     border-color 150ms ease,
     background-color 150ms ease,
@@ -113,23 +152,21 @@
 
 .dashboard-new-grad-feed-item:hover {
   border-color: rgba(56, 189, 248, 0.32);
-  background: rgba(30, 41, 59, 0.62);
+  background: rgba(241, 245, 249, 0.88);
 }
 
 .dashboard-new-grad-feed-item:active {
   transform: scale(0.97);
 }
 
-.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-title-line {
-  color: var(--theme-text-primary);
-}
+/* ── Item link (clickable area) ─────────── */
 
 .dashboard-new-grad-feed-item-link {
   display: flex;
   flex: 1;
   min-width: 0;
   align-items: center;
-  gap: var(--space-md);
+  gap: 0.65rem;
   border: none;
   background: transparent;
   color: inherit;
@@ -139,34 +176,46 @@
   padding: 0;
 }
 
+/* ── Company icon (feed size) ───────────── */
+
+.dashboard-feed-company-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* ── Text block ─────────────────────────── */
+
 .dashboard-new-grad-feed-main {
   min-width: 0;
 }
 
-.dashboard-new-grad-feed-title-line,
-.dashboard-new-grad-feed-location {
-  min-width: 0;
+.dashboard-new-grad-feed-role-line {
   overflow: hidden;
-  text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.dashboard-new-grad-feed-title-line {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--theme-text-secondary);
+  color: var(--theme-text-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
+  transition: color 150ms ease;
 }
 
-.dashboard-new-grad-feed-location {
-  margin-top: 0.12rem;
+.dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-role-line {
+  color: var(--theme-text-secondary);
+}
+
+.dashboard-new-grad-feed-meta-line {
+  margin-top: 0.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--theme-text-muted);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
+  opacity: 0.8;
 }
+
+/* ── Right-side controls ────────────────── */
 
 .dashboard-new-grad-feed-side {
   display: inline-flex;
@@ -176,11 +225,15 @@
 }
 
 .dashboard-new-grad-feed-date {
+  flex-shrink: 0;
   padding: 0.18rem 0.45rem;
-  border-color: rgba(251, 191, 36, 0.2);
-  background: rgba(251, 191, 36, 0.07);
-  color: #fcd34d;
-  font-weight: 600;
+  border: 1px solid rgba(180, 83, 9, 0.28);
+  border-radius: var(--radius-pill);
+  background: rgba(251, 191, 36, 0.12);
+  color: #92400e;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
 }
 
 .dashboard-new-grad-feed-save-btn {
@@ -212,7 +265,7 @@
 
 .dashboard-new-grad-feed-save-btn:hover {
   opacity: 1;
-  color: #7dd3fc;
+  color: #0284c7;
   border-color: rgba(56, 189, 248, 0.4);
   background-color: rgba(56, 189, 248, 0.1);
 }
@@ -231,14 +284,121 @@
   color: #86efac;
 }
 
+/* ── Result count ───────────────────────── */
+
+.feed-result-count {
+  flex-shrink: 0;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  opacity: 0.7;
+}
+
+/* ── Skeleton shimmer ───────────────────── */
+
+@keyframes feed-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.dashboard-new-grad-feed-skeleton-item {
+  display: flex;
+  width: 100%;
+  height: 3.6rem;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 0.72rem;
+  background: rgba(241, 245, 249, 0.6);
+}
+
+.dashboard-new-grad-feed-skeleton-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.07) 25%,
+    rgba(148, 163, 184, 0.14) 50%,
+    rgba(148, 163, 184, 0.07) 75%
+  );
+  background-size: 200% 100%;
+  animation: feed-shimmer 1.4s ease-in-out infinite;
+}
+
+.dashboard-new-grad-feed-skeleton-main {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.38rem;
+}
+
+.dashboard-new-grad-feed-skeleton-line {
+  height: 0.6rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    90deg,
+    rgba(148, 163, 184, 0.07) 25%,
+    rgba(148, 163, 184, 0.14) 50%,
+    rgba(148, 163, 184, 0.07) 75%
+  );
+  background-size: 200% 100%;
+  animation: feed-shimmer 1.4s ease-in-out infinite;
+}
+
+.dashboard-new-grad-feed-skeleton-line--wide   { width: 58%; }
+.dashboard-new-grad-feed-skeleton-line--narrow { width: 36%; }
+
+/* ── Pagination slot ────────────────────── */
+
 .dashboard-new-grad-feed-pagination-slot {
   display: flex;
   min-height: 2.25rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-top: auto;
 }
 
 .dashboard-new-grad-feed-pagination-slot .dashboard-pagination {
   margin-top: 0;
+}
+
+/* Dark mode overrides */
+.theme-dark .feed-source-tabs {
+  background: rgba(15, 23, 42, 0.2);
+}
+
+.theme-dark .feed-source-tab.is-active {
+  color: #7dd3fc;
+}
+
+.theme-dark .dashboard-new-grad-feed-item {
+  background: rgba(15, 23, 42, 0.22);
+}
+
+.theme-dark .dashboard-new-grad-feed-item:hover {
+  background: rgba(30, 41, 59, 0.62);
+}
+
+.theme-dark .dashboard-new-grad-feed-item:hover .dashboard-new-grad-feed-role-line {
+  color: #e2e8f0;
+}
+
+.theme-dark .dashboard-new-grad-feed-date {
+  border-color: rgba(251, 191, 36, 0.2);
+  background: rgba(251, 191, 36, 0.07);
+  color: #fcd34d;
+}
+
+.theme-dark .dashboard-new-grad-feed-skeleton-item {
+  border-color: rgba(148, 163, 184, 0.08);
+  background: rgba(15, 23, 42, 0.18);
+}
+
+.theme-dark .dashboard-new-grad-feed-save-btn:hover {
+  color: #7dd3fc;
 }

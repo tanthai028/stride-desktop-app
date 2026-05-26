@@ -16,7 +16,7 @@
   transform: translateZ(0);
 
   font-size: var(--font-size-2xs);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: 1.25rem;
 
   transition: var(--transition-button);

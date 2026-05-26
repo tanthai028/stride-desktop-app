@@ -1,8 +1,4 @@
-import { getHoverFeedbackHandlers } from "../../../lib/uiFeedback.js";
-
 function SettingsToggleRow({ title, description, checked, onToggle }) {
-  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
-
   return (
     <div className="settings-card settings-card-padded">
       <div className="settings-toggle-row">
@@ -16,7 +12,6 @@ function SettingsToggleRow({ title, description, checked, onToggle }) {
           onClick={onToggle}
           aria-pressed={checked}
           className={`settings-toggle ${checked ? "is-checked" : ""}`}
-          {...hoverFeedbackHandlers}
         >
           <span
             className={`settings-toggle-thumb ${checked ? "is-checked" : ""}`}

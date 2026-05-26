@@ -1,3 +1,5 @@
+/* Shell
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-shell {
   position: relative;
   display: flex;
@@ -21,6 +23,8 @@
   overflow-x: hidden;
 }
 
+/* Table
+   ─────────────────────────────────────────────────────────────────── */
 .library-table {
   width: 100%;
   min-width: 0;
@@ -32,26 +36,30 @@
   color: var(--theme-text-primary);
 }
 
-.library-table-header-row,
-.library-table-row {
-  border-bottom: 1px solid var(--theme-card-border);
-}
-
+/* Header
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-header-cell {
   position: sticky;
   top: 0;
   z-index: 20;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 0.9rem;
   white-space: nowrap;
   background-color: var(--theme-card-bg-solid);
-  color: var(--theme-text-secondary);
-  font-weight: 500;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 1px 0 var(--theme-card-border);
 }
 
+/* Rows
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-row {
+  border-bottom: 1px solid var(--theme-card-border);
   transition:
     background-color var(--motion-fast),
-    color var(--motion-fast);
+    box-shadow var(--motion-fast);
 }
 
 .library-table-row.is-clickable {
@@ -59,23 +67,28 @@
 }
 
 .library-table-row.is-clickable:hover {
-  background-color: rgba(var(--theme-library-card-hover-bg), 0.25);
+  background-color: rgba(var(--theme-library-card-hover-bg), 0.15);
+  box-shadow: inset 2px 0 0 rgba(var(--theme-accent-sky-bg), 0.45);
 }
 
 .library-table-row.is-pinned {
-  background-color: color-mix(in srgb, #facc15 18%, var(--theme-card-bg-solid));
+  background-color: color-mix(in srgb, #facc15 10%, var(--theme-card-bg-solid));
+  box-shadow: inset 3px 0 0 rgba(250, 204, 21, 0.55);
 }
 
 .library-table-row.is-clickable.is-pinned:hover {
-  background-color: color-mix(in srgb, #facc15 26%, var(--theme-card-bg-solid));
+  background-color: color-mix(in srgb, #facc15 18%, var(--theme-card-bg-solid));
+  box-shadow: inset 3px 0 0 #facc15;
 }
 
+/* Cells
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-header-cell,
 .library-table-cell {
   min-width: 0;
   max-width: 0;
   overflow: hidden;
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.9rem;
   vertical-align: middle;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -85,11 +98,8 @@
   color: var(--theme-text-primary);
 }
 
-.library-table-header-cell:not(:last-child),
-.library-table-cell:not(:last-child) {
-  border-right: 1px solid var(--theme-card-border);
-}
-
+/* Text helpers
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-text-truncate,
 .library-table-text-nowrap {
   display: block;
@@ -100,28 +110,51 @@
   text-overflow: ellipsis;
 }
 
-.library-table-status-chip {
-  display: inline-flex;
-  max-width: 100%;
-  min-width: 0;
+/* Company cell
+   ─────────────────────────────────────────────────────────────────── */
+.library-table-company-cell {
+  display: flex;
   align-items: center;
-  gap: var(--space-xs);
+  gap: 0.55rem;
+  min-width: 0;
   overflow: hidden;
-  padding: 0.25rem 0.625rem;
-  border: 1px solid var(--theme-card-border);
-  border-radius: var(--radius-pill);
-  white-space: nowrap;
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  color: var(--theme-text-secondary);
-  background-color: color-mix(
-    in srgb,
-    var(--theme-card-bg-semi-solid) 86%,
-    transparent
-  );
-  text-overflow: ellipsis;
 }
 
+/* Company avatar
+   ─────────────────────────────────────────────────────────────────── */
+.library-table-avatar {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.35rem;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+/* Light mode */
+.library-table-avatar.avatar-sky     { background: rgba(14, 165, 233, 0.14); color: #0284c7; }
+.library-table-avatar.avatar-violet  { background: rgba(139, 92, 246, 0.14); color: #6d28d9; }
+.library-table-avatar.avatar-emerald { background: rgba(16, 185, 129, 0.14); color: #065f46; }
+.library-table-avatar.avatar-amber   { background: rgba(245, 158, 11, 0.14); color: #92400e; }
+.library-table-avatar.avatar-rose    { background: rgba(244, 63, 94, 0.14);  color: #9f1239; }
+.library-table-avatar.avatar-indigo  { background: rgba(99, 102, 241, 0.14); color: #3730a3; }
+
+/* Dark mode */
+.theme-dark .library-table-avatar.avatar-sky     { background: rgba(14, 165, 233, 0.18); color: #7dd3fc; }
+.theme-dark .library-table-avatar.avatar-violet  { background: rgba(139, 92, 246, 0.18); color: #c4b5fd; }
+.theme-dark .library-table-avatar.avatar-emerald { background: rgba(16, 185, 129, 0.18); color: #6ee7b7; }
+.theme-dark .library-table-avatar.avatar-amber   { background: rgba(245, 158, 11, 0.18); color: #fcd34d; }
+.theme-dark .library-table-avatar.avatar-rose    { background: rgba(244, 63, 94, 0.18);  color: #fda4af; }
+.theme-dark .library-table-avatar.avatar-indigo  { background: rgba(99, 102, 241, 0.18); color: #a5b4fc; }
+
+/* Link button (kept for compatibility)
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-link-button {
   display: inline-flex;
   align-items: center;
@@ -133,7 +166,7 @@
   white-space: nowrap;
   color: var(--theme-text-primary);
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   text-decoration: underline;
   text-underline-offset: 4px;
   opacity: 0.85;
@@ -155,6 +188,15 @@
   display: none;
 }
 
+/* Scrollbar — reposition track/thumb inside the clipped shell
+   ─────────────────────────────────────────────────────────────────── */
+.library-table-shell .page-scrollbar-track,
+.library-table-shell .page-scrollbar-thumb {
+  right: 0.1rem;
+}
+
+/* Empty state
+   ─────────────────────────────────────────────────────────────────── */
 .library-table-empty-state {
   display: flex;
   height: 100%;
@@ -168,13 +210,4 @@
   min-height: 100%;
   flex-direction: column;
   justify-content: center;
-}
-
-.library-table-priority-chip {
-  display: block;
-  max-width: 100%;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }

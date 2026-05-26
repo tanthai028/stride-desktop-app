@@ -14,14 +14,12 @@ function formatElapsedTime(seconds) {
 
 function ApplyModeHeader({
   isApplying,
-  currentItem,
   isClickThrough,
   setIsClickThrough,
-  onApply,
-  onToggleSettings,
   elapsedSeconds,
   isTimerRunning,
   onToggleTimer,
+  onToggleSettings,
   onExitRequest,
 }) {
   function handleMinimize() {
@@ -51,19 +49,14 @@ function ApplyModeHeader({
           />
         </div>
 
-        <button
-          type="button"
-          className="apply-mode-state no-drag"
-          onClick={onApply}
-          disabled={!currentItem}
-        >
+        <div className="apply-mode-state no-drag">
           <span
             className={`apply-mode-dot ${
               isApplying ? "is-applying" : "is-idle"
             }`}
           />
           <span>{isApplying ? "Applying" : "Idle"}</span>
-        </button>
+        </div>
 
         <button
           type="button"

@@ -1,10 +1,15 @@
-import { BookOpen, History, Settings } from "lucide-react";
+import { BookOpen, Compass, History, Settings } from "lucide-react";
 
 export const navigationItems = [
   {
     id: "dashboard",
     label: "Dashboard",
     iconSrc: "/stride_icon.png",
+  },
+  {
+    id: "discover",
+    label: "Discover",
+    icon: Compass,
   },
   {
     id: "library",

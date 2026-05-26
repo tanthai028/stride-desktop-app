@@ -133,6 +133,16 @@ function App() {
 
     if (actionId === "library") {
       handleNavigate(APP_PAGES.library);
+      return;
+    }
+
+    if (actionId === "discover") {
+      handleNavigate(APP_PAGES.discover);
+      return;
+    }
+
+    if (actionId === "sessions") {
+      handleNavigate(APP_PAGES.sessions);
     }
   }
 
@@ -201,6 +211,8 @@ function App() {
             onGoBack: handleGoBack,
             onGoForward: handleGoForward,
           }}
+          darkMode={settings.darkMode}
+          onToggleTheme={() => updateSetting("darkMode", !settings.darkMode)}
           sidebar={
             <AppSidebar
               activePage={activePage}

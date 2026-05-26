@@ -44,6 +44,181 @@
   flex: 1;
 }
 
+.frame-clock {
+  display: flex;
+  align-items: center;
+  gap: 0.425rem;
+  height: 2.4rem;
+  padding: 0 0.875rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--theme-panel-border);
+  background: var(--theme-panel-bg);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop);
+  cursor: pointer;
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast),
+    background-color var(--motion-fast);
+}
+
+.frame-clock:hover {
+  background: color-mix(in srgb, var(--theme-select-trigger-hover-bg) 45%, transparent);
+  box-shadow: var(--shadow-control-hover);
+}
+
+.frame-clock:active {
+  transform: scale(0.97);
+}
+
+.frame-clock-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  stroke-width: 2.25;
+}
+
+.frame-clock-icon--day {
+  color: var(--theme-header-clock-day-icon);
+}
+
+.frame-clock-icon--night {
+  color: var(--theme-header-clock-night-icon);
+  fill: currentColor;
+  stroke: none;
+}
+
+.frame-clock-time {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.01em;
+  color: var(--theme-header-clock-text);
+  white-space: nowrap;
+}
+
+.frame-clock-divider {
+  width: 1px;
+  height: 0.8rem;
+  flex-shrink: 0;
+  background: var(--theme-header-clock-subtext);
+  opacity: 0.25;
+}
+
+.frame-clock-date {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--theme-header-clock-subtext);
+  white-space: nowrap;
+}
+
+/* Theme toggle — horizontal pill in frame header */
+
+.frame-theme-switch {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-shrink: 0;
+  width: 4.5rem;
+  height: 2.4rem;
+  padding: 0;
+  overflow: hidden;
+
+  border-radius: 999px;
+  border: 1px solid var(--theme-panel-border);
+  background: var(--theme-panel-bg);
+  box-shadow: var(--theme-panel-shadow);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop-webkit);
+
+  cursor: pointer;
+  outline: none;
+
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast),
+    transform 0.12s ease;
+}
+
+.frame-theme-switch:focus,
+.frame-theme-switch:focus-visible {
+  outline: none;
+}
+
+.frame-theme-switch:active {
+  transform: scale(0.96);
+}
+
+.frame-theme-switch-thumb {
+  position: absolute;
+  top: 0.2rem;
+  bottom: 0.2rem;
+  width: calc(50% - 0.25rem);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 1;
+  transition:
+    left var(--motion-base) var(--ease-standard),
+    background-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+
+.frame-theme-switch.is-dark .frame-theme-switch-thumb {
+  left: 0.2rem;
+  background: rgba(99, 102, 241, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.32);
+}
+
+.frame-theme-switch.is-light .frame-theme-switch-thumb {
+  left: calc(50% + 0.05rem);
+  background: rgba(245, 158, 11, 0.2);
+  box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.32);
+}
+
+.frame-theme-switch-segment {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity var(--motion-fast);
+}
+
+.frame-theme-switch-segment--moon {
+  color: #818cf8;
+  opacity: 0.32;
+}
+
+.frame-theme-switch-segment--sun {
+  color: #f59e0b;
+  opacity: 0.32;
+}
+
+.frame-theme-switch.is-dark .frame-theme-switch-segment--moon {
+  opacity: 1;
+}
+
+.frame-theme-switch.is-light .frame-theme-switch-segment--sun {
+  opacity: 1;
+}
+
+.frame-theme-switch.is-dark:hover {
+  border-color: rgba(245, 158, 11, 0.38);
+  box-shadow:
+    var(--theme-panel-shadow),
+    0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.frame-theme-switch.is-light:hover {
+  border-color: rgba(99, 102, 241, 0.38);
+  box-shadow:
+    var(--theme-panel-shadow),
+    0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
 .frame-navigation {
   display: flex;
   width: 72px;
@@ -60,7 +235,7 @@
   box-shadow: var(--theme-panel-shadow);
 
   backdrop-filter: var(--theme-panel-backdrop);
-  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop-webkit);
 }
 
 .frame-nav-button {

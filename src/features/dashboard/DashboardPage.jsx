@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
-import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
-import DashboardPreview from "./components/DashboardPreview.jsx";
-import NewGradFeedCard from "./components/NewGradFeedCard.jsx";
+import QuickLinksCard from "./components/QuickLinksCard.jsx";
+import useQuickLinks from "./hooks/useQuickLinks.js";
+import TodayApplyQueueCard from "./components/TodayApplyQueueCard.jsx";
 import SessionSummaryCard from "./components/SessionSummaryCard.jsx";
 import { normalizeStatusValue } from "../library/constants/libraryStatuses.js";
 
@@ -63,8 +64,11 @@ function formatLastUpdatedLabel(items) {
   })}`;
 }
 
-function DashboardPage({ libraryStore, onHeaderDescriptionChange }) {
+function DashboardPage({ libraryStore, onAction, onHeaderDescriptionChange }) {
   const { items, loadError } = libraryStore;
+
+  const [isEditingLinks, setIsEditingLinks] = useState(false);
+  const quickLinks = useQuickLinks({ isEditingLinks });
 
   const lastUpdatedDescription = useMemo(
     () => formatLastUpdatedLabel(items),
@@ -90,6 +94,10 @@ function DashboardPage({ libraryStore, onHeaderDescriptionChange }) {
     }).length;
   }, [items]);
 
+  const handleOpenSessions = useCallback(() => {
+    onAction?.("sessions");
+  }, [onAction]);
+
   return (
     <motion.div
       initial={{ y: 14, opacity: 0 }}
@@ -106,23 +114,31 @@ function DashboardPage({ libraryStore, onHeaderDescriptionChange }) {
         <PageSection className="dashboard-overview-section">
           <div className="dashboard-overview-grid">
             <div className="dashboard-overview-left">
-              <div className="dashboard-top-card-grid">
-                <DashboardPreview
-                  variant="applyGoal"
-                  todayApplicationCount={todayCount}
-                />
-                <DashboardPreview variant="timer" />
-              </div>
+              <SessionSummaryCard onOpen={handleOpenSessions} />
 
-              <SessionSummaryCard />
-
-              <DashboardPreview variant="quickLinks" />
+              <QuickLinksCard
+                quickLinks={quickLinks.quickLinks}
+                currentPage={quickLinks.quickLinksPage}
+                quickLinksPerPage={quickLinks.quickLinksPerPage}
+                quickLinksListRef={quickLinks.quickLinksListRef}
+                isEditingLinks={isEditingLinks}
+                onAddLink={() => {
+                  quickLinks.addQuickLink();
+                  setIsEditingLinks(true);
+                }}
+                onUpdateLink={quickLinks.updateQuickLink}
+                onRemoveLink={quickLinks.removeQuickLink}
+                onPageChange={quickLinks.setQuickLinksPage}
+                onStartEditing={() => setIsEditingLinks(true)}
+                onStopEditing={() => setIsEditingLinks(false)}
+              />
             </div>
 
             <div className="dashboard-feed-column">
-              <NewGradFeedCard
-                libraryItems={items}
-                onSaveJob={libraryStore.addItem}
+              <TodayApplyQueueCard
+                items={items}
+                todayApplicationCount={todayCount}
+                onNavigate={onAction}
               />
             </div>
           </div>

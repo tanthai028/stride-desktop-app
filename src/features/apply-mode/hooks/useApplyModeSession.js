@@ -18,13 +18,12 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
   const [elapsedSeconds, setElapsedSeconds] = useState(
     Number(activeSession?.elapsedSeconds) || 0,
   );
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(true);
   const [isApplying, setIsApplying] = useState(false);
   const [skippedIds, setSkippedIds] = useState(activeSession?.skippedIds || []);
   const [completedItems, setCompletedItems] = useState(
     activeSession?.completedItems || [],
   );
-  const [recentPage, setRecentPage] = useState(0);
   const [showAppliedRecent, setShowAppliedRecent] = useState(true);
   const [showSkippedRecent, setShowSkippedRecent] = useState(true);
   const [isMovingCard, setIsMovingCard] = useState(false);
@@ -111,10 +110,6 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
   }, [items]);
 
   useEffect(() => {
-    setRecentPage(0);
-  }, [showAppliedRecent, showSkippedRecent]);
-
-  useEffect(() => {
     if (!shouldShowFilteredEmpty) {
       setCanShowFilteredEmpty(false);
     }
@@ -167,7 +162,6 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
     setIsApplying(false);
     setSkippedIds([]);
     setCompletedItems([]);
-    setRecentPage(0);
     setIsRecentExpanded(false);
     setShowAppliedRecent(true);
     setShowSkippedRecent(true);
@@ -223,7 +217,6 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
 
     window.setTimeout(() => {
       setCompletedItems((current) => [completedItem, ...current]);
-      setRecentPage(0);
       setIsMovingCard(false);
     }, 140);
   }
@@ -244,7 +237,24 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
 
     window.setTimeout(() => {
       setCompletedItems((current) => [completedItem, ...current]);
-      setRecentPage(0);
+      setIsMovingCard(false);
+    }, 140);
+  }
+
+  function handleUnskip() {
+    if (isMovingCard) return;
+
+    const lastSkipped = completedItems.find((item) => item.status === "Skipped");
+    if (!lastSkipped) return;
+
+    setIsMovingCard(true);
+    setSkippedIds((current) => current.filter((id) => id !== lastSkipped.id));
+    setIsApplying(false);
+
+    window.setTimeout(() => {
+      setCompletedItems((current) =>
+        current.filter((item) => item.id !== lastSkipped.id),
+      );
       setIsMovingCard(false);
     }, 140);
   }
@@ -265,8 +275,7 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
       console.error("Failed to remove job from apply mode:", error);
     } finally {
       window.setTimeout(() => {
-        setRecentPage(0);
-        setIsMovingCard(false);
+          setIsMovingCard(false);
       }, 140);
     }
   }
@@ -305,6 +314,8 @@ function useApplyModeSession({ items, updateItem, deleteItem }) {
     handleApply,
     handleDone,
     handleSkip,
+    handleUnskip,
+    canGoBack: completedItems.some((item) => item.status === "Skipped") && !isMovingCard,
     handleRemove,
   };
 }

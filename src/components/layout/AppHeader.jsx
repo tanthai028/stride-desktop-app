@@ -1,5 +1,4 @@
 import { BriefcaseBusiness, ExternalLink } from "lucide-react";
-import HeaderClock from "./HeaderClock.jsx";
 import {
   getCompanyIconUrl,
   handleCompanyIconFallback,
@@ -80,7 +79,6 @@ function AppHeader({ eyebrow, title, description, jobHeader }) {
         )}
       </div>
 
-      <HeaderClock />
     </div>
   );
 }

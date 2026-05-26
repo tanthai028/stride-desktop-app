@@ -1,10 +1,9 @@
-import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
-
 const actionButtonToneClassNames = {
   default: "action-button-default",
   pink: "action-button-pink",
   violet: "action-button-violet",
   sky: "action-button-sky",
+  red: "action-button-red",
 };
 
 function ActionButton({
@@ -18,8 +17,6 @@ function ActionButton({
   const toneClassName =
     actionButtonToneClassNames[tone] || actionButtonToneClassNames.default;
 
-  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
-
   return (
     <button
       type={type}
@@ -32,7 +29,6 @@ function ActionButton({
       ]
         .filter(Boolean)
         .join(" ")}
-      {...hoverFeedbackHandlers}
     >
       {children}
     </button>

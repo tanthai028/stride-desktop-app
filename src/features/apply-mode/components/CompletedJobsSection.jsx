@@ -4,8 +4,6 @@ import {
   getCompanyIconUrl,
   handleCompanyIconFallback,
 } from "../../dashboard/utils/companyIcon.utils.js";
-import PageScrollbar from "../../../components/page/PageScrollbar.jsx";
-import usePageScrollbar from "../../../components/page/usePageScrollbar.js";
 
 function CompletedJobsSection({
   completedItems,
@@ -22,21 +20,12 @@ function CompletedJobsSection({
   setCanShowFilteredEmpty,
   openJobUrl,
 }) {
-  const {
-    scrollRef,
-    scrollMetrics,
-    isScrollbarVisible,
-    handleScroll,
-    handlePointerEnter,
-    handlePointerLeave,
-    handleScrollbarPointerDown,
-  } = usePageScrollbar();
 
   return (
     <section className="apply-mode-completed">
       <div className="apply-mode-section-header">
         <div className="apply-mode-section-title">
-          <span>Just applied</span>
+          <span>Recent History</span>
 
           {isRecentExpanded ? (
             <div className="apply-mode-progress-pill">
@@ -88,11 +77,7 @@ function CompletedJobsSection({
 
       <div className="apply-mode-recent-scroll-shell">
         <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          onPointerEnter={handlePointerEnter}
-          onPointerLeave={handlePointerLeave}
-          className={`apply-mode-recent-list scrollbar-hide ${
+          className={`apply-mode-recent-list ${
             isRecentExpanded ? "is-expanded" : ""
           }`}
         >
@@ -176,14 +161,6 @@ function CompletedJobsSection({
           </AnimatePresence>
         </div>
 
-        <div className="apply-mode-page-scrollbar">
-          <PageScrollbar
-            isVisible={isScrollbarVisible}
-            scrollMetrics={scrollMetrics}
-            insetRight="0"
-            onPointerDown={handleScrollbarPointerDown}
-          />
-        </div>
       </div>
     </section>
   );

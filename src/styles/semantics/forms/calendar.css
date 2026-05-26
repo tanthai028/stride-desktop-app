@@ -1,0 +1,358 @@
+/* Calendar popover shell
+   ─────────────────────────────────────────────────────────────────── */
+.cal-popover {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 45;
+  border: 1px solid var(--theme-select-panel-border);
+  border-radius: var(--radius-md);
+  background-color: var(--theme-select-panel-bg);
+  box-shadow: var(--theme-select-panel-shadow);
+  backdrop-filter: var(--theme-select-panel-backdrop, blur(18px) saturate(145%));
+  -webkit-backdrop-filter: var(
+    --theme-select-panel-backdrop-webkit,
+    blur(18px) saturate(145%)
+  );
+  animation: cal-enter 170ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.cal-popover--clock {
+  z-index: 100;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@keyframes cal-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-0.3rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cal-popover--clock {
+  animation: cal-enter-clock 170ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cal-enter-clock {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-0.3rem) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* Calendar core
+   ─────────────────────────────────────────────────────────────────── */
+.cal {
+  width: 16rem;
+  padding: 0.55rem 0.5rem 0.6rem;
+}
+
+/* Header — month/year navigation
+   ─────────────────────────────────────────────────────────────────── */
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+  padding: 0 0.1rem;
+}
+
+.cal-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.65rem;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--theme-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.cal-nav-btn:hover {
+  background-color: var(--theme-select-option-hover-bg);
+  color: var(--theme-text-strong);
+}
+
+.cal-month-label {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--theme-text-strong);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  padding: 0.2rem 0.35rem;
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.cal-month-label:hover {
+  background-color: var(--theme-select-option-hover-bg);
+}
+
+/* Grid
+   ─────────────────────────────────────────────────────────────────── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.cal-weekday {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  color: var(--theme-text-muted);
+  font-size: var(--font-size-3xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.03em;
+  opacity: 0.5;
+}
+
+/* Day cells
+   ─────────────────────────────────────────────────────────────────── */
+.cal-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--theme-select-option-text);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.cal-day:hover {
+  background-color: var(--theme-select-option-hover-bg);
+  color: var(--theme-select-option-hover-text);
+}
+
+.cal-day:active {
+  transform: var(--motion-press-scale-sm);
+}
+
+.cal-day.is-other-month {
+  opacity: 0.28;
+}
+
+.cal-day.is-today {
+  color: var(--theme-stat-card-sky-label);
+  font-weight: var(--font-weight-bold);
+}
+
+.cal-day.is-today::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.cal-day.is-selected {
+  background-color: rgba(var(--theme-accent-pink-bg), 0.9);
+  color: #ffffff;
+  font-weight: var(--font-weight-semibold);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 0 2px var(--theme-accent-selection-focus-ring);
+}
+
+.cal-day.is-selected:hover {
+  background-color: rgba(var(--theme-accent-pink-bg), 1);
+}
+
+.cal-day.is-selected.is-today::after {
+  background-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Month picker grid
+   ─────────────────────────────────────────────────────────────────── */
+.cal-month-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  padding: 0.1rem 0;
+  /* matches day grid height: weekday row + 6 square day rows + 6 gaps */
+  height: calc(1.5rem + ((15rem - 6px) / 7) * 6 + 6px);
+}
+
+.cal-month-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--theme-select-option-text);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    color var(--motion-fast);
+}
+
+.cal-month-cell:hover {
+  background-color: var(--theme-select-option-hover-bg);
+  color: var(--theme-select-option-hover-text);
+}
+
+.cal-month-cell:active {
+  transform: var(--motion-press-scale-sm);
+}
+
+.cal-month-cell.is-today {
+  color: var(--theme-stat-card-sky-label);
+  font-weight: var(--font-weight-bold);
+}
+
+.cal-month-cell.is-selected {
+  background-color: var(--theme-accent-selection-bg-emphasized);
+  color: var(--theme-text-secondary);
+  font-weight: var(--font-weight-semibold);
+  box-shadow: 0 0 0 1px var(--theme-accent-selection-border);
+}
+
+.cal-month-cell.is-selected:hover {
+  background-color: var(--theme-accent-selection-bg-emphasized);
+}
+
+/* Frame clock wrap
+   ─────────────────────────────────────────────────────────────────── */
+.frame-clock-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Date trigger in filter menu
+   ─────────────────────────────────────────────────────────────────── */
+.ltf-date-wrap {
+  position: relative;
+}
+
+.ltf-date-trigger {
+  display: inline-flex;
+  width: 100%;
+  height: 2.1rem;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 var(--space-md) 0 0.65rem;
+  border: 1px solid var(--theme-select-trigger-border);
+  border-radius: var(--radius-md);
+  background-color: var(--theme-select-trigger-bg);
+  color: var(--theme-select-trigger-text);
+  font: inherit;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  box-shadow:
+    var(--shadow-control),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: var(--transition-control);
+}
+
+.ltf-date-trigger:hover,
+.ltf-date-trigger.is-open {
+  background-color: var(--theme-select-trigger-hover-bg);
+  box-shadow:
+    var(--shadow-control-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ltf-date-trigger.is-open {
+  box-shadow:
+    var(--shadow-control-hover),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 0 3px var(--theme-accent-selection-focus-ring);
+}
+
+.ltf-date-trigger-icon {
+  flex-shrink: 0;
+  opacity: 0.55;
+}
+
+.ltf-date-trigger-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ltf-date-trigger-label.is-placeholder {
+  opacity: 0.5;
+}
+
+.ltf-date-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.45;
+  transition: opacity var(--motion-fast), background-color var(--motion-fast);
+}
+
+.ltf-date-clear:hover {
+  opacity: 1;
+  background-color: var(--theme-select-option-hover-bg);
+}
+
+.ltf-date-wrap .cal-popover {
+  z-index: 50;
+  left: auto;
+  right: 0;
+}
+
+/* Reduced motion
+   ─────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cal-popover,
+  .cal-day {
+    animation: none;
+    transition: none;
+  }
+}

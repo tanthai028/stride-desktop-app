@@ -180,7 +180,11 @@
   min-height: 0;
   height: 100%;
   overflow-y: auto;
-  padding-right: 0.35rem;
+  scrollbar-width: none;
+}
+
+.apply-mode-body.is-recent-expanded .apply-mode-recent-list::-webkit-scrollbar {
+  display: none;
 }
 
 .apply-mode-recent-scroll-shell {
@@ -192,14 +196,6 @@
 
 .apply-mode-body.is-recent-expanded .apply-mode-recent-scroll-shell {
   height: 100%;
-  margin-right: 0.5rem;
-}
-
-.apply-mode-page-scrollbar {
-  position: absolute;
-  inset: 0;
-  right: -0.5rem;
-  pointer-events: none;
 }
 
 .apply-mode-company-row {

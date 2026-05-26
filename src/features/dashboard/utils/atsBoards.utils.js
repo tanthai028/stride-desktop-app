@@ -69,14 +69,21 @@ const US_STATE_REGEX = new RegExp(
 const US_TERMS_REGEX = buildSignalRegex(US_LOCATION_TERMS);
 const FOREIGN_REGEX = buildSignalRegex(FOREIGN_LOCATION_HINTS);
 
+// Strip diacritical marks so accented city/country names (e.g. "Reykjavík",
+// "Zürich") still match the plain-ASCII entries in FOREIGN_LOCATION_HINTS.
+function stripDiacritics(str) {
+  return str.normalize("NFD").replace(/[̀-ͯ]/g, "");
+}
+
 // Returns true if the location string looks like a US location.
 // Order matters: strong US signals (state code, "United States") override
 // foreign hints to handle cases like "Canada, KY" (Kentucky town).
 function isUsLocation(location) {
   if (!location) return true; // missing location → don't penalize
-  if (US_STATE_REGEX.test(location)) return true;
-  if (US_TERMS_REGEX.test(location)) return true;
-  if (FOREIGN_REGEX.test(location)) return false;
+  const loc = stripDiacritics(location);
+  if (US_STATE_REGEX.test(loc)) return true;
+  if (US_TERMS_REGEX.test(loc)) return true;
+  if (FOREIGN_REGEX.test(loc)) return false;
   return true; // unrecognized → assume US (e.g., "Remote", bare city names)
 }
 
@@ -168,6 +175,52 @@ async function fetchAshbyBoard({ slug, name }) {
   });
 }
 
+// Split a location string into individual locations.
+// Handles pipe/semicolon separated multi-location strings from ATS APIs
+// (e.g. "San Francisco, CA | New York, NY | Seattle, WA").
+// Does NOT split on commas to preserve "City, STATE" pairs.
+function parseLocations(location) {
+  if (!location || location === "Unknown") return [];
+  return location
+    .split(/\s*[|;]\s*/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+}
+
+function formatMergedLocation(locs) {
+  if (locs.length === 0) return "Unknown";
+  if (locs.length === 1) return locs[0];
+  const allRemote = locs.every((l) => /remote/i.test(l));
+  if (allRemote) return "Remote";
+  if (locs.length === 2) return `${locs[0]} · ${locs[1]}`;
+  return `${locs[0]} +${locs.length - 1} more`;
+}
+
+// Collapse duplicate postings of the same role at different offices into one
+// entry with a merged location string. Runs after the US filter so only
+// US-confirmed locations are merged.
+function deduplicateByRole(jobs) {
+  const seen = new Map();
+  for (const job of jobs) {
+    const key = `${job.company.toLowerCase()}__${job.role.toLowerCase()}`;
+    const newLocs = parseLocations(job.location);
+    if (seen.has(key)) {
+      const existing = seen.get(key);
+      for (const loc of newLocs) {
+        if (!existing.allLocations.includes(loc)) {
+          existing.allLocations.push(loc);
+        }
+      }
+    } else {
+      seen.set(key, { ...job, allLocations: newLocs });
+    }
+  }
+  return [...seen.values()].map(({ allLocations, ...job }) => ({
+    ...job,
+    location: formatMergedLocation(allLocations),
+  }));
+}
+
 export async function fetchAtsBoardJobs({ force = false } = {}) {
   if (!force) {
     const cached = readCache();
@@ -196,11 +249,7 @@ export async function fetchAtsBoardJobs({ force = false } = {}) {
       dropCounts.dupe += 1;
       return false;
     }
-    if (
-      NEGATIVE_REGEX.test(job.role) ||
-      !SWE_REGEX.test(job.role) ||
-      !NEW_GRAD_REGEX.test(job.role)
-    ) {
+    if (NEGATIVE_REGEX.test(job.role) || !SWE_REGEX.test(job.role)) {
       dropCounts.badtitle += 1;
       return false;
     }
@@ -221,7 +270,8 @@ export async function fetchAtsBoardJobs({ force = false } = {}) {
     : sortedByDate;
   const usedFallback = ATS_REQUIRE_US_LOCATION && usJobs.length === 0 && sortedByDate.length > 0;
   const finalSet = usedFallback ? sortedByDate : usJobs;
-  const filtered = finalSet.slice(0, ATS_MAX_RESULTS);
+  const deduped = deduplicateByRole(finalSet);
+  const filtered = deduped.slice(0, ATS_MAX_RESULTS);
 
   if (import.meta.env?.DEV) {
     // eslint-disable-next-line no-console

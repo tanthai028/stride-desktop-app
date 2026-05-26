@@ -23,6 +23,8 @@
   z-index: 10;
 }
 
+
+
 .app-header-kicker {
   color: var(--theme-header-kicker);
   line-height: 1.4;
@@ -43,29 +45,25 @@
   line-height: 1.4;
 }
 
-.header-clock-card {
+.header-clock {
   flex-shrink: 0;
-  padding: 1rem 1.25rem;
-  border-radius: var(--radius-xl);
-  text-align: right;
-  border: 1px solid var(--theme-panel-border);
-  background-color: var(--theme-panel-bg);
-  color: var(--theme-header-clock-text);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  box-shadow: var(--theme-panel-shadow);
-}
-
-.header-clock-content {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
+  gap: 0.7rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--theme-panel-border);
+  background-color: var(--theme-panel-bg);
+  backdrop-filter: var(--theme-panel-backdrop);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop-webkit);
+  box-shadow: var(--theme-panel-shadow);
 }
 
 .header-clock-icon-wrap {
   display: flex;
-  height: 2.125rem;
-  width: 2.125rem;
+  height: 2rem;
+  width: 2rem;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
@@ -73,14 +71,14 @@
 }
 
 .header-clock-text {
-  text-align: right;
+  text-align: left;
 }
 
 .header-clock-icon {
   flex-shrink: 0;
-  height: 1.75rem;
-  width: 1.75rem;
-  stroke-width: 1.9;
+  height: 1.1rem;
+  width: 1.1rem;
+  stroke-width: 2;
 }
 
 .header-clock-icon--day {
@@ -95,16 +93,28 @@
 
 .header-clock-time {
   font-size: var(--font-size-display-xs);
-  font-weight: 600;
+  font-weight: var(--font-weight-bold);
   line-height: 1;
+  letter-spacing: -0.025em;
   color: var(--theme-header-clock-text);
 }
 
-.header-clock-date {
-  margin-top: 0.5rem;
-  font-size: var(--font-size-sm);
+.header-clock-ampm {
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);
+  letter-spacing: 0;
   color: var(--theme-header-clock-subtext);
+  margin-left: 0.2rem;
+}
+
+.header-clock-date {
+  margin-top: 0.3rem;
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--theme-header-clock-subtext);
+  line-height: 1;
 }
 
 .header-clock-pill {

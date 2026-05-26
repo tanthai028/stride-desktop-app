@@ -2,161 +2,124 @@ import { motion } from "framer-motion";
 import {
   Archive,
   Calendar,
+  CalendarPlus,
   Check,
-  Circle,
-  Flag,
   Hash,
   Mail,
-  Tag,
+  MapPin,
   Trash2,
 } from "lucide-react";
 import PageShell from "../../../components/page/PageShell.jsx";
 import PageSection from "../../../components/page/PageSection.jsx";
+import SelectMenu from "../../../components/ui/SelectMenu.jsx";
 import EditableJobDetailCard from "../components/job-details/EditableJobDetailCard.jsx";
 import JobDetailTextBlock from "../components/job-details/JobDetailTextBlock.jsx";
+import { PRIORITY_OPTIONS } from "../constants/libraryPriorities.js";
+import {
+  getLibraryStatusOptions,
+  normalizeStatusValue,
+} from "../constants/libraryStatuses.js";
 import {
   extractJobId,
   formatLibraryAppliedDate,
+  formatLibraryLocation,
 } from "../utils/libraryDisplayFormatters.js";
 
-const JOURNEY_STEPS = [
+/* ─── Pipeline steps ─────────────────────────────────────── */
+
+const PIPELINE_STEPS = [
   { value: "applied", label: "Applied" },
-  { value: "oa", label: "Screen" },
-  { value: "interview", label: "Technical" },
-  { value: "final", label: "Final Round" },
+  { value: "oa", label: "OA" },
+  { value: "interview", label: "Interview" },
+  { value: "final", label: "Final" },
   { value: "offer", label: "Offer" },
 ];
 
-function EmptyText({ children }) {
-  return <p className="job-detail-empty">{children}</p>;
-}
-
-function getPriorityClass(priority = "medium") {
-  return `job-detail-priority-pill is-${String(priority).toLowerCase()}`;
-}
-
 function getJourneyIndex(status = "") {
-  const normalized = String(status).toLowerCase();
-
-  if (!normalized || normalized === "unapplied" || normalized === "none") {
-    return -1;
-  }
-
+  const normalized = normalizeStatusValue(status);
+  if (!normalized || normalized === "unapplied" || normalized === "none") return -1;
   if (normalized === "applied") return 0;
   if (normalized === "oa") return 1;
   if (normalized === "interview") return 2;
   if (normalized === "final") return 3;
   if (normalized === "offer") return 4;
-
   return -1;
 }
 
-function JobJourney({ status }) {
+/* ─── Sub-components ─────────────────────────────────────── */
+
+function Pipeline({ status }) {
   const activeIndex = getJourneyIndex(status);
 
   return (
-    <section className="job-detail-journey-card">
-      <p className="job-detail-eyebrow">Application Journey</p>
+    <div className="jp-pipeline">
+      {PIPELINE_STEPS.map((step, index) => {
+        const isDone = index < activeIndex;
+        const isActive = index === activeIndex;
+        const isFirst = index === 0;
+        const isLast = index === PIPELINE_STEPS.length - 1;
+        const leftFilled = isDone || isActive;
+        const rightFilled = isDone;
 
-      <div className="job-detail-journey-steps">
-        {JOURNEY_STEPS.map((step, index) => {
-          const isDone = index < activeIndex;
-          const isActive = index === activeIndex;
-
-          return (
-            <div
-              key={step.value}
-              className={[
-                "job-detail-journey-step",
-                isDone ? "is-done" : "",
-                isActive ? "is-active" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-            >
-              <span className="job-detail-journey-dot">
-                {isDone ? <Check size={13} /> : <Circle size={9} />}
+        return (
+          <div
+            key={step.value}
+            className={[
+              "jp-pipeline-item",
+              isDone ? "is-done" : "",
+              isActive ? "is-active" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
+            <div className="jp-pipeline-node">
+              <div
+                className={[
+                  "jp-pipeline-line",
+                  isFirst ? "is-invisible" : "",
+                  leftFilled ? "is-filled" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              />
+              <span className="jp-pipeline-dot">
+                {isDone && <Check size={9} strokeWidth={2.5} />}
               </span>
-              <span>{step.label}</span>
+              <div
+                className={[
+                  "jp-pipeline-line",
+                  isLast ? "is-invisible" : "",
+                  rightFilled ? "is-filled" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              />
             </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
-
-function JobMetadataCard({ activeJob, appliedDate, jobId }) {
-  return (
-    <JobDetailTextBlock title="Metadata">
-      <dl className="job-detail-meta-list">
-        <div>
-          <dt>
-            <Calendar size={14} />
-            Applied Date
-          </dt>
-          <dd>{appliedDate}</dd>
-        </div>
-
-        <div>
-          <dt>
-            <Tag size={14} />
-            Status
-          </dt>
-          <dd>
-            <span className="job-detail-status-pill">
-              {activeJob.status || "unapplied"}
-            </span>
-          </dd>
-        </div>
-
-        <div>
-          <dt>
-            <Flag size={14} />
-            Priority
-          </dt>
-          <dd>
-            <span className={getPriorityClass(activeJob.priority)}>
-              {activeJob.priority || "Medium"}
-            </span>
-          </dd>
-        </div>
-
-        <div>
-          <dt>
-            <Hash size={14} />
-            Job ID
-          </dt>
-          <dd>{jobId}</dd>
-        </div>
-      </dl>
-    </JobDetailTextBlock>
-  );
-}
-
-function JobDangerActions({ onArchive, onDelete }) {
-  return (
-    <div className="job-detail-danger-actions">
-      <button
-        className="job-detail-archive-button"
-        type="button"
-        onClick={onArchive}
-      >
-        <Archive size={14} />
-        Archive
-      </button>
-
-      <button
-        className="job-detail-delete-button"
-        type="button"
-        onClick={onDelete}
-      >
-        <Trash2 size={14} />
-        Delete
-      </button>
+            <span className="jp-pipeline-label">{step.label}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }
+
+function StatRow({ icon: Icon, label, value }) {
+  return (
+    <div className="jp-stat-row">
+      <Icon size={12} className="jp-stat-icon" />
+      <span className="jp-stat-label">{label}</span>
+      <span className="jp-stat-value" title={value}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+function EmptyText({ children }) {
+  return <p className="jp-empty">{children}</p>;
+}
+
+/* ─── Page ───────────────────────────────────────────────── */
 
 function JobDetailsPage({ activeJob, libraryStore, onBackToLibrary }) {
   if (!activeJob) {
@@ -164,23 +127,41 @@ function JobDetailsPage({ activeJob, libraryStore, onBackToLibrary }) {
       <PageShell scrollable={false}>
         <PageSection>
           <JobDetailTextBlock title="Job not found">
-            <EmptyText>
-              Go back to the library and select another job.
-            </EmptyText>
+            <EmptyText>Go back to the library and select another job.</EmptyText>
           </JobDetailTextBlock>
         </PageSection>
       </PageShell>
     );
   }
 
+  const statusOptions = getLibraryStatusOptions();
+  const currentStatusValue =
+    normalizeStatusValue(activeJob.status) || "unapplied";
+
+  const selectedStatusOption =
+    statusOptions.find((option) => option.value === currentStatusValue) ??
+    statusOptions[0];
+
+  const statusSelectOptions = statusOptions.map((option) => ({
+    value: option.rawLabel,
+    label: option.label,
+  }));
+
   const extractedJobId = extractJobId(activeJob.jobUrl);
   const numericJobId = extractedJobId?.match(/\d+/)?.[0];
   const jobId = numericJobId || "N/A";
 
   const appliedDate = formatLibraryAppliedDate(activeJob.appliedAt, {
-    fallback: "Not applied yet",
+    fallback: "—",
     year: "numeric",
   });
+
+  const createdDate = formatLibraryAppliedDate(activeJob.createdAt, {
+    fallback: "—",
+    year: "numeric",
+  });
+
+  const locationText = formatLibraryLocation(activeJob.location, "—");
 
   async function updateJob(changes) {
     await libraryStore.updateItem(activeJob.id, {
@@ -189,11 +170,32 @@ function JobDetailsPage({ activeJob, libraryStore, onBackToLibrary }) {
     });
   }
 
+  async function handleStatusChange(nextRawLabel) {
+    const nextOption = statusOptions.find(
+      (option) => option.rawLabel === nextRawLabel,
+    );
+    if (!nextOption) return;
+
+    const wasUnapplied = currentStatusValue === "unapplied";
+    const becomingActive = nextOption.value !== "unapplied";
+
+    const changes = { status: nextOption.rawLabel };
+
+    if (wasUnapplied && becomingActive && !activeJob.appliedAt) {
+      changes.appliedAt = new Date().toISOString();
+    }
+
+    await updateJob(changes);
+  }
+
+  async function handlePriorityChange(nextPriority) {
+    await updateJob({ priority: nextPriority });
+  }
+
   async function handleDeleteApplication() {
     const shouldDelete = window.confirm(
       "Delete this application? This cannot be undone.",
     );
-
     if (!shouldDelete) return;
 
     await libraryStore.deleteItem(activeJob.id);
@@ -206,57 +208,109 @@ function JobDetailsPage({ activeJob, libraryStore, onBackToLibrary }) {
   }
 
   return (
-    <PageShell scrollable={false}>
-      <PageSection>
+    <motion.div
+      className="jp-page"
+      initial={{ y: 14 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.45 }}
+    >
+      <PageShell scrollable={false}>
+        {/* ── Pipeline + Controls ───────────────────────── */}
         <motion.div
-          className="job-detail-shell"
-          initial={{ y: 14, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.35 }}
+          className="jp-toolbar"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.05 }}
         >
-          <JobJourney status={activeJob.status} />
+          <Pipeline status={selectedStatusOption?.rawLabel} />
 
-          <div className="job-detail-layout">
-            <main className="job-detail-main-column">
-              <EditableJobDetailCard
-                title="Notes"
-                value={activeJob.notes}
-                placeholder={`# Follow-up plan\n\n- Tailor resume\n- Apply\n- Follow up in 1 week`}
-                emptyText="Click here to add notes"
-                onSave={(notes) => updateJob({ notes })}
+          <div className="jp-toolbar-controls">
+            <div className="jp-hero-picks">
+              <SelectMenu
+                value={selectedStatusOption?.rawLabel ?? "Unapplied"}
+                onChange={handleStatusChange}
+                options={statusSelectOptions}
+                className="jp-hero-pick"
               />
-            </main>
+              <SelectMenu
+                value={activeJob.priority || "Medium"}
+                onChange={handlePriorityChange}
+                options={PRIORITY_OPTIONS}
+                className="jp-hero-pick"
+              />
+            </div>
+            <div className="jp-hero-sep" />
+            <div className="jp-hero-actions">
+              <button
+                type="button"
+                className="jp-hero-btn"
+                onClick={handleTemporaryArchive}
+                title="Archive"
+              >
+                <Archive size={14} />
+              </button>
+              <button
+                type="button"
+                className="jp-hero-btn jp-hero-btn--destructive"
+                onClick={handleDeleteApplication}
+                title="Delete"
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+          </div>
+        </motion.div>
 
-            <aside className="job-detail-side-column">
+        {/* ── Body ─────────────────────────────────────── */}
+        <motion.div
+          className="jp-body"
+          initial={{ opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.32, delay: 0.1 }}
+        >
+          {/* Sidebar */}
+          <aside className="jp-sidebar">
+            <p className="jp-sidebar-eyebrow">Details</p>
+
+            <div className="jp-stats">
+              <StatRow icon={Calendar} label="Applied" value={appliedDate} />
+              <StatRow icon={CalendarPlus} label="Added" value={createdDate} />
+              <StatRow icon={Hash} label="Job ID" value={jobId} />
+              <StatRow icon={MapPin} label="Location" value={locationText} />
+            </div>
+
+            <div className="jp-sidebar-rule" />
+
+            <div className="jp-sidebar-contact">
               <EditableJobDetailCard
-                title="Contact Info"
+                title="Contact"
                 value={activeJob.contactInfo}
                 placeholder="Recruiter name, email, LinkedIn, or follow-up notes"
                 emptyText={
-                  <span className="job-detail-contact-empty">
-                    <Mail size={16} />
-                    No recruiter or contact email found
+                  <span className="jp-contact-empty">
+                    <Mail size={13} />
+                    No contact on file
                   </span>
                 }
                 multiline={false}
                 onSave={(contactInfo) => updateJob({ contactInfo })}
               />
+            </div>
+          </aside>
 
-              <JobMetadataCard
-                activeJob={activeJob}
-                appliedDate={appliedDate}
-                jobId={jobId}
-              />
-
-              <JobDangerActions
-                onArchive={handleTemporaryArchive}
-                onDelete={handleDeleteApplication}
-              />
-            </aside>
+          {/* Notes */}
+          <div className="jp-main">
+            <EditableJobDetailCard
+              title="Notes"
+              value={activeJob.notes}
+              placeholder={`# Follow-up plan\n\n- Tailor resume\n- Apply\n- Follow up in 1 week`}
+              emptyText="Click here to add notes"
+              onSave={(notes) => updateJob({ notes })}
+            />
           </div>
         </motion.div>
-      </PageSection>
-    </PageShell>
+      </PageShell>
+    </motion.div>
   );
 }
 

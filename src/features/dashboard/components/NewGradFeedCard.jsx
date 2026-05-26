@@ -1,7 +1,6 @@
-import { Briefcase, BookmarkPlus, Check, RefreshCw } from "lucide-react";
+import { BookmarkPlus, Check, RefreshCw } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import DashboardPagination from "./DashboardPagination.jsx";
-import DashboardTitle from "./DashboardTitle.jsx";
 import { openDashboardLink } from "../utils/dashboardPreview.utils.js";
 import { fetchSimplifyNewGradJobs } from "../utils/jobFeed.utils.js";
 import { fetchAtsBoardJobs } from "../utils/atsBoards.utils.js";
@@ -11,7 +10,45 @@ import {
   handleCompanyIconFallback,
 } from "../utils/companyIcon.utils.js";
 
+// Convert a job's date info into milliseconds-ago for unified sorting.
+// ATS jobs carry a numeric postedAt; Simplify jobs carry a datePosted string.
+function msAgo(job) {
+  if (Number.isFinite(job.postedAt) && job.postedAt > 0) {
+    return Date.now() - job.postedAt;
+  }
+  const s = (job.datePosted ?? "").toLowerCase().trim();
+  if (s === "today") return 0;
+  const d = s.match(/^(\d+)d$/);
+  if (d) return Number(d[1]) * 86_400_000;
+  const w = s.match(/^(\d+)w$/);
+  if (w) return Number(w[1]) * 7 * 86_400_000;
+  const mo = s.match(/^(\d+)mo$/);
+  if (mo) return Number(mo[1]) * 30 * 86_400_000;
+  const parsed = Date.parse(job.datePosted ?? "");
+  if (Number.isFinite(parsed)) return Date.now() - parsed;
+  return Infinity; // "Recently" / unknown → sort to end
+}
+
+async function fetchAllJobs({ force = false } = {}) {
+  const [simplify, ats] = await Promise.allSettled([
+    fetchSimplifyNewGradJobs(),
+    fetchAtsBoardJobs({ force }),
+  ]);
+  const simplifyJobs = simplify.status === "fulfilled" ? simplify.value : [];
+  const atsJobs = ats.status === "fulfilled" ? ats.value : [];
+  const seen = new Set();
+  const combined = [];
+  for (const job of [...simplifyJobs, ...atsJobs]) {
+    if (job.url && seen.has(job.url)) continue;
+    if (job.url) seen.add(job.url);
+    combined.push(job);
+  }
+  combined.sort((a, b) => msAgo(a) - msAgo(b));
+  return combined;
+}
+
 const FEED_SOURCES = [
+  { id: "all", label: "All", fetch: fetchAllJobs },
   { id: "simplify", label: "SimplifyJobs", fetch: fetchSimplifyNewGradJobs },
   { id: "ats", label: "ATS Boards", fetch: fetchAtsBoardJobs },
 ];
@@ -38,6 +75,12 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
 
   const cardRef = useRef(null);
   const listRef = useRef(null);
+  const isFirstLoad = useRef(true);
+
+  const savedJobUrls = useMemo(
+    () => new Set(libraryItems.map((item) => item.jobUrl).filter(Boolean)),
+    [libraryItems],
+  );
 
   const totalPages = Math.max(1, Math.ceil(jobs.length / jobsPerPage));
   const visibleJobs = jobs.slice(
@@ -45,10 +88,9 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
     currentPage * jobsPerPage,
   );
 
-  const savedJobUrls = useMemo(
-    () => new Set(libraryItems.map((item) => item.jobUrl).filter(Boolean)),
-    [libraryItems],
-  );
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages));
+  }, [totalPages]);
 
   function isJobSaved(job) {
     return savedFeedIds.has(job.id) || savedJobUrls.has(job.url);
@@ -81,22 +123,23 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
     }
   }
 
-  useEffect(() => {
-    loadFeed();
-    // Refetch whenever the active source changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sourceIndex]);
-
-  function cycleSource() {
+  function handleSourceChange(idx) {
+    if (idx === sourceIndex) return;
     setCurrentPage(1);
-    const nextIdx = (sourceIndex + 1) % FEED_SOURCES.length;
-    setSourceIndex(nextIdx);
+    setSourceIndex(idx);
     try {
-      localStorage.setItem(FEED_SOURCE_STORAGE_KEY, FEED_SOURCES[nextIdx].id);
+      localStorage.setItem(FEED_SOURCE_STORAGE_KEY, FEED_SOURCES[idx].id);
     } catch {
-      // ignore — chip selection just won't persist
+      // ignore
     }
   }
+
+  useEffect(() => {
+    const force = isFirstLoad.current;
+    isFirstLoad.current = false;
+    loadFeed({ force });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sourceIndex]);
 
   useLayoutEffect(() => {
     const listEl = listRef.current;
@@ -110,13 +153,11 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
         const availableHeight = listEl.clientHeight;
         if (availableHeight === 0) return;
 
-        // Read actual item height from DOM — no magic constant needed.
         const firstItem = listEl.querySelector(".dashboard-new-grad-feed-item");
         const itemHeight = firstItem
           ? firstItem.getBoundingClientRect().height
-          : 56; // fallback: 3.5rem at 16px base
+          : 56;
 
-        // Read actual gap from computed styles so it stays in sync with CSS.
         const gapHeight =
           parseFloat(getComputedStyle(listEl).rowGap) || 9.6;
 
@@ -130,19 +171,18 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
     };
 
     measure();
+    const retryId = setTimeout(measure, 0);
 
     const ro = new ResizeObserver(measure);
     ro.observe(listEl);
+    if (cardRef.current) ro.observe(cardRef.current);
 
     return () => {
+      clearTimeout(retryId);
       window.cancelAnimationFrame(rafId);
       ro.disconnect();
     };
   }, [status]);
-
-  useEffect(() => {
-    setCurrentPage((page) => Math.min(page, totalPages));
-  }, [totalPages]);
 
   return (
     <div
@@ -150,25 +190,26 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
       className="surface-card dashboard-card dashboard-new-grad-feed-card"
     >
       <div className="dashboard-new-grad-feed-header">
-        <p className="stat-card-description dashboard-card-title dashboard-new-grad-feed-title text-sm font-medium">
-          <DashboardTitle icon={Briefcase}>New Grad Feed</DashboardTitle>
-
-          <button
-            type="button"
-            className="dashboard-new-grad-feed-source-chip"
-            onClick={cycleSource}
-            title="Switch source"
-            aria-label={`Switch source (current: ${source.label})`}
-          >
-            {source.label}
-          </button>
-        </p>
-
+        <div className="feed-source-tabs" role="tablist" aria-label="Feed source">
+          {FEED_SOURCES.map((src, idx) => (
+            <button
+              key={src.id}
+              type="button"
+              role="tab"
+              aria-selected={sourceIndex === idx}
+              className={`feed-source-tab${sourceIndex === idx ? " is-active" : ""}`}
+              onClick={() => handleSourceChange(idx)}
+            >
+              {src.label}
+            </button>
+          ))}
+        </div>
         <button
           type="button"
-          className="dashboard-new-grad-feed-refresh-button"
+          className={`feed-refresh-btn${status === "loading" ? " is-loading" : ""}`}
           onClick={() => loadFeed({ force: true })}
-          aria-label="Refresh new grad feed"
+          disabled={status === "loading"}
+          aria-label="Refresh feed"
           title="Refresh feed"
         >
           <RefreshCw />
@@ -176,9 +217,17 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
       </div>
 
       <div ref={listRef} className="dashboard-new-grad-feed-list">
-        {status === "loading" ? (
-          <p className="stat-card-description text-sm">Loading new roles...</p>
-        ) : null}
+        {status === "loading"
+          ? Array.from({ length: jobsPerPage }).map((_, i) => (
+              <div key={i} className="dashboard-new-grad-feed-skeleton-item">
+                <div className="dashboard-new-grad-feed-skeleton-icon" />
+                <div className="dashboard-new-grad-feed-skeleton-main">
+                  <div className="dashboard-new-grad-feed-skeleton-line dashboard-new-grad-feed-skeleton-line--wide" />
+                  <div className="dashboard-new-grad-feed-skeleton-line dashboard-new-grad-feed-skeleton-line--narrow" />
+                </div>
+              </div>
+            ))
+          : null}
 
         {status === "error" ? (
           <p className="stat-card-description text-sm">
@@ -187,9 +236,7 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
         ) : null}
 
         {status === "ready" && jobs.length === 0 ? (
-          <p className="stat-card-description text-sm">
-            No new grad roles found
-          </p>
+          <p className="stat-card-description text-sm">No roles found.</p>
         ) : null}
 
         {status === "ready"
@@ -203,26 +250,21 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
                     onClick={() => openDashboardLink(job.url)}
                     aria-label={`Open ${job.company} job posting`}
                   >
+                    <img
+                      className="dashboard-company-icon dashboard-feed-company-icon"
+                      src={getCompanyIconUrl(job.company)}
+                      onError={(event) =>
+                        handleCompanyIconFallback(event, job.url)
+                      }
+                      alt=""
+                      loading="lazy"
+                    />
                     <div className="dashboard-new-grad-feed-main">
-                      <p className="dashboard-new-grad-feed-title-line">
-                        <img
-                          className="dashboard-company-icon"
-                          src={getCompanyIconUrl(job.company)}
-                          onError={(event) =>
-                            handleCompanyIconFallback(event, job.url)
-                          }
-                          alt=""
-                          loading="lazy"
-                        />
-
-                        <span className="dashboard-new-grad-feed-title-text">
-                          {job.company || "Unknown Company"} ·{" "}
-                          {job.role || "New grad role"}
-                        </span>
+                      <p className="dashboard-new-grad-feed-role-line">
+                        {job.role || "Software role"}
                       </p>
-
-                      <p className="dashboard-new-grad-feed-location">
-                        {job.location || "Unknown"}
+                      <p className="dashboard-new-grad-feed-meta-line">
+                        {job.company || "Unknown"} · {job.location || "Unknown"}
                       </p>
                     </div>
                   </button>
@@ -238,7 +280,6 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
                     >
                       {saved ? <Check /> : <BookmarkPlus />}
                     </button>
-
                     <span className="dashboard-new-grad-feed-date">
                       {job.datePosted}
                     </span>
@@ -250,6 +291,9 @@ function NewGradFeedCard({ libraryItems = [], onSaveJob }) {
       </div>
 
       <div className="dashboard-new-grad-feed-pagination-slot">
+        <span className="feed-result-count">
+          {status === "ready" && jobs.length > 0 ? `${jobs.length} roles` : ""}
+        </span>
         <DashboardPagination
           currentPage={currentPage}
           totalPages={totalPages}

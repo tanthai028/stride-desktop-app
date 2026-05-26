@@ -2,13 +2,15 @@
   position: relative;
   width: 4.5rem;
   min-width: 4.5rem;
+  height: 100%;
   overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
 }
 
 .sidebar-shell {
-  position: absolute;
-  top: 0;
-  left: 0;
   z-index: 30;
   width: 4.5rem;
   overflow: hidden;
@@ -18,7 +20,7 @@
   background: var(--theme-panel-bg);
   box-shadow: var(--theme-panel-shadow);
   backdrop-filter: var(--theme-panel-backdrop);
-  -webkit-backdrop-filter: var(--theme-sidebar-backdrop-webkit);
+  -webkit-backdrop-filter: var(--theme-panel-backdrop-webkit);
   will-change: width;
   transform: translateZ(0);
   transition:
@@ -44,7 +46,7 @@
 
 .sidebar-item {
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   position: relative;
   z-index: 1;
   display: grid;
@@ -188,7 +190,7 @@
 
 .sidebar-apply-mode-item {
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   position: relative;
   z-index: 1;
   display: grid;
@@ -318,8 +320,8 @@
   background: rgba(251, 191, 36, 0.18);
   border: 1px solid rgba(251, 191, 36, 0.32);
   color: #b45309;
-  font-size: 0.66rem;
-  font-weight: 600;
+  font-size: var(--font-size-4xs);
+  font-weight: var(--font-weight-semibold);
   line-height: 1;
   letter-spacing: 0.01em;
   opacity: 0;
@@ -351,3 +353,4 @@
   background: rgba(251, 191, 36, 0.24);
   border-color: rgba(251, 191, 36, 0.5);
 }
+

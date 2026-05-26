@@ -4,10 +4,26 @@ import {
   formatLibraryLocation,
 } from "../../utils/libraryDisplayFormatters.js";
 
+const AVATAR_COLORS = [
+  "avatar-sky",
+  "avatar-violet",
+  "avatar-emerald",
+  "avatar-amber",
+  "avatar-rose",
+  "avatar-indigo",
+];
+
+function getAvatarColor(company = "") {
+  const code = company.trim().toLowerCase().charCodeAt(0) || 0;
+  return AVATAR_COLORS[code % AVATAR_COLORS.length];
+}
+
 function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
   const statusMeta = getStatusMeta(item.status);
   const isClickable = isPageReady && onItemClick;
-  const displayJobId = item.jobId || "N/A";
+  const priorityClass = (item.priority || "medium").toLowerCase();
+  const avatarLetter = item.company?.trim()?.[0]?.toUpperCase() || "?";
+  const avatarColor = getAvatarColor(item.company);
 
   function handleMiddleMouseDown(event) {
     if (event.button !== 1) return;
@@ -16,7 +32,6 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
 
   function handleMiddleClick(event) {
     if (event.button !== 1) return;
-
     event.preventDefault();
     event.stopPropagation();
     onTogglePinned?.(item);
@@ -42,8 +57,13 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
       }
     >
       <td className="library-table-cell library-col-company">
-        <span className="library-table-text-truncate">
-          {item.company || "-"}
+        <span className="library-table-company-cell">
+          <span className={`library-table-avatar ${avatarColor}`}>
+            {avatarLetter}
+          </span>
+          <span className="library-table-text-truncate">
+            {item.company || "-"}
+          </span>
         </span>
       </td>
 
@@ -52,8 +72,8 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
       </td>
 
       <td className="library-table-cell library-col-status">
-        <span className="library-table-status-chip">
-          <span>{statusMeta.emoji}</span>
+        <span className={`library-table-status-chip status-${statusMeta.value}`}>
+          <span className="chip-emoji">{statusMeta.emoji}</span>
           <span className="library-table-text-truncate">
             {statusMeta.label || "-"}
           </span>
@@ -61,8 +81,9 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
       </td>
 
       <td className="library-table-cell library-col-priority">
-        <span className="library-table-priority-chip">
-          {item.priority || "Medium"}
+        <span className={`library-table-priority-chip priority-${priorityClass}`}>
+          <span className="priority-dot" />
+          <span>{item.priority || "Medium"}</span>
         </span>
       </td>
 
@@ -72,20 +93,10 @@ function LibraryTableRow({ item, isPageReady, onItemClick, onTogglePinned }) {
         </span>
       </td>
 
-      <td className="library-table-cell library-col-added">
-        <span className="library-table-text-nowrap">
-          {formatLibraryAppliedDate(item.createdAt)}
-        </span>
-      </td>
-
       <td className="library-table-cell library-col-applied">
         <span className="library-table-text-nowrap">
           {formatLibraryAppliedDate(item.appliedAt)}
         </span>
-      </td>
-
-      <td className="library-table-cell library-col-job-id">
-        <span className="library-table-text-truncate">{displayJobId}</span>
       </td>
     </tr>
   );

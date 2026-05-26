@@ -12,6 +12,7 @@ function formatClockParts(date) {
 
   const fullDate = new Intl.DateTimeFormat("en-US", {
     timeZone: CLOCK_TIME_ZONE,
+    weekday: "long",
     month: "long",
     day: "numeric",
     year: "numeric",

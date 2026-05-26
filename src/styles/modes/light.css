@@ -1,14 +1,15 @@
 :root {
   /* Core surfaces */
-  --theme-panel-bg: rgba(255, 255, 255, 0.5);
+  --theme-panel-bg: rgba(255, 255, 255, 0.25);
   --theme-panel-border: rgba(226, 232, 240, 0.9);
   --theme-panel-shadow:
-    0 18px 48px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    0 2px 4px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.09),
+    0 24px 56px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.28);
   --theme-panel-backdrop: blur(22px);
   --theme-panel-backdrop-webkit: blur(22px) saturate(150%);
 
   --theme-card-bg: rgba(255, 255, 255, 0);
-  --theme-card-bg-solid: rgba(255, 255, 255, 0.25);
+  --theme-card-bg-solid: rgba(248, 251, 255, 0.98);
   --theme-card-border: rgba(226, 232, 240, 0.93);
   --theme-card-backdrop: none;
   --theme-card-backdrop-webkit: none;
@@ -18,35 +19,46 @@
   --theme-empty-backdrop: blur(18px) saturate(145%);
   --theme-empty-backdrop-webkit: blur(18px) saturate(145%);
 
-  --theme-card-hover-shadow: 0 18px 24px -22px rgba(15, 23, 42, 0.42);
+  --theme-card-hover-shadow:
+    0 2px 6px rgba(15, 23, 42, 0.08), 0 8px 22px rgba(15, 23, 42, 0.1),
+    0 16px 32px -8px rgba(15, 23, 42, 0.09);
+  --theme-dashboard-card-shadow:
+    0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 14px rgba(15, 23, 42, 0.08),
+    0 10px 28px -6px rgba(15, 23, 42, 0.07);
 
   /* App shell and sidebar */
   --theme-app-shell-bg:
     radial-gradient(
       circle at top left,
-      rgba(56, 189, 248, 0.24),
-      transparent 32%
+      rgba(139, 92, 246, 0.36),
+      transparent 36%
     ),
     radial-gradient(
       circle at top right,
-      rgba(167, 139, 250, 0.22),
-      transparent 30%
+      rgba(56, 189, 248, 0.34),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 52% 62%,
+      rgba(244, 114, 182, 0.26),
+      transparent 32%
     ),
     radial-gradient(
       circle at bottom left,
-      rgba(244, 114, 182, 0.18),
+      rgba(99, 102, 241, 0.28),
       transparent 34%
     ),
     radial-gradient(
       circle at bottom right,
-      rgba(96, 165, 250, 0.14),
+      rgba(34, 211, 238, 0.22),
       transparent 38%
     ),
-    linear-gradient(155deg, #f8fbff 0%, #eef5ff 35%, #edf2ff 68%, #e7efff 100%);
+    linear-gradient(155deg, #f3f6ff 0%, #ede6ff 35%, #e4f2ff 68%, #fce8f5 100%);
   --theme-sidebar-bg: rgba(255, 255, 255, 0);
   --theme-sidebar-border: rgba(255, 255, 255, 0.32);
   --theme-sidebar-shadow:
-    0 18px 42px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    0 2px 6px rgba(15, 23, 42, 0.07), 0 12px 32px rgba(15, 23, 42, 0.09),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
   --theme-sidebar-backdrop: blur(18px) saturate(145%);
   --theme-sidebar-backdrop-webkit: blur(18px) saturate(145%);
   --theme-sidebar-item-bg: rgba(255, 255, 255, 0);
@@ -58,8 +70,8 @@
   --theme-sidebar-item-active-border: rgba(56, 189, 248, 0.28);
   --theme-sidebar-item-active-text: var(--theme-text-primary);
   --theme-sidebar-item-active-shadow:
-    0 10px 22px rgba(14, 165, 233, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.36);
+    0 2px 6px rgba(14, 165, 233, 0.16), 0 8px 20px rgba(14, 165, 233, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
 
   /* Typography */
   --theme-text-primary: #334155;
@@ -87,7 +99,8 @@
   --theme-header-bg: rgba(255, 255, 255, 0);
   --theme-header-border: rgba(255, 255, 255, 0.32);
   --theme-header-shadow:
-    0 16px 40px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+    0 1px 3px rgba(15, 23, 42, 0.06), 0 6px 20px rgba(15, 23, 42, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
   --theme-header-kicker: #0284c7;
   --theme-header-title: var(--theme-text-secondary);
   --theme-header-clock-bg: rgba(255, 255, 255, 0);
@@ -128,7 +141,8 @@
   --theme-window-controls-bg: rgba(255, 255, 255, 0);
   --theme-window-controls-border: rgba(226, 232, 240, 0.9);
   --theme-window-controls-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 6px 16px rgba(15, 23, 42, 0.08);
+    0 1px 3px rgba(15, 23, 42, 0.07), 0 4px 14px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32);
 
   --theme-window-control-minimize-bg: #34d399;
   --theme-window-control-minimize-hover-bg: #10b981;
@@ -148,7 +162,8 @@
   );
   --theme-modal-border: rgba(203, 213, 225, 0.78);
   --theme-modal-shadow:
-    0 24px 72px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    0 2px 8px rgba(15, 23, 42, 0.08), 0 12px 36px rgba(15, 23, 42, 0.12),
+    0 32px 72px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   --theme-modal-panel-backdrop: blur(20px) saturate(145%);
   --theme-modal-panel-backdrop-webkit: blur(20px) saturate(145%);
   --theme-modal-title: var(--theme-text-secondary);
@@ -219,7 +234,7 @@
   --theme-settings-title: var(--theme-text-secondary);
   --theme-settings-description: var(--theme-text-descriptions);
 
-  --theme-settings-choice-bg: rgba(255, 255, 255, 0.82);
+  --theme-settings-choice-bg: rgba(255, 255, 255, 0.35);
   --theme-settings-choice-border: rgba(226, 232, 240, 0.92);
   --theme-settings-choice-text: var(--theme-text-primary);
   --theme-settings-choice-hover-bg: rgba(241, 245, 249, 0.96);
@@ -269,18 +284,11 @@
   /* Action buttons and accents */
   --theme-accent-sky-bg: 14, 165, 233;
   --theme-accent-sky-border: rgba(56, 189, 248, 0.16);
-  --theme-accent-sky-shadow:
-    0 10px 22px rgba(14, 165, 233, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   --theme-accent-violet-bg: 139, 92, 246;
-  --theme-accent-violet-shadow:
-    0 10px 22px rgba(139, 92, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   --theme-accent-pink-bg: 244, 114, 182;
   --theme-accent-pink-border: rgba(244, 114, 182, 0.16);
-  --theme-accent-pink-shadow:
-    0 10px 22px rgba(244, 114, 182, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16);
 
   /* Error */
   --theme-error-bg: #fef2f2;
@@ -309,4 +317,26 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+
+  /* Shadows — layered depth for light mode */
+  --shadow-card:
+    0 1px 3px rgba(15, 23, 42, 0.06), 0 4px 14px rgba(15, 23, 42, 0.07);
+  --shadow-card-soft:
+    0 1px 3px rgba(15, 23, 42, 0.05), 0 6px 20px rgba(15, 23, 42, 0.07);
+  --shadow-control:
+    0 1px 2px rgba(15, 23, 42, 0.06), 0 3px 10px rgba(15, 23, 42, 0.08);
+  --shadow-control-hover:
+    0 2px 4px rgba(15, 23, 42, 0.08), 0 6px 18px rgba(15, 23, 42, 0.1),
+    0 12px 28px -6px rgba(15, 23, 42, 0.08);
+
+  /* Accent button shadows — richer in light mode */
+  --theme-accent-sky-shadow:
+    0 2px 6px rgba(14, 165, 233, 0.18), 0 8px 20px rgba(14, 165, 233, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --theme-accent-violet-shadow:
+    0 2px 6px rgba(139, 92, 246, 0.18), 0 8px 20px rgba(139, 92, 246, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --theme-accent-pink-shadow:
+    0 2px 6px rgba(244, 114, 182, 0.18), 0 8px 20px rgba(244, 114, 182, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }

@@ -1,0 +1,14 @@
+/* ================================
+   Discover page layout
+================================ */
+
+/* Give NewGradFeedCard a defined height to fill on the Discover page. */
+.discover-page-grid {
+  display: grid;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--space-md);
+}

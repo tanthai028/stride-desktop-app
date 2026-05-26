@@ -1,4 +1,4 @@
-import { FileDown, FileUp, Save, Trash2 } from "lucide-react";
+import { FileDown, Save, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import ActionButton from "../../../components/ui/ActionButton.jsx";
 import SelectMenu from "../../../components/ui/SelectMenu.jsx";
@@ -6,7 +6,6 @@ import {
   createLibraryBackup,
   deleteLibraryBackup,
   exportLibraryCsv,
-  importLibraryBackup,
   listLibraryBackups,
   loadLibraryBackup,
 } from "../../library/utils/libraryClient.js";
@@ -154,16 +153,6 @@ function ApplicationBackupPanel() {
     );
   }
 
-  function handleImportBackup() {
-    runBackupAction(
-      () => importLibraryBackup(),
-      (result) =>
-        result.canceled
-          ? "Import canceled."
-          : `Imported ${result.items.length} applications.`,
-    );
-  }
-
   function handleExportCsv() {
     runBackupAction(
       () => exportLibraryCsv(),
@@ -175,75 +164,65 @@ function ApplicationBackupPanel() {
   }
 
   return (
-    <div className="settings-card settings-card-padded applications-backup-panel">
-      <div className="settings-card-header">
-        <h3 className="settings-card-title">📦 Application backups</h3>
-        <p className="settings-card-description">
-          Save snapshots, restore from a saved backup, import JSON/CSV, or
-          export a CSV that opens cleanly in Google Sheets.
-        </p>
-      </div>
+    <div className="settings-data-panel">
+      <div className="settings-data-panel-section">
+        <div className="settings-card-header">
+          <p className="settings-card-title">Snapshots</p>
+          <p className="settings-card-description">
+            Save your current applications or restore from a previous snapshot.
+          </p>
+        </div>
 
-      <div className="applications-backup-controls">
-        {hasBackups ? (
-          <div className="applications-backup-select-row">
-            <SelectMenu
-              value={selectedBackupId}
-              onChange={handleBackupSelection}
-              options={backupOptions}
-              placeholder="Select backup"
-              className="applications-backup-select"
-            />
+        <div className="settings-backup-controls">
+          <div className="settings-backup-select-row">
+            {hasBackups ? (
+              <SelectMenu
+                value={selectedBackupId}
+                onChange={handleBackupSelection}
+                options={backupOptions}
+                placeholder="Select backup"
+                className="settings-backup-select"
+              />
+            ) : null}
 
             <ActionButton
-              onClick={handleDeleteBackup}
-              tone="default"
+              onClick={handleCreateBackup}
+              tone="sky"
               withIcon
-              className="applications-backup-button"
               disabled={isBusy}
             >
-              <Trash2 size={16} className="shrink-0" />
-              <span>Delete</span>
+              <Save size={14} className="shrink-0" />
+              <span>Save</span>
             </ActionButton>
+
+            <ActionButton
+              onClick={handleExportCsv}
+              tone="pink"
+              withIcon
+              disabled={isBusy}
+            >
+              <FileDown size={14} className="shrink-0" />
+              <span>Export</span>
+            </ActionButton>
+
+            {hasBackups ? (
+              <ActionButton
+                onClick={handleDeleteBackup}
+                tone="red"
+                withIcon
+                disabled={isBusy}
+              >
+                <Trash2 size={14} className="shrink-0" />
+                <span>Delete</span>
+              </ActionButton>
+            ) : null}
           </div>
-        ) : null}
-
-        <div className="applications-backup-action-row">
-          <ActionButton
-            onClick={handleCreateBackup}
-            tone="sky"
-            withIcon
-            disabled={isBusy}
-          >
-            <Save size={16} className="shrink-0" />
-            <span>Backup</span>
-          </ActionButton>
-
-          <ActionButton
-            onClick={handleImportBackup}
-            tone="default"
-            withIcon
-            disabled={isBusy}
-          >
-            <FileUp size={16} className="shrink-0" />
-            <span>Import</span>
-          </ActionButton>
-
-          <ActionButton
-            onClick={handleExportCsv}
-            tone="pink"
-            withIcon
-            disabled={isBusy}
-          >
-            <FileDown size={16} className="shrink-0" />
-            <span>Export Sheet</span>
-          </ActionButton>
         </div>
       </div>
 
       {statusMessage ? (
-        <p className="applications-backup-status">
-          {isBusy ? "Working... " : ""}
+        <p className="settings-backup-status">
+          {isBusy ? "Working… " : ""}
           {statusMessage}
         </p>
       ) : null}

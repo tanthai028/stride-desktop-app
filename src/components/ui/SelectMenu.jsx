@@ -1,8 +1,8 @@
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Search, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 
 const PANEL_EXIT_DURATION_MS = 180;
+const TYPEAHEAD_THRESHOLD = 8;
 
 function SelectMenu({
   value,
@@ -13,13 +13,16 @@ function SelectMenu({
   onTriggerClick,
   interactionMode = "click",
   closeMenuOnSelect = true,
+  typeaheadThreshold = TYPEAHEAD_THRESHOLD,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPanelMounted, setIsPanelMounted] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const containerRef = useRef(null);
   const triggerRef = useRef(null);
+  const searchInputRef = useRef(null);
   const closeTimeoutRef = useRef(null);
   const shouldWaitForRehoverRef = useRef(false);
   const didLeaveAfterSelectRef = useRef(false);
@@ -27,6 +30,17 @@ function SelectMenu({
   const isMultiSelect = Array.isArray(value);
   const isHoverMode = interactionMode === "hover";
   const selectedValues = Array.isArray(value) ? value : [value];
+
+  const showTypeahead = options.length >= typeaheadThreshold;
+
+  const filteredOptions =
+    showTypeahead && searchQuery.trim()
+      ? options.filter(
+          (opt) =>
+            opt.value === "all" ||
+            opt.label.toLowerCase().includes(searchQuery.toLowerCase().trim()),
+        )
+      : options;
 
   const selectedOptions = options.filter((option) =>
     selectedValues.includes(option.value),
@@ -39,7 +53,6 @@ function SelectMenu({
       ? `${selectedOptions.length} selected`
       : selectedOption?.label;
   const SelectedIcon = selectedOption?.icon ?? null;
-  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
 
   const selectMenuClassName = [
     "select-menu",
@@ -57,6 +70,19 @@ function SelectMenu({
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (isPanelMounted && showTypeahead) {
+      const timer = window.setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 60);
+      return () => window.clearTimeout(timer);
+    }
+
+    if (!isPanelMounted) {
+      setSearchQuery("");
+    }
+  }, [isPanelMounted, showTypeahead]);
 
   function resetHoverLock() {
     shouldWaitForRehoverRef.current = false;
@@ -226,6 +252,15 @@ function SelectMenu({
     }
   }
 
+  function handleSearchKeyDown(event) {
+    if (event.key === "Escape") {
+      if (searchQuery) {
+        event.stopPropagation();
+        setSearchQuery("");
+      }
+    }
+  }
+
   return (
     <div
       ref={containerRef}
@@ -241,7 +276,6 @@ function SelectMenu({
         className="select-menu-trigger"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        {...hoverFeedbackHandlers}
       >
         {SelectedIcon ? (
           <SelectedIcon size={16} className="select-menu-option-icon" />
@@ -266,47 +300,79 @@ function SelectMenu({
               isClosing ? "is-exiting" : ""
             }`.trim()}
           >
-            <div role="listbox" className="select-menu-options">
-              {options.map((option) => {
-                const isSelected = selectedValues.includes(option.value);
-                const OptionIcon = option.icon ?? null;
-
-                return (
+            {showTypeahead ? (
+              <div className="select-menu-search">
+                <Search size={12} className="select-menu-search-icon" />
+                <input
+                  ref={searchInputRef}
+                  type="text"
+                  className="select-menu-search-input"
+                  placeholder="Search…"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={handleSearchKeyDown}
+                  onClick={(e) => e.stopPropagation()}
+                  autoComplete="off"
+                  spellCheck={false}
+                />
+                {searchQuery ? (
                   <button
-                    key={option.value}
                     type="button"
-                    onClick={() => handleSelect(option.value)}
-                    className={`select-menu-option ${
-                      isSelected ? "is-selected" : ""
-                    }`}
-                    role="option"
-                    aria-selected={isSelected}
-                    {...hoverFeedbackHandlers}
+                    className="select-menu-search-clear"
+                    onClick={() => setSearchQuery("")}
+                    tabIndex={-1}
+                    aria-label="Clear search"
                   >
-                    {isMultiSelect ? (
-                      <span
-                        className={`select-menu-checkbox ${
-                          isSelected ? "is-checked" : ""
-                        }`}
-                        aria-hidden="true"
-                      >
-                        {isSelected ? <Check size={12} /> : null}
-                      </span>
-                    ) : null}
-
-                    {OptionIcon ? (
-                      <OptionIcon
-                        size={16}
-                        className="select-menu-option-icon"
-                      />
-                    ) : null}
-
-                    <span className="select-menu-option-label">
-                      {option.label}
-                    </span>
+                    <X size={11} />
                   </button>
-                );
-              })}
+                ) : null}
+              </div>
+            ) : null}
+
+            <div role="listbox" className="select-menu-options">
+              {filteredOptions.length === 0 ? (
+                <div className="select-menu-empty">No results</div>
+              ) : (
+                filteredOptions.map((option) => {
+                  const isSelected = selectedValues.includes(option.value);
+                  const OptionIcon = option.icon ?? null;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => handleSelect(option.value)}
+                      className={`select-menu-option ${
+                        isSelected ? "is-selected" : ""
+                      }`}
+                      role="option"
+                      aria-selected={isSelected}
+                    >
+                      {isMultiSelect ? (
+                        <span
+                          className={`select-menu-checkbox ${
+                            isSelected ? "is-checked" : ""
+                          }`}
+                          aria-hidden="true"
+                        >
+                          {isSelected ? <Check size={12} /> : null}
+                        </span>
+                      ) : null}
+
+                      {OptionIcon ? (
+                        <OptionIcon
+                          size={16}
+                          className="select-menu-option-icon"
+                        />
+                      ) : null}
+
+                      <span className="select-menu-option-label">
+                        {option.label}
+                      </span>
+                    </button>
+                  );
+                })
+              )}
             </div>
           </div>
         </>

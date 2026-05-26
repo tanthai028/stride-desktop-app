@@ -2,9 +2,7 @@ import {
   APPLY_GOAL_STORAGE_KEY,
   DEFAULT_APPLY_GOAL_TARGET,
   DEFAULT_QUICK_LINKS,
-  DEFAULT_TIMER_MINUTES,
   QUICK_LINKS_STORAGE_KEY,
-  TIMER_STORAGE_KEY,
 } from "../constants/dashboardPreview.constants.js";
 
 export function getSavedApplyGoalTarget() {
@@ -13,14 +11,6 @@ export function getSavedApplyGoalTarget() {
   return Number.isFinite(savedTarget) && savedTarget > 0
     ? savedTarget
     : DEFAULT_APPLY_GOAL_TARGET;
-}
-
-export function getSavedTimerMinutes() {
-  const savedMinutes = Number(localStorage.getItem(TIMER_STORAGE_KEY));
-
-  return Number.isFinite(savedMinutes) && savedMinutes > 0
-    ? savedMinutes
-    : DEFAULT_TIMER_MINUTES;
 }
 
 export function getSavedQuickLinks() {
@@ -35,30 +25,6 @@ export function getSavedQuickLinks() {
   } catch {
     return DEFAULT_QUICK_LINKS;
   }
-}
-
-export function formatTimerSeconds(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  return `${String(minutes).padStart(2, "0")}:${String(
-    remainingSeconds,
-  ).padStart(2, "0")}`;
-}
-
-export function formatTimerDurationLabel(seconds) {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  if (minutes > 0 && remainingSeconds > 0) {
-    return `${minutes} min ${remainingSeconds} sec`;
-  }
-
-  if (minutes > 0) {
-    return `${minutes} minute${minutes === 1 ? "" : "s"}`;
-  }
-
-  return `${remainingSeconds} second${remainingSeconds === 1 ? "" : "s"}`;
 }
 
 export function normalizeUrl(url) {

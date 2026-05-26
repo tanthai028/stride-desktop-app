@@ -1,10 +1,8 @@
 import { PictureInPicture2 } from "lucide-react";
 import { navigationItems } from "../../app/config/navigation.js";
-import { getHoverFeedbackHandlers } from "../../lib/uiFeedback.js";
 import { openApplyModeWindow } from "../../lib/windowControls.js";
 
 function AppSidebar({ activePage, onNavigate, unappliedCount = 0 }) {
-  const hoverFeedbackHandlers = getHoverFeedbackHandlers();
   const hasUnapplied = unappliedCount > 0;
   const displayCount = unappliedCount > 99 ? "99+" : String(unappliedCount);
 
@@ -25,7 +23,6 @@ function AppSidebar({ activePage, onNavigate, unappliedCount = 0 }) {
                   onNavigate(item.id);
                 }}
                 className={`sidebar-item ${isActive ? "is-active" : ""}`}
-                {...hoverFeedbackHandlers}
               >
                 <div className="sidebar-item-inner">
                   <div className="sidebar-icon">
@@ -56,7 +53,6 @@ function AppSidebar({ activePage, onNavigate, unappliedCount = 0 }) {
             type="button"
             className={`sidebar-apply-mode-item ${hasUnapplied ? "has-unapplied" : ""}`}
             onClick={openApplyModeWindow}
-            {...hoverFeedbackHandlers}
           >
             <div className="sidebar-item-inner">
               <div className="sidebar-icon">

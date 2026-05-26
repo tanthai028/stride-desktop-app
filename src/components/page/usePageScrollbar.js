@@ -213,7 +213,13 @@ function usePageScrollbar() {
 
     if (!latestMetricsRef.current.isScrollable) return;
 
-    scheduleHide();
+    // Stay visible while content is scrolled — only auto-hide when at the top.
+    const element = scrollRef.current;
+    const isScrolledAway = element ? element.scrollTop > 1 : false;
+
+    if (!isScrolledAway) {
+      scheduleHide();
+    }
   }, [scheduleHide]);
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import DashboardPage from "../../features/dashboard/DashboardPage.jsx";
+import DiscoverPage from "../../features/discover/DiscoverPage.jsx";
 import LibraryPage from "../../features/library/pages/LibraryPage.jsx";
 import JobDetailsPage from "../../features/library/pages/JobDetailsPage.jsx";
 import SessionsPage from "../../features/sessions/SessionsPage.jsx";
@@ -6,6 +7,7 @@ import SettingsPage from "../../features/settings/SettingsPage.jsx";
 
 export const APP_PAGES = {
   dashboard: "dashboard",
+  discover: "discover",
   library: "library",
   jobDetails: "jobDetails",
   sessions: "sessions",
@@ -17,6 +19,11 @@ export const PAGE_METADATA = {
     eyebrow: "🏠 Home Page",
     title: "Dashboard",
     description: "Last applied",
+  },
+  [APP_PAGES.discover]: {
+    eyebrow: "🧭 Discover",
+    title: "Discover",
+    description: "Browse new opportunities",
   },
   [APP_PAGES.library]: {
     eyebrow: "📚 Job Library",
@@ -59,6 +66,10 @@ export function getPageComponent(pageName, pageProps) {
 
   if (pageName === APP_PAGES.jobDetails) {
     return <JobDetailsPage {...pageProps} />;
+  }
+
+  if (pageName === APP_PAGES.discover) {
+    return <DiscoverPage {...pageProps} />;
   }
 
   return <DashboardPage {...pageProps} />;

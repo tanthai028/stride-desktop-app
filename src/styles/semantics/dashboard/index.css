@@ -4,8 +4,8 @@
 @import "./pagination.css";
 @import "./progress.css";
 @import "./metric-cards.css";
-@import "./timer.css";
-@import "./apply-goal.css";
 @import "./recent.css";
 @import "./quick-links.css";
 @import "./job-feed.css";
+@import "./apply-queue.css";
+@import "./discover-preview.css";

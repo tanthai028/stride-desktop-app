@@ -8,7 +8,7 @@
   --theme-panel-backdrop: blur(22px) saturate(135%);
   --theme-panel-backdrop-webkit: blur(22px) saturate(135%);
 
-  --theme-card-bg: rgba(15, 23, 42, 0.3);
+  --theme-card-bg: rgba(15, 23, 42, 0.15);
   --theme-card-bg-semi-solid: rgba(15, 23, 42, 0.5);
   --theme-card-bg-solid: rgba(15, 23, 42, 1);
   --theme-card-border: rgba(255, 255, 255, 0.06);
@@ -22,6 +22,9 @@
 
   --theme-card-hover-shadow: 0 20px 24px -24px
     rgba(var(--theme-accent-sky-bg), 0.75);
+  --theme-dashboard-card-shadow:
+    0 2px 12px rgba(2, 6, 23, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
 
   /* App shell and sidebar */
   --theme-app-shell-bg:
@@ -214,7 +217,7 @@
   --theme-startup-description: var(--theme-text-descriptions);
 
   /* Settings */
-  --theme-settings-card-bg: rgba(15, 23, 42, 0.3);
+  --theme-settings-card-bg: rgba(15, 23, 42, 0.15);
   --theme-settings-card-border: rgba(51, 65, 85, 0.92);
   --theme-settings-card-shadow:
     0 14px 34px rgba(2, 6, 23, 0.26), 0 4px 12px rgba(2, 6, 23, 0.14);
@@ -222,7 +225,7 @@
   --theme-settings-title: var(--theme-text-secondary);
   --theme-settings-description: var(--theme-text-descriptions);
 
-  --theme-settings-choice-bg: rgba(15, 23, 42, 0.8);
+  --theme-settings-choice-bg: rgba(15, 23, 42, 0.18);
   --theme-settings-choice-border: rgba(51, 65, 85, 0.9);
   --theme-settings-choice-text: var(--theme-text-primary);
   --theme-settings-choice-hover-bg: rgba(30, 41, 59, 0.94);

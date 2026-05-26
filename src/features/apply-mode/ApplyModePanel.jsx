@@ -126,14 +126,12 @@ function ApplyModePanel({
       <div className="apply-mode-panel no-drag">
         <ApplyModeHeader
           isApplying={session.isApplying}
-          currentItem={session.currentItem}
           isClickThrough={isClickThrough}
           setIsClickThrough={setIsClickThrough}
-          onApply={session.handleApply}
-          onToggleSettings={() => setShowSettings((current) => !current)}
           elapsedSeconds={session.elapsedSeconds}
           isTimerRunning={session.isTimerRunning}
           onToggleTimer={session.handleToggleTimer}
+          onToggleSettings={() => setShowSettings((current) => !current)}
           onExitRequest={() => setShowExitDialog(true)}
         />
 
@@ -166,9 +164,11 @@ function ApplyModePanel({
               progressText={session.progressText}
               skippedCount={session.skippedCount}
               isMovingCard={session.isMovingCard}
+              canGoBack={session.canGoBack}
               onApply={session.handleApply}
               onDone={session.handleDone}
               onSkip={session.handleSkip}
+              onUnskip={session.handleUnskip}
               onRemove={session.handleRemove}
             />
           ) : null}

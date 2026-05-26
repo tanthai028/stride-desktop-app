@@ -2,11 +2,26 @@ import { RotateCcw } from "lucide-react";
 import { motion } from "framer-motion";
 import PageShell from "../../components/page/PageShell.jsx";
 import PageSection from "../../components/page/PageSection.jsx";
-import SettingsToggleRow from "./components/SettingsToggleRow.jsx";
-import SettingsChoiceRow from "./components/SettingsChoiceRow.jsx";
-import { settingsSections } from "./config/settingsSections.js";
-import ActionButton from "../../components/ui/ActionButton.jsx";
 import ApplicationBackupPanel from "./components/ApplicationBackupPanel.jsx";
+import ActionButton from "../../components/ui/ActionButton.jsx";
+
+function SettingsResetCard({ onReset }) {
+  return (
+    <div className="settings-reset-card">
+      <div className="settings-reset-card-copy">
+        <p className="settings-card-title">Reset All Data</p>
+        <p className="settings-card-description">
+          Clear all applications and restore default settings
+        </p>
+      </div>
+
+      <ActionButton onClick={onReset} tone="violet" withIcon>
+        <RotateCcw size={14} className="shrink-0" />
+        <span>Reset Default Settings</span>
+      </ActionButton>
+    </div>
+  );
+}
 
 function SettingsPage({ settings, updateSetting, resetSettings }) {
   const motionProps = {
@@ -16,58 +31,20 @@ function SettingsPage({ settings, updateSetting, resetSettings }) {
     style: { willChange: "opacity, transform", isolation: "isolate" },
   };
 
-  const resetButton = (
-    <div className="settings-reset-action">
-      <ActionButton onClick={resetSettings} tone="violet" withIcon>
-        <RotateCcw size={16} className="shrink-0" />
-        <span>Reset to Default</span>
-      </ActionButton>
-    </div>
-  );
-
   return (
     <motion.div className="settings-page" {...motionProps}>
       <PageShell>
         <div className="settings-page-content">
-          {settingsSections.map((section) => (
-            <PageSection
-              key={section.id}
-              title={section.title}
-              description={section.description}
-              className="settings-page-section"
-              headerAction={section.id === "display" ? resetButton : null}
-            >
-              <div className="settings-page-section-content">
-                {section.id === "data" ? <ApplicationBackupPanel /> : null}
-                {section.items.map((item) => {
-                  if (item.type === "choice") {
-                  return (
-                      <SettingsChoiceRow
-                        key={item.id}
-                        title={item.title}
-                        description={item.description}
-                        value={settings[item.id]}
-                        options={item.options}
-                        onChange={(value) => updateSetting(item.id, value)}
-                      />
-                    );
-                  }
-
-                  return (
-                    <SettingsToggleRow
-                      key={item.id}
-                      title={item.title}
-                      description={item.description}
-                      checked={settings[item.id]}
-                      onToggle={() =>
-                        updateSetting(item.id, !settings[item.id])
-                      }
-                    />
-                  );
-                })}
-              </div>
-            </PageSection>
-          ))}
+          <PageSection
+            title="Data"
+            description="Back up, restore, import, and export your application tracker."
+            className="settings-page-section"
+          >
+            <div className="settings-page-section-content">
+              <ApplicationBackupPanel />
+              <SettingsResetCard onReset={resetSettings} />
+            </div>
+          </PageSection>
         </div>
       </PageShell>
     </motion.div>

@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, ExternalLink, Link, Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import DashboardTitle from "./DashboardTitle.jsx";
 import {
   getFaviconUrl,
@@ -54,9 +55,12 @@ function QuickLinksCard({
   }, [isEditingLinks, stopEditingLinks]);
 
   return (
-    <div
+    <motion.div
       ref={cardRef}
       className="surface-card dashboard-card dashboard-quick-links-card dashboard-clickable-card"
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.38, delay: 0.05 }}
       role="button"
       tabIndex={0}
       onClick={() => {
@@ -222,7 +226,7 @@ function QuickLinksCard({
         })}
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 
