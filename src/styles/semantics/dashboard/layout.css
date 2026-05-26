@@ -38,7 +38,7 @@
 
 /* ── Session summary card (dashboard variant) ─────────────── */
 
-.ah-summary--dashboard {
+.ah-summary.ah-summary--dashboard {
   position: static;
   align-self: auto;
   padding: var(--space-sm) var(--space-md);
